@@ -9,6 +9,10 @@ import useStyles from './styles'
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
 import CheckboxAds from '../../components/checkbox';
+import React, { useState } from 'react';
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +40,14 @@ const websiteIcon = '/assets/website.png'
 export default function PageOne() {
   const styles = useStyles()
   const { themeStretch } = useSettings();
+  const [formValues, setFormValues] = useState({
+    campaignStartDate: new Date(),
+    availabilityDate: new Date(),
+  })
+
+  const campaignStartDateRef = React.useRef(null)
+
+  console.log("Check ref:", campaignStartDateRef)
 
   function renderCampaignName(){
     return (
@@ -56,7 +68,9 @@ export default function PageOne() {
             Start Date
           </Typography>
           <div className={styles.ctnDate}>
-            <span>DD.MM.YYYY</span>
+            <div className={styles.containerDate}>
+              <DatePicker  selected={formValues.campaignStartDate} onChange={(date) => setFormValues({...formValues,  campaignStartDate: date})} />
+            </div>
             <img src={blackCalendar} alt="calendar" />
           </div>
         </div>
@@ -97,7 +111,9 @@ export default function PageOne() {
                 <span>On</span>
               </div>
               <div className={styles.altDateWrapper}>
-                <span>DD.MM.YYYY</span>
+                <div className={styles.containerDate}>
+                  <DatePicker  selected={formValues.availabilityDate} onChange={(date) => setFormValues({...formValues,  availabilityDate: date})} />
+                </div>
                 <img src={blackCalendar} alt="calendar" />
               </div>
             </div>

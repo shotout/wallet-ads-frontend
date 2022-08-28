@@ -57,6 +57,17 @@ const useStyles = makeStyles((theme) => ({
             width: 18,
             height: 18,
             objectFit :'contain'
+        },
+    },
+    containerDate: {
+        '& > .react-datepicker-wrapper > .react-datepicker__input-container > input':{
+            width: '100%',
+            height: 44,
+            background: 'transparent',
+            border: 0,
+            fontFamily: 'Public Sans,sans-serif',
+            fontSize: 14,
+            outline: 'none'
         }
     },
     availWrapper: {
@@ -348,6 +359,12 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 100,
         background: '#7089FF',
         cursor: 'pointer'
+    },
+    datepickerStyle: {
+        overflow: 'hidden',
+        width: 0,
+        height: 0,
+        position: 'absolute'
     }
 }))
 
