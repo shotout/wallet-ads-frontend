@@ -4,10 +4,15 @@ import useStyles from './styles';
 
 const whiteCameraIcon = '/assets/camera_icon.png'
 
-export default function CollectionPreview({ label }){
+export default function CollectionPreview({ label, bannerSource, logoSource, formValues }){
     const styles = useStyles()
 
     function renderProfile(){
+        if(logoSource){
+            return (
+                <img src={logoSource} alt="logo" className={styles.logoImage} />
+            )
+        }
         return (
             <div className={styles.ctnLogo} />
         )
@@ -17,7 +22,11 @@ export default function CollectionPreview({ label }){
         return (
             <div className={styles.ctnBanner}>
                 <div className={styles.bannerItem}>
-                    <Typography variant="h6" color={'#fff'}>Banner image 1400 x 400</Typography>
+                    {bannerSource ? (
+                        <img src={bannerSource} alt="banner-source" />
+                    ): (
+                        <Typography variant="h6" color={'#fff'}>Banner image 1400 x 400</Typography>
+                    )}
                 </div>
 
             {renderProfile()}
@@ -28,8 +37,8 @@ export default function CollectionPreview({ label }){
     function renderDesc(){
         return (
             <div className={styles.ctnDesc}>
-                <Typography variant="h6">Collection page name</Typography>
-                <Typography variant="body1">Your collection page text here</Typography>
+                <Typography variant="h6">{formValues.collectionPageName || 'Collection page name'}</Typography>
+                <Typography variant="body1">{formValues.collectionPageDesc || 'Your collection page text here'}</Typography>
             </div>
         )
     }

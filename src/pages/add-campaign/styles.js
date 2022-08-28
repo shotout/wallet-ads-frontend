@@ -365,7 +365,7 @@ const useStyles = makeStyles((theme) => ({
         width: 0,
         height: 0,
         position: 'absolute'
-    }
+    },
 }))
 
 export default useStyles

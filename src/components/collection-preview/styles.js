@@ -33,6 +33,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         top: '0px',
+        '& > img': {
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+        }
     },
     ctnLogo: {
         background:'#D9D9D9',
@@ -43,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
         bottom: -20,
         borderRadius: 10,
         border: '4px solid #fff'
+    },
+    logoImage: {
+        background:'#D9D9D9',
+        width: 100,
+        height: 100,
+        marginLeft: 20,
+        position: 'absolute',
+        bottom: -20,
+        borderRadius: 10,
     },
     ctnDesc: {
         paddingTop: 40,

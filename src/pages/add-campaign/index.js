@@ -1,15 +1,15 @@
-import { Container, Grid, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 // layouts
-import Layout from '../../layouts';
+// import Layout from '../../layouts';
 // hooks
-import useSettings from '../../hooks/useSettings';
+// import useSettings from '../../hooks/useSettings';
 // components
-import Page from '../../components/Page';
+// import Page from '../../components/Page';
 import useStyles from './styles'
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
 import CheckboxAds from '../../components/checkbox';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -39,15 +39,52 @@ const websiteIcon = '/assets/website.png'
 
 export default function PageOne() {
   const styles = useStyles()
-  const { themeStretch } = useSettings();
+  // const { themeStretch } = useSettings();
+  const [bannerCollection, setBannerCollection] = useState(null)
+  const [logoCollection, setLogoCollection] = useState(null)
+  const [adCreationMedia, setAdcreationMedia] = useState(null)
   const [formValues, setFormValues] = useState({
     campaignStartDate: new Date(),
     availabilityDate: new Date(),
+    collectionPageName: '',
+    collectionPageDesc: '',
   })
 
-  const campaignStartDateRef = React.useRef(null)
+  const handleChangeValues = (event, stateName) => {
+    setFormValues({
+      ...formValues,
+      [stateName]: event.target.value
+    })
+  }
 
-  console.log("Check ref:", campaignStartDateRef)
+
+  const changeAdCreationMedia = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setAdcreationMedia(Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }))
+    }
+  }, []);
+
+  const changeBannerCollection = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setBannerCollection(Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }))
+    }
+  }, []);
+
+  const changeLogoCollection = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (file) {
+      setLogoCollection(Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }))
+    }
+  }, []);
+
 
   function renderCampaignName(){
     return (
@@ -258,11 +295,13 @@ export default function PageOne() {
               Recommended size 350x350px 
             </Typography> */}
           </div>
-          <BannerPicker label={"Add media"} />
+          <BannerPicker typeScreen="logo" label={"Add media"} file={adCreationMedia} onDelete={() => {setAdcreationMedia(null)}} onDrop={changeAdCreationMedia} />
         </div>
       </div>
     )
   }
+
+  console.log(logoCollection)
 
   function renderLeftCollection(){
     return (
@@ -277,7 +316,7 @@ export default function PageOne() {
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
-            <input placeholder='Add your collection page name here' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'collectionPageName')}} value={formValues.collectionPageName} placeholder='Add your collection page name here' type="text" id="campaign" name="campaign" />
           </div>
         </div>
         <div className={styles.ctnInputCollection}>
@@ -292,7 +331,7 @@ export default function PageOne() {
               Recommended size 350x350px 
             </Typography>
           </div>
-          <BannerPicker label={"Add logo"} />
+          <BannerPicker typeScreen="logo" label={"Add logo"} file={logoCollection} onDelete={() => {setLogoCollection(null)}} onDrop={changeLogoCollection} />
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
@@ -306,7 +345,7 @@ export default function PageOne() {
               Recommended size 1400x400px 
             </Typography>
           </div>
-          <BannerPicker label={"Add logo"} />
+          <BannerPicker typeScreen="banner-collection" file={bannerCollection} onDelete={() => {setBannerCollection(null)}} onDrop={changeBannerCollection} label={"Add banner"} />
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
@@ -318,7 +357,7 @@ export default function PageOne() {
             </div>
           </div>
           <div className={styles.textAreaCollection}>
-            <textarea placeholder='Add your collection page text here'  id="campaign" name="campaign" />
+            <textarea onChange={(value) => {handleChangeValues(value, 'collectionPageDesc')}} value={formValues.collectionPageDesc} placeholder='Add your collection page text here'  id="campaign" name="campaign" />
           </div>
         </div>
       </div>
@@ -354,7 +393,10 @@ export default function PageOne() {
                   Preview
             </Typography>
           </div>
-          <CollectionPreview />
+          <CollectionPreview
+            formValues={formValues}
+            logoSource={logoCollection === null ? null : typeof file === 'string' ? logoCollection : logoCollection.preview || null}
+            bannerSource={bannerCollection === null ? null : typeof file === 'string' ? bannerCollection : bannerCollection.preview || null} />
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
