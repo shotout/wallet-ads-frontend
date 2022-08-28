@@ -4,7 +4,6 @@ const useStyles = makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
         backgroundColor: '#E4E6FA',
-        height: '100vh',
         paddingTop: 20
     },
     ctnSection: {
@@ -35,8 +34,9 @@ const useStyles = makeStyles((theme) => ({
     ctnGray: {
         maxWidth: '90%',
         '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
             border: 0,
-            height: 30,
+            height: 44,
             width: '100%',
             background: '#F1F1F1',
             borderRadius: 8,
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnDate: {
         background: '#F1F1F1',
-        height: 30,
+        height: 44,
         borderRadius: 8,
         paddingLeft: 12,
         paddingRight: 12,
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         display: 'flex',
         background: '#F1F1F1',
-        height: 30,
+        height: 44,
         paddingLeft: 12,
         paddingRight: 12,
         borderRadius: 8,
@@ -109,7 +109,8 @@ const useStyles = makeStyles((theme) => ({
         marginRight: 20,
         paddingTop: 20,
         paddingBottom: 20,
-        borderRadius: 20
+        borderRadius: 20,
+        marginBottom: 20
     },
 
     ctnSectionTarget: {
@@ -160,7 +161,9 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnTitle: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 20
     },
     rowTitle: {
         height: '2px',
@@ -202,6 +205,149 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: 12,
         paddingBottom: 12,
         borderRadius: 12
+    },
+    inputCollectionCard: {
+        display: 'flex',
+        backgroundColor: '#fff',
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 20,
+        padding: 20,
+        borderRadius: 20,
+        flexDirection: 'column'
+    },
+    ctnInputCollectionPageWrapper: {
+        width: '100%',
+        display: 'flex',
+    },
+    ctnInputCollection: {
+        marginBottom: 24,
+    },
+    ctnLeftCollection: {
+        width: '50%',
+        paddingRight: 40,
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    rowTitleWrapper:{
+        display: 'flex',
+        justifyContent :'space-between',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    leftTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        '& > img': {
+            width: 16,
+            height: 16,
+            objectFit: 'contain',
+            marginLeft: 8
+        }
+    },
+    inputCollectionWrapper: {
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: 44,
+            width: '100%',
+            background: '#F1F1F1',
+            borderRadius: 8,
+            paddingLeft: 12,
+            paddingRight: 12
+        }
+    },
+    inputCollectionIcon: {
+        display: 'flex',
+        alignItems: 'center',
+        background: '#F1F1F1',
+        height: 44,
+        borderRadius: 8,
+        paddingLeft: 12,
+        marginBottom: 8,
+        '& > img': {
+            width: 25,
+            height: 25,
+            objectFit: 'contain'
+        },
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            width: '100%',
+            height: 44,
+            background: '#F1F1F1',
+            paddingLeft: 12,
+            paddingRight: 12,
+            outline: 'none'
+        }
+    },
+    textAreaCollection: {
+        '& > textarea': {
+            border: 0,
+            height: 160,
+            width: '100%',
+            background: '#F1F1F1',
+            borderRadius: 8,
+            paddingLeft: 12,
+            paddingRight: 12,
+            fontFamily: 'Public Sans,sans-serif',
+            paddingTop: 20,
+            paddingBottom: 20
+        }
+    },
+    ctnRightCollection: {
+        width: '50%'
+    },
+    ctnSelectAudience: {
+        borderTop: '1px solid #C9D3D8',
+        paddingTop: 20,
+        marginTop: 4
+    },
+    ctnAudienceItem: {
+        height: 44,
+        background: '#F1F1F1',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 12,
+    },
+    btnCreateAd: {
+        display: 'flex',
+        backgroundColor: '#fff',
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
+        marginLeft: 20,
+        marginRight: 20,
+        marginBottom: 20,
+        padding: 20,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+        '& > img': {
+            width: 44,
+            height: 44,
+            objectFit: 'contain',
+            marginRight: 12
+        }
+    },
+    setupAirdropWrapper: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        paddingBottom: 40
+    },
+    btnSetupAirdrop: {
+        height: 44,
+        borderRadius: 12,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 100,
+        paddingRight: 100,
+        background: '#7089FF',
+        cursor: 'pointer'
     }
 }))
 

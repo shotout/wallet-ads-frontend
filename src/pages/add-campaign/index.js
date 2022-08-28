@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 // layouts
 import Layout from '../../layouts';
 // hooks
@@ -6,6 +6,9 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import useStyles from './styles'
+import BannerPicker from '../../components/banner-picker';
+import CollectionPreview from '../../components/collection-preview';
+import CheckboxAds from '../../components/checkbox';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +23,15 @@ const calendarIcon = '/assets/calendar.png'
 const targetIcon = '/assets/targeting.png'
 const totalBudgetIcon = '/assets/total_budget.png'
 const blackCalendar = '/assets/black_calendar.png'
-const checklistIcon = '/assets/checklist.png'
+const addIcon = '/assets/add_icon.png'
+const askIcon = '/assets/ask_icon.png'
+
+const discordIcon = '/assets/discord.png'
+const facebookIcon = '/assets/facebook.png'
+const instagramIcon = '/assets/instagram.png'
+const mediumIcon = '/assets/medium.png'
+const twitterIcon = '/assets/twitter.png'
+const websiteIcon = '/assets/website.png'
 
 export default function PageOne() {
   const styles = useStyles()
@@ -70,7 +81,7 @@ export default function PageOne() {
           <div className={styles.availWrapper}>
             <div className={styles.inputGray}>
               <div className={styles.leftWrapper}>
-                <img src={checklistIcon} alt="checklist" />
+                <CheckboxAds />
                 <span>After:</span>
               </div>
               <div className={styles.midWrapper}>
@@ -82,7 +93,7 @@ export default function PageOne() {
             </div>
             <div className={styles.inputGray}>
               <div className={styles.leftWrapper}>
-                <img src={checklistIcon} alt="checklist" />
+                <CheckboxAds />
                 <span>On</span>
               </div>
               <div className={styles.altDateWrapper}>
@@ -92,7 +103,7 @@ export default function PageOne() {
             </div>
             <div className={styles.inputGray}>
               <div className={styles.leftWrapper}>
-                <img src={checklistIcon} alt="checklist" />
+                <CheckboxAds />
                 <span>Never</span>
               </div>
             </div>
@@ -203,11 +214,273 @@ export default function PageOne() {
     )
   }
 
+  function renderLeftAdCreation(){
+    return (
+      <div className={styles.ctnLeftCollection}>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Ad name
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+          </div>
+          <div className={styles.inputCollectionWrapper}>
+            <input placeholder='Add your ad name here' type="text" id="campaign" name="campaign" />
+          </div>
+        </div>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Media
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+            {/* <Typography variant="body2"  color='#808080'>
+              Recommended size 350x350px 
+            </Typography> */}
+          </div>
+          <BannerPicker label={"Add media"} />
+        </div>
+      </div>
+    )
+  }
+
+  function renderLeftCollection(){
+    return (
+      <div className={styles.ctnLeftCollection}>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                Collection page name
+              </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+          </div>
+          <div className={styles.inputCollectionWrapper}>
+            <input placeholder='Add your collection page name here' type="text" id="campaign" name="campaign" />
+          </div>
+        </div>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                Add logo
+              </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+            <Typography variant="body2"  color='#808080'>
+              Recommended size 350x350px 
+            </Typography>
+          </div>
+          <BannerPicker label={"Add logo"} />
+        </div>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Add banner
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+            <Typography variant="body2"  color='#808080'>
+              Recommended size 1400x400px 
+            </Typography>
+          </div>
+          <BannerPicker label={"Add logo"} />
+        </div>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Collection page text
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+          </div>
+          <div className={styles.textAreaCollection}>
+            <textarea placeholder='Add your collection page text here'  id="campaign" name="campaign" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function renderRightAdCreation(){
+    return (
+      <div className={styles.ctnRightCollection}>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Ad text
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+          </div>
+          <div className={styles.textAreaCollection}>
+            <textarea placeholder='Add your ad text here'  id="campaign" name="campaign" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function renderRightCollection(){
+    return (
+      <div className={styles.ctnRightCollection}>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <Typography variant="h6">
+                  Preview
+            </Typography>
+          </div>
+          <CollectionPreview />
+        </div>
+        <div className={styles.ctnInputCollection}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+                <Typography variant="h6">
+                  Add social media links
+                </Typography>
+              <img src={askIcon} alt="ask" />
+            </div>
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={websiteIcon} alt="website" />
+            <input placeholder='yourwebsitehere.com' type="text" id="campaign" name="campaign" />
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={discordIcon} alt="discord" />
+            <input placeholder='https://discord.gg/yourdiscord' type="text" id="campaign" name="campaign" />
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={twitterIcon} alt="twitter" />
+            <input placeholder='https://twitter.com/YourTwitter' type="text" id="campaign" name="campaign" />
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={instagramIcon} alt="instagram" />
+            <input placeholder='https://instagram.com/YourInstagram' type="text" id="campaign" name="campaign" />
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={mediumIcon} alt="medium" />
+            <input placeholder='https://medium.com/@YourMedium' type="text" id="campaign" name="campaign" />
+          </div>
+          <div className={styles.inputCollectionIcon}>
+            <img src={facebookIcon} alt="facebook" />
+            <input placeholder='https://facebook.com/Your.Facebook' type="text" id="campaign" name="campaign" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function renderInputCollection(){
+    return (
+      <div className={styles.ctnInputCollectionPageWrapper}>
+        {renderLeftCollection()}
+        {renderRightCollection()}
+      </div>
+    )
+  }
+
+  function renderCardAdCreation(){
+    return (
+      <div className={styles.inputCollectionCard}>
+        <div className={styles.ctnInputCollectionPageWrapper}>
+          {renderLeftAdCreation()}
+          {renderRightAdCreation()}
+        </div>
+        <div className={styles.ctnSelectAudience}>
+          <div className={styles.ctnInputCollection}>
+            <div className={styles.rowTitleWrapper}>
+              <div className={styles.leftTitle}>
+                  <Typography variant="h6">
+                    Choose which of your audiences should see this ad
+                  </Typography>
+                <img src={askIcon} alt="ask" />
+              </div>
+            </div>
+          </div>
+          <Grid container spacing={4}>
+              <Grid item md={3} xs={2} className={styles.ctnSectionAd}>
+                <div className={styles.ctnAudienceItem}>
+                  <CheckboxAds />
+                  <Typography variant="subtitle1" color="#808080">
+                    Audience 1
+                  </Typography>
+                </div>
+              </Grid>
+          </Grid>
+        </div>
+      </div>
+    )
+  }
+
+  function renderAdCreation(){
+    return (
+      <div className={styles.ctnAdCreation}>
+        <div className={styles.ctnTitle}>
+          <div className={styles.rowTitle} />
+          <Typography variant="h5" marginTop={2} marginX={2} paragraph>
+            Ad Creation
+          </Typography>
+          <div className={styles.rowTitle} />
+        </div>
+        {renderCardAdCreation()}
+      </div>
+
+    )
+  }
+
+  function renderCreateAnotherAd(){
+    return (
+      <div className={styles.btnCreateAd}>
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Create another ad</Typography>
+      </div>
+    )
+  }
+
+  function renderCollectionPage(){
+    return (
+      <div className={styles.ctnDefineAudience}>
+        <div className={styles.ctnTitle}>
+          <div className={styles.rowTitle} />
+          <Typography variant="h5" marginTop={2} marginX={2} paragraph>
+            Collection page creation
+          </Typography>
+          <div className={styles.rowTitle} />
+        </div>
+        <div className={styles.inputCollectionCard}>
+          {renderInputCollection()}
+        </div>
+        {renderAdCreation()}
+        {renderCreateAnotherAd()}
+      </div>
+    )
+  }
+
+  function renderSetupAirdrop(){
+    return (
+      <div className={styles.setupAirdropWrapper}>
+        <div className={styles.btnSetupAirdrop}>
+          <Typography variant='h6' color={'#fff'}>Setup airdrop</Typography>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.ctnRoot}>
       {renderCampaignName()}
       {renderAvailability()}
       {renderDefineAudience()}
+      {renderCollectionPage()}
+      {renderSetupAirdrop()}
     </div>
   );
 }
