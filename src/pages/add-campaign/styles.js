@@ -167,56 +167,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column'
     },
-    ctnAudience: {
-        position: 'relative'
-    },
-    ctnTitle: {
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: 20,
-        paddingRight: 20
-    },
-    rowTitle: {
-        height: '2px',
-        background: '#fff',
-        flexGrow: 1,
-    },
-    cardAudience: {
-        backgroundColor: '#fff',
-        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
-        width: 280,
-        marginLeft: 20,
-        padding: 20,
-        borderRadius: 20,
-        marginBottom: 40,
-        paddingTop: 0,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-    },
-    headerAudience: {
-        backgroundColor: '#7589FA',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '200px',
-        paddingTop: 12,
-        paddingBottom: 12,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
-    },
-    ctnDescAudience: {
-        marginTop: 20
-    },
-    ctnPrice: {
-        width: '100%',
-        border: '1px solid #122D46',
-        paddingTop: 12,
-        paddingBottom: 12,
-        borderRadius: 12
-    },
     inputCollectionCard: {
         display: 'flex',
         backgroundColor: '#fff',
@@ -370,7 +320,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingTop: 20,
+        paddingTop: 0,
         paddingBottom: 20,
         borderBottom: '1px solid #fff',
         marginBottom: 20,
@@ -411,7 +361,23 @@ const useStyles = makeStyles((theme) => ({
         '& > #avatar': {
             objectFit: 'cover'
         },
-    }
+    },
+    ctnRowAudience: {
+        display: 'flex',
+        alignItems: 'stretch',
+        marginBottom: 30,
+    },
+    ctnTitle: {
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 20,
+        paddingRight: 20
+    },
+    rowTitle: {
+        height: '2px',
+        background: '#fff',
+        flexGrow: 1,
+    },
 }))
 
 export default useStyles

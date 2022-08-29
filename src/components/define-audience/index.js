@@ -1,12 +1,201 @@
 import { Typography } from '@mui/material';
 import React, { useState } from 'react';
 import useStyles from './styles'
+// @mui
+import {
+  MenuItem,
+  TextField,
+} from '@mui/material';
 
 const pricetagIcon = '/assets/pricetag_icon.png'
+const purpleAsk = '/assets/purple_ask.png'
+const redAsk = '/assets/red_ask.png'
 
 
 export default function DefineAudience(){
     const styles = useStyles()
+
+    function renderInputTargeting(){
+        return (
+            <div className={styles.ctnInputTarget}>
+                <div className={styles.ctnLeftInputTarget}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            +Cryptocurrencies used
+                        </Typography>
+                        <img src={purpleAsk} alt="ask" />
+                    </div>
+                    <div className={styles.ctnInputSelect}>
+                        <TextField
+                            select
+                            fullWidth
+                            value={"ETH"}
+                            placeholder="Select..."
+                            variant="outlined"
+                            // onChange={handleChangeCurrency}
+                            >
+                        {['ETH', 'BNB', 'SOL'].map((option) => (
+                            <MenuItem className={styles.txtOption} key={option} value={option}>
+                            {option}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </div>
+                </div>
+                <div className={styles.ctnRightTarget}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            +Account age
+                        </Typography>
+                        <img src={purpleAsk} alt="ask" />
+                    </div>
+                    <div className={styles.ctnRowInput}>
+                        <div className={styles.ctnGrayInput}>
+                            <input placeholder='-' type={'text'} />
+                            <Typography variant="body1"  color={'#AAA4A4'}>
+                                Years
+                            </Typography>
+                        </div>
+                        <div className={styles.ctnGrayInput}>
+                            <input placeholder='-' type={'text'} />
+                            <Typography variant="body1"  color={'#AAA4A4'}>
+                                Months
+                            </Typography>
+                        </div>
+                        <div className={styles.ctnGrayInput}>
+                            <input placeholder='-' type={'text'} />
+                            <Typography variant="body1"  color={'#AAA4A4'}>
+                                Days
+                            </Typography>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    function renderInputAirdop(){
+        return (
+            <div className={styles.ctnInputTarget}>
+                <div className={styles.ctnLeftInputTarget}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            +Airdrop Received
+                        </Typography>
+                        <img src={purpleAsk} alt="ask" />
+                    </div>
+                    <div className={styles.ctnInputSelect}>
+                        <TextField
+                            select
+                            fullWidth
+                            value={"1-5"}
+                            placeholder="Select..."
+                            variant="outlined"
+                            // onChange={handleChangeCurrency}
+                            >
+                        {['1-5', '6-10', '10-20'].map((option) => (
+                            <MenuItem className={styles.txtOption} key={option} value={option}>
+                            {option}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    function renderDetailInput(){
+        return (
+            <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
+                <div className={styles.ctnDetailInput}>
+                    <div className={styles.inputSectionLeft}>
+                        <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Amount of transaction
+                            </Typography>
+                            <img src={redAsk} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                fullWidth
+                                value={"1-5"}
+                                placeholder="Select..."
+                                variant="outlined"
+                                // onChange={handleChangeCurrency}
+                                >
+                            {['1-5', '6-10', '10-20'].map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                    </div>
+                    <div className={styles.inputSectionLeft}>
+                        <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Trading Volume
+                            </Typography>
+                            <img src={redAsk} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                fullWidth
+                                value={"1-5"}
+                                placeholder="Select..."
+                                variant="outlined"
+                                // onChange={handleChangeCurrency}
+                                >
+                            {['1-5', '6-10', '10-20'].map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.ctnDetailInput}>
+                    <div className={styles.inputSectionLeft}>
+                        <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Available credit in wallet
+                            </Typography>
+                            <img src={redAsk} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                fullWidth
+                                value={"1-5"}
+                                placeholder="Select..."
+                                variant="outlined"
+                                // onChange={handleChangeCurrency}
+                                >
+                            {['1-5', '6-10', '10-20'].map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                    </div>
+                    <div className={styles.inputSectionLeft}>
+                        <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +NFT Purchases
+                            </Typography>
+                            <img src={redAsk} alt="ask" />
+                        </div>
+                        <div className={styles.inputCollectionWrapper}>
+                            <input placeholder='Add creator here' type="text" id="campaign" name="campaign" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
     function renderOptimizeTargeting(){
         return (
@@ -49,11 +238,13 @@ export default function DefineAudience(){
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
-                    <Typography variant="body1" color="#808080">
-                    Select more detailed targeting options to reach your audience.
-                    </Typography>
+                        <Typography variant="body1" color="#808080">
+                        Select more detailed targeting options to reach your audience.
+                        </Typography>
                     </div>
                 </div>
+                {renderInputTargeting()}
+                {renderInputAirdop()}
             </div>
         )
     }
@@ -79,6 +270,7 @@ export default function DefineAudience(){
                         </Typography>
                     </div>
                 </div>
+                {renderDetailInput()}
             </div>
         )
     }

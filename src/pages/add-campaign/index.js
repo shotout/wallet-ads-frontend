@@ -14,6 +14,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
+import CardAudience from 'src/components/card-audience';
 
 // ----------------------------------------------------------------------
 
@@ -220,42 +221,19 @@ export default function PageOne() {
 
   function renderCardAudience(){
     return (
-      <div className={styles.ctnAudience}>
+      <div className={styles.cardAudienceWrapper}>
         <div className={styles.ctnTitle}>
-          <div className={styles.rowTitle} />
-          <Typography variant="h5" marginTop={2} marginX={2} paragraph>
-            Define your audiences
-          </Typography>
+            <div className={styles.rowTitle} />
+            <Typography variant="h5" marginTop={2} marginX={2} paragraph>
+                Define your audiences
+            </Typography>
           <div className={styles.rowTitle} />
         </div>
-        <div className={styles.cardAudience}>
-          <div className={styles.headerAudience}>
-            <Typography variant="h5" textAlign={'center'} color={'#fff'}>
-              Audience 1:
-            </Typography>
-          </div>
-          <div className={styles.ctnDescAudience}>
-            <Typography variant="span" textAlign={'center'} paragraph>
-            The audience consists of a broad mix of users, optimized by our algorithm.
-            </Typography>
-            <div className={styles.ctnPrice}>
-              <Typography variant="h5" textAlign={'center'} >
-                USD500
-              </Typography>
-            </div>
-            <Typography variant="span" textAlign={'center'} paragraph>
-              USD1 per airdrop
-            </Typography>
-            <div className={styles.ctnAmount}>
-            <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-              8,333 users
-            </Typography>
-            <Typography variant="span" textAlign={'center'} paragraph>
-              In this audience will receive airdrops
-            </Typography>
-            </div>
-          </div>
-          
+        <div className={styles.ctnRowAudience}>
+          <CardAudience typeScreen="initial-audience" label="Audience 1:" />
+          <CardAudience typeScreen="filled-audience"  label="Audience 2:" />
+          <CardAudience typeScreen="empty-audience" label="Audience 3:" />
+          <CardAudience typeScreen="empty-audience" label="Audience 4:" />
         </div>
       </div>
     )

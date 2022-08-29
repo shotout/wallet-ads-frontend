@@ -11,7 +11,8 @@ export default makeStyles((theme) => ({
         borderRadius: 20
     },
     ctnMainContent:{
-        display: 'flex'
+        display: 'flex',
+        alignItems: 'center'
     },
     ctnLeftContent: {
         display: 'flex',
@@ -51,7 +52,7 @@ export default makeStyles((theme) => ({
         borderRight: '1px solid #6C6B86'
     },
     ctnRightContent: {
-        width: 280
+        width: 280,
     },
     ctnPurple: {
         background: '#8C65CC'
@@ -108,5 +109,92 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         marginTop: 12,
         cursor: 'pointer'
+    },
+    ctnInputTarget: {
+        display: 'flex',
+        marginTop: 20,
+        paddingTop: 20,
+        borderTop: '1px solid #8C65CC'
+    },
+    ctnLeftInputTarget: {
+        width: '30%',
+        paddingRight: 30,
+        paddingLeft: 20,
+    },
+    ctnRightTarget: {
+        width: '70%',
+        paddingRight: 30,
+        paddingLeft: 20,
+    },
+    ctnInputSelect: {
+        marginTop: 8,
+        '& > .css-wb57ya-MuiFormControl-root-MuiTextField-root': {
+            '& > .css-1hw9fc4-MuiInputBase-root-MuiOutlinedInput-root': {
+                height: 44,
+                background: '#F1F1F1'
+            }
+        }
+    },
+    ctnTitleInput:{
+        display: 'flex',
+        alignItems: 'center',
+        '& > img': {
+            width: 16,
+            height: 16,
+            objectFit: 'contain',
+            marginLeft: 8
+        }
+    },
+    ctnRowInput: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    ctnGrayInput: {
+        marginTop: 8,
+        background: '#F1F1F1',
+        height: 44,
+        borderRadius: 8,
+        overflow: 'hidden',
+        marginRight: 20,
+        display: 'flex',
+        alignItems: 'center',
+        paddingRight: 20,
+        width: 140,
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: 44,
+            background: '#F1F1F1',
+            paddingLeft: 12,
+            paddingRight: 12,
+            outline: 'none',
+            width: 70,
+            textAlign: 'center'
+        }
+    },
+    borderRed: {
+        borderTopColor: '#AD4061'
+    },
+    ctnDetailInput: {
+        paddingLeft: 20,
+        width: '30%',
+        paddingRight: 30,
+    },
+    inputSectionLeft: {
+        marginBottom: 20,
+    },
+    inputCollectionWrapper: {
+        marginTop: 8,
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: 44,
+            width: '100%',
+            background: '#F1F1F1',
+            borderRadius: 8,
+            paddingLeft: 12,
+            paddingRight: 12
+        }
     },
 }))
