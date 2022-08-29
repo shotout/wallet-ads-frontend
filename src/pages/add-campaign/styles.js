@@ -366,6 +366,52 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         position: 'absolute'
     },
+    ctnHeaderWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 20,
+        paddingBottom: 20,
+        borderBottom: '1px solid #fff',
+        marginBottom: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        '& > img':{
+            width: 50,
+            height: 50,
+            objectFit: 'contain'
+        },
+    },
+    rightHeader: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    ctnIconHeader: {
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+        background: '#fff',
+        marginLeft: 20,
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
+        '& > img': {
+            width: 30,
+            height: 30,
+            objectFit: 'contain'
+        },
+        '& > #notification': {
+            width: 18,
+            height: 18,
+            objectFit: 'contain'
+        },
+        '& > #avatar': {
+            objectFit: 'cover'
+        },
+    }
 }))
 
 export default useStyles

@@ -13,6 +13,7 @@ import React, { useCallback, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import DefineAudience from '../../components/define-audience';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,10 @@ const instagramIcon = '/assets/instagram.png'
 const mediumIcon = '/assets/medium.png'
 const twitterIcon = '/assets/twitter.png'
 const websiteIcon = '/assets/website.png'
+
+const appIcon = '/assets/app_icon.png'
+const notificationIcon = '/assets/notification_icon.png'
+const blackAskIcon = '/assets/blackask_icon.png'
 
 export default function PageOne() {
   const styles = useStyles()
@@ -261,6 +266,7 @@ export default function PageOne() {
       <div className={styles.ctnDefineAudience}>
         {renderTargeting()}
         {renderCardAudience()}
+        <DefineAudience />
         {renderBudget()}
         {/* {} */}
       </div>
@@ -301,8 +307,6 @@ export default function PageOne() {
     )
   }
 
-  console.log(logoCollection)
-
   function renderLeftCollection(){
     return (
       <div className={styles.ctnLeftCollection}>
@@ -310,8 +314,8 @@ export default function PageOne() {
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
                 <Typography variant="h6">
-                Collection page name
-              </Typography>
+                  Collection page name
+                </Typography>
               <img src={askIcon} alt="ask" />
             </div>
           </div>
@@ -532,8 +536,28 @@ export default function PageOne() {
     )
   }
 
+  function renderHeader(){
+    return (
+      <div className={styles.ctnHeaderWrapper}>
+        <img src={appIcon} alt="app-icon" />
+        <div className={styles.rightHeader}>
+          <div className={styles.ctnIconHeader}>
+            <img src={blackAskIcon} alt="ask" id="ask" />
+          </div>
+          <div className={styles.ctnIconHeader}>
+            <img src={notificationIcon} alt="notification" id="notification" />
+          </div>
+          <div className={styles.ctnIconHeader}>
+            <img src={'https://images.tokopedia.net/img/cache/200-square/product-1/2019/3/18/1993669/1993669_8198edc5-ab9b-4ee8-ba29-83c2fdc439a1.jpg'} alt="avatar" id="avatar" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.ctnRoot}>
+      {renderHeader()}
       {renderCampaignName()}
       {renderAvailability()}
       {renderDefineAudience()}
