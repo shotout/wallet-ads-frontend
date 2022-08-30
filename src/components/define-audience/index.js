@@ -33,11 +33,28 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         }
     }, [selectedAudience])
 
+    const onChangeBudget = (event) => {
+        setFormValues({
+            ...formValues,
+            budgetAds: event.target.value
+        })
+    }
+
     const handleChangeBalanceTarget = (event, stateName) => {
         setFormValues({
             ...formValues,
             balancedTargeting: {
                 ...formValues.balancedTargeting,
+                [stateName]: event.target.value
+            }
+        })
+    }
+
+    const handleChangeDetailTarget = (event, stateName) => {
+        setFormValues({
+            ...formValues,
+            detailTargeting: {
+                ...formValues.detailTargeting,
                 [stateName]: event.target.value
             }
         })
@@ -148,10 +165,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <TextField
                                 select
                                 fullWidth
-                                value={"1-5"}
                                 placeholder="Select..."
                                 variant="outlined"
-                                // onChange={handleChangeCurrency}
+                                value={formValues.detailTargeting ? formValues.detailTargeting.transactionAmount || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'transactionAmount')}}
                                 >
                             {['1-5', '6-10', '10-20'].map((option) => (
                                 <MenuItem className={styles.txtOption} key={option} value={option}>
@@ -172,12 +189,12 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <TextField
                                 select
                                 fullWidth
-                                value={"1-5"}
                                 placeholder="Select..."
                                 variant="outlined"
-                                // onChange={handleChangeCurrency}
+                                value={formValues.detailTargeting ? formValues.detailTargeting.tradingVolume || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'tradingVolume')}}
                                 >
-                            {['1-5', '6-10', '10-20'].map((option) => (
+                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
                                 <MenuItem className={styles.txtOption} key={option} value={option}>
                                 {option}
                                 </MenuItem>
@@ -198,12 +215,12 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <TextField
                                 select
                                 fullWidth
-                                value={"1-5"}
                                 placeholder="Select..."
                                 variant="outlined"
-                                // onChange={handleChangeCurrency}
+                                value={formValues.detailTargeting ? formValues.detailTargeting.availableCredit || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'availableCredit')}}
                                 >
-                            {['1-5', '6-10', '10-20'].map((option) => (
+                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
                                 <MenuItem className={styles.txtOption} key={option} value={option}>
                                 {option}
                                 </MenuItem>
@@ -219,7 +236,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <img src={redAsk} alt="ask" />
                         </div>
                         <div className={styles.inputCollectionWrapper}>
-                            <input placeholder='Add creator here' type="text" id="campaign" name="campaign" />
+                            <input 
+                                value={formValues.detailTargeting ? formValues.detailTargeting.creatorName || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'creatorName')}}
+                                placeholder='Add creator here' type="text" id="campaign" name="campaign" />
                         </div>
                     </div>
                 </div>
@@ -264,7 +284,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             BALANCED TARGETING
                         </Typography>
                         <Typography variant="subtitle2" color="#8C65CC">
-                            +Price: USD0.06 per airdrop
+                            +Price: USD0.02 per airdrop
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -288,10 +308,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={styles.ctnHeaderTitle}>
                         <Typography variant="h6" marginBottom={0}>
-                            OPTIMIZED TARGETING
+                            DETAIL TARGETING
                         </Typography>
                         <Typography variant="subtitle2" color="#AD4061">
-                            +Price: USD0.06 per airdrop
+                            +Price: USD0.02 per airdrop
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -333,7 +353,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <CardAudience isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
+                <CardAudience onChangeBudget={event => {onChangeBudget(event)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
             </div>
         )
     }

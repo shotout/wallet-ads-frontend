@@ -366,6 +366,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'stretch',
         marginBottom: 30,
+        flexWrap: 'wrap'
     },
     ctnTitle: {
         display: 'flex',
@@ -378,6 +379,9 @@ const useStyles = makeStyles((theme) => ({
         background: '#fff',
         flexGrow: 1,
     },
+    ctnAudienceStyle: {
+        paddingTop: 20
+    }
 }))
 
 export default useStyles

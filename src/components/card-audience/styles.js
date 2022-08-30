@@ -3,7 +3,8 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
     ctnAudience: {
         position: 'relative',
-        marginRight: 20
+        marginRight: 20,
+        marginTop: 20
     },
     cardAudience: {
         backgroundColor: '#fff',
@@ -19,7 +20,8 @@ export default makeStyles((theme) => ({
         // justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        minHeight: 400,
     },
     headerAudience: {
         backgroundColor: '#7589FA',
@@ -39,9 +41,40 @@ export default makeStyles((theme) => ({
     ctnPrice: {
         width: '100%',
         border: '1px solid #122D46',
-        paddingTop: 12,
-        paddingBottom: 12,
-        borderRadius: 12
+        height: 60,
+        borderRadius: 12,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    ctnPriceInput: {
+        width: '100%',
+        border: '1px solid #122D46',
+        height: 60,
+        borderRadius: 12,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        marginTop: 10,
+        '& > span': {
+            textAlign: 'left',
+            fontSize: '1.25rem',
+            fontWeight: '700',
+            paddingLeft: 20,
+        },
+        '& > input': {
+            borderRadius: 12,
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: '100%',
+            width: 80,
+            outline: 'none',
+            textAlign: 'left',
+            fontSize: '1.25rem',
+            fontWeight: '700'
+        }
     },
     descFilledWrapper: {
         display: 'flex',
@@ -95,4 +128,7 @@ export default makeStyles((theme) => ({
             marginRight: 8
         }
     },
+    ctnGrayHeader: {
+        background: '#757474',
+    }
 }))

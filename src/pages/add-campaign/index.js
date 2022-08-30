@@ -15,6 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
+import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
 
 // ----------------------------------------------------------------------
 
@@ -64,10 +65,10 @@ export default function PageOne() {
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: true, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: true, balancedTargeting: { cryptoCurrency: 'BTC', year: '2', months: '10', day: '21', airdropReceived: '1-5' }},
-    {optimized: false, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: true, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: true, budgetAds: '500', balancedTargeting: { cryptoCurrency: 'BTC', year: '2', months: '10', day: '21', airdropReceived: '1-5' }},
+    {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 
   const handleChangeValues = (event, stateName) => {
@@ -85,9 +86,22 @@ export default function PageOne() {
       }
       return item
     })
-    setAudienceForm(restructureData)
-    setSelectedAudience(null)
+    if(checkIsFormMax(restructureData)){
+      const addData = [
+        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      ]
+      setAudienceForm(restructureData.concat(addData))
+      setSelectedAudience(null)
+    }else{
+      setAudienceForm(restructureData)
+      setSelectedAudience(null)
+    }
   }
+
+  console.log("Check arr:", audienceForm)
 
   const handleChangePicture = (acceptedFiles, stateName, indexContent) => {
     const file = acceptedFiles[0];
@@ -257,7 +271,7 @@ export default function PageOne() {
               Total Budget
             </Typography>
             <Typography variant="subtitle1" fontSize={20} color={'#667C8B'} marginBottom={1} paragraph>
-              USD1,000
+              {`USD${getTotalBudget(audienceForm)}`}
             </Typography>
           </div>
           {/* <div className={styles.ctnHorizontalRow} /> */}
@@ -266,7 +280,7 @@ export default function PageOne() {
             That's great!
             </Typography>
             <Typography variant="subtitle1" fontSize={20} marginBottom={1} paragraph>
-            <b>100,000 users</b> will receive your airdrop
+            <b>{`${getTotalUserGetAirdrop(audienceForm)} users`}</b> will receive your airdrop
             </Typography>
           </div>
         </div>
@@ -286,10 +300,9 @@ export default function PageOne() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          <CardAudience data={audienceForm[0]} onPressCard={() => { setSelectedAudience(0)}} selectedPage={selectedAudience === 0} label="Audience 1:" />
-          <CardAudience data={audienceForm[1]} onPressCard={() => { setSelectedAudience(1)}} selectedPage={selectedAudience === 1} label="Audience 2:" />
-          <CardAudience data={audienceForm[2]} onPressCard={() => { setSelectedAudience(2)}} selectedPage={selectedAudience === 2} label="Audience 3:" />
-          <CardAudience data={audienceForm[3]} onPressCard={() => { setSelectedAudience(3)}} selectedPage={selectedAudience === 3} label="Audience 4:" />
+          {audienceForm.map((item, index) => (
+            <CardAudience isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
+          ))}
         </div>
       </div>
     )

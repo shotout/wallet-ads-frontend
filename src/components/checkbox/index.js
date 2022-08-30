@@ -4,7 +4,7 @@ import useStyles from './styles'
 const checklistIcon = '/assets/checklist.png'
 
 export default function CheckboxAds(){
-    const [checboxStatus, setCheckboxStatus] = useState(true)
+    const [checboxStatus, setCheckboxStatus] = useState(false)
     const styles = useStyles()
 
     const handleChangeStatus = () => {
