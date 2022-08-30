@@ -515,14 +515,16 @@ export default function PageOne() {
             </div>
           </div>
           <Grid container spacing={4}>
-              <Grid item md={3} xs={2} className={styles.ctnSectionAd}>
-                <div className={styles.ctnAudienceItem}>
-                  <CheckboxAds />
-                  <Typography variant="subtitle1" color="#808080">
-                    Audience 1
-                  </Typography>
-                </div>
-              </Grid>
+              {audienceForm.map((item, index) => (
+                  <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
+                  <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
+                    <CheckboxAds />
+                    <Typography variant="subtitle1" color="#808080">
+                      {`Audience ${index + 1}`}
+                    </Typography>
+                  </div>
+                </Grid>
+                ))}
           </Grid>
         </div>
       </div>

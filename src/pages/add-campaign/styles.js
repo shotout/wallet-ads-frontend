@@ -381,6 +381,9 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnAudienceStyle: {
         paddingTop: 20
+    },
+    ctnDisable: {
+        background: '#C8C8C8'
     }
 }))
 
