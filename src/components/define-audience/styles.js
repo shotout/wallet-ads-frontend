@@ -52,7 +52,7 @@ export default makeStyles((theme) => ({
         borderRight: '1px solid #6C6B86'
     },
     ctnRightContent: {
-        width: 280,
+        width: 320,
     },
     ctnPurple: {
         background: '#8C65CC'

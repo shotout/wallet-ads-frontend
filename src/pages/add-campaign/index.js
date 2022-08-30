@@ -14,7 +14,7 @@ import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
-import CardAudience from 'src/components/card-audience';
+import CardAudience from '../../components/card-audience';
 
 // ----------------------------------------------------------------------
 
@@ -43,12 +43,17 @@ const appIcon = '/assets/app_icon.png'
 const notificationIcon = '/assets/notification_icon.png'
 const blackAskIcon = '/assets/blackask_icon.png'
 
+const initialPicture = [
+  {adCreationMedia: null }
+]
+
 export default function PageOne() {
   const styles = useStyles()
   // const { themeStretch } = useSettings();
   const [bannerCollection, setBannerCollection] = useState(null)
   const [logoCollection, setLogoCollection] = useState(null)
   const [adCreationMedia, setAdcreationMedia] = useState(null)
+  const [pictureData, setPicture] = useState(initialPicture)
   const [formValues, setFormValues] = useState({
     campaignStartDate: new Date(),
     availabilityDate: new Date(),
@@ -56,11 +61,61 @@ export default function PageOne() {
     collectionPageDesc: '',
   })
 
+  const [selectedAudience, setSelectedAudience] = useState(null)
+
+  const [audienceForm, setAudienceForm] = useState([
+    {optimized: true, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: true, balancedTargeting: { cryptoCurrency: 'BTC', year: '2', months: '10', day: '21', airdropReceived: '1-5' }},
+    {optimized: false, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+  ])
+
   const handleChangeValues = (event, stateName) => {
     setFormValues({
       ...formValues,
       [stateName]: event.target.value
     })
+  }
+
+  const handleSaveAudienceValue = (value) => {
+    console.log("SET data:", value)
+    const restructureData = audienceForm.map((item, index) => {
+      if(index === selectedAudience){
+        return value
+      }
+      return item
+    })
+    setAudienceForm(restructureData)
+    setSelectedAudience(null)
+  }
+
+  const handleChangePicture = (acceptedFiles, stateName, indexContent) => {
+    const file = acceptedFiles[0];
+    const restructureData = pictureData.map((pict, index) => {
+      if(index === indexContent){
+        return {
+          ...pict,
+          [stateName]: Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        }
+      }
+      return pict
+    })
+    setPicture(restructureData)
+  }
+
+  const removePictureAdCreation = (indexContent) => {
+    const restructureData = pictureData.map((pict, index) => {
+      if(index === indexContent){
+        return {
+          ...pict,
+          adCreationMedia: null
+        }
+      }
+      return pict
+    })
+    setPicture(restructureData)
   }
 
 
@@ -220,6 +275,7 @@ export default function PageOne() {
   }
 
   function renderCardAudience(){
+    console.log("Check selectedAudience:", selectedAudience)
     return (
       <div className={styles.cardAudienceWrapper}>
         <div className={styles.ctnTitle}>
@@ -230,10 +286,10 @@ export default function PageOne() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          <CardAudience typeScreen="initial-audience" label="Audience 1:" />
-          <CardAudience typeScreen="filled-audience"  label="Audience 2:" />
-          <CardAudience typeScreen="empty-audience" label="Audience 3:" />
-          <CardAudience typeScreen="empty-audience" label="Audience 4:" />
+          <CardAudience data={audienceForm[0]} onPressCard={() => { setSelectedAudience(0)}} selectedPage={selectedAudience === 0} label="Audience 1:" />
+          <CardAudience data={audienceForm[1]} onPressCard={() => { setSelectedAudience(1)}} selectedPage={selectedAudience === 1} label="Audience 2:" />
+          <CardAudience data={audienceForm[2]} onPressCard={() => { setSelectedAudience(2)}} selectedPage={selectedAudience === 2} label="Audience 3:" />
+          <CardAudience data={audienceForm[3]} onPressCard={() => { setSelectedAudience(3)}} selectedPage={selectedAudience === 3} label="Audience 4:" />
         </div>
       </div>
     )
@@ -244,14 +300,14 @@ export default function PageOne() {
       <div className={styles.ctnDefineAudience}>
         {renderTargeting()}
         {renderCardAudience()}
-        <DefineAudience />
+        {selectedAudience !== null && <DefineAudience onAdd={(value) => {handleSaveAudienceValue(value)}} initialData={audienceForm[selectedAudience]} selectedAudience={selectedAudience} />}
         {renderBudget()}
         {/* {} */}
       </div>
     )
   }
 
-  function renderLeftAdCreation(){
+  function renderLeftAdCreation(content, index){
     return (
       <div className={styles.ctnLeftCollection}>
         <div className={styles.ctnInputCollection}>
@@ -279,7 +335,7 @@ export default function PageOne() {
               Recommended size 350x350px 
             </Typography> */}
           </div>
-          <BannerPicker typeScreen="logo" label={"Add media"} file={adCreationMedia} onDelete={() => {setAdcreationMedia(null)}} onDrop={changeAdCreationMedia} />
+          <BannerPicker typeScreen="logo" label={"Add media"} file={content.adCreationMedia} onDelete={() => {removePictureAdCreation(index)}} onDrop={(value) => {handleChangePicture(value, 'adCreationMedia', index)}} />
         </div>
       </div>
     )
@@ -427,12 +483,12 @@ export default function PageOne() {
     )
   }
 
-  function renderCardAdCreation(){
+  function renderCardAdCreation(content, index){
     return (
-      <div className={styles.inputCollectionCard}>
+      <div className={styles.inputCollectionCard} key={index.toString()}>
         <div className={styles.ctnInputCollectionPageWrapper}>
-          {renderLeftAdCreation()}
-          {renderRightAdCreation()}
+          {renderLeftAdCreation(content, index)}
+          {renderRightAdCreation(content, index)}
         </div>
         <div className={styles.ctnSelectAudience}>
           <div className={styles.ctnInputCollection}>
@@ -470,7 +526,7 @@ export default function PageOne() {
           </Typography>
           <div className={styles.rowTitle} />
         </div>
-        {renderCardAdCreation()}
+        {pictureData.map((content, index) => renderCardAdCreation(content, index))}
       </div>
 
     )
@@ -478,7 +534,11 @@ export default function PageOne() {
 
   function renderCreateAnotherAd(){
     return (
-      <div className={styles.btnCreateAd}>
+      <div className={styles.btnCreateAd} onClick={() => {
+        const currentArr = [...pictureData]
+        currentArr.push(initialPicture)
+        setPicture(currentArr)
+      }}>
         <img src={addIcon} alt="addIcon" />
         <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Create another ad</Typography>
       </div>

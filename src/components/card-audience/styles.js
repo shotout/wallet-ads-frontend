@@ -18,7 +18,8 @@ export default makeStyles((theme) => ({
         display: 'flex',
         // justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        cursor: 'pointer'
     },
     headerAudience: {
         backgroundColor: '#7589FA',
@@ -66,5 +67,32 @@ export default makeStyles((theme) => ({
             height: 30,
             objetFit: 'contain'
         }
-    }
+    },
+    btnAddAudience: {
+        height: 44,
+        borderRadius: 44 / 2,
+        paddingRight: 22,
+        paddingLeft: 22,
+        background: '#71CE62',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 12,
+        cursor: 'pointer'
+    },
+    ctnSectionSummary: {
+        marginTop: 20
+    },
+    ctnPriceTag: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        '& > img': {
+            width: 22,
+            height: 22,
+            objectFit: 'contain',
+            marginRight: 8
+        }
+    },
 }))

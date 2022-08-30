@@ -1,18 +1,48 @@
 import { Typography } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useStyles from './styles'
 // @mui
 import {
   MenuItem,
   TextField,
 } from '@mui/material';
+import CardAudience from '../card-audience';
 
 const pricetagIcon = '/assets/pricetag_icon.png'
 const purpleAsk = '/assets/purple_ask.png'
 const redAsk = '/assets/red_ask.png'
 
+const listAirdropReceived = [
+  '1-5',
+  '6-10',
+  '11-15'
+]
 
-export default function DefineAudience(){
+
+export default function DefineAudience({ selectedAudience, initialData, onAdd = () => {} }){
+    const [activeAudience, setActiveAudience] = useState(null)
+    const [formValues, setFormValues] = useState(null)
+
+    useEffect(() => {
+        if(activeAudience !== selectedAudience){
+            setActiveAudience(selectedAudience)
+            setFormValues({
+                ...initialData,
+                optimized: true
+            })
+        }
+    }, [selectedAudience])
+
+    const handleChangeBalanceTarget = (event, stateName) => {
+        setFormValues({
+            ...formValues,
+            balancedTargeting: {
+                ...formValues.balancedTargeting,
+                [stateName]: event.target.value
+            }
+        })
+    }
+
     const styles = useStyles()
 
     function renderInputTargeting(){
@@ -29,10 +59,10 @@ export default function DefineAudience(){
                         <TextField
                             select
                             fullWidth
-                            value={"ETH"}
                             placeholder="Select..."
                             variant="outlined"
-                            // onChange={handleChangeCurrency}
+                            value={formValues.balancedTargeting.cryptoCurrency}
+                            onChange={(target) => {handleChangeBalanceTarget(target, 'cryptoCurrency')}}
                             >
                         {['ETH', 'BNB', 'SOL'].map((option) => (
                             <MenuItem className={styles.txtOption} key={option} value={option}>
@@ -51,19 +81,19 @@ export default function DefineAudience(){
                     </div>
                     <div className={styles.ctnRowInput}>
                         <div className={styles.ctnGrayInput}>
-                            <input placeholder='-' type={'text'} />
+                            <input value={formValues.balancedTargeting.year} onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Years
                             </Typography>
                         </div>
                         <div className={styles.ctnGrayInput}>
-                            <input placeholder='-' type={'text'} />
+                            <input value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Months
                             </Typography>
                         </div>
                         <div className={styles.ctnGrayInput}>
-                            <input placeholder='-' type={'text'} />
+                            <input value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Days
                             </Typography>
@@ -87,12 +117,12 @@ export default function DefineAudience(){
                         <TextField
                             select
                             fullWidth
-                            value={"1-5"}
                             placeholder="Select..."
                             variant="outlined"
-                            // onChange={handleChangeCurrency}
+                            value={formValues.balancedTargeting.airdropReceived}
+                            onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
-                        {['1-5', '6-10', '10-20'].map((option) => (
+                        {listAirdropReceived.map((option) => (
                             <MenuItem className={styles.txtOption} key={option} value={option}>
                             {option}
                             </MenuItem>
@@ -296,19 +326,6 @@ export default function DefineAudience(){
                         The audience consists of a broad mix of users, optimized by our algorithm. 
                     </Typography>
                 </div>
-                <div className={styles.ctnSectionSummary}>
-                    <div className={styles.ctnPriceTag}>
-                        <img src={pricetagIcon} alt="pricetag" />
-                        <Typography variant="body2" fontWeight={'bold'} color="#7089FF">
-                            USD0.06 per airdrop
-                        </Typography>
-                    </div>
-                    <div className={styles.btnAddAudience}>
-                        <Typography variant="body1" fontWeight={'bold'} color="#fff" textAlign={'center'}>
-                            Add audience
-                        </Typography>
-                    </div>
-                </div>
             </div>
         )
     }
@@ -316,14 +333,7 @@ export default function DefineAudience(){
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <div className={styles.ctnSummary}>
-                    <div className={styles.ctnHeaderSummary}>
-                        <Typography variant="subtitle1"textAlign="center" color="#fff">
-                            Summary
-                        </Typography>
-                    </div>
-                    {renderContentSummary()}
-                </div>
+                <CardAudience isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
             </div>
         )
     }
@@ -337,10 +347,14 @@ export default function DefineAudience(){
         )
     }
 
+    if(formValues === null){
+        return null
+    }
+
     return (
         <div className={styles.ctnRoot}>
             <Typography variant="h6" marginBottom={2} textAlign="center">
-                Define Audience 3
+                {`Define Audience ${selectedAudience + 1}`}
             </Typography>
             {renderContent()}
         </div>
