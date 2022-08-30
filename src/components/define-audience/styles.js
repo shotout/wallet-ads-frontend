@@ -126,6 +126,12 @@ export default makeStyles((theme) => ({
         paddingRight: 30,
         paddingLeft: 20,
     },
+    ctnRight30: {
+        width: '20%',
+        paddingRight: 30,
+        paddingLeft: 20,
+        position: 'relative'
+    },
     ctnInputSelect: {
         marginTop: 8,
         '& > .css-wb57ya-MuiFormControl-root-MuiTextField-root': {
@@ -197,4 +203,15 @@ export default makeStyles((theme) => ({
             paddingRight: 12
         }
     },
+    comingSoon: {
+        background: 'rgba(252, 252, 252,0.8)',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        paddingTop: 30,
+        paddingLeft: 20,
+        top: 0
+    }
 }))

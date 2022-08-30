@@ -62,6 +62,16 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
 
     const styles = useStyles()
 
+    function renderComingSoon(){
+        return (
+            <div className={styles.comingSoon}>
+                <Typography variant="body2">
+                    Coming soon
+                </Typography>
+            </div>
+        )
+    }
+
     function renderInputTargeting(){
         return (
             <div className={styles.ctnInputTarget}>
@@ -146,6 +156,56 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         ))}
                         </TextField>
                     </div>
+                </div>
+                <div className={styles.ctnRight30}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            + Wallet Type
+                        </Typography>
+                        <img src={purpleAsk} alt="ask" />
+                    </div>
+                    <div className={styles.ctnInputSelect}>
+                        <TextField
+                            select
+                            fullWidth
+                            placeholder="Select..."
+                            variant="outlined"
+                            // value={formValues.balancedTargeting.airdropReceived}
+                            // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
+                            >
+                        {['...Select'].map((option) => (
+                            <MenuItem className={styles.txtOption} key={option} value={option}>
+                            {option}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </div>
+                    {renderComingSoon()}
+                </div>
+                <div className={styles.ctnRight30}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            + Location
+                        </Typography>
+                        <img src={purpleAsk} alt="ask" />
+                    </div>
+                    <div className={styles.ctnInputSelect}>
+                        <TextField
+                            select
+                            fullWidth
+                            placeholder="Select..."
+                            variant="outlined"
+                            // value={formValues.balancedTargeting.airdropReceived}
+                            // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
+                            >
+                        {['...Select'].map((option) => (
+                            <MenuItem className={styles.txtOption} key={option} value={option}>
+                            {option}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </div>
+                    {renderComingSoon()}
                 </div>
             </div>
         )

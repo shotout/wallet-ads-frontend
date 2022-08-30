@@ -62,7 +62,7 @@ export default makeStyles((theme) => ({
             textAlign: 'left',
             fontSize: '1.25rem',
             fontWeight: '700',
-            paddingLeft: 20,
+            paddingLeft: 30,
         },
         '& > input': {
             borderRadius: 12,
