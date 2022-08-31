@@ -8,7 +8,7 @@ import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calcula
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
 
-export default function CardAudience({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
+export default function CardAudience({ showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
 
     function renderBalancedTargeting(){
@@ -182,7 +182,7 @@ export default function CardAudience({ label, selectedPage, isSomeAudienceActive
                             </div>
                             </>
                     )}
-                    {selectedPage && (
+                    {showArrow && (
                         <div className={styles.ctnArrow}>
                             <img src={triangleIcon} alt="arrow" />
                         </div>

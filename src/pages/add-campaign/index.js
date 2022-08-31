@@ -311,7 +311,7 @@ export default function PageOne() {
           <Grid container spacing={4}>
                 {audienceForm.map((item, index) => (
                     <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
-                      <CardAudience isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
+                      <CardAudience showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
                     </Grid>
                 ))}
             </Grid>
@@ -326,6 +326,7 @@ export default function PageOne() {
         {renderTargeting()}
         {renderCardAudience()}
         {selectedAudience !== null && <DefineAudience onAdd={(value) => {handleSaveAudienceValue(value)}} initialData={audienceForm[selectedAudience]} selectedAudience={selectedAudience} />}
+        {renderAddAudience()}
         {renderBudget()}
         {/* {} */}
       </div>
@@ -581,6 +582,18 @@ export default function PageOne() {
         <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Create another ad</Typography>
       </div>
     )
+  }
+
+  function renderAddAudience(){
+    if(checkIsFormMax(audienceForm)){
+      return (
+        <div className={styles.btnCreateAd} onClick={handleAddAudience}>
+          <img src={addIcon} alt="addIcon" />
+          <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Add more audiences</Typography>
+        </div>
+      )
+    }
+    return null
   }
 
   function renderCollectionPage(){
