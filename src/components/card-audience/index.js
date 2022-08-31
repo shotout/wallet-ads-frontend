@@ -3,7 +3,7 @@ import React from 'react';
 import Iconify from '../Iconify';
 import useStyles from './styles'
 import _ from 'lodash'
-import { calculateAirdropPerUser, getAudiencePrice } from 'src/helpers/calculator';
+import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
 
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
