@@ -170,14 +170,19 @@ export default makeStyles((theme) => ({
         '& > input': {
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
-            height: 44,
-            background: '#F1F1F1',
-            paddingLeft: 12,
-            paddingRight: 12,
+            height: 30,
+            background: '#fff',
+            margin: '7px 4px 7px 6px',
             outline: 'none',
-            width: 70,
-            textAlign: 'center'
+            width: 58,
+            textAlign: 'center',
+            marginRight: 12,
         }
+    },
+    ctnGrayInputDisable: {
+        '& > input': {
+            background: '#F1F1F1'
+        },
     },
     borderRed: {
         borderTopColor: '#AD4061'

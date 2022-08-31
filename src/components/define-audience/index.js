@@ -6,7 +6,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import CardAudience from '../card-audience';
+import CardAudienceSummary from '../card-audience-summary';
 
 const pricetagIcon = '/assets/pricetag_icon.png'
 const purpleAsk = '/assets/purple_ask.png'
@@ -41,6 +41,20 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     }
 
     const handleChangeBalanceTarget = (event, stateName) => {
+
+        function handleValue(){
+            if(stateName === 'year' || stateName === 'months' || stateName === 'day' ){
+                const checkisNumber = isNaN(event.target.value)
+                let valueContent = event.target.value
+                if(checkisNumber || (stateName === 'months' && Number(valueContent) <= 12) || (stateName === 'months' && Number(valueContent) <= 31)){
+                    return formValues.balancedTargeting[stateName]
+                }else{
+                    return valueContent
+                }
+            }
+            return event.target.value
+        }
+
         setFormValues({
             ...formValues,
             balancedTargeting: {
@@ -107,20 +121,20 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <img src={purpleAsk} alt="ask" />
                     </div>
                     <div className={styles.ctnRowInput}>
-                        <div className={styles.ctnGrayInput}>
+                        <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.year ? styles.ctnGrayInputDisable : {}}`}>
                             <input value={formValues.balancedTargeting.year} onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Years
                             </Typography>
                         </div>
-                        <div className={styles.ctnGrayInput}>
-                            <input value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
+                        <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.months ? styles.ctnGrayInputDisable : {}}`}>
+                            <input disabled={!formValues.balancedTargeting.year} value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Months
                             </Typography>
                         </div>
-                        <div className={styles.ctnGrayInput}>
-                            <input value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
+                        <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.day ? styles.ctnGrayInputDisable : {}}`}>
+                            <input disabled={!formValues.balancedTargeting.months} value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Days
                             </Typography>
@@ -413,7 +427,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <CardAudience onChangeBudget={event => {onChangeBudget(event)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
+                <CardAudienceSummary onChangeBudget={event => {onChangeBudget(event)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
             </div>
         )
     }

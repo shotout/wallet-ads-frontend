@@ -4,8 +4,7 @@ export default makeStyles((theme) => ({
     ctnAudience: {
         position: 'relative',
         marginRight: 20,
-        marginTop: 20,
-        height: '97%',
+        marginTop: 20
     },
     cardAudience: {
         backgroundColor: '#fff',
@@ -37,7 +36,8 @@ export default makeStyles((theme) => ({
         borderBottomRightRadius: 50,
     },
     ctnDescAudience: {
-        marginTop: 20
+        marginTop: 20,
+        padding: '0px 8px'
     },
     ctnPrice: {
         width: '100%',
@@ -131,5 +131,17 @@ export default makeStyles((theme) => ({
     },
     ctnGrayHeader: {
         background: '#757474',
+    },
+    ctnRowItem: {
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 4,
+        "& > div": {
+            display: 'flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            flexGrow: 1,
+            marginLeft: 16
+        }
     }
 }))

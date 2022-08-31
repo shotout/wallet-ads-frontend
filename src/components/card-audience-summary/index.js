@@ -8,7 +8,7 @@ import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calcula
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
 
-export default function CardAudience({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
+export default function CardAudienceSummary({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
 
     function renderBalancedTargeting(){
@@ -21,19 +21,49 @@ export default function CardAudience({ label, selectedPage, isSomeAudienceActive
                     </Typography>
                 )}
                         {target.cryptoCurrency && (
-                            <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                {`+ Cryptocurrencies: ${target.cryptoCurrency}`}
-                            </Typography>
+                            <div className={styles.ctnRowItem}>
+                                <Typography variant="span" marginRight={1} color="#8C65CC">
+                                    +
+                                </Typography>
+                                <div>
+                                    <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        {`Cryptocurrencies:`}
+                                    </Typography>
+                                    <Typography variant="span" fontWeight={'600'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                        {target.cryptoCurrency}
+                                    </Typography>
+                                </div>
+                            </div>
                         )}
                         {(target.year || target.months || target.day) && (
-                            <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                {`+ Account age: ${target.year ? `${target.year} Year ` : ''}${target.months ? `- ${target.months} Months ` : ''}${target.day ? `- ${target.day} Day` : ''}`}
-                            </Typography>
+                            <div className={styles.ctnRowItem}>
+                                <Typography variant="span" color="#8C65CC">
+                                    +
+                                </Typography>
+                                <div>
+                                    <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Account Age
+                                    </Typography>
+                                    <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    {`${target.year ? `${target.year} Year` : ''}${target.months ? ` - ${target.months} Months` : ''}${target.day ? ` - ${target.day} Day` : ''}`}
+                                    </Typography>
+                                </div>
+                            </div>
                         )}
                         {target.airdropReceived && (
-                            <Typography variant="span" textAlign={'center'} paragraph>
-                                {`+ Airdrop Received: ${target.airdropReceived}`}
-                            </Typography>
+                            <div className={styles.ctnRowItem}>
+                                <Typography variant="span" color="#8C65CC">
+                                    +
+                                </Typography>
+                                <div>
+                                    <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Airdrop Received
+                                    </Typography>
+                                    <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    {target.airdropReceived}
+                                    </Typography>
+                                </div>
+                            </div>
                         )}
                     </div>
         )
@@ -45,29 +75,69 @@ export default function CardAudience({ label, selectedPage, isSomeAudienceActive
             return (
                 <div className={styles.descFilledWrapper}>
                     {isEdit && (
-                        <Typography variant="span" fontWeight={'bold'} textAlign={'center'} marginBottom={1}>
+                        <Typography variant="span" fontWeight={'bold'} textAlign={'center'} marginBottom={1} marginTop={1}>
                             Detail Targeting
                         </Typography>
                     )}
                             {detail.transactionAmount && (
-                                <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                    {`+ Amount of transactions: ${detail.transactionAmount}`}
+                            <div className={styles.ctnRowItem}>
+                                <Typography variant="span" color="#AD4061">
+                                    +
                                 </Typography>
+                                <div>
+                                    <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Amount of transactions
+                                    </Typography>
+                                    <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    {detail.transactionAmount}
+                                    </Typography>
+                                </div>
+                            </div>
                             )}
                             {detail.tradingVolume && (
-                                <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                    {`+ Trading volume: ${detail.tradingVolume}`}
-                                </Typography>
+                                <div className={styles.ctnRowItem}>
+                                    <Typography variant="span" color="#AD4061">
+                                        +
+                                    </Typography>
+                                    <div>
+                                        <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Trading volume: 
+                                        </Typography>
+                                        <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                        {detail.tradingVolume}
+                                        </Typography>
+                                    </div>
+                                </div>
                             )}
                             {detail.availableCredit && (
-                                <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                    {`+ Available credit in wallet: ${detail.availableCredit}`}
-                                </Typography>
+                                <div className={styles.ctnRowItem}>
+                                    <Typography variant="span" color="#AD4061">
+                                        +
+                                    </Typography>
+                                    <div>
+                                        <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Available credit in wallet:
+                                        </Typography>
+                                        <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                        {detail.availableCredit}
+                                        </Typography>
+                                    </div>
+                                </div>
                             )}
                             {detail.creatorName && (
-                                <Typography variant="span" textAlign={'center'} paragraph>
-                                    {`+ Creator name: ${detail.creatorName}`}
-                                </Typography>
+                                <div className={styles.ctnRowItem}>
+                                    <Typography variant="span" color="#AD4061">
+                                        +
+                                    </Typography>
+                                    <div>
+                                        <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        Creator name:
+                                        </Typography>
+                                        <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                        {detail.creatorName}
+                                        </Typography>
+                                    </div>
+                                </div>
                             )}
                         </div>
             )
@@ -157,7 +227,7 @@ export default function CardAudience({ label, selectedPage, isSomeAudienceActive
 
     return (
         <div className={styles.ctnAudience}>
-                <div className={styles.cardAudience} onClick={onPressCard}>
+                <div className={styles.cardAudience}Summary onClick={onPressCard}>
                     <div className={`${styles.headerAudience} ${!selectedPage && isSomeAudienceActive ? styles.ctnGrayHeader : {}}`}>
                         <Typography variant="h5" textAlign={'center'} color={'#fff'}>
                             {label}

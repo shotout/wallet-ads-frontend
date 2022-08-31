@@ -45,7 +45,7 @@ const notificationIcon = '/assets/notification_icon.png'
 const blackAskIcon = '/assets/blackask_icon.png'
 
 const initialPicture = [
-  {adCreationMedia: null }
+  {adCreationMedia: null, selectedAudienceAd: null },
 ]
 
 export default function PageOne() {
@@ -61,14 +61,14 @@ export default function PageOne() {
     collectionPageName: '',
     collectionPageDesc: '',
   })
-
+  const [selectedAvailability, setAvailability] = useState(null)
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: true, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: true, budgetAds: '500', balancedTargeting: { cryptoCurrency: 'BTC', year: '2', months: '10', day: '21', airdropReceived: '1-5' }},
-    {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 
   const handleChangeValues = (event, stateName) => {
@@ -86,36 +86,44 @@ export default function PageOne() {
       }
       return item
     })
-    if(checkIsFormMax(restructureData)){
-      const addData = [
-        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-        {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      ]
-      setAudienceForm(restructureData.concat(addData))
-      setSelectedAudience(null)
-    }else{
-      setAudienceForm(restructureData)
-      setSelectedAudience(null)
-    }
+    setAudienceForm(restructureData)
+    setSelectedAudience(null)
   }
 
-  console.log("Check arr:", audienceForm)
+  const handleAddAudience = () => {
+    const addData = [
+      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    ]
+    const listData = [...audienceForm]
+    setAudienceForm(listData.concat(addData))
+  }
 
-  const handleChangePicture = (acceptedFiles, stateName, indexContent) => {
-    const file = acceptedFiles[0];
+  const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture) => {
+    let file = null;
+    if(isPicture){
+      file = acceptedFiles[0]
+    }
     const restructureData = pictureData.map((pict, index) => {
       if(index === indexContent){
+        if(isPicture){
+          return {
+            ...pict,
+            [stateName]: Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          }
+        }
         return {
           ...pict,
-          [stateName]: Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
+          [stateName]: acceptedFiles
         }
       }
       return pict
     })
+
     setPicture(restructureData)
   }
 
@@ -205,9 +213,9 @@ export default function PageOne() {
             Auto-delete my wallet ad in the user's wallet
           </Typography>
           <div className={styles.availWrapper}>
-            <div className={styles.inputGray}>
+            <div className={`${styles.inputGray} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-                <CheckboxAds />
+              <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
                 <span>After:</span>
               </div>
               <div className={styles.midWrapper}>
@@ -217,9 +225,9 @@ export default function PageOne() {
                 <span>Days</span>
               </div>
             </div>
-            <div className={styles.inputGray}>
+            <div className={`${styles.inputGray} ${selectedAvailability !== 1 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-                <CheckboxAds />
+              <CheckboxAds isActive={selectedAvailability === 1} onChange={() => {setAvailability(1)}} />
                 <span>On</span>
               </div>
               <div className={styles.altDateWrapper}>
@@ -229,9 +237,9 @@ export default function PageOne() {
                 <img src={blackCalendar} alt="calendar" />
               </div>
             </div>
-            <div className={styles.inputGray}>
+            <div className={`${styles.inputGray} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-                <CheckboxAds />
+                <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
                 <span>Never</span>
               </div>
             </div>
@@ -300,9 +308,13 @@ export default function PageOne() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          {audienceForm.map((item, index) => (
-            <CardAudience isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
-          ))}
+          <Grid container spacing={4}>
+                {audienceForm.map((item, index) => (
+                    <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
+                      <CardAudience isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
+                    </Grid>
+                ))}
+            </Grid>
         </div>
       </div>
     )
@@ -348,7 +360,12 @@ export default function PageOne() {
               Recommended size 350x350px 
             </Typography> */}
           </div>
-          <BannerPicker typeScreen="logo" label={"Add media"} file={content.adCreationMedia} onDelete={() => {removePictureAdCreation(index)}} onDrop={(value) => {handleChangePicture(value, 'adCreationMedia', index)}} />
+          <BannerPicker
+            typeScreen="logo"
+            label={"Add media"}
+            file={content.adCreationMedia}
+            onDelete={() => {removePictureAdCreation(index)}}
+            onDrop={(value) => {handleChangePicture(value, 'adCreationMedia', index, true)}} />
         </div>
       </div>
     )
@@ -515,12 +532,18 @@ export default function PageOne() {
             </div>
           </div>
           <Grid container spacing={4}>
-              {audienceForm.map((item, index) => (
-                  <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
+              {audienceForm.map((item, audienceIndex) => (
+                  <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                   <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
-                    <CheckboxAds />
+                    <CheckboxAds
+                      isActive={audienceIndex === content.selectedAudienceAd}
+                      onChange={() => {
+                        if(item.optimized){
+                          handleChangePicture(audienceIndex, 'selectedAudienceAd', index)
+                        }
+                      }} />
                     <Typography variant="subtitle1" color="#808080">
-                      {`Audience ${index + 1}`}
+                      {`Audience ${audienceIndex + 1}`}
                     </Typography>
                   </div>
                 </Grid>

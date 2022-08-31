@@ -384,6 +384,14 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnDisable: {
         background: '#C8C8C8'
+    },
+    unactiveChecbox: {
+        '& > div > span': {
+            color: '#808080'
+        },
+        '& > div > div > .react-datepicker-wrapper > .react-datepicker__input-container > input':{
+            color: '#808080'
+        }
     }
 }))
 
