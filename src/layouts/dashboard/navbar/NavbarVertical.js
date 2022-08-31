@@ -67,7 +67,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
       <Stack
         spacing={3}
         sx={{
-          pt: 3,
+          pt: 0,
           pb: 2,
           px: 2.5,
           flexShrink: 0,
@@ -75,14 +75,14 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Logo />
+          {/* <Logo /> */}
 
           {isDesktop && !isCollapse && (
             <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
           )}
         </Stack>
 
-        <NavbarAccount isCollapse={isCollapse} />
+        {/* <NavbarAccount isCollapse={isCollapse} /> */}
       </Stack>
 
       <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
@@ -114,13 +114,13 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         <Drawer
           open
           variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
+          // onMouseEnter={onHoverEnter}
+          // onMouseLeave={onHoverLeave}
           PaperProps={{
             sx: {
               width: NAVBAR.DASHBOARD_WIDTH,
               borderRightStyle: 'dashed',
-              bgcolor: 'background.default',
+              bgcolor: '#fff',
               transition: (theme) =>
                 theme.transitions.create('width', {
                   duration: theme.transitions.duration.standard,

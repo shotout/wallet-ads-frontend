@@ -16,12 +16,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
 import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
+import Page from '../../components/Page';
+import Layout from '../../layouts';
 
 // ----------------------------------------------------------------------
 
-// PageOne.getLayout = function getLayout(page) {
-//   return <Layout>{page}</Layout>;
-// };
+AddCampaign.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
 
 // ----------------------------------------------------------------------
 
@@ -45,10 +47,10 @@ const notificationIcon = '/assets/notification_icon.png'
 const blackAskIcon = '/assets/blackask_icon.png'
 
 const initialPicture = [
-  {adCreationMedia: null, selectedAudienceAd: null },
+  {adCreationMedia: null, selectedAudienceAd: [] },
 ]
 
-export default function PageOne() {
+export default function AddCampaign() {
   const styles = useStyles()
   // const { themeStretch } = useSettings();
   const [bannerCollection, setBannerCollection] = useState(null)
@@ -114,6 +116,22 @@ export default function PageOne() {
             [stateName]: Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
+          }
+        }
+        if(stateName === 'selectedAudienceAd'){
+          const listAudience = pict.selectedAudienceAd
+          console.log("Check listAudience:", listAudience, selectedAudience)
+          const isThere = pict.selectedAudienceAd.find(ctn => ctn === acceptedFiles)
+          if(isThere){
+            return {
+              ...pict,
+              [stateName]: pict.selectedAudienceAd.filter(ctn => ctn !== acceptedFiles)
+            }
+          }
+          listAudience.push(acceptedFiles)
+          return {
+            ...pict,
+            [stateName]: listAudience
           }
         }
         return {
@@ -308,9 +326,9 @@ export default function PageOne() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
-                    <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
+                    <Grid item md={3} lg={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
                       <CardAudience showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
                     </Grid>
                 ))}
@@ -537,7 +555,7 @@ export default function PageOne() {
                   <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                   <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
                     <CheckboxAds
-                      isActive={audienceIndex === content.selectedAudienceAd}
+                      isActive={content.selectedAudienceAd.includes(audienceIndex)}
                       onChange={() => {
                         if(item.optimized){
                           handleChangePicture(audienceIndex, 'selectedAudienceAd', index)
@@ -645,13 +663,18 @@ export default function PageOne() {
   }
 
   return (
-    <div className={styles.ctnRoot}>
-      {renderHeader()}
-      {renderCampaignName()}
-      {renderAvailability()}
-      {renderDefineAudience()}
-      {renderCollectionPage()}
-      {renderSetupAirdrop()}
-    </div>
+
+    <Page title="Add Campaign">
+      <div className={styles.ctnRoot}>
+        <div className={styles.ctnWrapper}>
+        {renderHeader()}
+        {renderCampaignName()}
+        {renderAvailability()}
+        {renderDefineAudience()}
+        {renderCollectionPage()}
+        {renderSetupAirdrop()}
+        </div>
+      </div>
+    </Page>
   );
 }

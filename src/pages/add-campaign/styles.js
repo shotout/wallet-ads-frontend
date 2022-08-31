@@ -392,7 +392,11 @@ const useStyles = makeStyles((theme) => ({
         '& > div > div > .react-datepicker-wrapper > .react-datepicker__input-container > input':{
             color: '#808080'
         }
-    }
+    },
+    ctnWrapper: {
+        maxWidth: '1366px',
+        margin: 'auto'
+    },
 }))
 
 export default useStyles
