@@ -70,7 +70,7 @@ export default makeStyles((theme) => ({
         flexGrow: 1
     },
     ctnHeaderDesc: {
-        width: '44%',
+        width: '49%',
         paddingRight: 20,
     },
     ctnRightContent: {
@@ -259,6 +259,26 @@ export default makeStyles((theme) => ({
     },
     txtUnActive: {
         color: '#808080'
+    },
+    ctnStandar: {
+        position: 'absolute',
+        background: '#90B272',
+        right: 0,
+        top: -20,
+        padding: '2px 16px 0px 16px',
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 12
+    },
+    ctnRowTitle:{
+        '& > img': {
+            width: 16,
+            height: 16,
+            objectFit: 'contain',
+            marginLeft: 8
+        },
+        display: 'flex',
+        // alignItems: 'center',
+        flexWrap: 'wrap'
     }
 
 }))

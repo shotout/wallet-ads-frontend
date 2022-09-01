@@ -426,7 +426,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
 
     function renderOptimizeTargeting(){
         return (
-            <div className={styles.ctnCard}>
+            <div
+                onClick={() => {
+                    if(formValues.selectedCategory !== 'optimized'){
+                        onChangeBasicValue('selectedCategory','optimized')
+                    }
+                }}
+                className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
                     <div className={styles.ctnBgBtn}>
                         <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('optimized', '#90B272') }} />
@@ -449,6 +455,11 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             The audience consists of a broad mix of users, optimized by our algorithm. 
                         </Typography>
                     </div>
+                    <div className={`${styles.ctnStandar} ${checkIsCategoryActive('optimized', true)}`}>
+                        <Typography variant="body2" fontSize={12} color="#fff">
+                            Standar
+                        </Typography>
+                    </div>
                 </div>
             </div>
         )
@@ -456,13 +467,19 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
 
     function renderBalance(){
         return (
-            <div className={styles.ctnCard}>
+            <div
+                className={styles.ctnCard}
+                onClick={() => {
+                    if(formValues.selectedCategory !== 'detail-targeting'){
+                        onChangeBasicValue('selectedCategory','detail-targeting')
+                    }
+                }}>
                 <div className={styles.ctnHeader}>
                     
                     <div className={styles.ctnBgBtn}>
                         <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('detail-targeting', '#8C65CC') }} />
                     </div>
-                    <div className={styles.ctnLeftHeader} onClick={() => {onChangeBasicValue('selectedCategory','detail-targeting')}}>
+                    <div className={styles.ctnLeftHeader}>
                         <div id="ctn-title">
                             <span>+</span>
                         </div>
@@ -491,7 +508,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
 
     function renderDetail(){
         return (
-            <div className={styles.ctnCard}>
+            <div
+                onClick={() => {
+                    if(formValues.selectedCategory !== 'upload'){
+                        onChangeBasicValue('selectedCategory','upload')
+                    }
+                }}
+                className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
                     <div className={styles.ctnBgBtn}>
                         <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('upload', '#AD4061') }} />
@@ -502,9 +525,12 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </div>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
-                        <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
-                            UPLOAD YOUR OWN AUDIENCE
-                        </Typography>
+                        <div className={styles.ctnRowTitle}>
+                            <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
+                                UPLOAD YOUR OWN AUDIENCE
+                            </Typography>
+                            <img src={getAskIcon('upload')} alt="ask" />
+                        </div>
                         <Typography variant="subtitle2" color={getCategoryColor('upload', "#AD4061")}>
                             +Price: USD0.019 per sendout
                         </Typography>
@@ -528,21 +554,6 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 {renderOptimizeTargeting()}
                 {renderBalance()}
                 {renderDetail()}
-            </div>
-        )
-    }
-
-    function renderContentSummary(){
-        return (
-            <div className={styles.ctnContentSummary}>
-                <div className={styles.ctnSectionSummary}>
-                    <Typography variant="body2" fontWeight={'bold'} textAlign='center'>
-                        +Optimized Targeting
-                    </Typography>
-                    <Typography variant="body2" marginTop={1} textAlign='center' color='#7684AF'>
-                        The audience consists of a broad mix of users, optimized by our algorithm. 
-                    </Typography>
-                </div>
             </div>
         )
     }
