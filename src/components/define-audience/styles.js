@@ -153,7 +153,7 @@ export default makeStyles((theme) => ({
         paddingLeft: 20,
     },
     ctnRight30: {
-        width: '20%',
+        width: '30%',
         paddingRight: 30,
         paddingLeft: 20,
         position: 'relative'
@@ -165,10 +165,10 @@ export default makeStyles((theme) => ({
     },
     ctnInputSelect: {
         marginTop: 8,
-        '& > .css-wb57ya-MuiFormControl-root-MuiTextField-root': {
-            '& > .css-1hw9fc4-MuiInputBase-root-MuiOutlinedInput-root': {
-                height: 44,
-                background: '#F1F1F1'
+        '& > div': {
+            '& > div': {
+                height: '44px !important',
+                background: '#F1F1F1 !important'
             }
         }
     },

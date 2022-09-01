@@ -20,9 +20,11 @@ export default makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        cursor: 'pointer',
         minHeight: 400,
         paddingTop: 22
+    },
+    ctnCursor: {
+        cursor: 'pointer',
     },
     headerAudience: {
         backgroundColor: '#fff',
@@ -142,5 +144,13 @@ export default makeStyles((theme) => ({
     },
     ctnGrayHeader: {
         background: '#757474',
+    },
+    ctnEdit: {
+        position: 'absolute',
+        cursor: 'pointer',
+        right: -26,
+        width: 24,
+        height: 24,
+        top: 10
     }
 }))

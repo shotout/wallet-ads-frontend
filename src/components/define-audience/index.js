@@ -159,6 +159,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
+                            sx={{
+                                // height: 44,
+                                // backgroundColor: 'red'
+                            }}
                             disabled={!isCategorySelected('detail-targeting')}
                             value={formValues.balancedTargeting.cryptoCurrency}
                             onChange={(target) => {handleChangeBalanceTarget(target, 'cryptoCurrency')}}
