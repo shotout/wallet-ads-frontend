@@ -7,10 +7,13 @@ import {
   TextField,
 } from '@mui/material';
 import CardAudienceSummary from '../card-audience-summary';
+import { purple } from '@mui/material/colors';
+import FilePicker from '../file-picker';
 
 const pricetagIcon = '/assets/pricetag_icon.png'
 const purpleAsk = '/assets/purple_ask.png'
 const redAsk = '/assets/red_ask.png'
+const grayAsk = '/assets/ask_gray.png'
 
 const listAirdropReceived = [
   '1-5',
@@ -28,16 +31,69 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             setActiveAudience(selectedAudience)
             setFormValues({
                 ...initialData,
-                optimized: true
+                optimized: true,
+                selectedCategory: initialData.optimized && initialData.selectedCategory ? initialData.selectedCategory : 'optimized'
             })
         }
     }, [selectedAudience])
 
-    const onChangeBudget = (event) => {
+    const onChangeBasicValue = (stateName, value) => {
         setFormValues({
             ...formValues,
-            budgetAds: event.target.value
+            [stateName]: value
         })
+    }
+
+    const handleInputFile = (value) => {
+      const file = value[0]
+      if(file.name.includes("xlsx") || file.name.includes("csv")){
+            setFormValues({
+                ...formValues,
+                audienceFile: Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                })
+            })
+      }
+    }
+    const removeFile = () => {
+        setFormValues({
+            ...formValues,
+            audienceFile: null
+        })
+    }
+
+    const checkIsCategoryActive = (categoryName, isBackground) => {
+        if(categoryName !== formValues.selectedCategory){
+            if(isBackground){
+                return styles.bgUnactive
+            }
+            return styles.txtUnActive
+        }
+        return ''
+    }
+
+    const getAskIcon = (categoryName) => {
+        if(categoryName === formValues.selectedCategory){
+            if(categoryName === 'detail-targeting'){
+                return purpleAsk
+            }
+            return redAsk
+        }
+        return grayAsk
+    }
+
+    const isCategorySelected = (categoryName) => {
+        if(categoryName === formValues.selectedCategory){
+            return true
+        }
+        return false
+    }
+
+    const getCategoryColor = (categoryName, additionalParam) => {
+        if(categoryName !== formValues.selectedCategory){
+            return '#808080'
+        }
+        return additionalParam || ''
     }
 
     const handleChangeBalanceTarget = (event, stateName) => {
@@ -94,7 +150,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             +Cryptocurrencies used
                         </Typography>
-                        <img src={purpleAsk} alt="ask" />
+                        <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -102,6 +158,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
+                            disabled={!isCategorySelected('detail-targeting')}
                             value={formValues.balancedTargeting.cryptoCurrency}
                             onChange={(target) => {handleChangeBalanceTarget(target, 'cryptoCurrency')}}
                             >
@@ -118,23 +175,23 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             +Account age
                         </Typography>
-                        <img src={purpleAsk} alt="ask" />
+                        <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
                     <div className={styles.ctnRowInput}>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.year ? styles.ctnGrayInputDisable : {}}`}>
-                            <input value={formValues.balancedTargeting.year} onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
+                            <input disabled={!isCategorySelected('detail-targeting')} value={formValues.balancedTargeting.year} onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Years
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.months ? styles.ctnGrayInputDisable : {}}`}>
-                            <input disabled={!formValues.balancedTargeting.year} value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
+                            <input disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.year} value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Months
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.day ? styles.ctnGrayInputDisable : {}}`}>
-                            <input disabled={!formValues.balancedTargeting.months} value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
+                            <input disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.months} value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
                             <Typography variant="body1"  color={'#AAA4A4'}>
                                 Days
                             </Typography>
@@ -148,11 +205,93 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnInputTarget}>
                 <div className={styles.ctnLeftInputTarget}>
+
+                <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Available credit in wallet
+                            </Typography>
+                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                fullWidth
+                                placeholder="Select..."
+                                variant="outlined"
+                                disabled={!isCategorySelected('detail-targeting')}
+                                value={formValues.detailTargeting ? formValues.detailTargeting.availableCredit || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'availableCredit')}}
+                                >
+                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                </div>
+                <div className={styles.ctnLeftBalance}>
+                    <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Trading Volume
+                            </Typography>
+                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                fullWidth
+                                disabled={!isCategorySelected('detail-targeting')}
+                                placeholder="Select..."
+                                variant="outlined"
+                                value={formValues.detailTargeting ? formValues.detailTargeting.tradingVolume || '' : ''}
+                                onChange={(target) => {handleChangeDetailTarget(target, 'tradingVolume')}}
+                                >
+                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                </div>
+                <div className={styles.ctnLeftBalance}>
+                        <div className={styles.ctnTitleInput}>
+                            <Typography variant="body2">
+                                +Airdrop Received
+                            </Typography>
+                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        </div>
+                        <div className={styles.ctnInputSelect}>
+                            <TextField
+                                select
+                                disabled={!isCategorySelected('detail-targeting')}
+                                fullWidth
+                                placeholder="Select..."
+                                variant="outlined"
+                                value={formValues.balancedTargeting.airdropReceived}
+                                onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
+                                >
+                            {listAirdropReceived.map((option) => (
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                {option}
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </div>
+                </div>
+            </div>
+        )
+    }
+    function renderComingSoonInput(){
+        return (
+            <div className={styles.ctnInputTarget}>
+                <div className={styles.ctnLeftInputTarget}>
                     <div className={styles.ctnTitleInput}>
                         <Typography variant="body2">
-                            +Airdrop Received
+                            +Add lookalike wallets
                         </Typography>
-                        <img src={purpleAsk} alt="ask" />
+                        <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -160,23 +299,25 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
-                            value={formValues.balancedTargeting.airdropReceived}
-                            onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
+                            disabled={!isCategorySelected('detail-targeting')}
+                            // value={formValues.balancedTargeting.airdropReceived}
+                            // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
-                        {listAirdropReceived.map((option) => (
+                        {['...Select'].map((option) => (
                             <MenuItem className={styles.txtOption} key={option} value={option}>
                             {option}
                             </MenuItem>
                         ))}
                         </TextField>
                     </div>
+                    {renderComingSoon()}
                 </div>
                 <div className={styles.ctnRight30}>
                     <div className={styles.ctnTitleInput}>
                         <Typography variant="body2">
                             + Wallet Type
                         </Typography>
-                        <img src={purpleAsk} alt="ask" />
+                        <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -184,6 +325,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
+                            disabled={!isCategorySelected('detail-targeting')}
                             // value={formValues.balancedTargeting.airdropReceived}
                             // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
@@ -201,7 +343,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             + Location
                         </Typography>
-                        <img src={purpleAsk} alt="ask" />
+                        <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -209,6 +351,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
+                            disabled
                             // value={formValues.balancedTargeting.airdropReceived}
                             // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
@@ -224,16 +367,17 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             </div>
         )
     }
+
     function renderDetailInput(){
         return (
-            <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
+            <div className={styles.ctnInputTarget}>
                 <div className={styles.ctnDetailInput}>
                     <div className={styles.inputSectionLeft}>
                         <div className={styles.ctnTitleInput}>
                             <Typography variant="body2">
                                 +Amount of transaction
                             </Typography>
-                            <img src={redAsk} alt="ask" />
+                            <img src={getAskIcon('detail-targeting')} alt="ask" />
                         </div>
                         <div className={styles.ctnInputSelect}>
                             <TextField
@@ -241,34 +385,11 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 fullWidth
                                 placeholder="Select..."
                                 variant="outlined"
+                                disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.detailTargeting ? formValues.detailTargeting.transactionAmount || '' : ''}
                                 onChange={(target) => {handleChangeDetailTarget(target, 'transactionAmount')}}
                                 >
                             {['1-5', '6-10', '10-20'].map((option) => (
-                                <MenuItem className={styles.txtOption} key={option} value={option}>
-                                {option}
-                                </MenuItem>
-                            ))}
-                            </TextField>
-                        </div>
-                    </div>
-                    <div className={styles.inputSectionLeft}>
-                        <div className={styles.ctnTitleInput}>
-                            <Typography variant="body2">
-                                +Trading Volume
-                            </Typography>
-                            <img src={redAsk} alt="ask" />
-                        </div>
-                        <div className={styles.ctnInputSelect}>
-                            <TextField
-                                select
-                                fullWidth
-                                placeholder="Select..."
-                                variant="outlined"
-                                value={formValues.detailTargeting ? formValues.detailTargeting.tradingVolume || '' : ''}
-                                onChange={(target) => {handleChangeDetailTarget(target, 'tradingVolume')}}
-                                >
-                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
                                 <MenuItem className={styles.txtOption} key={option} value={option}>
                                 {option}
                                 </MenuItem>
@@ -281,36 +402,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     <div className={styles.inputSectionLeft}>
                         <div className={styles.ctnTitleInput}>
                             <Typography variant="body2">
-                                +Available credit in wallet
-                            </Typography>
-                            <img src={redAsk} alt="ask" />
-                        </div>
-                        <div className={styles.ctnInputSelect}>
-                            <TextField
-                                select
-                                fullWidth
-                                placeholder="Select..."
-                                variant="outlined"
-                                value={formValues.detailTargeting ? formValues.detailTargeting.availableCredit || '' : ''}
-                                onChange={(target) => {handleChangeDetailTarget(target, 'availableCredit')}}
-                                >
-                            {['USD100 - 1,000', 'USD1000 - 2,000', 'USD2000 - 3,000'].map((option) => (
-                                <MenuItem className={styles.txtOption} key={option} value={option}>
-                                {option}
-                                </MenuItem>
-                            ))}
-                            </TextField>
-                        </div>
-                    </div>
-                    <div className={styles.inputSectionLeft}>
-                        <div className={styles.ctnTitleInput}>
-                            <Typography variant="body2">
                                 +NFT Purchases
                             </Typography>
-                            <img src={redAsk} alt="ask" />
+                            <img src={getAskIcon('detail-targeting')} alt="ask" />
                         </div>
                         <div className={styles.inputCollectionWrapper}>
                             <input 
+                                disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.detailTargeting ? formValues.detailTargeting.creatorName || '' : ''}
                                 onChange={(target) => {handleChangeDetailTarget(target, 'creatorName')}}
                                 placeholder='Add creator here' type="text" id="campaign" name="campaign" />
@@ -325,15 +423,15 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={styles.ctnLeftHeader}>
+                    <div className={`${styles.ctnLeftHeader} ${checkIsCategoryActive('optimized', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','optimized')}}>
                         <span>+</span>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
-                        <Typography variant="h6" marginBottom={0}>
+                        <Typography variant="h6" color={getCategoryColor('optimized')} marginBottom={0}>
                             OPTIMIZED TARGETING
                         </Typography>
-                        <Typography variant="subtitle2" color="#90B272">
-                            Price: USD0.06 per airdrop
+                        <Typography variant="subtitle2" color={getCategoryColor('optimized', "#90B272")}>
+                            Price: USD0.039 per airdrop
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -350,25 +448,27 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={`${styles.ctnLeftHeader} ${styles.ctnPurple}`}>
+                    <div className={`${styles.ctnLeftHeader} ${styles.ctnPurple} ${checkIsCategoryActive('detail-targeting', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','detail-targeting')}}>
                         <span>+</span>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
-                        <Typography variant="h6" marginBottom={0}>
-                            BALANCED TARGETING
+                        <Typography variant="h6" color={getCategoryColor('detail-targeting')} marginBottom={0}>
+                            DETAIL TARGETING
                         </Typography>
-                        <Typography variant="subtitle2" color="#8C65CC">
-                            +Price: USD0.02 per airdrop
+                        <Typography variant="subtitle2" color={getCategoryColor('detail-targeting', "#8C65CC")}>
+                            +Price: USD0.079 per airdrop
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
                         <Typography variant="body1" color="#808080">
-                        Select more detailed targeting options to reach your audience.
+                            Upload your own file with wallet addresses to create an audience
                         </Typography>
                     </div>
                 </div>
                 {renderInputTargeting()}
                 {renderInputAirdop()}
+                {renderDetailInput()}
+                {renderComingSoonInput()}
             </div>
         )
     }
@@ -377,15 +477,15 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={`${styles.ctnLeftHeader} ${styles.ctnRed}`}>
+                    <div className={`${styles.ctnLeftHeader} ${styles.ctnRed} ${checkIsCategoryActive('upload', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','upload')}}>
                         <span>+</span>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
-                        <Typography variant="h6" marginBottom={0}>
-                            DETAIL TARGETING
+                        <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
+                            UPLOAD YOUR OWN AUDIENCE
                         </Typography>
-                        <Typography variant="subtitle2" color="#AD4061">
-                            +Price: USD0.02 per airdrop
+                        <Typography variant="subtitle2" color={getCategoryColor('upload', "#AD4061")}>
+                            +Price: USD0.019 per sendout
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -394,7 +494,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </Typography>
                     </div>
                 </div>
-                {renderDetailInput()}
+                <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
+                    <FilePicker onDelete={removeFile} typeScreen={'logo'} file={formValues.audienceFile} label="Upload File" onDrop={(value) => {handleInputFile(value)}} />
+                </div>
             </div>
         )
     }
@@ -427,7 +529,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <CardAudienceSummary onChangeBudget={event => {onChangeBudget(event)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
+                <CardAudienceSummary onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
             </div>
         )
     }

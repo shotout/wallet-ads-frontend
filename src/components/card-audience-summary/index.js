@@ -15,22 +15,20 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
         const target = data.balancedTargeting
         return (
             <div className={styles.descFilledWrapper}>
-                {isEdit && (
                     <Typography variant="span" fontWeight={'bold'} textAlign={'center'} marginBottom={1}>
-                        Balanced Targeting
+                        Detail Targeting
                     </Typography>
-                )}
                         {target.cryptoCurrency && (
                             <div className={styles.ctnRowItem}>
-                                <Typography variant="span" marginRight={1} color="#8C65CC">
+                                <Typography variant="span" marginRight={0.5} color="#8C65CC">
                                     +
                                 </Typography>
                                 <div>
                                     <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
-                                        {`Cryptocurrencies:`}
+                                        {`Cryptocurrencies used:`}
                                     </Typography>
-                                    <Typography variant="span" fontWeight={'600'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
-                                        {target.cryptoCurrency}
+                                    <Typography className={styles.txtUnderline} variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    Show chosen cryptocurrencies
                                     </Typography>
                                 </div>
                             </div>
@@ -42,9 +40,9 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                 </Typography>
                                 <div>
                                     <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
-                                        Account Age
+                                        Account Age:
                                     </Typography>
-                                    <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    <Typography variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
                                     {`${target.year ? `${target.year} Year` : ''}${target.months ? ` - ${target.months} Months` : ''}${target.day ? ` - ${target.day} Day` : ''}`}
                                     </Typography>
                                 </div>
@@ -57,9 +55,9 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                 </Typography>
                                 <div>
                                     <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
-                                        Airdrop Received
+                                        Airdrop Received:
                                     </Typography>
-                                    <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    <Typography variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
                                     {target.airdropReceived}
                                     </Typography>
                                 </div>
@@ -74,14 +72,9 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
         if(detail && (detail.transactionAmount || detail.tradingVolume || detail.availableCredit || detail.creatorName) ){
             return (
                 <div className={styles.descFilledWrapper}>
-                    {isEdit && (
-                        <Typography variant="span" fontWeight={'bold'} textAlign={'center'} marginBottom={1} marginTop={1}>
-                            Detail Targeting
-                        </Typography>
-                    )}
                             {detail.transactionAmount && (
                             <div className={styles.ctnRowItem}>
-                                <Typography variant="span" color="#AD4061">
+                                <Typography variant="span" color="#6A7B8A">
                                     +
                                 </Typography>
                                 <div>
@@ -96,7 +89,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.tradingVolume && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#AD4061">
+                                    <Typography variant="span" color="#6A7B8A">
                                         +
                                     </Typography>
                                     <div>
@@ -111,7 +104,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.availableCredit && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#AD4061">
+                                    <Typography variant="span" color="#6A7B8A">
                                         +
                                     </Typography>
                                     <div>
@@ -126,15 +119,15 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.creatorName && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#AD4061">
+                                    <Typography variant="span" color="#6A7B8A">
                                         +
                                     </Typography>
                                     <div>
                                         <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
                                         Creator name:
                                         </Typography>
-                                        <Typography variant="span" fontWeight={'500'} textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
-                                        {detail.creatorName}
+                                        <Typography className={styles.txtUnderline} variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                            Show chosen creators
                                         </Typography>
                                     </div>
                                 </div>
@@ -165,13 +158,13 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
     }
 
     function renderContent(){
-        const target = data.balancedTargeting
-        if(!_.isEmpty(data) && (target.cryptoCurrency || target.year || target.months || target.day || target.airdropReceived || data.detailTargeting)){
+        const target = data.selectedCategory
+        if(target === 'detail-targeting'){
             return (
                 <div className={styles.ctnDescAudience}>
                     {renderBalancedTargeting()}
                     {renderDetailTargeting()}
-                    {renderPrice()}
+                    {/* {renderPrice()} */}
                     {!isEdit && (
                         <Typography variant="span" textAlign={'center'} paragraph>
                             {`USD${getAudiencePrice(data)} per airdrop `}
@@ -190,37 +183,43 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                 </div>
             )
         }
-        if(!_.isEmpty(data) && data.optimized){
+        if(target === 'upload'){
             return (
                 <div className={styles.ctnDescAudience}>
-                    <Typography variant="span" textAlign={'center'} paragraph>
-                    The audience consists of a broad mix of users, optimized by our algorithm.
-                    </Typography>
-                    {renderPrice()}
-                    {!isEdit && (
-                      <Typography variant="span" textAlign={'center'} paragraph>
-                        {`USD${getAudiencePrice(data)} per airdrop `}
-                      </Typography>  
-                    )}
-                    {!isEdit && (
-                        <div className={styles.ctnAmount}>
-                            <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data)} users`}
-                            </Typography>
-                            <Typography variant="span" textAlign={'center'} paragraph>
-                            In this audience will receive airdrops
-                            </Typography>
-                        </div>
-                    )}
+                    <div className={styles.ctnRowItem}>
+                                    <div>
+                                        <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                            <Typography variant="span" color="#AD4061">
+                                                {`+ `}
+                                            </Typography>
+                                            Your Own Audience
+                                        </Typography>
+                                        {data.audienceFile && (
+                                            <Typography variant="span" textAlign={'center'} color="#6A7B8A" marginTop={1}>
+                                                {data.audienceFile.name}
+                                            </Typography>
+                                            )}
+                                    </div>
+                                </div>
                 </div>
             )
         }
-        return  (
-            <div className={styles.ctnEmptyAudience}>
-                <Iconify icon={'ant-design:plus-circle-outlined'} color="#C9D3D8" width={80} height={80} />
-                <Typography variant="h5" textAlign={'center'} marginTop={1} color="#C9D3D8">
-                    Create audience
-                </Typography>
+        
+        return (
+            <div className={styles.ctnDescAudience}>
+                <div className={styles.ctnRowItem}>
+                                <div>
+                                    <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
+                                        <Typography variant="span" color="#90B272">
+                                            {`+ `}
+                                        </Typography>
+                                        Optimized Targeting
+                                    </Typography>
+                                    <Typography variant="span" textAlign={'center'} color="#6A7B8A" marginX={0.2}>
+                                    The audience consists of a broad mix of users, optimized by our algorithm.
+                                    </Typography>
+                                </div>
+                            </div>
             </div>
         )
     }
@@ -235,9 +234,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                     </div>
                     {renderContent()}
 
-                    {isEdit && (
-                        <>
-                            <div className={styles.ctnSectionSummary}>
+                    <div className={styles.ctnSectionSummary}>
                                 <div className={styles.ctnPriceTag}>
                                     <img src={pricetagIcon} alt="pricetag" />
                                     <Typography variant="body2" fontWeight={'bold'} color="#7089FF">
@@ -250,8 +247,6 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                     Add audience
                                 </Typography>
                             </div>
-                            </>
-                    )}
                     {selectedPage && (
                         <div className={styles.ctnArrow}>
                             <img src={triangleIcon} alt="arrow" />

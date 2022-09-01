@@ -75,28 +75,19 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
     }
 
     function renderPrice(){
-        if(isEdit){
-            return (
-                <div className={styles.ctnPriceInput}>
-                    <span>
-                        USD
-                    </span>
-                    <input name="budget" maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
-                </div>
-            )
-        }
         return (
-            <div className={styles.ctnPrice}>
-                <Typography variant="h5" textAlign={'center'} >
-                    USD{data.budgetAds}
-                </Typography>
+            <div className={styles.ctnPriceInput}>
+                <span>
+                    USD
+                </span>
+                <input name="budget" maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
             </div>
         )
     }
 
     function renderContent(){
         const target = data.balancedTargeting
-        if(!_.isEmpty(data) && (target.cryptoCurrency || target.year || target.months || target.day || target.airdropReceived || data.detailTargeting)){
+        if(data.selectedCategory === 'detail-targeting'){
             return (
                 <div className={styles.ctnDescAudience}>
                     {renderBalancedTargeting()}
@@ -120,12 +111,39 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                 </div>
             )
         }
-        if(!_.isEmpty(data) && data.optimized){
+        if(data.selectedCategory === 'optimized'){
             return (
                 <div className={styles.ctnDescAudience}>
                     <Typography variant="span" textAlign={'center'} paragraph>
                     The audience consists of a broad mix of users, optimized by our algorithm.
                     </Typography>
+                    {renderPrice()}
+                    {!isEdit && (
+                      <Typography variant="span" textAlign={'center'} paragraph>
+                        {`USD${getAudiencePrice(data)} per airdrop `}
+                      </Typography>  
+                    )}
+                    {!isEdit && (
+                        <div className={styles.ctnAmount}>
+                            <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
+                            {`${calculateAirdropPerUser(data)} users`}
+                            </Typography>
+                            <Typography variant="span" textAlign={'center'} paragraph>
+                            In this audience will receive airdrops
+                            </Typography>
+                        </div>
+                    )}
+                </div>
+            )
+        }
+        if(data.selectedCategory === 'upload'){
+            return (
+                <div className={styles.ctnDescAudience}>
+                    {data.audienceFile && (
+                        <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
+                        {`+ Audience: ${data.audienceFile.name}`}
+                    </Typography>
+                    )}
                     {renderPrice()}
                     {!isEdit && (
                       <Typography variant="span" textAlign={'center'} paragraph>

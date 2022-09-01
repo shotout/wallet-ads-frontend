@@ -33,6 +33,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center'
     },
     ctnLeftHeader: {
+        cursor: 'pointer',
         background: '#90B272',
         padding: '4px 20px',
         borderTopRightRadius: 30,
@@ -53,6 +54,7 @@ export default makeStyles((theme) => ({
     },
     ctnRightContent: {
         width: 320,
+        marginRight: 22
     },
     ctnPurple: {
         background: '#8C65CC'
@@ -117,9 +119,10 @@ export default makeStyles((theme) => ({
         borderTop: '1px solid #8C65CC'
     },
     ctnLeftInputTarget: {
-        width: '30%',
+        width: '35%',
         paddingRight: 30,
         paddingLeft: 20,
+        position: 'relative'
     },
     ctnRightTarget: {
         width: '70%',
@@ -129,6 +132,11 @@ export default makeStyles((theme) => ({
     ctnRight30: {
         width: '20%',
         paddingRight: 30,
+        paddingLeft: 20,
+        position: 'relative'
+    },
+    ctnLeftBalance: {
+        width: 200,
         paddingLeft: 20,
         position: 'relative'
     },
@@ -185,11 +193,15 @@ export default makeStyles((theme) => ({
         },
     },
     borderRed: {
-        borderTopColor: '#AD4061'
+        borderTopColor: '#AD4061',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     ctnDetailInput: {
         paddingLeft: 20,
-        width: '30%',
+        width: '35%',
         paddingRight: 30,
     },
     inputSectionLeft: {
@@ -218,5 +230,12 @@ export default makeStyles((theme) => ({
         paddingTop: 30,
         paddingLeft: 20,
         top: 0
+    },
+    bgUnactive: {
+        background: '#808080'
+    },
+    txtUnActive: {
+        color: '#808080'
     }
+
 }))

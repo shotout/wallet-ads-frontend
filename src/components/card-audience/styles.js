@@ -16,13 +16,13 @@ export default makeStyles((theme) => ({
         padding: 20,
         borderRadius: 20,
         marginBottom: 40,
-        paddingTop: 0,
         display: 'flex',
-        // justifyContent: 'center',
+        justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
         cursor: 'pointer',
         minHeight: 400,
+        paddingTop: 22
     },
     headerAudience: {
         backgroundColor: '#7589FA',
@@ -35,6 +35,9 @@ export default makeStyles((theme) => ({
         paddingBottom: 12,
         borderBottomLeftRadius: 50,
         borderBottomRightRadius: 50,
+        height: 52,
+        position: 'absolute',
+        top: '0px'
     },
     ctnDescAudience: {
         marginTop: 20

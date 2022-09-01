@@ -1,16 +1,14 @@
 import _ from 'lodash'
 
 export const getAudiencePrice = (data) => {
-    const target = data.balancedTargeting
-    let balancePrice = 0
-    let detailPrice = 0
-    if(target.cryptoCurrency || target.year || target.months || target.day || target.airdropReceived){
-        balancePrice = 0.02
+    const target = data.selectedCategory
+    if(target === 'detail-targeting'){
+        return 0.079
     }
-    if(data.detailTargeting && !_.isEmpty(data.detailTargeting)){
-        detailPrice = 0.02
+    if(target === 'upload'){
+        return 0.019
     }
-    return 0.06 + balancePrice + detailPrice
+    return 0.039
 }
 
 export const calculateAirdropPerUser = (data) => {

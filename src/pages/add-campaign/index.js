@@ -67,10 +67,10 @@ export default function AddCampaign() {
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 
   const handleChangeValues = (event, stateName) => {
@@ -78,6 +78,19 @@ export default function AddCampaign() {
       ...formValues,
       [stateName]: event.target.value
     })
+  }
+
+  const handleChangeBudget = (event, stateName, contentIndex) => {
+    const restructureData = audienceForm.map((item, index) => {
+      if(index === contentIndex){
+        return {
+          ...item,
+          budgetAds: event.target.value
+        }
+      }
+      return item
+    })
+    setAudienceForm(restructureData)
   }
 
   const handleSaveAudienceValue = (value) => {
@@ -329,7 +342,7 @@ export default function AddCampaign() {
           <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
                     <Grid item md={3} lg={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
-                      <CardAudience showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
+                      <CardAudience onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}} showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
                     </Grid>
                 ))}
             </Grid>

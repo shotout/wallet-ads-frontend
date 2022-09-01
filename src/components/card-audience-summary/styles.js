@@ -9,7 +9,7 @@ export default makeStyles((theme) => ({
     cardAudience: {
         backgroundColor: '#fff',
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
-        width: 280,
+        width: 320,
         height: '100%',
         marginLeft: 20,
         padding: 20,
@@ -20,8 +20,8 @@ export default makeStyles((theme) => ({
         // justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        cursor: 'pointer',
-        minHeight: 400,
+        // cursor: 'pointer',
+        // minHeight: 400,
     },
     headerAudience: {
         backgroundColor: '#7589FA',
@@ -143,5 +143,8 @@ export default makeStyles((theme) => ({
             flexGrow: 1,
             marginLeft: 16
         }
+    },
+    txtUnderline: {
+        textDecoration: 'underline'
     }
 }))
