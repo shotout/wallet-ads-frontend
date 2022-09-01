@@ -26,31 +26,52 @@ export default makeStyles((theme) => ({
         marginBottom: 20,
         padding: 20,
         paddingLeft: 0,
+        paddingRight: 0,
         borderRadius: 20,
     },
     ctnHeader: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
     },
     ctnLeftHeader: {
         cursor: 'pointer',
-        background: '#90B272',
-        padding: '4px 20px',
-        borderTopRightRadius: 30,
-        borderBottomRightRadius: 30,
-        ' & > span': {
-            color: '#fff',
-            fontSize: 40,
-            fontWeight: '600'
+        // background: '#90B272',
+        paddingLeft: 10,
+        '& > #ctn-title':{
+            '& > span': {
+                color: '#fff',
+                fontSize: 40,
+                fontWeight: '600',
+                zIndex: 99,
+            },
         },
-        marginRight: 20
+        // marginRight: 20,
+        position: 'relative',
+        width: 62
+    },
+    ctnBgBtn: {
+        position: 'absolute',
+        left: -16,
+        height: 70,
+        width: 70,
+        top: -6,
+        '& > span':{
+            zIndex: 1
+        }
     },
     ctnHeaderTitle: {
         display: 'flex',
         flexDirection: 'column',
-        paddingRight: 30,
+        paddingRight: 10,
         marginRight: 30,
-        borderRight: '1px solid #6C6B86'
+        borderRight: '1px solid #6C6B86',
+        // width: '40%'
+        flexGrow: 1
+    },
+    ctnHeaderDesc: {
+        width: '44%',
+        paddingRight: 20,
     },
     ctnRightContent: {
         width: 320,
@@ -116,6 +137,8 @@ export default makeStyles((theme) => ({
         display: 'flex',
         marginTop: 20,
         paddingTop: 20,
+        marginLeft: 20,
+        marginRight: 20,
         borderTop: '1px solid #8C65CC'
     },
     ctnLeftInputTarget: {
@@ -125,7 +148,7 @@ export default makeStyles((theme) => ({
         position: 'relative'
     },
     ctnRightTarget: {
-        width: '70%',
+        width: '65%',
         paddingRight: 30,
         paddingLeft: 20,
     },
@@ -182,7 +205,7 @@ export default makeStyles((theme) => ({
             background: '#fff',
             margin: '7px 4px 7px 6px',
             outline: 'none',
-            width: 58,
+            width: 38,
             textAlign: 'center',
             marginRight: 12,
         }

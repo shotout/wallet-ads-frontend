@@ -4,9 +4,11 @@ import Iconify from '../Iconify';
 import useStyles from './styles'
 import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
+import SvgIconStyle from '../SvgIconStyle';
 
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
+const headerCard = '/assets/svg/header_card.svg'
 
 export default function CardAudienceSummary({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
@@ -227,7 +229,10 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
     return (
         <div className={styles.ctnAudience}>
                 <div className={styles.cardAudience}Summary onClick={onPressCard}>
-                    <div className={`${styles.headerAudience} ${!selectedPage && isSomeAudienceActive ? styles.ctnGrayHeader : {}}`}>
+                    <div className={styles.headerAudience}>
+                        <div className={styles.ctnWrapper}>
+                            <SvgIconStyle src={headerCard} sx={{ width: 1, height: 1, bgcolor: !selectedPage && isSomeAudienceActive ? '#757474' : '#7589FA' }} />
+                        </div>
                         <Typography variant="h5" textAlign={'center'} color={'#fff'}>
                             {label}
                         </Typography>

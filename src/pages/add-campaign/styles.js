@@ -3,8 +3,7 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
-        backgroundColor: '#E4E6FA',
-        paddingTop: 20
+        background: '#fff'
     },
     ctnSection: {
         display: 'flex',
@@ -41,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
             background: '#F1F1F1',
             borderRadius: 8,
             paddingLeft: 12,
-            paddingRight: 12
+            paddingRight: 12,
+            fontSize: 15,
         }
     },
     ctnDate: {
@@ -395,7 +395,13 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnWrapper: {
         maxWidth: '1366px',
-        margin: 'auto'
+        margin: 'auto',
+        backgroundColor: '#E4E6FA',
+        padding: 20,
+        marginTop: 20,
+        marginBottom: 20,
+        borderRadius: 20,
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
 }))
 

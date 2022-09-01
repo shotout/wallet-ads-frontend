@@ -9,8 +9,9 @@ import {
 import CardAudienceSummary from '../card-audience-summary';
 import { purple } from '@mui/material/colors';
 import FilePicker from '../file-picker';
+import SvgIconStyle from '../SvgIconStyle';
 
-const pricetagIcon = '/assets/pricetag_icon.png'
+const targetIcon = '/assets/svg/target_background.svg'
 const purpleAsk = '/assets/purple_ask.png'
 const redAsk = '/assets/red_ask.png'
 const grayAsk = '/assets/ask_gray.png'
@@ -180,19 +181,19 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     <div className={styles.ctnRowInput}>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.year ? styles.ctnGrayInputDisable : {}}`}>
                             <input disabled={!isCategorySelected('detail-targeting')} value={formValues.balancedTargeting.year} onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
-                            <Typography variant="body1"  color={'#AAA4A4'}>
+                            <Typography variant="body2"  color={'#AAA4A4'}>
                                 Years
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.months ? styles.ctnGrayInputDisable : {}}`}>
                             <input disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.year} value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}} placeholder='-' type={'text'} />
-                            <Typography variant="body1"  color={'#AAA4A4'}>
+                            <Typography variant="body2"  color={'#AAA4A4'}>
                                 Months
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.day ? styles.ctnGrayInputDisable : {}}`}>
                             <input disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.months} value={formValues.balancedTargeting.day} onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
-                            <Typography variant="body1"  color={'#AAA4A4'}>
+                            <Typography variant="body2"  color={'#AAA4A4'}>
                                 Days
                             </Typography>
                         </div>
@@ -423,8 +424,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={`${styles.ctnLeftHeader} ${checkIsCategoryActive('optimized', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','optimized')}}>
-                        <span>+</span>
+                    <div className={styles.ctnBgBtn}>
+                        <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('optimized', '#90B272') }} />
+                    </div>
+                    <div className={styles.ctnLeftHeader} onClick={() => {onChangeBasicValue('selectedCategory','optimized')}}>
+                        <div id="ctn-title">
+                            <span>+</span>
+                        </div>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
                         <Typography variant="h6" color={getCategoryColor('optimized')} marginBottom={0}>
@@ -435,9 +441,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
-                    <Typography variant="body1" color="#808080">
-                        The audience consists of a broad mix of users, optimized by our algorithm. 
-                    </Typography>
+                        <Typography variant="body1" color="#808080">
+                            The audience consists of a broad mix of users, optimized by our algorithm. 
+                        </Typography>
                     </div>
                 </div>
             </div>
@@ -448,8 +454,14 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={`${styles.ctnLeftHeader} ${styles.ctnPurple} ${checkIsCategoryActive('detail-targeting', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','detail-targeting')}}>
-                        <span>+</span>
+                    
+                    <div className={styles.ctnBgBtn}>
+                        <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                    </div>
+                    <div className={styles.ctnLeftHeader} onClick={() => {onChangeBasicValue('selectedCategory','detail-targeting')}}>
+                        <div id="ctn-title">
+                            <span>+</span>
+                        </div>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
                         <Typography variant="h6" color={getCategoryColor('detail-targeting')} marginBottom={0}>
@@ -477,8 +489,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnCard}>
                 <div className={styles.ctnHeader}>
-                    <div className={`${styles.ctnLeftHeader} ${styles.ctnRed} ${checkIsCategoryActive('upload', true)}`} onClick={() => {onChangeBasicValue('selectedCategory','upload')}}>
-                        <span>+</span>
+                    <div className={styles.ctnBgBtn}>
+                        <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('upload', '#AD4061') }} />
+                    </div>
+                    <div className={styles.ctnLeftHeader} onClick={() => {onChangeBasicValue('selectedCategory','upload')}}>
+                        <div id="ctn-title">
+                            <span>+</span>
+                        </div>
                     </div>
                     <div className={styles.ctnHeaderTitle}>
                         <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
@@ -495,7 +512,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                 </div>
                 <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
-                    <FilePicker onDelete={removeFile} typeScreen={'logo'} file={formValues.audienceFile} label="Upload File" onDrop={(value) => {handleInputFile(value)}} />
+                    <FilePicker btnStyle={checkIsCategoryActive('upload', true)} onDelete={removeFile} typeScreen={'logo'} file={formValues.audienceFile} label="Upload File" onDrop={(value) => {handleInputFile(value)}} />
                 </div>
             </div>
         )

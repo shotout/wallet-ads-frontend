@@ -7,7 +7,7 @@ const deleteIcon = '/assets/delete_red.png'
 const editIcon = '/assets/edit_red.png'
 const fileIcon = '/assets/file_red.png'
 
-export default function FilePicker({ label, file,typeScreen, onDelete, ...other }){
+export default function FilePicker({ label, file,typeScreen, onDelete, btnStyle='', ...other }){
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
       ...other,
@@ -41,7 +41,7 @@ export default function FilePicker({ label, file,typeScreen, onDelete, ...other 
         }
         return (
             <div className={styles.centerizedItem}>
-                <div className={styles.btnPicker} {...getRootProps()}>
+                <div className={`${styles.btnPicker} ${btnStyle}`} {...getRootProps()}>
                     <Typography variant="subtitle1" color={'#fff'}>
                         {label}
                     </Typography>

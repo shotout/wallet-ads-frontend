@@ -67,10 +67,10 @@ export default function AddCampaign() {
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 
   const handleChangeValues = (event, stateName) => {

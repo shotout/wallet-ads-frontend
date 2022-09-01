@@ -24,16 +24,27 @@ export default makeStyles((theme) => ({
         // minHeight: 400,
     },
     headerAudience: {
-        backgroundColor: '#7589FA',
+        backgroundColor: '#fff',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '200px',
-        paddingTop: 12,
+        width: '230px',
         paddingBottom: 12,
-        borderBottomLeftRadius: 50,
-        borderBottomRightRadius: 50,
+        height: 52,
+        position: 'absolute',
+        top: '0px',
+        '& > h5':{
+            zIndex: 99
+        },
+        overflow: 'hidden'
+    },
+    ctnWrapper: {
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+        top: -6,
+        objectFit: 'contain'
     },
     ctnDescAudience: {
         marginTop: 20,
