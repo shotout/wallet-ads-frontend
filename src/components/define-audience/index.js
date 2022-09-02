@@ -1,10 +1,13 @@
-import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import useStyles from './styles'
 // @mui
 import {
   MenuItem,
   TextField,
+  Select,
+  Typography,
+  Checkbox,
+  ListItemText
 } from '@mui/material';
 import CardAudienceSummary from '../card-audience-summary';
 import { purple } from '@mui/material/colors';
@@ -158,7 +161,18 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     })
                 }
             }
-        }else{
+        }else if(stateName === 'cryptoCurrency'){
+            const {
+                target: { value },
+            } = event;
+            setFormValues({
+                ...formValues,
+                balancedTargeting: {
+                    ...formValues.balancedTargeting,
+                    cryptoCurrency:  typeof value === 'string' ? value.split(',') : value
+                }
+            })
+        } else{
 
             setFormValues({
                 ...formValues,
@@ -203,8 +217,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </Typography>
                         <img src={getAskIcon('detail-targeting')} alt="ask" />
                     </div>
-                    <div className={styles.ctnInputSelect}>
-                        <TextField
+                    <div className={styles.ctnInputMultipleSelect}>
+                        <Select
+                            multiple
                             select
                             fullWidth
                             placeholder="Select..."
@@ -214,15 +229,28 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 // backgroundColor: 'red'
                             }}
                             disabled={!isCategorySelected('detail-targeting')}
-                            value={formValues.balancedTargeting.cryptoCurrency || 'Select...'}
+                            value={formValues.balancedTargeting.cryptoCurrency || ['Select...']}
                             onChange={(target) => {handleChangeBalanceTarget(target, 'cryptoCurrency')}}
+                            renderValue={(selected) => selected.join(', ')}
                             >
-                        {['Select...','ETH', 'BNB', 'SOL'].map((option) => (
-                            <MenuItem className={styles.txtOption} key={option} value={option}>
-                            {option}
-                            </MenuItem>
-                        ))}
-                        </TextField>
+                        {['Select...','ETH', 'BNB', 'SOL'].map((option) => {
+                            if(option === 'Select...'){
+                                return null
+                            }
+                            return(
+                                <MenuItem className={styles.txtOption} key={option} value={option}>
+                                    <Checkbox
+                                        sx={{
+                                            '&.Mui-checked': {
+                                                color: '#8C65CC'
+                                            },
+                                        }}
+                                        checked={formValues.balancedTargeting && formValues.balancedTargeting.cryptoCurrency && formValues.balancedTargeting.cryptoCurrency.indexOf(option) > -1} />
+                                    <ListItemText primary={option} />
+                                </MenuItem>
+                            )
+                        })}
+                        </Select>
                     </div>
                 </div>
                 <div className={styles.ctnRightTarget}>

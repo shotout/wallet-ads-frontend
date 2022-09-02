@@ -91,7 +91,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.tradingVolume && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#6A7B8A">
+                                    <Typography variant="span" color="#8C65CC">
                                         +
                                     </Typography>
                                     <div>
@@ -106,7 +106,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.availableCredit && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#6A7B8A">
+                                    <Typography variant="span" color="#8C65CC">
                                         +
                                     </Typography>
                                     <div>
@@ -121,7 +121,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             )}
                             {detail.creatorName && (
                                 <div className={styles.ctnRowItem}>
-                                    <Typography variant="span" color="#6A7B8A">
+                                    <Typography variant="span" color="#8C65CC">
                                         +
                                     </Typography>
                                     <div>

@@ -85,7 +85,8 @@ const useStyles = makeStyles((theme) => ({
         paddingLeft: 12,
         paddingRight: 12,
         borderRadius: 8,
-        marginRight: 40
+        marginRight: 40,
+        width: '100%'
     },
     leftWrapper :{
         display: 'flex',
@@ -99,9 +100,23 @@ const useStyles = makeStyles((theme) => ({
     midWrapper: {
         marginLeft: 24,
         marginRight: 24,
-        '& > span': {
-            fontWeight: 'bold'
-        }
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: 44,
+            width: 44,
+            background: '#F1F1F1',
+            borderRadius: 8,
+            paddingLeft: 12,
+            paddingRight: 12,
+            fontSize: 15,
+            outline: 'none'
+        },
+    },
+    unactiveInput: {
+        '& > input': {
+            color: '#808080',
+        },
     },
     altDateWrapper: {
         display: 'flex',
@@ -327,7 +342,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 20,
         marginRight: 20,
         '& > img':{
-            width: 50,
+            width: 220,
             height: 50,
             objectFit: 'contain'
         },
@@ -404,8 +419,8 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
     fixedWidth:{
-        width: 200,
-    }
+        width: '100%',
+    },
 }))
 
 export default useStyles

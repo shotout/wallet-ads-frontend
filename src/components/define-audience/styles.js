@@ -363,5 +363,19 @@ export default makeStyles((theme) => ({
         borderTopRightRadius: 8,
         borderBottomRightRadius: 8,
         paddingRight: 8
+    },
+    ctnInputMultipleSelect:{
+        marginTop: 8,
+        '& > div':{
+            width:'100%',
+            height: '44px !important',
+            background: '#F1F1F1 !important',
+            '& > .MuiOutlinedInput-notchedOutline':{
+                border: 'none !important'
+            },
+            '& > .MuiSelect-select':{
+                fontSize: '15px !important',
+            }
+        }
     }
 }))

@@ -42,7 +42,7 @@ const mediumIcon = '/assets/medium.png'
 const twitterIcon = '/assets/twitter.png'
 const websiteIcon = '/assets/website.png'
 
-const appIcon = '/assets/app_icon.png'
+const appIcon = '/assets/wallet_ads_logo.png'
 const notificationIcon = '/assets/notification_icon.png'
 const blackAskIcon = '/assets/blackask_icon.png'
 
@@ -63,6 +63,7 @@ export default function AddCampaign() {
     collectionPageName: '',
     collectionPageDesc: '',
   })
+  const [selectedAvailabilityDay, setAvailabilityDay] = useState('7')
   const [selectedAvailability, setAvailability] = useState(null)
   const [selectedAudience, setSelectedAudience] = useState(null)
 
@@ -244,18 +245,22 @@ export default function AddCampaign() {
             Auto-delete my wallet ad in the user's wallet
           </Typography>
           <div className={styles.availWrapper}>
-            <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
-              <div className={styles.leftWrapper}>
-              <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
-                <span>After:</span>
+          <Grid container spacing={4}>
+            <Grid item md={3} lg={3} xs={2}>
+              <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
+                <div className={styles.leftWrapper}>
+                <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
+                  <span>After:</span>
+                </div>
+                <div className={`${styles.midWrapper} ${selectedAvailability !== 0 ? styles.unactiveInput : {}}`}>
+                  <input value={selectedAvailabilityDay} onChange={event => {setAvailabilityDay(event.target.value)}} type={'text'} />
+                </div>
+                <div className={styles.rightWrapper}>
+                  <span>Days</span>
+                </div>
               </div>
-              <div className={styles.midWrapper}>
-                <span>7</span>
-              </div>
-              <div className={styles.rightWrapper}>
-                <span>Days</span>
-              </div>
-            </div>
+            </Grid>
+            <Grid item md={3} lg={3} xs={2}>
             <div className={`${styles.inputGray} ${selectedAvailability !== 1 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
               <CheckboxAds isActive={selectedAvailability === 1} onChange={() => {setAvailability(1)}} />
@@ -268,12 +273,16 @@ export default function AddCampaign() {
                 <img src={blackCalendar} alt="calendar" />
               </div>
             </div>
-            <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
-              <div className={styles.leftWrapper}>
-                <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
-                <span>Never</span>
+            </Grid>
+            <Grid item md={3} lg={3} xs={2}>
+              <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
+                <div className={styles.leftWrapper}>
+                  <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
+                  <span>Never</span>
+                </div>
               </div>
-            </div>
+            </Grid>
+            </Grid>
           </div>
         </div>
       </div>
