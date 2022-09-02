@@ -118,27 +118,57 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     }
 
     const handleChangeBalanceTarget = (event, stateName) => {
-
-        function handleValue(){
-            if(stateName === 'year' || stateName === 'months' || stateName === 'day' ){
-                const checkisNumber = isNaN(event.target.value)
-                let valueContent = event.target.value
-                if(checkisNumber || (stateName === 'months' && Number(valueContent) <= 12) || (stateName === 'months' && Number(valueContent) <= 31)){
-                    return formValues.balancedTargeting[stateName]
+        if(stateName === 'year' || stateName === 'months' || stateName === 'day' ){
+            if(isNaN(event.target.value)){
+                event.preventDefault();
+                return true
+            }
+            if(stateName === 'year'){
+                setFormValues({
+                    ...formValues,
+                    balancedTargeting: {
+                        ...formValues.balancedTargeting,
+                        [stateName]: event.target.value
+                    }
+                })
+            }
+            if(stateName === 'months'){
+                if(Number(event.target.value) > 12){
+                    event.preventDefault()
                 }else{
-                    return valueContent
+                    setFormValues({
+                        ...formValues,
+                        balancedTargeting: {
+                            ...formValues.balancedTargeting,
+                            [stateName]: event.target.value
+                        }
+                    })
                 }
             }
-            return event.target.value
-        }
-
-        setFormValues({
-            ...formValues,
-            balancedTargeting: {
-                ...formValues.balancedTargeting,
-                [stateName]: event.target.value
+            if(stateName === 'day'){
+                if(Number(event.target.value) > 31){
+                    event.preventDefault()
+                }else{
+                    setFormValues({
+                        ...formValues,
+                        balancedTargeting: {
+                            ...formValues.balancedTargeting,
+                            [stateName]: event.target.value
+                        }
+                    })
+                }
             }
-        })
+        }else{
+
+            setFormValues({
+                ...formValues,
+                balancedTargeting: {
+                    ...formValues.balancedTargeting,
+                    [stateName]: event.target.value
+                }
+            })
+        }
+        return true
     }
 
     const handleChangeDetailTarget = (event, stateName) => {
@@ -214,7 +244,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.months ? styles.ctnGrayInputDisable : {}}`}>
                             <input
-                                disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.year}
+                                disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}}
                                 placeholder='-' type={'text'} />
                             <Typography variant="body2"  color={'#AAA4A4'}>
@@ -223,7 +253,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.day ? styles.ctnGrayInputDisable : {}}`}>
                             <input
-                                disabled={!isCategorySelected('detail-targeting') || !formValues.balancedTargeting.months}
+                                disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.balancedTargeting.day}
                                 onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
                             <Typography variant="body2"  color={'#AAA4A4'}>
