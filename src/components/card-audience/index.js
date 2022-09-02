@@ -217,13 +217,13 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                             <img src={triangleIcon} alt="arrow" />
                         </div>
                     )}
+                    {data.selectedCategory && (
+                        <div className={styles.ctnEdit} onClick={onPressCard}>
+                            <SvgIconStyle src={editIcon} sx={{ width: 1, height: 1, bgcolor: '#000' }} />
+                        </div>
+                    )}
             
             </div>
-            {data.selectedCategory && (
-                <div className={styles.ctnEdit} onClick={onPressCard}>
-                    <SvgIconStyle src={editIcon} sx={{ width: 1, height: 1, bgcolor: '#000' }} />
-                </div>
-            )}
         </div>
     )
 }

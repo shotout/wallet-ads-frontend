@@ -67,10 +67,10 @@ export default function AddCampaign() {
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 
   const handleChangeValues = (event, stateName) => {
@@ -107,10 +107,10 @@ export default function AddCampaign() {
 
   const handleAddAudience = () => {
     const addData = [
-      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, budgetAds: '500', balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     ]
     const listData = [...audienceForm]
     setAudienceForm(listData.concat(addData))
@@ -244,7 +244,7 @@ export default function AddCampaign() {
             Auto-delete my wallet ad in the user's wallet
           </Typography>
           <div className={styles.availWrapper}>
-            <div className={`${styles.inputGray} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
+            <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
               <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
                 <span>After:</span>
@@ -268,7 +268,7 @@ export default function AddCampaign() {
                 <img src={blackCalendar} alt="calendar" />
               </div>
             </div>
-            <div className={`${styles.inputGray} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
+            <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
                 <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
                 <span>Never</span>
@@ -339,7 +339,7 @@ export default function AddCampaign() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
                 {audienceForm.map((item, index) => (
                     <Grid item md={3} lg={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
                       <CardAudience onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}} showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />

@@ -148,7 +148,7 @@ export default makeStyles((theme) => ({
     ctnEdit: {
         position: 'absolute',
         cursor: 'pointer',
-        right: -26,
+        right: 0,
         width: 24,
         height: 24,
         top: 10

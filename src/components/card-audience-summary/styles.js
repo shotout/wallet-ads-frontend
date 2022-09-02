@@ -3,8 +3,6 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
     ctnAudience: {
         position: 'relative',
-        marginRight: 20,
-        marginTop: 20
     },
     cardAudience: {
         backgroundColor: '#fff',

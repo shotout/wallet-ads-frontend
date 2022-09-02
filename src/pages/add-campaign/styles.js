@@ -403,6 +403,9 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 20,
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
+    fixedWidth:{
+        width: 200,
+    }
 }))
 
 export default useStyles

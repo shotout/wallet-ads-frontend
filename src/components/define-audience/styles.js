@@ -74,7 +74,7 @@ export default makeStyles((theme) => ({
         paddingRight: 20,
     },
     ctnRightContent: {
-        width: 320,
+        width: 340,
         marginRight: 22
     },
     ctnPurple: {
@@ -142,15 +142,15 @@ export default makeStyles((theme) => ({
         borderTop: '1px solid #8C65CC'
     },
     ctnLeftInputTarget: {
-        width: '35%',
-        paddingRight: 30,
+        width: '40%',
+        paddingRight: 56,
         paddingLeft: 20,
-        position: 'relative'
+        position: 'relative',
     },
     ctnRightTarget: {
-        width: '65%',
+        width: '60%',
         paddingRight: 30,
-        paddingLeft: 20,
+        // paddingLeft: 20,
     },
     ctnRight30: {
         width: '30%',
@@ -160,7 +160,7 @@ export default makeStyles((theme) => ({
     },
     ctnLeftBalance: {
         width: 200,
-        paddingLeft: 20,
+        paddingRight: 20,
         position: 'relative'
     },
     ctnInputSelect: {
@@ -168,8 +168,14 @@ export default makeStyles((theme) => ({
         '& > div': {
             '& > div': {
                 height: '44px !important',
-                background: '#F1F1F1 !important'
-            }
+                background: '#F1F1F1 !important',
+                '& > .MuiOutlinedInput-notchedOutline':{
+                    border: 'none !important'
+                },
+                '& > .MuiSelect-select':{
+                    fontSize: '15px !important'
+                }
+            },
         }
     },
     ctnTitleInput:{
@@ -208,11 +214,12 @@ export default makeStyles((theme) => ({
             width: 38,
             textAlign: 'center',
             marginRight: 12,
+            fontSize: 15
         }
     },
     ctnGrayInputDisable: {
         '& > input': {
-            background: '#F1F1F1'
+            background: '#F1F1F1 !important'
         },
     },
     borderRed: {
@@ -224,8 +231,8 @@ export default makeStyles((theme) => ({
     },
     ctnDetailInput: {
         paddingLeft: 20,
-        width: '35%',
-        paddingRight: 30,
+        width: '40%',
+        paddingRight: 20,
     },
     inputSectionLeft: {
         marginBottom: 20,
@@ -240,7 +247,8 @@ export default makeStyles((theme) => ({
             background: '#F1F1F1',
             borderRadius: 8,
             paddingLeft: 12,
-            paddingRight: 12
+            paddingRight: 12,
+            fontSize: 15
         }
     },
     comingSoon: {
@@ -255,10 +263,10 @@ export default makeStyles((theme) => ({
         top: 0
     },
     bgUnactive: {
-        background: '#808080'
+        background: '#808080 !important'
     },
     txtUnActive: {
-        color: '#808080'
+        color: '#808080 !important'
     },
     ctnStandar: {
         position: 'absolute',
@@ -279,6 +287,81 @@ export default makeStyles((theme) => ({
         display: 'flex',
         // alignItems: 'center',
         flexWrap: 'wrap'
+    },
+    amountInputWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 8,
+    },
+    ctnInputSelectAmount: {
+        '& > div': {
+            '& > div': {
+                height: '44px !important',
+                background: '#F1F1F1 !important',
+                width: 80,
+                borderTopRightRadius: '0px',
+                borderBottomRightRadius: '0px',
+                '& > .MuiSvgIcon-root':{
+                    background: '#8C65CC',
+                    color: '#fff',
+                    height: 44,
+                    width: 20,
+                    right: '0px !important',
+                    top: '0px !important',
+                },
+                '& > .MuiOutlinedInput-notchedOutline':{
+                    border: 'none !important'
+                },
+                '& > .MuiSelect-select':{
+                    textAlign: 'center !important',
+                    paddingRight: '26px !important',
+                    fontSize: '15px !important'
+                }
+            },
+        }
+    },
+    grayArrowBg:{
+        '& > div': {
+            '& > div': {
+                '& > .MuiSvgIcon-root':{
+                    background: '#808080 !important',
+                },
+            },
+        }
+    },
+    ctnInputRawAmount: {
+        height: '44px',
+        background: '#F1F1F1',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        '& > span':{
+            fontSize: 15,
+            paddingLeft: 6,
+            paddingRight: 6,
+            fontFamily: 'Public Sans,sans-serif',
+            textAlign: 'center',
+        },
+        '& > input': {
+            fontFamily: 'Public Sans,sans-serif',
+            border: 0,
+            height: 30,
+            background: '#fff',
+            margin: '7px 4px 7px 6px',
+            outline: 'none',
+            width: 38,
+            textAlign: 'center',
+            marginRight: 12,
+            fontSize: 14
+        }
+    },
+    noPdLeft: {
+        paddingLeft: '0px !important'
+    },
+    bdRightAmount: {
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8,
+        paddingRight: 8
     }
-
 }))
