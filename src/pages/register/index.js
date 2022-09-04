@@ -1,9 +1,14 @@
 import { Grid, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
+import Layout from '../../layouts';
 import DefaultButton from '../../components/default-button';
 import Page from "../../components/Page";
 import useStyles from "./styles";
 const appIcon = '/assets/wallet_ads_logo.png'
+
+Register.getLayout = function getLayout(page) {
+    return <Layout>{page}</Layout>;
+  };
 
 export default function Register(){
     const styles = useStyles()

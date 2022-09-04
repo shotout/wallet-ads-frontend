@@ -4,8 +4,13 @@ import HeaderUser from "../../components/header-user"
 import Page from "../../components/Page"
 import useStyles from './styles'
 import { Fragment } from 'react';
+import Layout from '../../layouts';
 
 const downloadIcon = '/assets/svg/download.svg'
+
+Invoice.getLayout = function getLayout(page) {
+    return <Layout>{page}</Layout>;
+  };
 
 export default function Invoice(){
     const styles = useStyles()

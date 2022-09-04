@@ -1,4 +1,4 @@
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Grid } from '@mui/material';
 // layouts
 import Layout from '../../layouts';
 // hooks
@@ -18,11 +18,13 @@ export default function PageOne() {
   const { themeStretch } = useSettings();
 
   return (
-    <Page title="Page One">
+    <Page title="Coming Soon">
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <Typography variant="h3" component="h1" paragraph>
-          Dashboard
-        </Typography>
+        <Grid container justifyContent={"center"} alignContent="center" height={"100vh"}>
+          <Typography variant="h3" component="h1" paragraph>
+            Page Under Construction
+          </Typography>
+        </Grid>
       </Container>
     </Page>
   );
