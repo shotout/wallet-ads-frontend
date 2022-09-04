@@ -18,6 +18,7 @@ import CardAudience from '../../components/card-audience';
 import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
 import Page from '../../components/Page';
 import Layout from '../../layouts';
+import HeaderUser from '../../components/header-user';
 
 // ----------------------------------------------------------------------
 
@@ -41,10 +42,6 @@ const instagramIcon = '/assets/instagram.png'
 const mediumIcon = '/assets/medium.png'
 const twitterIcon = '/assets/twitter.png'
 const websiteIcon = '/assets/website.png'
-
-const appIcon = '/assets/wallet_ads_logo.png'
-const notificationIcon = '/assets/notification_icon.png'
-const blackAskIcon = '/assets/blackask_icon.png'
 
 const initialPicture = [
   {adCreationMedia: null, selectedAudienceAd: [] },
@@ -665,31 +662,12 @@ export default function AddCampaign() {
     )
   }
 
-  function renderHeader(){
-    return (
-      <div className={styles.ctnHeaderWrapper}>
-        <img src={appIcon} alt="app-icon" />
-        <div className={styles.rightHeader}>
-          <div className={styles.ctnIconHeader}>
-            <img src={blackAskIcon} alt="ask" id="ask" />
-          </div>
-          <div className={styles.ctnIconHeader}>
-            <img src={notificationIcon} alt="notification" id="notification" />
-          </div>
-          <div className={styles.ctnIconHeader}>
-            <img src={'https://images.tokopedia.net/img/cache/200-square/product-1/2019/3/18/1993669/1993669_8198edc5-ab9b-4ee8-ba29-83c2fdc439a1.jpg'} alt="avatar" id="avatar" />
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
 
     <Page title="Add Campaign">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
-        {renderHeader()}
+        <HeaderUser />
         {renderCampaignName()}
         {renderAvailability()}
         {renderDefineAudience()}
