@@ -71,13 +71,13 @@ export default function Login(){
                 </div>
                 <div className={styles.ctnForm}>
                     <div className={styles.inputWrapper}>
-                        <TextField size='small' fullWidth label="Email" />
+                        <TextField fullWidth label="Email" />
                     </div>
                     <div className={styles.inputWrapper}>
                         <FormControl fullWidth>
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
-                                size='small'
+                            
                                 type={values.showPassword ? 'text' : 'password'}
                                 value={values.password}
                                 onChange={handleChange('password')}
