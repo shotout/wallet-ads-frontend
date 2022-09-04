@@ -1,9 +1,13 @@
 import { Grid, Typography } from '@mui/material';
+import SvgIconStyle from '../../components/SvgIconStyle';
 import HeaderUser from "../../components/header-user"
 import Page from "../../components/Page"
 import useStyles from './styles'
+import { Fragment } from 'react';
 
-export default function SettingUser(){
+const downloadIcon = '/assets/svg/download.svg'
+
+export default function Invoice(){
     const styles = useStyles()
 
     function renderTitle(){
@@ -16,19 +20,99 @@ export default function SettingUser(){
         )
     }
 
+    function renderListTitle(){
+        return (
+            <Grid container spacing={4}>
+                <Grid item md={2.4} sm={12}>
+                    <Typography variant="body1" fontWeight={"500"}>
+                        Invoice Date
+                    </Typography>
+                </Grid>
+                <Grid item md={2.4} sm={12}>
+                    <Typography variant="body1" fontWeight={"500"}>
+                        Invoice
+                    </Typography>
+                </Grid>
+                <Grid item md={2.4} sm={12}>
+                    <Typography variant="body1" fontWeight={"500"}>
+                        Payment Method
+                    </Typography>
+                </Grid>
+                <Grid item md={2.4} sm={12}>
+                    <Typography variant="body1" fontWeight={"500"}>
+                        Amount billed
+                    </Typography>
+                </Grid>
+                <Grid item md={2.4} sm={12}>
+                    <Typography variant="body1" fontWeight={"500"}>
+                        Status
+                    </Typography>
+                </Grid>
+        </Grid>
+        )
+    }
+
+    function renderListItem(){
+        return (
+            <div className={styles.ctnItem}>
+                <Grid container spacing={4}>
+                    {['Unpaid', 'Paid'].map(item => (
+                        <Fragment key={item}>
+                            <Grid item md={2.4} sm={12}>
+                                <Typography variant="body1">
+                                    10.08.2022
+                                </Typography>
+                            </Grid>
+                            <Grid item md={2.4} sm={12}>
+                                <Typography variant="body1">
+                                    Invoice X55A
+                                </Typography>
+                            </Grid>
+                            <Grid item md={2.4} sm={12}>
+                                <Typography variant="body1">
+                                    Credit Card
+                                </Typography>
+                            </Grid>
+                            <Grid item md={2.4} sm={12}>
+                                <Typography variant="body1">
+                                    USD500
+                                </Typography>
+                            </Grid>
+                            <Grid item md={2.4} sm={12}>
+                                <div className={styles.ctnStatusItem}>
+                                    <div className={styles.leftStatusItem}>
+                                        <div className={`${styles.ctnStatusDot} ${item === 'Paid' ? styles.greenBg : {}}`} />
+                                        <Typography variant="body1">
+                                            {item}
+                                        </Typography>
+                                    </div>
+                                    <div className={styles.ctnDownload}>
+                                        <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: '#7589FA' }} />
+                                    </div>
+                                </div>
+                            </Grid>
+                        </Fragment>
+                    ))}
+                </Grid>
+            </div>
+        )
+    }
+
 
     function renderContent(){
         return (
             <div className={styles.ctnContent}>
                 <div className={styles.ctnCard}>
                     {renderTitle()}
+                    {renderListTitle()}
+                    {renderListItem()}
                 </div>
             </div>
         )
     }
 
     return(
-        <Page title="Edit Profile">
+        <Page title="Invoice">
           <div className={styles.ctnRoot}>
             <div className={styles.ctnWrapper}>
                 <HeaderUser />

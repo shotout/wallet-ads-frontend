@@ -32,5 +32,33 @@ export default makeStyles((theme) => ({
         paddingBottom: 12,
         marginBottom: 20,
         borderBottom: '1px solid #BDBDBD'
+    },
+    ctnItem:{
+        marginTop: 20,
+        borderTop: '1px solid #BDBDBD',
+        paddingTop: 20,
+    },
+    ctnStatusItem:{
+        display: 'flex',
+        alignItems: 'center',
+    },
+    leftStatusItem: {
+        width: 120,
+        display: 'flex',
+        alignItems: 'center',
+    },
+    ctnStatusDot:{
+        width: 8,
+        height: 8,
+        borderRadius: 8 / 2,
+        background: '#E83155',
+        marginRight: 8
+    },
+    ctnDownload:{
+        width: 20,
+        height: 20,
+    },
+    greenBg:{
+        background: '#71CE62'
     }
 }))
