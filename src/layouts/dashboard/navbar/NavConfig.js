@@ -22,6 +22,7 @@ const navConfig = [
       { title: 'Login', path: '/login', icon: ICONS.user },
       { title: 'Register', path: '/register', icon: ICONS.user },
       { title: 'Invoice', path: '/invoices', icon: ICONS.user },
+      { title: 'Setting User', path: '/setting-user', icon: ICONS.user },
       // { title: 'Three', path: '/dashboard/three', icon: ICONS.analytics },
     ],
   },
