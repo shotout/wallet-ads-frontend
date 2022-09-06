@@ -23,19 +23,18 @@ export default function AvatarPicker({ avatarSource, onRemove = () => {}, ...oth
     }
     
     function renderOption(){
-        if(avatarSource){
-            return (
-                <div className={styles.ctnOption}>
-                    <div {...getRootProps()}>
-                        <img src={editIcon} alt="edit" />
-                    </div>
+        return (
+            <div className={styles.ctnOption}>
+                <div {...getRootProps()}>
+                    <img src={editIcon} alt="edit" />
+                </div>
+                {avatarSource && (
                     <div onClick={onRemove}>
                         <img src={deleteIcon} alt="delete" />
                     </div>
-                </div>
-            )
-        }
-        return null
+                )}
+            </div>
+        )
     }
 
     return (

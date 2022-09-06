@@ -19,6 +19,7 @@ import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../..
 import Page from '../../../components/Page';
 import Layout from '../../../layouts';
 import HeaderUser from '../../../components/header-user';
+import { getUserData } from '../../../helpers/auth';
 
 // ----------------------------------------------------------------------
 
@@ -92,7 +93,6 @@ export default function AddCampaign() {
   }
 
   const handleSaveAudienceValue = (value) => {
-    console.log("SET data:", value)
     const restructureData = audienceForm.map((item, index) => {
       if(index === selectedAudience){
         return value
@@ -677,4 +677,23 @@ export default function AddCampaign() {
       </div>
     </Page>
   );
+}
+
+
+
+export async function getServerSideProps(context) {
+  const userData = getUserData(context)
+  if(!userData){
+      return {
+          redirect: {
+              permanent: false,
+              destination: `/login`
+          }
+      }
+  }
+  return {
+    props: {
+      userData
+    }, // will be passed to the page component as props
+  }
 }

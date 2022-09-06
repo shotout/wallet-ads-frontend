@@ -5,6 +5,7 @@ import Page from "../../../components/Page"
 import useStyles from './styles'
 import { Fragment } from 'react';
 import Layout from '../../../layouts';
+import { getUserData } from '../../../helpers/auth';
 
 const downloadIcon = '/assets/svg/download.svg'
 
@@ -126,4 +127,22 @@ export default function Invoice(){
         </div>
         </Page>
     )
+}
+
+
+export async function getServerSideProps(context) {
+    const userData = getUserData(context)
+    if(!userData){
+        return {
+            redirect: {
+                permanent: false,
+                destination: `/login`
+            }
+        }
+    }
+    return {
+      props: {
+        userData
+      }, // will be passed to the page component as props
+    }
 }

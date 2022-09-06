@@ -229,9 +229,15 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 // backgroundColor: 'red'
                             }}
                             disabled={!isCategorySelected('detail-targeting')}
-                            value={formValues.balancedTargeting.cryptoCurrency || ['Select...']}
+                            value={formValues.balancedTargeting.cryptoCurrency ? formValues.balancedTargeting.cryptoCurrency : ['Select...']}
                             onChange={(target) => {handleChangeBalanceTarget(target, 'cryptoCurrency')}}
-                            renderValue={(selected) => selected.join(', ')}
+                            renderValue={(selected) => {
+                                if(selected.length === 1 && selected[0] === 'Select...'){
+                                    return selected.join(', ')
+                                }
+                                return selected.filter(item => item !== 'Select...').join(', ')
+                                
+                            }}
                             >
                         {['Select...','ETH', 'BNB', 'SOL'].map((option) => {
                             if(option === 'Select...'){
@@ -557,7 +563,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={`${styles.ctnStandar} ${checkIsCategoryActive('optimized', true)}`}>
                         <Typography variant="body2" fontSize={12} color="#fff">
-                            Standar
+                            Standard
                         </Typography>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { parseCookies, setCookie } from "nookies";
+import nookies, { parseCookies, setCookie } from "nookies";
 
 export const setAuthorizationCookie = (authorizationObj) => {
     const options = {
@@ -12,7 +12,7 @@ export const setAuthorizationCookie = (authorizationObj) => {
 export const getAuthorizationHeader = (ctx = null) => {
     let authCookie = null;
     if (ctx) {
-      authCookie = parseCookies(ctx).authorization;
+      authCookie = nookies.get(ctx).authorization;
     } else {
       authCookie = parseCookies({}).authorization;
     }
@@ -22,10 +22,18 @@ export const getAuthorizationHeader = (ctx = null) => {
         Authorization: `Bearer ${final.token}`
       };
     }
-    return {};
+    return null
 };
 
-export const getUserData = () => {
-  const cookie = parseCookies().authorization;
-  return JSON.parse(cookie);
+export const getUserData = (ctx) => {
+  let authCookie = null;
+  if (ctx) {
+    authCookie = nookies.get(ctx).authorization;
+  } else {
+    authCookie = parseCookies({}).authorization;
+  }
+  if(authCookie){
+    return JSON.parse(authCookie);
+  }
+  return null
 };

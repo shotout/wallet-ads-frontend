@@ -48,6 +48,10 @@ export default makeStyles((theme) => ({
             '& > .MuiInputLabel-root.Mui-focused':{
                 color: '#7089FF !important',
             }
+        },
+        '& > .MuiInputLabel-root':{
+            fontSize: 20,
+            color: '#000'
         }
     },
     ctnProfilePicture:{
