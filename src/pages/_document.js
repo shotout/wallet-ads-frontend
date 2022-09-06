@@ -20,19 +20,14 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta charSet="utf-8" />
-
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
-
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
-
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
 
           <meta name="theme-color" content={palette.light.primary.main} />
-
           <link rel="manifest" href="/manifest.json" />
 
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-
           <link
             href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap"
             rel="stylesheet"
@@ -42,9 +37,7 @@ export default class MyDocument extends Document {
             name="description"
             content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
           />
-
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-
           <meta name="author" content="Minimal UI Kit" />
         </Head>
 
@@ -63,7 +56,6 @@ MyDocument.getInitialProps = async (ctx) => {
   const originalRenderPage = ctx.renderPage;
 
   const cache = createEmotionCache();
-
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
   ctx.renderPage = () =>
@@ -79,7 +71,6 @@ MyDocument.getInitialProps = async (ctx) => {
   const initialProps = await Document.getInitialProps(ctx);
 
   const emotionStyles = extractCriticalToChunks(initialProps.html);
-
   const emotionStyleTags = emotionStyles.styles.map((style) => (
     <style
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
@@ -91,6 +82,6 @@ MyDocument.getInitialProps = async (ctx) => {
 
   return {
     ...initialProps,
-    emotionStyleTags,
+    styles: [...React.Children.toArray(initialProps.styles), ...emotionStyleTags],
   };
 };

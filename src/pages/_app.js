@@ -6,32 +6,40 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
 
+import '../theme/css-import.css';
+import '../theme/overrides.css';
 import PropTypes from 'prop-types';
 import cookie from 'cookie';
 // next
 import Head from 'next/head';
 import App from 'next/app';
 // utils
-import { getSettings } from '../utils/getSettings';
+import { getSettings } from '../utils/settings';
 // contexts
 import { SettingsProvider } from '../contexts/SettingsContext';
 import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
-// theme
+// theme// redux
+import { Provider as ReduxProvider } from 'react-redux';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { store, persistor } from '../redux/store';
 import ThemeProvider from '../theme';
 // components
-import ThemeSettings from '../components/settings';
+import RtlLayout from '../components/RtlLayout';
 import ProgressBar from '../components/ProgressBar';
+import ThemeColorPresets from '../components/ThemeColorPresets';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
+
+import MuiCoreTheme from '../theme/MuiCoreTheme';
 
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
-  Component: PropTypes.func,
+  Component: PropTypes.any,
   pageProps: PropTypes.object,
   settings: PropTypes.object,
 };
 
-export default function MyApp(props) {
+function MyApp(props) {
   const { Component, pageProps, settings } = props;
 
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -40,23 +48,32 @@ export default function MyApp(props) {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
 
-      <CollapseDrawerProvider>
-        <SettingsProvider defaultSettings={settings}>
-          <MotionLazyContainer>
-            <ThemeProvider>
-              <ThemeSettings>
-                <ProgressBar />
-                {getLayout(<Component {...pageProps} />)}
-              </ThemeSettings>
-            </ThemeProvider>
-          </MotionLazyContainer>
-        </SettingsProvider>
-      </CollapseDrawerProvider>
+      </Head>
+      <ReduxProvider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <CollapseDrawerProvider>
+            <SettingsProvider defaultSettings={settings}>
+              <ThemeProvider>
+                <MuiCoreTheme>
+                  <MotionLazyContainer>
+                    <ThemeColorPresets>
+                      <RtlLayout>
+                        <ProgressBar />
+                        {getLayout(<Component {...pageProps} />)}
+                      </RtlLayout>
+                    </ThemeColorPresets>
+                  </MotionLazyContainer>
+                </MuiCoreTheme>
+              </ThemeProvider>
+            </SettingsProvider>
+          </CollapseDrawerProvider>
+        </PersistGate>
+      </ReduxProvider>
     </>
   );
 }
+
 
 // ----------------------------------------------------------------------
 
@@ -72,3 +89,5 @@ MyApp.getInitialProps = async (context) => {
     settings,
   };
 };
+
+export default MyApp

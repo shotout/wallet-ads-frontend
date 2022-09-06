@@ -108,6 +108,11 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
+  mfs: {
+    body: '#939598',
+    btnText: '#3E3E3E',
+    gradient: 'linear-gradient(166deg, rgba(253,193,44,1) 0%, rgba(255,153,43,1) 100%)',
+  }
 };
 
 const palette = {

@@ -7,7 +7,6 @@ import { useTheme } from '@mui/material/styles';
 // ----------------------------------------------------------------------
 
 const initialState = {
-  isCollapse: false,
   collapseClick: false,
   collapseHover: false,
   onToggleCollapse: () => {},
@@ -27,7 +26,7 @@ function CollapseDrawerProvider({ children }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
   const [collapse, setCollapse] = useState({
-    click: true,
+    click: false,
     hover: false,
   });
 

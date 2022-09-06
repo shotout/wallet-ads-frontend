@@ -49,7 +49,11 @@
       "type": "line",
       "source": "mapbox",
       "source-layer": "waterway",
-      "filter": ["all", ["==", "$type", "LineString"], ["in", "class", "river", "canal"]],
+      "filter": [
+        "all",
+        ["==", "$type", "LineString"],
+        ["in", "class", "river", "canal"]
+      ],
       "paint": {
         "line-color": "#a0cfdf",
         "line-width": {
@@ -133,7 +137,19 @@
       "filter": [
         "all",
         ["==", "$type", "LineString"],
-        ["all", ["in", "class", "motorway", "primary", "secondary", "tertiary", "trunk"], ["==", "structure", "tunnel"]]
+        [
+          "all",
+          [
+            "in",
+            "class",
+            "motorway",
+            "primary",
+            "secondary",
+            "tertiary",
+            "trunk"
+          ],
+          ["==", "structure", "tunnel"]
+        ]
       ],
       "type": "line",
       "source": "mapbox",
@@ -203,7 +219,15 @@
         ["==", "$type", "LineString"],
         [
           "all",
-          ["in", "class", "motorway", "primary", "secondary", "tertiary", "trunk"],
+          [
+            "in",
+            "class",
+            "motorway",
+            "primary",
+            "secondary",
+            "tertiary",
+            "trunk"
+          ],
           ["in", "structure", "none", "ford"]
         ]
       ],
@@ -279,7 +303,19 @@
       "filter": [
         "all",
         ["==", "$type", "LineString"],
-        ["all", ["in", "class", "motorway", "primary", "secondary", "tertiary", "trunk"], ["==", "structure", "bridge"]]
+        [
+          "all",
+          [
+            "in",
+            "class",
+            "motorway",
+            "primary",
+            "secondary",
+            "tertiary",
+            "trunk"
+          ],
+          ["==", "structure", "bridge"]
+        ]
       ],
       "type": "line",
       "source": "mapbox",
@@ -353,7 +389,19 @@
       "filter": [
         "all",
         ["==", "$type", "LineString"],
-        ["all", ["in", "class", "motorway", "primary", "secondary", "tertiary", "trunk"], ["==", "structure", "bridge"]]
+        [
+          "all",
+          [
+            "in",
+            "class",
+            "motorway",
+            "primary",
+            "secondary",
+            "tertiary",
+            "trunk"
+          ],
+          ["==", "structure", "bridge"]
+        ]
       ],
       "type": "line",
       "source": "mapbox",
@@ -376,7 +424,11 @@
         "line-cap": "round",
         "line-join": "round"
       },
-      "filter": ["all", ["==", "$type", "LineString"], ["all", ["<=", "admin_level", 2], ["==", "maritime", 0]]],
+      "filter": [
+        "all",
+        ["==", "$type", "LineString"],
+        ["all", ["<=", "admin_level", 2], ["==", "maritime", 0]]
+      ],
       "type": "line",
       "source": "mapbox",
       "id": "admin_country",
@@ -405,7 +457,11 @@
         "text-size": 11,
         "icon-size": 1
       },
-      "filter": ["all", ["==", "$type", "Point"], ["all", ["==", "scalerank", 1], ["==", "localrank", 1]]],
+      "filter": [
+        "all",
+        ["==", "$type", "Point"],
+        ["all", ["==", "scalerank", 1], ["==", "localrank", 1]]
+      ],
       "type": "symbol",
       "source": "mapbox",
       "id": "poi_label",
@@ -465,7 +521,16 @@
       "filter": [
         "all",
         ["==", "$type", "Point"],
-        ["in", "type", "town", "village", "hamlet", "suburb", "neighbourhood", "island"]
+        [
+          "in",
+          "type",
+          "town",
+          "village",
+          "hamlet",
+          "suburb",
+          "neighbourhood",
+          "island"
+        ]
       ],
       "type": "symbol",
       "source": "mapbox",

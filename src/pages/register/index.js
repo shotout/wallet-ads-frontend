@@ -6,9 +6,9 @@ import Page from "../../components/Page";
 import useStyles from "./styles";
 const appIcon = '/assets/wallet_ads_logo.png'
 
-Register.getLayout = function getLayout(page) {
-    return <Layout>{page}</Layout>;
-  };
+// Register.getLayout = function getLayout(page) {
+//     return <Layout>{page}</Layout>;
+//   };
 
 export default function Register(){
     const styles = useStyles()

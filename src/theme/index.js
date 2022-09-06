@@ -20,7 +20,6 @@ ThemeProvider.propTypes = {
 
 export default function ThemeProvider({ children }) {
   const { themeMode, themeDirection } = useSettings();
-
   const isLight = themeMode === 'light';
 
   const themeOptions = useMemo(
@@ -37,7 +36,6 @@ export default function ThemeProvider({ children }) {
   );
 
   const theme = createTheme(themeOptions);
-
   theme.components = componentsOverride(theme);
 
   return (

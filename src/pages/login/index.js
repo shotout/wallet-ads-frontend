@@ -8,9 +8,9 @@ import useStyles from "./styles";
 const appIcon = '/assets/wallet_ads_logo.png'
 
 
-Login.getLayout = function getLayout(page) {
-    return <Layout>{page}</Layout>;
-  };
+// Login.getLayout = function getLayout(page) {
+//     return <Layout>{page}</Layout>;
+//   };
 
 export default function Login(){
     const styles = useStyles()
