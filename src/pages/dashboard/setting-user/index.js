@@ -8,8 +8,8 @@ import useStyles from './styles'
 import Layout from '../../../layouts';
 import Iconify from '../../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../../helpers/auth';
-import responseValidatorObj from 'src/helpers/responseValidatorObj';
-import { handleUpdateProfile } from 'src/utils/requests';
+import responseValidatorObj from '../../../helpers/responseValidatorObj';
+import { handleUpdateProfile } from '../../../utils/requests';
 
 
 SettingUser.getLayout = function getLayout(page) {
@@ -107,7 +107,7 @@ export default function SettingUser({ userData }){
         return (
             <div className={styles.ctnProfilePicture}>
                 <AvatarPicker onRemove={() => {setAvatarSource(null)}} avatarSource={avatarSource === null ? null : typeof avatarSource === 'string' ? avatarSource : avatarSource.preview || null} onDrop={handleChangePicture} />
-                <DefaultButton label={"Save Changes"} isLoading={isLoading} onClick={handleSubmit} />
+                <DefaultButton ctnBtnStyle={styles.btnSave} label={"Save Changes"} isLoading={isLoading} onClick={handleSubmit} />
             </div>
         )
     }

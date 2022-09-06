@@ -60,5 +60,8 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between'
+    },
+    btnSave:{
+        marginTop: 40
     }
 }))
