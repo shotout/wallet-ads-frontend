@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@mui/styles";
 const decoWaveLight = '/images/deco-wave-light.png'
 const decoWaveDark = '/images/deco-wave-dark.png'
 const decoLineLight = '/images/deco-line-light.png'
