@@ -45,7 +45,8 @@ export default function Login(){
             }
             const res = await requestLogin(body)
             setAuthorizationCookie(res)
-            setValues({ ...values, isLoading: false })
+            window.location.href = '/'
+            // setValues({ ...values, isLoading: false })
         }catch(err){
             if(err.data){
                 if(err.data.errors){
