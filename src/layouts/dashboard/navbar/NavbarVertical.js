@@ -18,7 +18,6 @@ import Scrollbar from '../../../components/Scrollbar';
 import { NavSectionVertical } from '../../../components/nav-section';
 //
 import navConfig from './NavConfig';
-import NavbarDocs from './NavbarDocs';
 import NavbarAccount from './NavbarAccount';
 import CollapseButton from './CollapseButton';
 
@@ -47,7 +46,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
   const isDesktop = useResponsive('up', 'lg');
 
-  const { isCollapse, collapseClick, collapseHover, onToggleCollapse, onHoverEnter, onHoverLeave } =
+  const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
     useCollapseDrawer();
 
   useEffect(() => {
@@ -64,32 +63,12 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Stack
-        spacing={3}
-        sx={{
-          pt: 3,
-          pb: 2,
-          px: 2.5,
-          flexShrink: 0,
-          ...(isCollapse && { alignItems: 'center' }),
-        }}
-      >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Logo />
-
-          {isDesktop && !isCollapse && (
-            <CollapseButton onToggleCollapse={onToggleCollapse} collapseClick={collapseClick} />
-          )}
-        </Stack>
-
-        <NavbarAccount isCollapse={isCollapse} />
-      </Stack>
 
       <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isCollapse && <NavbarDocs />}
+      {/* {!isCollapse && <NavbarDocs />} */}
     </Scrollbar>
   );
 
@@ -120,17 +99,27 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
             sx: {
               width: NAVBAR.DASHBOARD_WIDTH,
               borderRightStyle: 'dashed',
+              borderBottom: '1px solid rgba(145, 158, 171, 0.24)',
+              borderTop: '1px solid rgba(145, 158, 171, 0.24)',
               bgcolor: 'background.default',
+              height: 'auto !important',
+              background: 'linear-gradient(90deg, #FFFFFF 0%, #FDFDFD 58.95%, #F6F6F6 80.16%, #EBEBEB 95.25%, #E5E5E5 100%)',
+              paddingBottom: 2,
+              borderTopRightRadius: '50px',
+              borderBottomRightRadius: '50px',
+              marginBottom: 20,
               transition: (theme) =>
                 theme.transitions.create('width', {
                   duration: theme.transitions.duration.standard,
                 }),
               ...(isCollapse && {
                 width: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
+                height: 'auto !important',
               }),
               ...(collapseHover && {
                 ...cssStyles(theme).bgBlur(),
                 boxShadow: (theme) => theme.customShadows.z24,
+                height: 'auto !important',
               }),
             },
           }}

@@ -10,19 +10,22 @@ import { ICON, NAVBAR } from '../../../config';
 
 export const ListItemStyle = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
-})(({ active, depth, theme }) => ({
+})(({ active, depth, theme, disabled }) => ({
   position: 'relative',
   textTransform: 'capitalize',
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(1.5),
   marginBottom: theme.spacing(0.5),
-  color: theme.palette.text.secondary,
+  color: theme.palette.common.black,
   borderRadius: theme.shape.borderRadius,
   height: NAVBAR.DASHBOARD_ITEM_ROOT_HEIGHT,
   // Active item
   ...(active && {
     color: theme.palette.primary.main,
     backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
+  }),
+  ...(disabled && {
+    opacity: '0.3 !important'
   }),
   // Active item
   ...(active &&

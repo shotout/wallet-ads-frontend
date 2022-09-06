@@ -1,9 +1,9 @@
 import { Grid, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import DefaultButton from '../../components/default-button';
-import AvatarPicker from '../../components/avatar-picker';
-import HeaderUser from "../../components/header-user"
-import Page from "../../components/Page"
+import DefaultButton from '../../../components/default-button';
+import AvatarPicker from '../../../components/avatar-picker';
+import HeaderUser from "../../../components/header-user"
+import Page from "../../../components/Page"
 import useStyles from './styles'
 
 export default function SettingUser(){

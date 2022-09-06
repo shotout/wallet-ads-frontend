@@ -6,19 +6,19 @@ import { Grid, Typography } from '@mui/material';
 // components
 // import Page from '../../components/Page';
 import useStyles from './styles'
-import BannerPicker from '../../components/banner-picker';
-import CollectionPreview from '../../components/collection-preview';
-import CheckboxAds from '../../components/checkbox';
+import BannerPicker from '../../../components/banner-picker';
+import CollectionPreview from '../../../components/collection-preview';
+import CheckboxAds from '../../../components/checkbox';
 import React, { useCallback, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import DefineAudience from '../../components/define-audience';
-import CardAudience from '../../components/card-audience';
-import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
-import Page from '../../components/Page';
-import Layout from '../../layouts';
-import HeaderUser from '../../components/header-user';
+import DefineAudience from '../../../components/define-audience';
+import CardAudience from '../../../components/card-audience';
+import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../../helpers/calculator';
+import Page from '../../../components/Page';
+import Layout from '../../../layouts';
+import HeaderUser from '../../../components/header-user';
 
 // ----------------------------------------------------------------------
 
