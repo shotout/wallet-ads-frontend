@@ -10,12 +10,16 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         flexDirection: 'column',
         borderRadius: 8,
+        cursor: 'pointer',
         "& > span":{
             textAlign: 'center',
             color: '#fff',
             fontFamily: 'Public Sans,sans-serif',
             fontSize: 16,
             fontWeight: 'bold'
+        },
+        '& > .MuiCircularProgress-colorPrimary':{
+            color: '#fff'
         }
-    }
+    },
 }))

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthorizationHeader } from 'src/helpers/auth';
+import { getAuthorizationHeader } from '../helpers/auth';
  
  const url = process.env.API_URL;
  
@@ -27,8 +27,6 @@ import { getAuthorizationHeader } from 'src/helpers/auth';
        ...authorizationHeader,
        ...additionalHeaders,
        ...{ 'X-Platform': 'web' },
-       // 'X-HTTP-IPCOUNTRY': global.cf_country,
-       // 'X-HTTP-CONNECTING-IP': global.cf_connecting_ip
      },
    });
    // eslint-disable-next-line arrow-body-style

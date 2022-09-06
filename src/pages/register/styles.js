@@ -4,18 +4,18 @@ export default makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
         width: '100%',
-        height: '100vh',
+        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        // justifyContent: 'center',
         backgroundImage: 'url("/assets/auth_bg.png")',
         backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'right'
+        backgroundPosition: 'right',
     },
     ctnHeader: {
-        position: 'absolute',
-        top: 30,
-        left: 100,
+        marginTop: 30,
+        marginLeft: 100,
+        marginBottom: 30,
         '& > img':{
             width: 220,
             height: 50,
@@ -29,7 +29,8 @@ export default makeStyles((theme) => ({
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
         borderRadius: 28,
         padding: 20,
-        background: '#E4E6FA'
+        background: '#E4E6FA',
+        marginBottom: 80
     },
     ctnTitle: {
         marginBottom: 40
@@ -77,11 +78,25 @@ export default makeStyles((theme) => ({
         },
         '& > div':{
             cursor: 'pointer',
-            '& > span':{
+            '& > a':{
                 fontFamily: 'Public Sans,sans-serif',
                 color: '#7089FF',
                 textDecoration:' underline'
             },
         }
     },
+    ctnSuccess:{
+        maxWidth: 500,
+        margin: 'auto',
+        padding: '40px 0px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '& > img':{
+            width: 100,
+            height: 96,
+            objectFit: 'contain',
+        }
+    }
 }))

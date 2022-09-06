@@ -1,7 +1,13 @@
 import axios from './axios';
 
-export const activateNewsLetter = (params) => axios({
-  url: 'api/v1/subscribers/activation',
+export const requestLogin = (data, params) => axios({
+  url: '/auth/login',
   method: 'POST',
-  params
+  data
+});
+
+export const requestRegister = (data, params) => axios({
+  url: '/auth/register',
+  method: 'POST',
+  data
 });

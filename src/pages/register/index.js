@@ -1,36 +1,69 @@
-import { Grid, TextField, Typography } from '@mui/material';
+import { Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import Layout from '../../layouts';
+import Iconify from '../../components/Iconify';
 import DefaultButton from '../../components/default-button';
 import Page from "../../components/Page";
 import useStyles from "./styles";
-const appIcon = '/assets/wallet_ads_logo.png'
+import { requestRegister } from '../../utils/requests';
+import responseValidatorObj from '../../helpers/responseValidatorObj';
+import Link from 'next/link';
+import AuthFooter from '../../components/auth-footer';
 
-// Register.getLayout = function getLayout(page) {
-//     return <Layout>{page}</Layout>;
-//   };
+const appIcon = '/assets/wallet_ads_logo.png'
+const emailBanner = '/assets/email_banner.png'
+
+
+const defaultState = {
+    company_name:"",
+    tax_id:"",
+    first_name:"",
+    last_name:"",
+    street:"",
+    post_code:"",
+    city:"",
+    phone:"",
+    email:"",
+    password:"",
+    password_confirmation:"",
+}
 
 export default function Register(){
     const styles = useStyles()
-    const [values, setValues] = useState({
-      amount: '',
-      password: '',
-      weight: '',
-      weightRange: '',
-      showPassword: false,
-    });
+    const [values, setValues] = useState(defaultState);
+    const [errorMessage, setErrorMessage] = useState(defaultState)
+    const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setLoading] = useState(false)
+    const [contentType, setContentType] = useState('register')
 
     const handleChange = (prop) => (event) => {
       setValues({ ...values, [prop]: event.target.value });
     };
   
     const handleClickShowPassword = () => {
-      setValues({ ...values, showPassword: !values.showPassword });
+        setShowPassword(!showPassword)
     };
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
+
+
+    const handleSubmit = async() => {
+        try{
+            setLoading(true)
+            const res = await requestRegister(values)
+            setContentType('success')
+            setLoading(false)
+        }catch(err){
+            console.log("Check err:", err)
+            if(err.data){
+                if(err.data.errors){
+                    setErrorMessage(responseValidatorObj(err.data.errors))
+                }
+            }
+            setLoading(false)
+        }
+    }
 
     function renderHeader(){
         return (
@@ -45,91 +78,220 @@ export default function Register(){
             <div className={styles.ctnDirectRegister}>
                 <span>Already have an account?</span>
                 <div>
-                    <span>Login</span>
+                    <Link href='/login'>
+                        Login
+                    </Link>
                 </div>
             </div>
         )
     }
 
     function renderInput(){
-        return (
-            <div className={styles.ctnInput}>
-                <div className={styles.ctnTitle}>
-                    <Typography variant="h4" textAlign={"center"}>
-                        Create an account
-                    </Typography>
-                </div>
-                <div className={styles.ctnForm}>
-                    <Grid container spacing={2}>
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Company Name" />
-                            </div> 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Tax ID" />
-                            </div> 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="First Name" />
-                            </div> 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Last Name" />
-                            </div> 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Street" />
-                            </div> 
-                        </Grid>
-                        <Grid item md={6} xs={12}>
-                            <Grid container spacing={2}>
-                                <Grid item md={6} xs={12}>
-                                    <div className={styles.inputWrapper}>
-                                        <TextField size='small' fullWidth label="Post Code" />
-                                    </div> 
-                                </Grid>
-                                <Grid item md={6} xs={12}>
-                                    <div className={styles.inputWrapper}>
-                                        <TextField size='small' fullWidth label="City" />
-                                    </div> 
+        if(contentType === 'register'){
+            return (
+                <div className={styles.ctnInput}>
+                    <div className={styles.ctnTitle}>
+                        <Typography variant="h4" textAlign={"center"}>
+                            Create an account
+                        </Typography>
+                    </div>
+                    <div className={styles.ctnForm}>
+                        <Grid container spacing={2}>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.company_name}
+                                        onChange={handleChange('company_name')}
+                                        error={errorMessage.company_name}
+                                        helperText={errorMessage.company_name}
+                                        size='small'
+                                        fullWidth
+                                        label="Company Name" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.tax_id}
+                                        onChange={handleChange('tax_id')}
+                                        error={errorMessage.tax_id}
+                                        helperText={errorMessage.tax_id}
+                                        size='small'
+                                        fullWidth
+                                        label="Tax ID" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.first_name}
+                                        onChange={handleChange('first_name')}
+                                        error={errorMessage.first_name}
+                                        helperText={errorMessage.first_name}
+                                        size='small'
+                                        fullWidth
+                                        label="First Name" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.last_name}
+                                        onChange={handleChange('last_name')}
+                                        error={errorMessage.last_name}
+                                        helperText={errorMessage.last_name}
+                                        size='small'
+                                        fullWidth
+                                        label="Last Name" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.street}
+                                        onChange={handleChange('street')}
+                                        error={errorMessage.street}
+                                        helperText={errorMessage.street}
+                                        size='small'
+                                        fullWidth
+                                        label="Street" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <Grid container spacing={2}>
+                                    <Grid item md={6} xs={12}>
+                                        <div className={styles.inputWrapper}>
+                                            <TextField
+                                                value={values.post_code}
+                                                onChange={handleChange('post_code')}
+                                                error={errorMessage.post_code}
+                                                helperText={errorMessage.post_code}
+                                                size='small'
+                                                fullWidth
+                                                label="Post Code" />
+                                        </div> 
+                                    </Grid>
+                                    <Grid item md={6} xs={12}>
+                                        <div className={styles.inputWrapper}>
+                                            <TextField
+                                                value={values.city}
+                                                onChange={handleChange('city')}
+                                                error={errorMessage.city}
+                                                helperText={errorMessage.city}
+                                                size='small'
+                                                fullWidth
+                                                label="City" />
+                                        </div> 
+                                    </Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
 
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Email address" />
-                            </div> 
-                        </Grid>
-                        
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Telephone" />
-                            </div> 
-                        </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.email}
+                                        onChange={handleChange('email')}
+                                        error={errorMessage.email}
+                                        helperText={errorMessage.email}
+                                        size='small'
+                                        fullWidth
+                                        label="Email address" />
+                                </div> 
+                            </Grid>
+                            
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.phone}
+                                        onChange={handleChange('phone')}
+                                        error={errorMessage.phone}
+                                        helperText={errorMessage.phone}
+                                        size='small'
+                                        fullWidth
+                                        label="Telephone" />
+                                </div> 
+                            </Grid>
 
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Create Password" />
-                            </div> 
-                        </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.password}
+                                        onChange={handleChange('password')}
+                                        error={errorMessage.password}
+                                        helperText={errorMessage.password}
+                                        size='small'
+                                        fullWidth
+                                        type={showPassword ? 'text' : 'password'}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showPassword ? (
+                                                        <Iconify icon="eva:eye-fill" width={24} height={24} />
+                                                    ) : (
+                                                        <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                                                    )}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                        label="Create Password" />
+                                </div> 
+                            </Grid>
 
-                        <Grid item md={6} xs={12}>
-                            <div className={styles.inputWrapper}>
-                                <TextField size='small' fullWidth label="Confrim Password" />
-                            </div> 
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.password_confirmation}
+                                        onChange={handleChange('password_confirmation')}
+                                        error={errorMessage.password_confirmation}
+                                        helperText={errorMessage.password_confirmation}
+                                        size='small'
+                                        fullWidth
+                                        type={showPassword ? 'text' : 'password'}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                                    {showPassword ? (
+                                                        <Iconify icon="eva:eye-fill" width={24} height={24} />
+                                                    ) : (
+                                                        <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                                                    )}
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            )
+                                        }}
+                                        label="Confrim Password" />
+                                </div> 
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </div>
+                    <DefaultButton onClick={handleSubmit} isLoading={isLoading} ctnBtnStyle={styles.btnStyle} label={"Create account"} />
+                    {renderDirect()}
                 </div>
-                <DefaultButton ctnBtnStyle={styles.btnStyle} label={"Create account"} />
-                {renderDirect()}
-            </div>
-        )
+            )
+        }
+        return null
+    }
+
+    function renderSuccess(){
+        if(contentType === 'success'){
+            return (
+                <div className={styles.ctnInput}>
+                    <div className={styles.ctnSuccess}>
+                        <img src={emailBanner} alt="success" />
+                        <Typography variant="h4" marginTop={3} marginBottom={2} fontWeight="800" lineHeight={1.3} textAlign={"center"}>
+                            Please confirm your email address to activate your account.
+                        </Typography>
+                        <Typography variant="body1" textAlign={"center"}>
+                            {`We just sent an email to ${values.email} to confirm your email address. Click the link in the email to activate your account on WALLETADS.`}
+                        </Typography>
+                    </div>
+                </div>
+            )
+        }
+        return null
     }
 
     return (
@@ -137,6 +299,8 @@ export default function Register(){
             <div className={styles.ctnRoot}>
                 {renderHeader()}
                 {renderInput()}
+                {renderSuccess()}
+                <AuthFooter />
             </div>
         </Page>
     )

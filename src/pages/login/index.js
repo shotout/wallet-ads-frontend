@@ -1,26 +1,30 @@
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, TextField, Typography } from '@mui/material';
+import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import Link from 'next/link';
 import { useState } from 'react';
-import Layout from '../../layouts';
+import { setAuthorizationCookie } from '../../helpers/auth';
+import responseValidatorObj from '../../helpers/responseValidatorObj';
+import { requestLogin } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import Iconify from '../../components/Iconify';
 import Page from "../../components/Page";
 import useStyles from "./styles";
+import AuthFooter from '../../components/auth-footer';
 const appIcon = '/assets/wallet_ads_logo.png'
 
-
-// Login.getLayout = function getLayout(page) {
-//     return <Layout>{page}</Layout>;
-//   };
+const defaultErrorState = {
+    email: null,
+    password: null
+}
 
 export default function Login(){
     const styles = useStyles()
     const [values, setValues] = useState({
-      amount: '',
+      email: '',
       password: '',
-      weight: '',
-      weightRange: '',
       showPassword: false,
+      isLoading: false
     });
+    const [errorMessage, setErrorMessage] = useState(defaultErrorState)
 
     const handleChange = (prop) => (event) => {
       setValues({ ...values, [prop]: event.target.value });
@@ -29,6 +33,28 @@ export default function Login(){
     const handleClickShowPassword = () => {
       setValues({ ...values, showPassword: !values.showPassword });
     };
+
+
+    const handleSubmit = async() => {
+        try{
+            setErrorMessage(defaultErrorState)
+            setValues({ ...values, isLoading: true })
+            const body = {
+                email: values.email,
+                password: values.password
+            }
+            const res = await requestLogin(body)
+            setAuthorizationCookie(res)
+            setValues({ ...values, isLoading: false })
+        }catch(err){
+            if(err.data){
+                if(err.data.errors){
+                    setErrorMessage(responseValidatorObj(err.data.errors))
+                }
+            }
+            setValues({ ...values, isLoading: false })
+        }
+    }
 
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
@@ -55,7 +81,9 @@ export default function Login(){
             <div className={styles.ctnDirectRegister}>
                 <span>New here?</span>
                 <div>
-                    <span>Create an account now</span>
+                    <Link href='/register'>
+                        Create an account now
+                    </Link>
                 </div>
             </div>
         )
@@ -71,33 +99,41 @@ export default function Login(){
                 </div>
                 <div className={styles.ctnForm}>
                     <div className={styles.inputWrapper}>
-                        <TextField fullWidth label="Email" />
+                        <TextField
+                            value={values.email}
+                            onChange={handleChange('email')}
+                            fullWidth
+                            error={errorMessage.email}
+                            helperText={errorMessage.email}
+                            label="Email" />
                     </div>
                     <div className={styles.inputWrapper}>
-                        <FormControl fullWidth>
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                            <OutlinedInput
-                            
-                                type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange('password')}
-                                endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                    {values.showPassword ? (
-                                        <Iconify icon="eva:eye-fill" width={24} height={24} />
-                                    ) : (
-                                        <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                                    )}
-                                    </IconButton>
-                                </InputAdornment>
-                                }
+                        <TextField
+                            fullWidth
+                            label="Password"
+                            type={values.showPassword ? 'text' : 'password'}
+                            value={values.password}
+                            error={errorMessage.password}
+                            helperText={errorMessage.password}
+                            onChange={handleChange('password')}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                                        {values.showPassword ? (
+                                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                                        ) : (
+                                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                                        )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                             />
-                        </FormControl>
                     </div>
                     {renderForgotPassword()}
                 </div>
-                    <DefaultButton label={"Login"} />
+                    <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={"Login"} />
                 {renderDirectRegister()}
             </div>
         )
@@ -108,6 +144,7 @@ export default function Login(){
             <div className={styles.ctnRoot}>
                 {renderHeader()}
                 {renderInput()}
+                <AuthFooter />
             </div>
         </Page>
     )
