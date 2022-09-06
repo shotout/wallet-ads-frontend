@@ -5,6 +5,12 @@ import AvatarPicker from '../../../components/avatar-picker';
 import HeaderUser from "../../../components/header-user"
 import Page from "../../../components/Page"
 import useStyles from './styles'
+import Layout from '../../../layouts';
+
+
+SettingUser.getLayout = function getLayout(page) {
+    return <Layout>{page}</Layout>;
+};
 
 export default function SettingUser(){
     const styles = useStyles()

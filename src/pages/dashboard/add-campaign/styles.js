@@ -1,4 +1,4 @@
-import { makeStyles } from '@mui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     ctnRoot: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: '20%'
     },
     ctnGray: {
-        maxWidth: '90%',
+        maxWidth: '100%',
         '& > input': {
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
@@ -86,7 +86,10 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: 12,
         borderRadius: 8,
         marginRight: 40,
-        width: '100%'
+        width: '100%',
+        [theme.breakpoints.down('md')]:{
+            maxWidth: '240px'
+        }
     },
     leftWrapper :{
         display: 'flex',
@@ -98,8 +101,8 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     midWrapper: {
-        marginLeft: 24,
-        marginRight: 24,
+        marginLeft: 12,
+        marginRight: 12,
         '& > input': {
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
@@ -196,6 +199,9 @@ const useStyles = makeStyles((theme) => ({
     ctnInputCollectionPageWrapper: {
         width: '100%',
         display: 'flex',
+        [theme.breakpoints.down('md')]:{
+            flexDirection: 'column'
+        }
     },
     ctnInputCollection: {
         marginBottom: 24,
@@ -204,7 +210,11 @@ const useStyles = makeStyles((theme) => ({
         width: '50%',
         paddingRight: 40,
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        [theme.breakpoints.down('md')]:{
+            width: '100%',
+            paddingRight: 0
+        }
     },
     rowTitleWrapper:{
         display: 'flex',
@@ -273,7 +283,11 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     ctnRightCollection: {
-        width: '50%'
+        width: '50%',
+        [theme.breakpoints.down('md')]:{
+            width: '100%',
+            paddingRight: 0
+        }
     },
     ctnSelectAudience: {
         borderTop: '1px solid #C9D3D8',
@@ -335,7 +349,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'stretch',
         marginBottom: 30,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        paddingRight: 20
     },
     ctnTitle: {
         display: 'flex',
@@ -377,6 +392,16 @@ const useStyles = makeStyles((theme) => ({
     fixedWidth:{
         width: '100%',
     },
+    gridAvailability:{
+        [theme.breakpoints.down('md')]:{
+            '& .MuiGrid-item:not(:first-child)':{
+                paddingTop: 12,
+            }
+        }
+    },
+    ctnSectionAd:{
+        paddingRight: 20
+    }
 }))
 
 export default useStyles

@@ -10,7 +10,7 @@ const downloadIcon = '/assets/svg/download.svg'
 
 Invoice.getLayout = function getLayout(page) {
     return <Layout>{page}</Layout>;
-  };
+};
 
 export default function Invoice(){
     const styles = useStyles()

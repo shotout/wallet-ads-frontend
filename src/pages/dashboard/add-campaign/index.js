@@ -242,8 +242,8 @@ export default function AddCampaign() {
             Auto-delete my wallet ad in the user's wallet
           </Typography>
           <div className={styles.availWrapper}>
-          <Grid container spacing={4}>
-            <Grid item md={3} lg={3} xs={2}>
+          <Grid container spacing={4} className={styles.gridAvailability}>
+            <Grid item md={4} xl={3} xs={12}>
               <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
                 <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
@@ -257,7 +257,7 @@ export default function AddCampaign() {
                 </div>
               </div>
             </Grid>
-            <Grid item md={3} lg={3} xs={2}>
+            <Grid item md={4} xl={3} xs={12}>
             <div className={`${styles.inputGray} ${selectedAvailability !== 1 ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
               <CheckboxAds isActive={selectedAvailability === 1} onChange={() => {setAvailability(1)}} />
@@ -271,7 +271,7 @@ export default function AddCampaign() {
               </div>
             </div>
             </Grid>
-            <Grid item md={3} lg={3} xs={2}>
+            <Grid item md={4} xl={3} xs={12}>
               <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
                   <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
@@ -345,9 +345,9 @@ export default function AddCampaign() {
           <div className={styles.rowTitle} />
         </div>
         <div className={styles.ctnRowAudience}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
-                    <Grid item md={3} lg={3} xs={2} className={styles.ctnSectionAd} key={index.toString()}>
+                    <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={index.toString()}>
                       <CardAudience onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}} showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
                     </Grid>
                 ))}
@@ -569,9 +569,9 @@ export default function AddCampaign() {
               </div>
             </div>
           </div>
-          <Grid container spacing={4}>
+          <Grid container spacing={2}>
               {audienceForm.map((item, audienceIndex) => (
-                  <Grid item md={3} xs={2} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
+                  <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                   <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
                     <CheckboxAds
                       isActive={content.selectedAudienceAd.includes(audienceIndex)}

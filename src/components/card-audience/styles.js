@@ -3,14 +3,12 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
     ctnAudience: {
         position: 'relative',
-        marginRight: 20,
-        marginTop: 20,
         height: '97%',
     },
     cardAudience: {
         backgroundColor: '#fff',
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
-        width: 280,
+        width: '100%',
         height: '100%',
         marginLeft: 20,
         padding: 20,
@@ -21,7 +19,8 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         flexDirection: 'column',
         minHeight: 400,
-        paddingTop: 22
+        paddingTop: 22,
+        overflow: 'hidden'
     },
     ctnCursor: {
         cursor: 'pointer',
@@ -32,11 +31,12 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '230px',
+        width: '100%',
         paddingBottom: 12,
-        height: 52,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         position: 'absolute',
-        top: '0px',
+        top: '-1px',
         '& > h5':{
             zIndex: 99
         },
