@@ -8,7 +8,7 @@ export default function Index() {
 
   useEffect(() => {
     if (router.pathname == '/') {
-      if(getAuthorizationHeader().Authorization){
+      if(getAuthorizationHeader() && getAuthorizationHeader().Authorization){
         router.push('/dashboard/add-campaign');  
       }else{
         router.push('/login');
