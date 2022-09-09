@@ -122,7 +122,8 @@ export default makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 12,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        textDecoration: 'none'
     },
     ctnSectionSummary: {
         marginTop: 20

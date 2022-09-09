@@ -27,6 +27,5 @@ export const handleAddCampaign = (data) => axios({
 export const getCampaignItem = (ctx) => axios({
   url: '/campaigns',
   method: 'GET',
-  headers: { 'Content-Type': 'multipart/form-data' },
   ctx
 });

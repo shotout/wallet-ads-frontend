@@ -68,6 +68,7 @@ export default function AddCampaign({ content }) {
     ads_page_facebook: "",
   })
   const [selectedAudience, setSelectedAudience] = useState(null)
+  const [loadingSubmit, setLoadingSubmit] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
@@ -75,78 +76,78 @@ export default function AddCampaign({ content }) {
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
-console.log("Check content:", content)
   useEffect(() => {
     getCampaignItem()
     if(content && content.length > 0){
-      const data = content[0]
-      setFormValues({
-        campaign_name: data.name,
-        campaign_start_date: data.start_date ? new Date(data.start_date) : new Date(),
-        campaign_end_date_type: '',
-        campaign_end_date: new Date(),
-        campaign_end_date_day: '7',
-        ads_page_name: "",
-        ads_page_description: "",
-        ads_page_website: "",
-        ads_page_discord: "",
-        ads_page_twitter: "",
-        ads_page_instagram: "",
-        ads_page_medium: "",
-        ads_page_facebook: "",
-      })
+      // const data = content[0]
+      // setFormValues({
+      //   campaign_name: data.name,
+      //   campaign_start_date: data.start_date ? new Date(data.start_date) : new Date(),
+      //   campaign_end_date_type: '',
+      //   campaign_end_date: new Date(),
+      //   campaign_end_date_day: '7',
+      //   ads_page_name: "",
+      //   ads_page_description: "",
+      //   ads_page_website: "",
+      //   ads_page_discord: "",
+      //   ads_page_twitter: "",
+      //   ads_page_instagram: "",
+      //   ads_page_medium: "",
+      //   ads_page_facebook: "",
+      // })
     }
   }, [])
 
   const handleSubmit = async() => {
-    const body = new FormData()
-    body.append('campaign_name', formValues.campaign_name)
-    body.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'))
-    body.append('campaign_end_date_type', formValues.campaign_end_date_type)
-    body.append('campaign_end_date', moment(formValues.campaign_end_date).format('YYYY-MM-DD'))
-    body.append('campaign_end_date_day', formValues.campaign_end_date_day)
-    body.append('ads_page_name', formValues.ads_page_name)
-    body.append('ads_page_description', formValues.ads_page_description)
-    body.append('ads_page_website', formValues.ads_page_website)
-    body.append('ads_page_discord', formValues.ads_page_discord)
-    body.append('ads_page_twitter', formValues.ads_page_twitter)
-    body.append('ads_page_instagram', formValues.ads_page_instagram)
-    body.append('ads_page_medium', formValues.ads_page_medium)
-    body.append('ads_page_facebook', formValues.ads_page_facebook)
-    body.append('ads_page_logo', logoCollection)
-    body.append('ads_page_banner', bannerCollection)
-    audienceForm.forEach((audience, index) => {
-        if(audience.selectedCategory){
-          body.append(`campaign_audiences[${index}].fe_id`, index)
-          body.append(`campaign_audiences[${index}].price`, audience.budgetAds)
-          
-          if(audience.balancedTargeting.cryptoCurrency && audience.balancedTargeting.cryptoCurrency.length > 0){
-            audience.balancedTargeting.cryptoCurrency.forEach(currency => {
-              body.append(`campaign_audiences[${index}].detailed_targeting_cryptocurrency[]`, currency)
-            })
-          }
-          body.append(`campaign_audiences[${index}].detailed_targeting_year`, audience.balancedTargeting.year)
-          body.append(`campaign_audiences[${index}].detailed_targeting_month`, audience.balancedTargeting.months)
-          body.append(`campaign_audiences[${index}].detailed_targeting_day`, audience.balancedTargeting.day)
+    try{
+      setLoadingSubmit(true)
+      const objRes = {
+        "campaign_name": formValues.campaign_name,
+        "campaign_start_date": moment(formValues.campaign_start_date).format('YYYY-MM-DD'),
+        "campaign_end_date_type": formValues.campaign_end_date_type,
+        "campaign_end_date_day":  formValues.campaign_end_date_day,
+        "campaign_end_date": moment(formValues.campaign_end_date).format('YYYY-MM-DD'),
+
+        "campaign_audiences": audienceForm.map((audience, index) => ({
+              "fe_id": index,
+              "price": audience.budgetAds,
+
+              "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
+              "detailed_targeting_year":audience.balancedTargeting.year,
+              "detailed_targeting_month":audience.balancedTargeting.months,
+              "detailed_targeting_day":audience.balancedTargeting.day,
+
+              "detailed_targeting_available_credit_wallet": audience.detailTargeting.availableCredit,
+              "detailed_targeting_trading_volume": audience.detailTargeting.tradingVolume,
+              "detailed_targeting_airdrops": audience.balancedTargeting.airdropReceived,
+
+              "detailed_targeting_amount_transaction": audience.detailTargeting.transactionAmount,
+              "detailed_targeting_amount_transaction_day": audience.detailTargeting.amountDays,
+              "detailed_targeting_nft_purchases": audience.detailTargeting.creatorName,
+          })),
     
-          body.append(`campaign_audiences[${index}].detailed_targeting_available_credit_wallet`, audience.detailTargeting.availableCredit)
-          body.append(`campaign_audiences[${index}].detailed_targeting_trading_volume`, audience.detailTargeting.tradingVolume)
-          body.append(`campaign_audiences[${index}].detailed_targeting_airdrops`, audience.balancedTargeting.airdropReceived)
+        "ads_page_name": formValues.ads_page_name,
+        "ads_page_description": formValues.ads_page_description,
+        "ads_page_website": formValues.ads_page_website,
+        "ads_page_discord": formValues.ads_page_discord,
+        "ads_page_twitter": formValues.ads_page_twitter,
+        "ads_page_instagram": formValues.ads_page_instagram,
+        "ads_page_medium": formValues.ads_page_medium,
+        "ads_page_facebook": formValues.ads_page_facebook,
+        // "ads_page_external_page": "https://external.com",
+        "ads_page_logo": logoCollection ? logoCollection.fileBase64 : null,
+        "ads_page_banner": bannerCollection ? bannerCollection.fileBase64 : null,
     
-          body.append(`campaign_audiences[${index}].detailed_targeting_amount_transaction`, audience.detailTargeting.transactionAmount)
-          body.append(`campaign_audiences[${index}].detailed_targeting_amount_transaction_day`, audience.detailTargeting.amountDays)
-          body.append(`campaign_audiences[${index}].detailed_targeting_nft_purchases`, audience.detailTargeting.creatorName)
-        }
-    })
-    pictureData.forEach((ads, adsIndex) => {
-      body.append(`campaign_ads[${adsIndex}].name`, ads.name)
-      body.append(`campaign_ads[${adsIndex}].description`, ads.description)
-      ads.fe_id.forEach(adsId => {
-        body.append(`campaign_ads[${adsIndex}].fe_id[]`, adsId)
-      })
-      body.append(`campaign_ads[${adsIndex}].image`, ads.image)
-    })
-    const res = await handleAddCampaign(body)
+        "campaign_ads": pictureData.map(campaign => ({
+            ...campaign,
+            image: campaign.image ? campaign.image.fileBase64 : null
+          }))
+      }
+      const res = await handleAddCampaign(objRes)
+      setLoadingSubmit(false)
+    }catch(err){
+      setLoadingSubmit(false)
+    }
   }
 
   const handleChangeValues = (event, stateName) => {
@@ -202,41 +203,55 @@ console.log("Check content:", content)
     let file = null;
     if(isPicture){
       file = acceptedFiles[0]
-    }
-    const restructureData = pictureData.map((pict, index) => {
-      if(index === indexContent){
-        if(isPicture){
-          return {
-            ...pict,
-            [stateName]: Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          }
-        }
-        if(stateName === 'fe_id'){
-          const listAudience = pict.fe_id
-          const isThere = pict.fe_id.find(ctn => ctn === acceptedFiles)
-          if(isThere){
-            return {
-              ...pict,
-              [stateName]: pict.fe_id.filter(ctn => ctn !== acceptedFiles)
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const finalData = pictureData.map((pict, index) => {
+          if(index === indexContent){
+            if(isPicture){
+              return {
+                ...pict,
+                [stateName]: {
+                  ...Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                  }),
+                  fileBase64:event.target.result
+                }
+              }
             }
           }
-          listAudience.push(acceptedFiles)
+          return pict
+        })
+        setPicture(finalData)
+      };
+      reader.readAsDataURL(file);
+    }else{
+      const restructureData = pictureData.map((pict, index) => {
+        if(index === indexContent){
+          if(stateName === 'fe_id'){
+            const listAudience = pict.fe_id
+            const isThere = pict.fe_id.find(ctn => ctn === acceptedFiles)
+            if(isThere){
+              return {
+                ...pict,
+                [stateName]: pict.fe_id.filter(ctn => ctn !== acceptedFiles)
+              }
+            }
+            listAudience.push(acceptedFiles)
+            return {
+              ...pict,
+              [stateName]: listAudience
+            }
+          }
           return {
             ...pict,
-            [stateName]: listAudience
+            [stateName]: acceptedFiles.target.value
           }
         }
-        return {
-          ...pict,
-          [stateName]: acceptedFiles.target.value
-        }
-      }
-      return pict
-    })
+        return pict
+      })
+      setPicture(restructureData)
+    }
 
-    setPicture(restructureData)
   }
 
   const removePictureAdCreation = (indexContent) => {
@@ -255,18 +270,32 @@ console.log("Check content:", content)
   const changeBannerCollection = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
-      setBannerCollection(Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      }))
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setBannerCollection({
+          ...Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          }),
+          fileBase64:event.target.result
+        })
+      };
+      reader.readAsDataURL(file);
     }
   }, []);
 
   const changeLogoCollection = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
-      setLogoCollection(Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      }))
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setLogoCollection({
+          ...Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          }),
+          fileBase64:event.target.result
+        })
+      };
+      reader.readAsDataURL(file);
     }
   }, []);
 
@@ -451,7 +480,7 @@ console.log("Check content:", content)
 
   function renderCardAudience(){
     return (
-      <div className={styles.cardAudienceWrapper}>
+      <div className={styles.cardAudienceWrapper} id="card-audience">
         <div className={styles.ctnTitle}>
             <div className={styles.rowTitle} />
             <Typography variant="h5" marginTop={2} marginX={2} paragraph>
@@ -774,7 +803,7 @@ console.log("Check content:", content)
   function renderSetupAirdrop(){
     return (
       <div className={styles.setupAirdropWrapper}>
-        <DefaultButton label={"Setup Airdrop"} onClick={handleSubmit} />
+        <DefaultButton isLoading={loadingSubmit} label={"Setup Airdrop"} onClick={handleSubmit} />
       </div>
     )
   }

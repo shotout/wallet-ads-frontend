@@ -249,11 +249,11 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                     </Typography>
                                 </div>
                             </div>
-                            <div className={styles.btnAddAudience} onClick={onAdd}>
+                            <a className={styles.btnAddAudience} onClick={onAdd} href="#card-audience">
                                 <Typography variant="body1" fontWeight={'bold'} color="#fff" textAlign={'center'}>
                                     Add audience
                                 </Typography>
-                            </div>
+                            </a>
                     {selectedPage && (
                         <div className={styles.ctnArrow}>
                             <img src={triangleIcon} alt="arrow" />
