@@ -149,8 +149,8 @@ export default makeStyles((theme) => ({
         position: 'absolute',
         cursor: 'pointer',
         right: -12,
-        width: 24,
-        height: 24,
-        top: 10
+        width: 20,
+        height: 20,
+        top: 30
     }
 }))

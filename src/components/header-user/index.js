@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-import { handleLogout } from 'src/helpers/auth'
+import { handleLogout } from '../../helpers/auth'
 import SvgIconStyle from '../SvgIconStyle'
 import useStyles from './styles'
 

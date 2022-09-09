@@ -7,7 +7,8 @@ import {
   Select,
   Typography,
   Checkbox,
-  ListItemText
+  ListItemText,
+  Grid
 } from '@mui/material';
 import CardAudienceSummary from '../card-audience-summary';
 import FilePicker from '../file-picker';
@@ -291,7 +292,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 value={formValues.balancedTargeting.year}
                                 onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
                             <Typography variant="body2">
-                                Years
+                                {isNaN(formValues.balancedTargeting.year) || (Number(formValues.balancedTargeting.year) <= 1) ? 'Year' : 'Years'}
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.months ? styles.ctnGrayInputDisable : {}}`}>
@@ -300,7 +301,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}}
                                 placeholder='-' type={'text'} />
                             <Typography variant="body2">
-                                Months
+                                {isNaN(formValues.balancedTargeting.months) || (Number(formValues.balancedTargeting.months) <= 1) ? 'Month' : 'Months'}
                             </Typography>
                         </div>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.day ? styles.ctnGrayInputDisable : {}}`}>
@@ -309,7 +310,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 value={formValues.balancedTargeting.day}
                                 onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
                             <Typography variant="body2">
-                                Days
+                                {isNaN(formValues.balancedTargeting.day) || (Number(formValues.balancedTargeting.day) <= 1) ? 'Day' : 'Days'}
                             </Typography>
                         </div>
                     </div>
@@ -378,7 +379,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 <div className={styles.ctnLeftBalance}>
                         <div className={styles.ctnTitleInput}>
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
-                                +Airdrop Received
+                                +Airdrops Received
                             </Typography>
                             <div className={styles.askCtn}>
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
@@ -502,7 +503,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     <div className={styles.inputSectionLeft}>
                         <div className={styles.ctnTitleInput}>
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
-                                +Amount of transaction
+                                +Amount of transactions
                             </Typography>
                             <div className={styles.askCtn}>
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
@@ -615,7 +616,6 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     }
                 }}>
                 <div className={styles.ctnHeader}>
-                    
                     <div className={styles.ctnBgBtn}>
                         <SvgIconStyle src={targetIcon} sx={{ width: 1, height: 1, bgcolor: getCategoryColor('detail-targeting', '#8C65CC') }} />
                     </div>
@@ -626,10 +626,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={styles.ctnHeaderTitle}>
                         <Typography variant="h6" color={getCategoryColor('detail-targeting')} marginBottom={0}>
-                            DETAIL TARGETING
+                            DETAILED TARGETING
                         </Typography>
                         <Typography variant="subtitle2" color={getCategoryColor('detail-targeting', "#8C65CC")}>
-                            +Price: USD0.079 per sendout
+                            Price: USD0.079 per sendout
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -674,7 +674,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             </div>
                         </div>
                         <Typography variant="subtitle2" color={getCategoryColor('upload', "#AD4061")}>
-                            +Price: USD0.019 per sendout
+                            Price: USD0.019 per sendout
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
@@ -740,8 +740,14 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderContent(){
         return (
             <div className={styles.ctnMainContent}>
-                {renderLeftContent()}
-                {renderRightContent()}
+                <Grid container spacing={2}>
+                    <Grid item md={9}xs={12} className={styles.ctnSectionAd}>
+                        {renderLeftContent()}
+                    </Grid>
+                    <Grid item md={3}xs={12} className={styles.ctnSectionAd}>
+                        {renderRightContent()}
+                    </Grid>
+                </Grid>
             </div>
         )
     }

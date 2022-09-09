@@ -7,9 +7,9 @@ export default makeStyles((theme) => ({
     cardAudience: {
         backgroundColor: '#fff',
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
-        width: 320,
+        width: '100%',
         height: '100%',
-        marginLeft: 20,
+        marginRight: 20,
         padding: 20,
         borderRadius: 20,
         marginBottom: 40,
@@ -20,6 +20,7 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         // cursor: 'pointer',
         // minHeight: 400,
+        position: 'relative'
     },
     headerAudience: {
         backgroundColor: '#fff',
@@ -27,7 +28,7 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '230px',
+        width: '100%',
         paddingBottom: 12,
         height: 52,
         position: 'absolute',
@@ -35,7 +36,9 @@ export default makeStyles((theme) => ({
         '& > h5':{
             zIndex: 99
         },
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderTopRightRadius: 20,
+        borderTopLeftRadius: 20
     },
     ctnWrapper: {
         position: 'absolute',

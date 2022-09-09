@@ -244,7 +244,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                     <div className={styles.ctnSectionSummary}>
                                 <div className={styles.ctnPriceTag}>
                                     <img src={pricetagIcon} alt="pricetag" />
-                                    <Typography variant="body2" fontWeight={'bold'} color="#7089FF">
+                                    <Typography variant="body2" fontWeight={'bold'} textAlign="center" color="#7089FF">
                                         {`USD${getAudiencePrice(data)} per sendout`}
                                     </Typography>
                                 </div>

@@ -31,24 +31,25 @@ export default makeStyles((theme) => ({
     },
     ctnHeader: {
         display: 'flex',
-        alignItems: 'center',
+        // alignItems: 'center',
         position: 'relative'
     },
     ctnLeftHeader: {
         cursor: 'pointer',
-        // background: '#90B272',
         paddingLeft: 10,
         '& > #ctn-title':{
+            position: 'relative',
             '& > span': {
                 color: '#fff',
                 fontSize: 40,
                 fontWeight: '600',
                 zIndex: 99,
+                position: 'absolute',
+                top: -3
             },
         },
         // marginRight: 20,
         position: 'relative',
-        width: 62
     },
     ctnBgBtn: {
         position: 'absolute',
@@ -65,6 +66,7 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         paddingRight: 10,
         marginRight: 30,
+        paddingLeft: 40,
         borderRight: '1px solid #6C6B86',
         // width: '40%'
         flexGrow: 1
@@ -74,7 +76,7 @@ export default makeStyles((theme) => ({
         paddingRight: 20,
     },
     ctnRightContent: {
-        width: 340,
+        width: '100%',
         marginRight: 22
     },
     ctnPurple: {
@@ -347,8 +349,8 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         '& > span':{
             fontSize: 15,
-            paddingLeft: 6,
-            paddingRight: 6,
+            paddingLeft: 12,
+            paddingRight: 12,
             fontFamily: 'Public Sans,sans-serif',
             textAlign: 'center',
         },

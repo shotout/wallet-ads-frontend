@@ -23,7 +23,7 @@ const MainStyle = styled('main', {
   // paddingBottom: HEADER.MOBILE_HEIGHT + 24,
   [theme.breakpoints.up('lg')]: {
     paddingLeft: 16,
-    paddingRight: 16,
+    // paddingRight: 16,
     paddingTop: 0,
     // paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
     width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
