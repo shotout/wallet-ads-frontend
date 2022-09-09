@@ -24,8 +24,8 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                     </Typography>
                 )}
                         {target.cryptoCurrency && (
-                            <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                                {`+ Cryptocurrencies: ${target.cryptoCurrency}`}
+                            <Typography className={styles.txtCurrency} variant="span" textAlign={'center'} marginBottom={0.2}>
+                                {`+ Cryptocurrencies: ${target.cryptoCurrency.join(', ')}`}
                             </Typography>
                         )}
                         {(target.year || target.months || target.day) && (
@@ -69,7 +69,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                             )}
                             {detail.creatorName && (
                                 <Typography variant="span" textAlign={'center'} paragraph>
-                                    {`+ Creator name: ${detail.creatorName}`}
+                                    {`+ Nft purchases: ${detail.creatorName}`}
                                 </Typography>
                             )}
                         </div>
@@ -79,11 +79,18 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
 
     function renderPrice(){
         return (
-            <div className={styles.ctnPriceInput}>
-                <span>
-                    USD
-                </span>
-                <input name="budget" placeholder='0000' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
+            <div className={styles.inputPriceWrapper}>
+                <div className={styles.ctnPriceInput}>
+                    <span>
+                        USD
+                    </span>
+                    <input name="budget" placeholder='0000' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
+                </div>
+                {data.budgetAds === '' && (
+                    <Typography variant="body2" textAlign={'center'} color="#AD4061">
+                        *This field is required.
+                    </Typography>
+                )}
             </div>
         )
     }
@@ -92,9 +99,11 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
         if(data.selectedCategory === 'detail-targeting'){
             return (
                 <div className={styles.ctnDescAudience}>
-                    {renderBalancedTargeting()}
-                    {renderDetailTargeting()}
-                    {renderPrice()}
+                    <div className={styles.ctnAudienceWrapper}>
+                        {renderBalancedTargeting()}
+                        {renderDetailTargeting()}
+                    </div>
+                        {renderPrice()}
                     {!isEdit && (
                         <Typography variant="span" textAlign={'center'} paragraph>
                             {`USD${getAudiencePrice(data)} per airdrop `}
@@ -116,9 +125,11 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
         if(data.selectedCategory === 'optimized'){
             return (
                 <div className={styles.ctnDescAudience}>
-                    <Typography variant="span" textAlign={'center'} paragraph>
-                    The audience consists of a broad mix of users, optimized by our algorithm.
-                    </Typography>
+                    <div className={styles.ctnDefaultContentWrapper}>
+                        <Typography variant="span" textAlign={'center'} paragraph>
+                        The audience consists of a broad mix of users, optimized by our algorithm.
+                        </Typography>
+                    </div>
                     {renderPrice()}
                     {!isEdit && (
                       <Typography variant="span" textAlign={'center'} paragraph>
@@ -141,17 +152,19 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
         if(data.selectedCategory === 'upload'){
             return (
                 <div className={styles.ctnDescAudience}>
-                    {data.audienceFile && (
-                        <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                        {`+ Audience: ${data.audienceFile.name}`}
-                    </Typography>
-                    )}
-                    {renderPrice()}
-                    {!isEdit && (
-                      <Typography variant="span" textAlign={'center'} paragraph>
-                        {`USD${getAudiencePrice(data)} per airdrop `}
-                      </Typography>  
-                    )}
+                    <div className={styles.ctnDefaultContentWrapper}>
+                        {data.audienceFile && (
+                            <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
+                            {`+ Audience: ${data.audienceFile.name}`}
+                        </Typography>
+                        )}
+                        </div>
+                        {renderPrice()}
+                        {!isEdit && (
+                        <Typography variant="span" textAlign={'center'} paragraph>
+                            {`USD${getAudiencePrice(data)} per airdrop `}
+                        </Typography>  
+                        )}
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
@@ -178,7 +191,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
     return (
         <div className={styles.ctnAudience}>
                 <div
-                    className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : {}}`}
+                    className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''}`}
                     onClick={() => {
                         if(!data.selectedCategory){
                             if(typeof onPressCard === 'function') onPressCard()

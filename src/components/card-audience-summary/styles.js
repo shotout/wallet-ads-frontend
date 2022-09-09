@@ -20,7 +20,13 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         // cursor: 'pointer',
         // minHeight: 400,
-        position: 'relative'
+        position: 'relative',
+        '& > $ctnContentSummary':{
+            scrollbarWidth: 'none'
+        },
+        '& > $ctnContentSummary::-webkit-scrollbar':{
+            display: 'none'
+        },
     },
     headerAudience: {
         backgroundColor: '#fff',
@@ -49,7 +55,7 @@ export default makeStyles((theme) => ({
     },
     ctnDescAudience: {
         marginTop: 20,
-        padding: '0px 8px'
+        padding: '0px 8px',
     },
     ctnPrice: {
         width: '100%',
@@ -154,7 +160,7 @@ export default makeStyles((theme) => ({
             alignItems: 'center',
             flexDirection: 'column',
             flexGrow: 1,
-            marginLeft: 16
+            // marginLeft: 16
         }
     },
     txtUnderline: {

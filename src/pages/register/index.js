@@ -61,7 +61,6 @@ export default function Register(){
             setContentType('success')
             setLoading(false)
         }catch(err){
-            console.log("Check err:", err)
             if(err.data){
                 if(err.data.errors){
                     setErrorMessage(responseValidatorObj(err.data.errors))

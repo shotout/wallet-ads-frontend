@@ -19,7 +19,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         flexDirection: 'column',
         minHeight: 400,
-        paddingTop: 22,
+        paddingTop: 0,
         overflow: 'hidden'
     },
     ctnCursor: {
@@ -50,7 +50,14 @@ export default makeStyles((theme) => ({
         objectFit: 'contain'
     },
     ctnDescAudience: {
-        marginTop: 20
+        marginTop: 20,
+        position: 'relative',
+        '& > $ctnAudienceWrapper':{
+            scrollbarWidth: 'none'
+        },
+        '& > $ctnAudienceWrapper::-webkit-scrollbar':{
+            display: 'none'
+        },
     },
     ctnPrice: {
         width: '100%',
@@ -63,7 +70,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center'
     },
     ctnPriceInput: {
-        width: '100%',
+        // width: '100%',
         border: '1px solid #122D46',
         height: 60,
         borderRadius: 12,
@@ -83,7 +90,7 @@ export default makeStyles((theme) => ({
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
             height: '100%',
-            width: 80,
+            maxWidth: 90,
             outline: 'none',
             textAlign: 'left',
             fontSize: '1.25rem',
@@ -92,7 +99,10 @@ export default makeStyles((theme) => ({
     },
     descFilledWrapper: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems:'center',
+        position: 'relative'
     },
     ctnEmptyAudience: {
         height: '100%',
@@ -152,5 +162,30 @@ export default makeStyles((theme) => ({
         width: 20,
         height: 20,
         top: 30
-    }
+    },
+    inputPriceWrapper:{
+        marginBottom: 6,
+        width: '100%'
+    },
+    ctnAudienceWrapper: {
+        overflow: 'scroll',
+        height: 140,
+        flexDirection: 'column',
+    },
+    ctnDefaultContentWrapper: {
+        // overflow: 'scroll',
+        height: 140,
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+        display: 'flex'
+    },
+    txtCurrency:{
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        WebkitLineClamp: 2,
+        textAlign: 'center',
+        overflow: 'hidden',
+    },
 }))

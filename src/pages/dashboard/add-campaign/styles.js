@@ -316,6 +316,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 12,
+        cursor: 'pointer'
     },
     btnCreateAd: {
         display: 'flex',
@@ -431,14 +432,28 @@ const useStyles = makeStyles((theme) => ({
             fontSize: 15
         }
     },
+    ctnAdAudience:{
+        position: 'relative'
+    },
     txtAudienceTargeting:{
         '& > span':{
             color: '#8C65CC',
             marginRight: 4,
             fontWeight: 'bold',
-            fontSize: 15
-        }
+            fontSize: 15,
+        },
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        WebkitLineClamp: 2,
+        textAlign: 'center',
+        overflow: 'hidden',
     },
+    txtUserAirdrop: {
+        '& > span':{
+            fontWeight: '800'
+        }
+    }
 }))
 
 export default useStyles

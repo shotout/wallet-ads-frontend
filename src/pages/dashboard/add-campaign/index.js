@@ -308,7 +308,7 @@ export default function AddCampaign({ content }) {
           {detail.cryptoCurrency && (
             <Typography variant="body2" className={styles.txtAudienceTargeting} textAlign={"center"} marginTop={1}>
               <span>+</span>
-              {`Wallet-type: ${detail.cryptoCurrency}`}
+              {`Wallet-type: ${detail.cryptoCurrency.join(', ')}`}
           </Typography>
           )}
           {targeting.transactionAmount && (
@@ -469,8 +469,8 @@ export default function AddCampaign({ content }) {
             <Typography variant="subtitle1" fontSize={20} marginBottom={1} paragraph>
             That's great!
             </Typography>
-            <Typography variant="subtitle1" fontSize={20} marginBottom={1} paragraph>
-            <b>{`${getTotalUserGetAirdrop(audienceForm).toLocaleString()} users`}</b> will receive your airdrop
+            <Typography variant="subtitle1" fontSize={20} className={styles.txtUserAirdrop} marginBottom={1} paragraph>
+            <span>{`${getTotalUserGetAirdrop(audienceForm).toLocaleString()} users`}</span> will receive your airdrop
             </Typography>
           </div>
         </div>
@@ -613,7 +613,6 @@ export default function AddCampaign({ content }) {
       </div>
     )
   }
-  console.log("Check pictureData:", pictureData)
 
   function renderRightAdCreation(content, index){
     return (
@@ -660,27 +659,27 @@ export default function AddCampaign({ content }) {
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={websiteIcon} alt="website" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder='yourwebsitehere.com' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={discordIcon} alt="discord" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder='https://discord.gg/yourdiscord' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={twitterIcon} alt="twitter" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_twitter')}} value={formValues.ads_page_twitter} placeholder='https://twitter.com/YourTwitter' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_twitter')}} value={formValues.ads_page_twitter} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={instagramIcon} alt="instagram" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_instagram')}} value={formValues.ads_page_instagram} placeholder='https://instagram.com/YourInstagram' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_instagram')}} value={formValues.ads_page_instagram} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={mediumIcon} alt="medium" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder='https://medium.com/@YourMedium' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={facebookIcon} alt="facebook" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_facebook')}} value={formValues.ads_page_facebook} placeholder='https://facebook.com/Your.Facebook' type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_facebook')}} value={formValues.ads_page_facebook} placeholder="" type="text"  />
           </div>
         </div>
       </div>
@@ -718,14 +717,14 @@ export default function AddCampaign({ content }) {
               {audienceForm.map((item, audienceIndex) => (
                   <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                     <div className={styles.ctnAudienceWrapper}>
-                      <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
+                      <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`} onClick={() => {
+                        if(item.optimized){
+                          handleChangePicture(audienceIndex, 'fe_id', index)
+                        }
+                      }}>
                         <CheckboxAds
-                          isActive={content.fe_id.includes(audienceIndex)}
-                          onChange={() => {
-                            if(item.optimized){
-                              handleChangePicture(audienceIndex, 'fe_id', index)
-                            }
-                          }} />
+                          
+                          isActive={content.fe_id.includes(audienceIndex)} />
                         <Typography variant="subtitle1" color="#808080">
                           {`Audience ${audienceIndex + 1}`}
                         </Typography>
