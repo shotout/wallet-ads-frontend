@@ -29,6 +29,7 @@ const defaultState = {
     email:"",
     password:"",
     password_confirmation:"",
+    photo: { url: null}
 }
 
 export default function SettingUser({ userData }){
@@ -58,6 +59,14 @@ export default function SettingUser({ userData }){
     const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
+
+    const handleRemoveAvatar = () => {
+        setAvatarSource(null)
+        setValues({
+            ...values,
+            photo: { url: null}
+        })
+    }
 
 
     const handleSubmit = async() => {
@@ -107,7 +116,7 @@ export default function SettingUser({ userData }){
     function renderProfilePicture(){
         return (
             <div className={styles.ctnProfilePicture}>
-                <AvatarPicker onRemove={() => {setAvatarSource(null)}} avatarSource={avatarSource === null ? null : typeof avatarSource === 'string' ? avatarSource : avatarSource.preview || null} onDrop={handleChangePicture} />
+                <AvatarPicker initialPhoto={values.photo && values.photo.url}  onRemove={handleRemoveAvatar} avatarSource={avatarSource === null ? null : typeof avatarSource === 'string' ? avatarSource : avatarSource.preview || null} onDrop={handleChangePicture} />
                 <DefaultButton ctnBtnStyle={styles.btnSave} label={"Save Changes"} isLoading={isLoading} onClick={handleSubmit} />
             </div>
         )
