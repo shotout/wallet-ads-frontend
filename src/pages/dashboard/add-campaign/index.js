@@ -17,6 +17,7 @@ import { getUserData } from '../../../helpers/auth';
 import { getCampaignItem, handleAddCampaign } from '../../../utils/requests';
 import DefaultButton from '../../../components/default-button';
 import moment from 'moment';
+import AuthFooter from '../../../components/auth-footer';
 
 // ----------------------------------------------------------------------
 
@@ -69,10 +70,10 @@ export default function AddCampaign({ content }) {
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
 console.log("Check content:", content)
   useEffect(() => {
@@ -167,7 +168,7 @@ console.log("Check content:", content)
       if(index === contentIndex){
         return {
           ...item,
-          budgetAds: event.target.value
+          budgetAds: event.target.value.replace(/[^0-9]/g, '')
         }
       }
       return item
@@ -269,6 +270,49 @@ console.log("Check content:", content)
     }
   }, []);
 
+  function renderAdAudience(item){
+    if(item.selectedCategory === 'detail-targeting'){
+      const detail = item.balancedTargeting
+      const targeting = item.detailTargeting
+      return (
+        <div className={styles.ctnAdAudience}>
+          {detail.cryptoCurrency && (
+            <Typography variant="body2" className={styles.txtAudienceTargeting} textAlign={"center"} marginTop={1}>
+              <span>+</span>
+              {`Wallet-type: ${detail.cryptoCurrency}`}
+          </Typography>
+          )}
+          {targeting.transactionAmount && (
+            <Typography variant="body2" className={styles.txtAudienceTargeting} textAlign={"center"} marginTop={1}>
+              <span>+</span>
+              {`Amount of transactions: ${targeting.transactionAmount}`}
+          </Typography>
+          )}
+          {targeting.tradingVolume && (
+            <Typography variant="body2" className={styles.txtAudienceTargeting} textAlign={"center"} marginTop={1}>
+              <span>+</span>
+              {`Trading volume: ${targeting.tradingVolume}`}
+          </Typography>
+          )}
+        </div>
+      )
+    }
+    if(item.selectedCategory === 'optimized'){
+      return (
+        <div className={styles.ctnAdAudience}>
+          <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={"center"} marginTop={1}>
+              <span>+</span>
+              Optmized Targeting
+          </Typography>
+          <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={"center"}>
+            The audience consists of a broad mix of users, optimized by our algorithm.
+          </Typography>
+        </div>
+      )
+    }
+    
+  }
+
 
   function renderCampaignName(){
     return (
@@ -361,14 +405,14 @@ console.log("Check content:", content)
   function renderTargeting(){
     return (
       <div className={styles.ctnSectionTarget}>
-        <div className={styles.ctnIconTarget}>
+        <div className={styles.ctnIconTargetAlt}>
           <img src={targetIcon} alt="campaign" />
         </div>
         <div className={styles.ctnMidInput}>
-          <Typography variant="h6" paragraph>
+          <Typography variant="h6" marginBottom={0.5}>
             Targeting
           </Typography>
-          <Typography variant="span" paragraph>
+          <Typography variant="span">
           Reach exactly the Crypto-Users that you want to reach by using our state-of-the-art targeting options. And no need to worry – even if your audiences overlap, we will make sure that each wallet only receives your wallet ad once to get the most out of your budget and to avoid that your project might be considered as spam. Additionally, we will automatically exclude users who unsubscribed from our ads.
           </Typography>
           </div>
@@ -388,7 +432,7 @@ console.log("Check content:", content)
               Total Budget
             </Typography>
             <Typography variant="subtitle1" fontSize={20} color={'#667C8B'} marginBottom={1} paragraph>
-              {`USD${getTotalBudget(audienceForm)}`}
+              {`USD${getTotalBudget(audienceForm).toLocaleString()}`}
             </Typography>
           </div>
           {/* <div className={styles.ctnHorizontalRow} /> */}
@@ -397,7 +441,7 @@ console.log("Check content:", content)
             That's great!
             </Typography>
             <Typography variant="subtitle1" fontSize={20} marginBottom={1} paragraph>
-            <b>{`${getTotalUserGetAirdrop(audienceForm)} users`}</b> will receive your airdrop
+            <b>{`${getTotalUserGetAirdrop(audienceForm).toLocaleString()} users`}</b> will receive your airdrop
             </Typography>
           </div>
         </div>
@@ -644,18 +688,21 @@ console.log("Check content:", content)
           <Grid container spacing={2}>
               {audienceForm.map((item, audienceIndex) => (
                   <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
-                  <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
-                    <CheckboxAds
-                      isActive={content.fe_id.includes(audienceIndex)}
-                      onChange={() => {
-                        if(item.optimized){
-                          handleChangePicture(audienceIndex, 'fe_id', index)
-                        }
-                      }} />
-                    <Typography variant="subtitle1" color="#808080">
-                      {`Audience ${audienceIndex + 1}`}
-                    </Typography>
-                  </div>
+                    <div className={styles.ctnAudienceWrapper}>
+                      <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
+                        <CheckboxAds
+                          isActive={content.fe_id.includes(audienceIndex)}
+                          onChange={() => {
+                            if(item.optimized){
+                              handleChangePicture(audienceIndex, 'fe_id', index)
+                            }
+                          }} />
+                        <Typography variant="subtitle1" color="#808080">
+                          {`Audience ${audienceIndex + 1}`}
+                        </Typography>
+                      </div>
+                      {renderAdAudience(item)}
+                    </div>
                 </Grid>
                 ))}
           </Grid>
@@ -744,6 +791,7 @@ console.log("Check content:", content)
         {renderCollectionPage()}
         {renderSetupAirdrop()}
         </div>
+        <AuthFooter />
       </div>
     </Page>
   );

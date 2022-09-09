@@ -20,12 +20,12 @@ const MainStyle = styled('main', {
 })(({ collapseClick, theme }) => ({
   flexGrow: 1,
   paddingTop: HEADER.MOBILE_HEIGHT + 24,
-  paddingBottom: HEADER.MOBILE_HEIGHT + 24,
+  // paddingBottom: HEADER.MOBILE_HEIGHT + 24,
   [theme.breakpoints.up('lg')]: {
     paddingLeft: 16,
     paddingRight: 16,
     paddingTop: 0,
-    paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
+    // paddingBottom: HEADER.DASHBOARD_DESKTOP_HEIGHT + 24,
     width: `calc(100% - ${NAVBAR.DASHBOARD_WIDTH}px)`,
     transition: theme.transitions.create('margin-left', {
       duration: theme.transitions.duration.shorter,
@@ -88,7 +88,7 @@ export default function DashboardLayout({ children }) {
     <Box
       sx={{
         display: { lg: 'flex' },
-        minHeight: { lg: 1 },
+        // minHeight: { lg: 1 },
       }}
     >
       {/* <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} /> */}

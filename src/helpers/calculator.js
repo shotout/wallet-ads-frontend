@@ -13,7 +13,7 @@ export const getAudiencePrice = (data) => {
 
 export const calculateAirdropPerUser = (data) => {
     const audiencePrice = getAudiencePrice(data)
-    const budgetPrice = data.budgetAds ? Number(data.budgetAds) : null
+    const budgetPrice = data.budgetAds ? Number(data.budgetAds.replace(',','.')) : null
     if(budgetPrice && audiencePrice){
         return Math.round(budgetPrice / audiencePrice)
     }
@@ -55,3 +55,5 @@ export const getTotalUserGetAirdrop = (formArr) => {
     }
     return 0
 }
+
+export const numberWithCommas = (x) => x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")

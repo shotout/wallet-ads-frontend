@@ -83,7 +83,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                 <span>
                     USD
                 </span>
-                <input name="budget" maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
+                <input name="budget" placeholder='0000' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
             </div>
         )
     }
@@ -103,7 +103,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data)} users`}
+                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops
@@ -128,7 +128,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data)} users`}
+                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops
@@ -155,7 +155,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data)} users`}
+                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops

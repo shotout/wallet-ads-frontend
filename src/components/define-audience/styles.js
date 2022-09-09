@@ -70,7 +70,7 @@ export default makeStyles((theme) => ({
         flexGrow: 1
     },
     ctnHeaderDesc: {
-        width: '49%',
+        width: '45%',
         paddingRight: 20,
     },
     ctnRightContent: {
@@ -146,6 +146,9 @@ export default makeStyles((theme) => ({
         paddingRight: 56,
         paddingLeft: 20,
         position: 'relative',
+        '& > div':{
+            maxWidth: 244
+        }
     },
     ctnRightTarget: {
         width: '60%',
@@ -167,7 +170,7 @@ export default makeStyles((theme) => ({
         marginTop: 8,
         '& > div': {
             '& > div': {
-                height: '44px !important',
+                height: '38px !important',
                 background: '#F1F1F1 !important',
                 '& > .MuiOutlinedInput-notchedOutline':{
                     border: 'none !important'
@@ -180,12 +183,12 @@ export default makeStyles((theme) => ({
     },
     ctnTitleInput:{
         display: 'flex',
-        alignItems: 'center',
-        '& > img': {
-            width: 16,
-            height: 16,
+        position: 'relative',
+        '& > div': {
+            width: 20,
+            height: 14,
             objectFit: 'contain',
-            marginLeft: 8
+            marginLeft: 2
         }
     },
     ctnRowInput: {
@@ -196,7 +199,7 @@ export default makeStyles((theme) => ({
     ctnGrayInput: {
         marginTop: 8,
         background: '#F1F1F1',
-        height: 44,
+        height: 38,
         borderRadius: 8,
         overflow: 'hidden',
         marginRight: 20,
@@ -215,18 +218,24 @@ export default makeStyles((theme) => ({
             textAlign: 'center',
             marginRight: 12,
             fontSize: 15
+        },
+        '& > p':{
+            color: '#000'
         }
     },
     ctnGrayInputDisable: {
         '& > input': {
             background: '#F1F1F1 !important'
         },
+        '& > p':{
+            color: '#AAA4A4 !important'
+        }
     },
     borderRed: {
         borderTopColor: '#AD4061',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     ctnDetailInput: {
@@ -242,7 +251,7 @@ export default makeStyles((theme) => ({
         '& > input': {
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
-            height: 44,
+            height: 38,
             width: '100%',
             background: '#F1F1F1',
             borderRadius: 8,
@@ -278,11 +287,11 @@ export default makeStyles((theme) => ({
         borderBottomLeftRadius: 12
     },
     ctnRowTitle:{
-        '& > img': {
-            width: 16,
+        '& > div': {
+            width: 20,
             height: 16,
             objectFit: 'contain',
-            marginLeft: 8
+            marginLeft: 4
         },
         display: 'flex',
         // alignItems: 'center',
@@ -296,7 +305,7 @@ export default makeStyles((theme) => ({
     ctnInputSelectAmount: {
         '& > div': {
             '& > div': {
-                height: '44px !important',
+                height: '38px !important',
                 background: '#F1F1F1 !important',
                 width: 80,
                 borderTopRightRadius: '0px',
@@ -304,7 +313,7 @@ export default makeStyles((theme) => ({
                 '& > .MuiSvgIcon-root':{
                     background: '#8C65CC',
                     color: '#fff',
-                    height: 44,
+                    height: 38,
                     width: 20,
                     right: '0px !important',
                     top: '0px !important',
@@ -330,7 +339,7 @@ export default makeStyles((theme) => ({
         }
     },
     ctnInputRawAmount: {
-        height: '44px',
+        height: '38px',
         background: '#F1F1F1',
         display: 'flex',
         justifyContent: 'center',
@@ -368,7 +377,7 @@ export default makeStyles((theme) => ({
         marginTop: 8,
         '& > div':{
             width:'100%',
-            height: '44px !important',
+            height: '38px !important',
             background: '#F1F1F1 !important',
             '& > .MuiOutlinedInput-notchedOutline':{
                 border: 'none !important'

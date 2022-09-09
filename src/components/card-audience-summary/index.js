@@ -237,13 +237,15 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                             {label}
                         </Typography>
                     </div>
-                    {renderContent()}
+                    <div className={styles.ctnContentSummary}>
+                        {renderContent()}
+                    </div>
 
                     <div className={styles.ctnSectionSummary}>
                                 <div className={styles.ctnPriceTag}>
                                     <img src={pricetagIcon} alt="pricetag" />
                                     <Typography variant="body2" fontWeight={'bold'} color="#7089FF">
-                                        {`USD${getAudiencePrice(data)} per airdrop`}
+                                        {`USD${getAudiencePrice(data)} per sendout`}
                                     </Typography>
                                 </div>
                             </div>

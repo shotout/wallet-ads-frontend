@@ -155,5 +155,11 @@ export default makeStyles((theme) => ({
     },
     txtUnderline: {
         textDecoration: 'underline'
+    },
+    ctnContentSummary:{
+        maxHeight: 340,
+        overflow: 'scroll',
+        paddingTop: 44,
+
     }
 }))

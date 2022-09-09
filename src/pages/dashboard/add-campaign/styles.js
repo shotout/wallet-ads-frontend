@@ -3,7 +3,8 @@ import { makeStyles } from "@mui/styles";
 const useStyles = makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
-        background: '#fff'
+        background: '#fff',
+        paddingBottom: 60
     },
     ctnSection: {
         display: 'flex',
@@ -17,10 +18,15 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnIcon: {
         marginRight: 40,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
         '& > img': {
             width: 70,
             height: 60,
-            objectFit: 'contain'
+            objectFit: 'contain',
+            margin: 'auto'
         }
     },
     ctnMidInput: {
@@ -134,8 +140,8 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnDefineAudience: {
         background: 'rgb(45, 49, 151, 0.1)',
-        marginLeft: 20,
-        marginRight: 20,
+        marginLeft: 0,
+        marginRight: 0,
         paddingTop: 20,
         paddingBottom: 20,
         borderRadius: 20,
@@ -150,6 +156,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 20,
         marginRight: 20,
         marginBottom: 20,
+        // padding: '12px 20px 16px 20px',
         padding: 20,
         borderRadius: 20
     },
@@ -158,6 +165,14 @@ const useStyles = makeStyles((theme) => ({
         '& > img': {
             width: 100,
             height: 100,
+            objectFit: 'contain'
+        }
+    },
+    ctnIconTargetAlt: {
+        marginRight: 40,
+        '& > img': {
+            width: 190,
+            height: 80,
             objectFit: 'contain'
         }
     },
@@ -407,7 +422,23 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnSectionAd:{
         paddingRight: 20
-    }
+    },
+    txtAudienceOptimized:{
+        '& > span':{
+            color: '#90B272',
+            marginRight: 4,
+            fontWeight: 'bold',
+            fontSize: 15
+        }
+    },
+    txtAudienceTargeting:{
+        '& > span':{
+            color: '#8C65CC',
+            marginRight: 4,
+            fontWeight: 'bold',
+            fontSize: 15
+        }
+    },
 }))
 
 export default useStyles

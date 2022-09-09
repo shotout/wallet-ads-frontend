@@ -3,7 +3,9 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
-        background: '#fff'
+        background: '#fff',
+        minHeight: '98vh',
+        paddingBottom: 80
     },
     ctnWrapper: {
         maxWidth: '1366px',

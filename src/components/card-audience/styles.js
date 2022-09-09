@@ -108,7 +108,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        bottom: -38,
+        bottom: -50,
         '& > img':{
             width: 60,
             height: 30,
@@ -148,7 +148,7 @@ export default makeStyles((theme) => ({
     ctnEdit: {
         position: 'absolute',
         cursor: 'pointer',
-        right: 0,
+        right: -12,
         width: 24,
         height: 24,
         top: 10

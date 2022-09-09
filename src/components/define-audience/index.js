@@ -17,6 +17,7 @@ const targetIcon = '/assets/svg/target_background.svg'
 const purpleAsk = '/assets/purple_ask.png'
 const redAsk = '/assets/red_ask.png'
 const grayAsk = '/assets/ask_gray.png'
+const askSvg = '/assets/svg/ask.svg'
 
 const listAirdropReceived = [
     'Select...',
@@ -59,6 +60,20 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             })
         }
     }, [selectedAudience])
+
+    const handleSubmitAudience = () => {
+        if(formValues.balancedTargeting && formValues.balancedTargeting.cryptoCurrency){
+            onAdd({
+                ...formValues,
+                balancedTargeting: {
+                    ...formValues.balancedTargeting,
+                    cryptoCurrency: formValues.balancedTargeting.cryptoCurrency.filter(item => item !== 'Select...')
+                }
+            })
+        }else{
+            onAdd(formValues)
+        }
+    }
 
     const onChangeBasicValue = (stateName, value) => {
         setFormValues({
@@ -214,7 +229,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                             +Cryptocurrencies used
                         </Typography>
-                        <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
                     </div>
                     <div className={styles.ctnInputMultipleSelect}>
                         <Select
@@ -238,7 +255,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 
                             }}
                             >
-                        {['Select...','ETH', 'BNB', 'SOL'].map((option) => {
+                        {['Select...','BTC', 'ETH', 'USDT', 'USDC', 'BNB', 'BUSD', 'XRP', 'ADA', 'SOL', 'DOT'].map((option) => {
                             if(option === 'Select...'){
                                 return null
                             }
@@ -263,7 +280,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                             +Account age
                         </Typography>
-                        <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
                     </div>
                     <div className={styles.ctnRowInput}>
                         <div className={`${styles.ctnGrayInput} ${!formValues.balancedTargeting.year ? styles.ctnGrayInputDisable : {}}`}>
@@ -271,7 +290,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.balancedTargeting.year}
                                 onChange={(target) => {handleChangeBalanceTarget(target, 'year')}} placeholder='-' type={'text'} />
-                            <Typography variant="body2"  color={'#AAA4A4'}>
+                            <Typography variant="body2">
                                 Years
                             </Typography>
                         </div>
@@ -280,7 +299,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.balancedTargeting.months} onChange={(target) => {handleChangeBalanceTarget(target, 'months')}}
                                 placeholder='-' type={'text'} />
-                            <Typography variant="body2"  color={'#AAA4A4'}>
+                            <Typography variant="body2">
                                 Months
                             </Typography>
                         </div>
@@ -289,7 +308,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                                 disabled={!isCategorySelected('detail-targeting')}
                                 value={formValues.balancedTargeting.day}
                                 onChange={(target) => {handleChangeBalanceTarget(target, 'day')}}  placeholder='-' type={'text'} />
-                            <Typography variant="body2"  color={'#AAA4A4'}>
+                            <Typography variant="body2">
                                 Days
                             </Typography>
                         </div>
@@ -307,7 +326,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Available credit in wallet
                             </Typography>
-                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                            </div>
                         </div>
                         <div className={styles.ctnInputSelect}>
                             <TextField
@@ -332,7 +353,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Trading Volume
                             </Typography>
-                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                            </div>
                         </div>
                         <div className={styles.ctnInputSelect}>
                             <TextField
@@ -357,7 +380,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Airdrop Received
                             </Typography>
-                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                            </div>
                         </div>
                         <div className={styles.ctnInputSelect}>
                             <TextField
@@ -387,7 +412,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             +Add lookalike wallets
                         </Typography>
-                        <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -413,7 +440,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             + Wallet Type
                         </Typography>
-                        <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -439,7 +468,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2">
                             + Location
                         </Typography>
-                        <img src={getAskIcon('detail-targeting')} alt="ask" />
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
@@ -473,7 +504,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Amount of transaction
                             </Typography>
-                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                            </div>
                         </div>
                         <div className={styles.amountInputWrapper}>
                             <div className={`${styles.ctnInputSelectAmount} ${!isCategorySelected('detail-targeting') ? styles.grayArrowBg : {}}`}>
@@ -514,7 +547,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +NFT Purchases
                             </Typography>
-                            <img src={getAskIcon('detail-targeting')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                            </div>
                         </div>
                         <div className={styles.inputCollectionWrapper}>
                             <input 
@@ -594,12 +629,12 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             DETAIL TARGETING
                         </Typography>
                         <Typography variant="subtitle2" color={getCategoryColor('detail-targeting', "#8C65CC")}>
-                            +Price: USD0.079 per airdrop
+                            +Price: USD0.079 per sendout
                         </Typography>
                     </div>
                     <div className={styles.ctnHeaderDesc}>
                         <Typography variant="body1" color="#808080">
-                            Upload your own file with wallet addresses to create an audience
+                        Select more detailed targeting options to reach your audience
                         </Typography>
                     </div>
                 </div>
@@ -634,7 +669,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
                                 UPLOAD YOUR OWN AUDIENCE
                             </Typography>
-                            <img src={getAskIcon('upload')} alt="ask" />
+                            <div className={styles.askCtn}>
+                                <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('upload', '#AD4061') }} />
+                            </div>
                         </div>
                         <Typography variant="subtitle2" color={getCategoryColor('upload', "#AD4061")}>
                             +Price: USD0.019 per sendout
@@ -642,12 +679,41 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={styles.ctnHeaderDesc}>
                         <Typography variant="body1" color="#808080">
-                            Select more detailed targeting options to reach your audience.
+                            Upload your own file with wallet addresses to create an audience
                         </Typography>
                     </div>
                 </div>
                 <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
                     <FilePicker btnStyle={checkIsCategoryActive('upload', true)} onDelete={removeFile} typeScreen={'logo'} file={formValues.audienceFile} label="Upload File" onDrop={(value) => {handleInputFile(value)}} />
+                    
+                <div className={styles.ctnLeftInputTarget}>
+                    <div className={styles.ctnTitleInput}>
+                        <Typography variant="body2">
+                            +Add lookalike wallets
+                        </Typography>
+                        <div className={styles.askCtn}>
+                            <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
+                        </div>
+                    </div>
+                    <div className={styles.ctnInputSelect}>
+                        <TextField
+                            select
+                            fullWidth
+                            placeholder="Select..."
+                            variant="outlined"
+                            disabled={!isCategorySelected('detail-targeting')}
+                            // value={formValues.balancedTargeting.airdropReceived}
+                            // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
+                            >
+                        {['...Select'].map((option) => (
+                            <MenuItem className={styles.txtOption} key={option} value={option}>
+                            {option}
+                            </MenuItem>
+                        ))}
+                        </TextField>
+                    </div>
+                    {renderComingSoon()}
+                </div>
                 </div>
             </div>
         )
@@ -666,7 +732,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <CardAudienceSummary onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}} isEdit onAdd={() => {onAdd(formValues)}} data={formValues} label="Summary" />
+                <CardAudienceSummary onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}} isEdit onAdd={handleSubmitAudience} data={formValues} label="Summary" />
             </div>
         )
     }
