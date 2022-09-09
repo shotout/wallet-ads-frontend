@@ -2,8 +2,6 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import useStyles from './styles';
 
-const whiteCameraIcon = '/assets/camera_icon.png'
-
 export default function CollectionPreview({ label, bannerSource, logoSource, formValues }){
     const styles = useStyles()
 
@@ -37,8 +35,8 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
     function renderDesc(){
         return (
             <div className={styles.ctnDesc}>
-                <Typography variant="h6">{formValues.collectionPageName || 'Collection page name'}</Typography>
-                <Typography variant="body1">{formValues.collectionPageDesc || 'Your collection page text here'}</Typography>
+                <Typography variant="h6">{formValues.ads_page_name || 'Collection page name'}</Typography>
+                <Typography variant="body1">{formValues.ads_page_description || 'Your collection page text here'}</Typography>
             </div>
         )
     }

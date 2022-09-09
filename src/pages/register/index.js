@@ -36,7 +36,13 @@ export default function Register(){
     const [contentType, setContentType] = useState('register')
 
     const handleChange = (prop) => (event) => {
-      setValues({ ...values, [prop]: event.target.value });
+        if(errorMessage[prop].length > 0){
+            setErrorMessage({
+                ...errorMessage,
+                [prop]: ''
+            })
+        }
+        setValues({ ...values, [prop]: event.target.value });
     };
   
     const handleClickShowPassword = () => {
@@ -91,7 +97,7 @@ export default function Register(){
             return (
                 <div className={styles.ctnInput}>
                     <div className={styles.ctnTitle}>
-                        <Typography variant="h4" textAlign={"center"}>
+                        <Typography variant="h4" fontWeight={"800"} textAlign={"center"}>
                             Create an account
                         </Typography>
                     </div>
@@ -106,7 +112,7 @@ export default function Register(){
                                         helperText={errorMessage.company_name}
                                         size='small'
                                         fullWidth
-                                        label="Company Name" />
+                                        placeholder="Company Name" />
                                 </div> 
                             </Grid>
                             <Grid item md={6} xs={12}>
@@ -118,7 +124,7 @@ export default function Register(){
                                         helperText={errorMessage.tax_id}
                                         size='small'
                                         fullWidth
-                                        label="Tax ID" />
+                                        placeholder="Tax ID" />
                                 </div> 
                             </Grid>
                             <Grid item md={6} xs={12}>
@@ -130,7 +136,7 @@ export default function Register(){
                                         helperText={errorMessage.first_name}
                                         size='small'
                                         fullWidth
-                                        label="First Name" />
+                                        placeholder="First Name" />
                                 </div> 
                             </Grid>
                             <Grid item md={6} xs={12}>
@@ -142,7 +148,7 @@ export default function Register(){
                                         helperText={errorMessage.last_name}
                                         size='small'
                                         fullWidth
-                                        label="Last Name" />
+                                        placeholder="Last Name" />
                                 </div> 
                             </Grid>
                             <Grid item md={6} xs={12}>
@@ -154,7 +160,7 @@ export default function Register(){
                                         helperText={errorMessage.street}
                                         size='small'
                                         fullWidth
-                                        label="Street" />
+                                        placeholder="Street address" />
                                 </div> 
                             </Grid>
                             <Grid item md={6} xs={12}>
@@ -168,7 +174,7 @@ export default function Register(){
                                                 helperText={errorMessage.post_code}
                                                 size='small'
                                                 fullWidth
-                                                label="Post Code" />
+                                                placeholder="Post Code" />
                                         </div> 
                                     </Grid>
                                     <Grid item md={6} xs={12}>
@@ -180,7 +186,7 @@ export default function Register(){
                                                 helperText={errorMessage.city}
                                                 size='small'
                                                 fullWidth
-                                                label="City" />
+                                                placeholder="City" />
                                         </div> 
                                     </Grid>
                                 </Grid>
@@ -195,7 +201,7 @@ export default function Register(){
                                         helperText={errorMessage.email}
                                         size='small'
                                         fullWidth
-                                        label="Email address" />
+                                        placeholder="Email address" />
                                 </div> 
                             </Grid>
                             
@@ -208,7 +214,7 @@ export default function Register(){
                                         helperText={errorMessage.phone}
                                         size='small'
                                         fullWidth
-                                        label="Telephone" />
+                                        placeholder="Telephone" />
                                 </div> 
                             </Grid>
 
@@ -235,7 +241,7 @@ export default function Register(){
                                                 </InputAdornment>
                                             )
                                         }}
-                                        label="Create Password" />
+                                        placeholder="Create Password" />
                                 </div> 
                             </Grid>
 
@@ -262,7 +268,7 @@ export default function Register(){
                                                 </InputAdornment>
                                             )
                                         }}
-                                        label="Confrim Password" />
+                                        placeholder="Confrim Password" />
                                 </div> 
                             </Grid>
                         </Grid>
@@ -281,11 +287,11 @@ export default function Register(){
                 <div className={styles.ctnInput}>
                     <div className={styles.ctnSuccess}>
                         <img src={emailBanner} alt="success" />
-                        <Typography variant="h4" marginTop={3} marginBottom={2} fontWeight="800" lineHeight={1.3} textAlign={"center"}>
-                            Please confirm your email address to activate your account.
+                        <Typography variant="h5" marginTop={3} marginBottom={2} fontWeight="800" lineHeight={1.3} textAlign={"center"}>
+                        We are currently validating your data and will send you a link to activate your account within the next 24 hours.
                         </Typography>
                         <Typography variant="body1" textAlign={"center"}>
-                            {`We just sent an email to ${values.email} to confirm your email address. Click the link in the email to activate your account on WALLETADS.`}
+                        Once you receive the activation email, please confirm your email address by clicking the button in the email.
                         </Typography>
                     </div>
                 </div>

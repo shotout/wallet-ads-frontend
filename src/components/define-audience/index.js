@@ -10,7 +10,6 @@ import {
   ListItemText
 } from '@mui/material';
 import CardAudienceSummary from '../card-audience-summary';
-import { purple } from '@mui/material/colors';
 import FilePicker from '../file-picker';
 import SvgIconStyle from '../SvgIconStyle';
 

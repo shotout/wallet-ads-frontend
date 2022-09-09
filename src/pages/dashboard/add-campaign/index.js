@@ -1,15 +1,9 @@
 import { Grid, Typography } from '@mui/material';
-// layouts
-// import Layout from '../../layouts';
-// hooks
-// import useSettings from '../../hooks/useSettings';
-// components
-// import Page from '../../components/Page';
 import useStyles from './styles'
 import BannerPicker from '../../../components/banner-picker';
 import CollectionPreview from '../../../components/collection-preview';
 import CheckboxAds from '../../../components/checkbox';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,6 +14,9 @@ import Page from '../../../components/Page';
 import Layout from '../../../layouts';
 import HeaderUser from '../../../components/header-user';
 import { getUserData } from '../../../helpers/auth';
+import { getCampaignItem, handleAddCampaign } from '../../../utils/requests';
+import DefaultButton from '../../../components/default-button';
+import moment from 'moment';
 
 // ----------------------------------------------------------------------
 
@@ -45,24 +42,30 @@ const twitterIcon = '/assets/twitter.png'
 const websiteIcon = '/assets/website.png'
 
 const initialPicture = [
-  {adCreationMedia: null, selectedAudienceAd: [] },
+  {image: null, fe_id: [], name: '', description: '' },
 ]
 
-export default function AddCampaign() {
+export default function AddCampaign({ content }) {
   const styles = useStyles()
   // const { themeStretch } = useSettings();
   const [bannerCollection, setBannerCollection] = useState(null)
   const [logoCollection, setLogoCollection] = useState(null)
-  const [adCreationMedia, setAdcreationMedia] = useState(null)
   const [pictureData, setPicture] = useState(initialPicture)
   const [formValues, setFormValues] = useState({
-    campaignStartDate: new Date(),
-    availabilityDate: new Date(),
-    collectionPageName: '',
-    collectionPageDesc: '',
+    campaign_name: content.name,
+    campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+    campaign_end_date_type: '',
+    campaign_end_date: new Date(),
+    campaign_end_day: '7',
+    ads_page_name: "",
+    ads_page_description: "",
+    ads_page_website: "",
+    ads_page_discord: "",
+    ads_page_twitter: "",
+    ads_page_instagram: "",
+    ads_page_medium: "",
+    ads_page_facebook: "",
   })
-  const [selectedAvailabilityDay, setAvailabilityDay] = useState('7')
-  const [selectedAvailability, setAvailability] = useState(null)
   const [selectedAudience, setSelectedAudience] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
@@ -71,11 +74,91 @@ export default function AddCampaign() {
     {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
+console.log("Check content:", content)
+  useEffect(() => {
+    getCampaignItem()
+    if(content && content.length > 0){
+      const data = content[0]
+      setFormValues({
+        campaign_name: data.name,
+        campaign_start_date: data.start_date ? new Date(data.start_date) : new Date(),
+        campaign_end_date_type: '',
+        campaign_end_date: new Date(),
+        campaign_end_date_day: '7',
+        ads_page_name: "",
+        ads_page_description: "",
+        ads_page_website: "",
+        ads_page_discord: "",
+        ads_page_twitter: "",
+        ads_page_instagram: "",
+        ads_page_medium: "",
+        ads_page_facebook: "",
+      })
+    }
+  }, [])
+
+  const handleSubmit = async() => {
+    const body = new FormData()
+    body.append('campaign_name', formValues.campaign_name)
+    body.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'))
+    body.append('campaign_end_date_type', formValues.campaign_end_date_type)
+    body.append('campaign_end_date', moment(formValues.campaign_end_date).format('YYYY-MM-DD'))
+    body.append('campaign_end_date_day', formValues.campaign_end_date_day)
+    body.append('ads_page_name', formValues.ads_page_name)
+    body.append('ads_page_description', formValues.ads_page_description)
+    body.append('ads_page_website', formValues.ads_page_website)
+    body.append('ads_page_discord', formValues.ads_page_discord)
+    body.append('ads_page_twitter', formValues.ads_page_twitter)
+    body.append('ads_page_instagram', formValues.ads_page_instagram)
+    body.append('ads_page_medium', formValues.ads_page_medium)
+    body.append('ads_page_facebook', formValues.ads_page_facebook)
+    body.append('ads_page_logo', logoCollection)
+    body.append('ads_page_banner', bannerCollection)
+    audienceForm.forEach((audience, index) => {
+        if(audience.selectedCategory){
+          body.append(`campaign_audiences[${index}].fe_id`, index)
+          body.append(`campaign_audiences[${index}].price`, audience.budgetAds)
+          
+          if(audience.balancedTargeting.cryptoCurrency && audience.balancedTargeting.cryptoCurrency.length > 0){
+            audience.balancedTargeting.cryptoCurrency.forEach(currency => {
+              body.append(`campaign_audiences[${index}].detailed_targeting_cryptocurrency[]`, currency)
+            })
+          }
+          body.append(`campaign_audiences[${index}].detailed_targeting_year`, audience.balancedTargeting.year)
+          body.append(`campaign_audiences[${index}].detailed_targeting_month`, audience.balancedTargeting.months)
+          body.append(`campaign_audiences[${index}].detailed_targeting_day`, audience.balancedTargeting.day)
+    
+          body.append(`campaign_audiences[${index}].detailed_targeting_available_credit_wallet`, audience.detailTargeting.availableCredit)
+          body.append(`campaign_audiences[${index}].detailed_targeting_trading_volume`, audience.detailTargeting.tradingVolume)
+          body.append(`campaign_audiences[${index}].detailed_targeting_airdrops`, audience.balancedTargeting.airdropReceived)
+    
+          body.append(`campaign_audiences[${index}].detailed_targeting_amount_transaction`, audience.detailTargeting.transactionAmount)
+          body.append(`campaign_audiences[${index}].detailed_targeting_amount_transaction_day`, audience.detailTargeting.amountDays)
+          body.append(`campaign_audiences[${index}].detailed_targeting_nft_purchases`, audience.detailTargeting.creatorName)
+        }
+    })
+    pictureData.forEach((ads, adsIndex) => {
+      body.append(`campaign_ads[${adsIndex}].name`, ads.name)
+      body.append(`campaign_ads[${adsIndex}].description`, ads.description)
+      ads.fe_id.forEach(adsId => {
+        body.append(`campaign_ads[${adsIndex}].fe_id[]`, adsId)
+      })
+      body.append(`campaign_ads[${adsIndex}].image`, ads.image)
+    })
+    const res = await handleAddCampaign(body)
+  }
 
   const handleChangeValues = (event, stateName) => {
     setFormValues({
       ...formValues,
       [stateName]: event.target.value
+    })
+  }
+
+  const handleChangeDefaultValue = (value, stateName) => {
+    setFormValues({
+      ...formValues,
+      [stateName]: value
     })
   }
 
@@ -129,14 +212,13 @@ export default function AddCampaign() {
             })
           }
         }
-        if(stateName === 'selectedAudienceAd'){
-          const listAudience = pict.selectedAudienceAd
-          console.log("Check listAudience:", listAudience, selectedAudience)
-          const isThere = pict.selectedAudienceAd.find(ctn => ctn === acceptedFiles)
+        if(stateName === 'fe_id'){
+          const listAudience = pict.fe_id
+          const isThere = pict.fe_id.find(ctn => ctn === acceptedFiles)
           if(isThere){
             return {
               ...pict,
-              [stateName]: pict.selectedAudienceAd.filter(ctn => ctn !== acceptedFiles)
+              [stateName]: pict.fe_id.filter(ctn => ctn !== acceptedFiles)
             }
           }
           listAudience.push(acceptedFiles)
@@ -147,7 +229,7 @@ export default function AddCampaign() {
         }
         return {
           ...pict,
-          [stateName]: acceptedFiles
+          [stateName]: acceptedFiles.target.value
         }
       }
       return pict
@@ -161,23 +243,13 @@ export default function AddCampaign() {
       if(index === indexContent){
         return {
           ...pict,
-          adCreationMedia: null
+          image: null
         }
       }
       return pict
     })
     setPicture(restructureData)
   }
-
-
-  const changeAdCreationMedia = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    if (file) {
-      setAdcreationMedia(Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      }))
-    }
-  }, []);
 
   const changeBannerCollection = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -209,7 +281,7 @@ export default function AddCampaign() {
             Campaign Name
           </Typography>
           <div className={styles.ctnGray}>
-            <input placeholder='New campaign' type="text" id="campaign" name="campaign" />
+            <input placeholder='New campaign' type="text" onChange={(event) => { handleChangeValues(event, 'campaign_name')}} value={formValues.campaign_name} />
           </div>
         </div>
         <div className={styles.ctnRightInput}>
@@ -218,7 +290,7 @@ export default function AddCampaign() {
           </Typography>
           <div className={styles.ctnDate}>
             <div className={styles.containerDate}>
-              <DatePicker  selected={formValues.campaignStartDate} onChange={(date) => setFormValues({...formValues,  campaignStartDate: date})} />
+              <DatePicker  selected={formValues.campaign_start_date} onChange={(date) => setFormValues({...formValues,  campaign_start_date: date})} />
             </div>
             <img src={blackCalendar} alt="calendar" />
           </div>
@@ -244,13 +316,13 @@ export default function AddCampaign() {
           <div className={styles.availWrapper}>
           <Grid container spacing={4} className={styles.gridAvailability}>
             <Grid item md={4} xl={3} xs={12}>
-              <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 0 ? styles.unactiveChecbox : {}}`}>
+              <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                <CheckboxAds isActive={selectedAvailability === 0} onChange={() => {setAvailability(0)}} />
+                  <CheckboxAds isActive={formValues.campaign_end_date_type === '1'} onChange={() => {handleChangeDefaultValue('1', 'campaign_end_date_type')}} />
                   <span>After:</span>
                 </div>
-                <div className={`${styles.midWrapper} ${selectedAvailability !== 0 ? styles.unactiveInput : {}}`}>
-                  <input value={selectedAvailabilityDay} onChange={event => {setAvailabilityDay(event.target.value)}} type={'text'} />
+                <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveInput : {}}`}>
+                  <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
                 </div>
                 <div className={styles.rightWrapper}>
                   <span>Days</span>
@@ -258,23 +330,23 @@ export default function AddCampaign() {
               </div>
             </Grid>
             <Grid item md={4} xl={3} xs={12}>
-            <div className={`${styles.inputGray} ${selectedAvailability !== 1 ? styles.unactiveChecbox : {}}`}>
+            <div className={`${styles.inputGray} ${formValues.campaign_end_date_type !== '2' ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-              <CheckboxAds isActive={selectedAvailability === 1} onChange={() => {setAvailability(1)}} />
+                <CheckboxAds isActive={formValues.campaign_end_date_type === '2'} onChange={() => {handleChangeDefaultValue('2', 'campaign_end_date_type')}} />
                 <span>On</span>
               </div>
               <div className={styles.altDateWrapper}>
                 <div className={styles.containerDate}>
-                  <DatePicker  selected={formValues.availabilityDate} onChange={(date) => setFormValues({...formValues,  availabilityDate: date})} />
+                  <DatePicker selected={formValues.campaign_end_date} onChange={(date) => setFormValues({...formValues,  campaign_end_date: date})} />
                 </div>
                 <img src={blackCalendar} alt="calendar" />
               </div>
             </div>
             </Grid>
             <Grid item md={4} xl={3} xs={12}>
-              <div className={`${styles.inputGray} ${styles.fixedWidth} ${selectedAvailability !== 2 ? styles.unactiveChecbox : {}}`}>
+              <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                  <CheckboxAds isActive={selectedAvailability === 2} onChange={() => {setAvailability(2)}} />
+                  <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} onChange={() => {handleChangeDefaultValue('3', 'campaign_end_date_type')}} />
                   <span>Never</span>
                 </div>
               </div>
@@ -297,7 +369,7 @@ export default function AddCampaign() {
             Targeting
           </Typography>
           <Typography variant="span" paragraph>
-            Reach exactly the Crypto-Users that you want to reach by using our state-of-the-art targeting options. And no need to worry – even if your audiences overlap, we will make sure that each wallet only receives your wallet ad once to get the most out of your budget and to avoid that your project might be considered as spam.
+          Reach exactly the Crypto-Users that you want to reach by using our state-of-the-art targeting options. And no need to worry – even if your audiences overlap, we will make sure that each wallet only receives your wallet ad once to get the most out of your budget and to avoid that your project might be considered as spam. Additionally, we will automatically exclude users who unsubscribed from our ads.
           </Typography>
           </div>
       </div>
@@ -334,7 +406,6 @@ export default function AddCampaign() {
   }
 
   function renderCardAudience(){
-    console.log("Check selectedAudience:", selectedAudience)
     return (
       <div className={styles.cardAudienceWrapper}>
         <div className={styles.ctnTitle}>
@@ -383,7 +454,7 @@ export default function AddCampaign() {
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
-            <input placeholder='Add your ad name here' type="text" id="campaign" name="campaign" />
+            <input value={content.name} onChange={(event) => {handleChangePicture(event, 'name', index)}} placeholder='Add your ad name here' type="text"  />
           </div>
         </div>
         <div className={styles.ctnInputCollection}>
@@ -401,9 +472,9 @@ export default function AddCampaign() {
           <BannerPicker
             typeScreen="logo"
             label={"Add media"}
-            file={content.adCreationMedia}
+            file={content.image}
             onDelete={() => {removePictureAdCreation(index)}}
-            onDrop={(value) => {handleChangePicture(value, 'adCreationMedia', index, true)}} />
+            onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
         </div>
       </div>
     )
@@ -422,7 +493,7 @@ export default function AddCampaign() {
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
-            <input onChange={(value) => {handleChangeValues(value, 'collectionPageName')}} value={formValues.collectionPageName} placeholder='Add your collection page name here' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_name')}} value={formValues.ads_page_name} placeholder='Add your collection page name here' type="text"  />
           </div>
         </div>
         <div className={styles.ctnInputCollection}>
@@ -463,14 +534,15 @@ export default function AddCampaign() {
             </div>
           </div>
           <div className={styles.textAreaCollection}>
-            <textarea onChange={(value) => {handleChangeValues(value, 'collectionPageDesc')}} value={formValues.collectionPageDesc} placeholder='Add your collection page text here'  id="campaign" name="campaign" />
+            <textarea onChange={(value) => {handleChangeValues(value, 'ads_page_description')}} value={formValues.ads_page_description} placeholder='Add your collection page text here'   />
           </div>
         </div>
       </div>
     )
   }
+  console.log("Check pictureData:", pictureData)
 
-  function renderRightAdCreation(){
+  function renderRightAdCreation(content, index){
     return (
       <div className={styles.ctnRightCollection}>
         <div className={styles.ctnInputCollection}>
@@ -483,7 +555,7 @@ export default function AddCampaign() {
             </div>
           </div>
           <div className={styles.textAreaCollection}>
-            <textarea placeholder='Add your ad text here'  id="campaign" name="campaign" />
+            <textarea value={content.description} onChange={(event) => {handleChangePicture(event, 'description', index)}}  placeholder='Add your ad text here'   />
           </div>
         </div>
       </div>
@@ -515,27 +587,27 @@ export default function AddCampaign() {
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={websiteIcon} alt="website" />
-            <input placeholder='yourwebsitehere.com' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder='yourwebsitehere.com' type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={discordIcon} alt="discord" />
-            <input placeholder='https://discord.gg/yourdiscord' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder='https://discord.gg/yourdiscord' type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={twitterIcon} alt="twitter" />
-            <input placeholder='https://twitter.com/YourTwitter' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_twitter')}} value={formValues.ads_page_twitter} placeholder='https://twitter.com/YourTwitter' type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={instagramIcon} alt="instagram" />
-            <input placeholder='https://instagram.com/YourInstagram' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_instagram')}} value={formValues.ads_page_instagram} placeholder='https://instagram.com/YourInstagram' type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={mediumIcon} alt="medium" />
-            <input placeholder='https://medium.com/@YourMedium' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder='https://medium.com/@YourMedium' type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={facebookIcon} alt="facebook" />
-            <input placeholder='https://facebook.com/Your.Facebook' type="text" id="campaign" name="campaign" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_facebook')}} value={formValues.ads_page_facebook} placeholder='https://facebook.com/Your.Facebook' type="text"  />
           </div>
         </div>
       </div>
@@ -574,10 +646,10 @@ export default function AddCampaign() {
                   <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                   <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`}>
                     <CheckboxAds
-                      isActive={content.selectedAudienceAd.includes(audienceIndex)}
+                      isActive={content.fe_id.includes(audienceIndex)}
                       onChange={() => {
                         if(item.optimized){
-                          handleChangePicture(audienceIndex, 'selectedAudienceAd', index)
+                          handleChangePicture(audienceIndex, 'fe_id', index)
                         }
                       }} />
                     <Typography variant="subtitle1" color="#808080">
@@ -612,7 +684,7 @@ export default function AddCampaign() {
     return (
       <div className={styles.btnCreateAd} onClick={() => {
         const currentArr = [...pictureData]
-        currentArr.push(initialPicture)
+        currentArr.push({image: null, fe_id: [], name: '', description: '' })
         setPicture(currentArr)
       }}>
         <img src={addIcon} alt="addIcon" />
@@ -655,9 +727,7 @@ export default function AddCampaign() {
   function renderSetupAirdrop(){
     return (
       <div className={styles.setupAirdropWrapper}>
-        <div className={styles.btnSetupAirdrop}>
-          <Typography variant='h6' color={'#fff'}>Setup airdrop</Typography>
-        </div>
+        <DefaultButton label={"Setup Airdrop"} onClick={handleSubmit} />
       </div>
     )
   }
@@ -691,9 +761,11 @@ export async function getServerSideProps(context) {
           }
       }
   }
+  const res = await getCampaignItem(context)
   return {
     props: {
-      userData
+      userData,
+      content: res.data.data
     }, // will be passed to the page component as props
   }
 }

@@ -326,7 +326,13 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 20,
-        paddingBottom: 40
+        paddingBottom: 40,
+        '& > div':{
+            width: 'auto',
+            paddingLeft: 100,
+            paddingRight: 100,
+            borderRadius: 12,
+        }
     },
     btnSetupAirdrop: {
         height: 44,

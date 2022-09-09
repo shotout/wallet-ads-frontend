@@ -89,7 +89,6 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
     }
 
     function renderContent(){
-        const target = data.balancedTargeting
         if(data.selectedCategory === 'detail-targeting'){
             return (
                 <div className={styles.ctnDescAudience}>

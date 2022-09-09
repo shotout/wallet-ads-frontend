@@ -94,7 +94,7 @@ export default function Login(){
         return (
             <div className={styles.ctnInput}>
                 <div className={styles.ctnTitle}>
-                    <Typography variant="h4" textAlign={"center"}>
+                    <Typography variant="h4" fontWeight={"800"} textAlign={"center"}>
                         Login
                     </Typography>
                 </div>
@@ -106,12 +106,12 @@ export default function Login(){
                             fullWidth
                             error={errorMessage.email}
                             helperText={errorMessage.email}
-                            label="Email" />
+                            placeholder="Email" />
                     </div>
                     <div className={styles.inputWrapper}>
                         <TextField
                             fullWidth
-                            label="Password"
+                            placeholder="Password"
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
                             error={errorMessage.password}

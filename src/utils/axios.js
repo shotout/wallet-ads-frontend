@@ -12,9 +12,6 @@ import { getAuthorizationHeader } from '../helpers/auth';
     */
    const requestHeaders = options.customHeaders || {
      'Content-type': 'application/json',
-     'Cache-Control': 'no-cache, no-store, must-revalidate, post-check=0, pre-check=0',
-     Pragma: 'no-cache',
-     Expires: '0'
    };
  
    const additionalHeaders = options.headers || {};
@@ -26,7 +23,6 @@ import { getAuthorizationHeader } from '../helpers/auth';
        ...requestHeaders,
        ...authorizationHeader,
        ...additionalHeaders,
-       ...{ 'X-Platform': 'web' },
      },
    });
    // eslint-disable-next-line arrow-body-style

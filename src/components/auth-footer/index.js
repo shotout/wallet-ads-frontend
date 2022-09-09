@@ -16,8 +16,8 @@ export default function AuthFooter(){
                 </Link>
             </div>
             <div className={styles.ctnCopyright}>
-                <Typography variant='body1' fontSize={15} color="#fff" fontWeight={"bold"}>
-                    ©2022 Wallet Ads 
+                <Typography variant='body1' fontSize={15} color="#fff" fontWeight={"800"}>
+                    ©2022 WALLETADS 
                 </Typography>
             </div>
         </div>

@@ -23,7 +23,7 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, ...othe
                         <div className={styles.ctnDesc}>
                         {file.name && (
                             <Typography variant="body1">
-                                {file.name}
+                                Logo
                             </Typography>
                         )}
                         </div>

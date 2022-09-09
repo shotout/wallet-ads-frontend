@@ -24,7 +24,7 @@ export default makeStyles((theme) => ({
     },
     ctnInput: {
         marginLeft: 100,
-        maxWidth: 720,
+        maxWidth: 620,
         width: '100%',
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
         borderRadius: 28,
@@ -86,7 +86,6 @@ export default makeStyles((theme) => ({
         }
     },
     ctnSuccess:{
-        maxWidth: 500,
         margin: 'auto',
         padding: '40px 0px',
         display: 'flex',
