@@ -84,6 +84,7 @@ export default makeStyles((theme) => ({
             fontSize: '1.25rem',
             fontWeight: '700',
             paddingLeft: 30,
+            fontFamily: 'Public Sans,sans-serif',
         },
         '& > input': {
             borderRadius: 12,
@@ -188,4 +189,7 @@ export default makeStyles((theme) => ({
         textAlign: 'center',
         overflow: 'hidden',
     },
+    redBorder: {
+        borderColor: '#AD4061'
+    }
 }))

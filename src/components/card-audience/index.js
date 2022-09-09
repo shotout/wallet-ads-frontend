@@ -80,11 +80,11 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
     function renderPrice(){
         return (
             <div className={styles.inputPriceWrapper}>
-                <div className={styles.ctnPriceInput}>
+                <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
                     <span>
                         USD
                     </span>
-                    <input name="budget" placeholder='0000' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
+                    <input name="budget" placeholder='0' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
                 </div>
                 {data.budgetAds === '' && (
                     <Typography variant="body2" textAlign={'center'} color="#AD4061">

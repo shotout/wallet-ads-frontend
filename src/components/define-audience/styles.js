@@ -28,6 +28,7 @@ export default makeStyles((theme) => ({
         paddingLeft: 0,
         paddingRight: 0,
         borderRadius: 20,
+        minHeight: 98
     },
     ctnHeader: {
         display: 'flex',
@@ -151,6 +152,12 @@ export default makeStyles((theme) => ({
         '& > div':{
             maxWidth: 244
         }
+    },
+    ctnRightAudience: {
+        width: 330,
+        paddingRight: 56,
+        paddingLeft: 20,
+        position: 'relative',
     },
     ctnRightTarget: {
         width: '60%',
