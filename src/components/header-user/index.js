@@ -1,8 +1,12 @@
+import { Typography } from '@mui/material'
+import { handleLogout } from 'src/helpers/auth'
+import SvgIconStyle from '../SvgIconStyle'
 import useStyles from './styles'
 
 const appIcon = '/assets/wallet_ads_logo.png'
 const notificationIcon = '/assets/notification_icon.png'
 const blackAskIcon = '/assets/blackask_icon.png'
+const logoutIcon = '/assets/svg/logout.svg'
 
 export default function HeaderUser({ label, ctnBtnStyle = '' }){
     const styles = useStyles()
@@ -10,6 +14,14 @@ export default function HeaderUser({ label, ctnBtnStyle = '' }){
         <div className={styles.ctnHeaderWrapper}>
           <img src={appIcon} alt="app-icon" />
           <div className={styles.rightHeader}>
+            <div className={styles.ctnLogout} onClick={handleLogout}>
+              <Typography variant="span" fontWeight={'bold'} fontSize={14}>
+                Logout
+              </Typography>
+              <div>
+                <SvgIconStyle src={logoutIcon} sx={{ width: 1, height: 1, color: '#000' }} />
+              </div>
+            </div>
             <div className={styles.ctnIconHeader}>
               <img src={blackAskIcon} alt="ask" id="ask" />
             </div>

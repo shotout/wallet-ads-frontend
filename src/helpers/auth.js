@@ -1,4 +1,4 @@
-import nookies, { parseCookies, setCookie } from "nookies";
+import nookies, { parseCookies, setCookie, destroyCookie } from "nookies";
 
 export const setAuthorizationCookie = (authorizationObj) => {
     const options = {
@@ -37,3 +37,8 @@ export const getUserData = (ctx) => {
   }
   return null
 };
+
+export const handleLogout = () => {
+  destroyCookie(null, 'authorization', { path: '/' });
+  window.location.href = '/'
+}

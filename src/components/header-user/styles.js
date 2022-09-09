@@ -47,4 +47,20 @@ export default makeStyles((theme) => ({
             objectFit: 'cover'
         },
     },
+    ctnLogout:{
+        background: '#fff',
+        height: 30,
+        borderRadius: 30 / 2,
+        paddingLeft: 20,
+        paddingRight: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        cursor: 'pointer',
+        '& > div':{
+            marginLeft: 8,
+            width: 15,
+            height: 18,
+        }
+    }
 }))
