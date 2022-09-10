@@ -155,7 +155,9 @@ export default makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         marginTop: 4,
+        position: 'relative',
         "& > div": {
+            position: 'relative',
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column',
@@ -164,12 +166,18 @@ export default makeStyles((theme) => ({
         }
     },
     txtUnderline: {
-        textDecoration: 'underline'
+        textDecoration: 'underline',
+        cursor: 'pointer'
     },
     ctnContentSummary:{
         maxHeight: 340,
         overflow: 'scroll',
         paddingTop: 44,
 
+    },
+    ctnPopover:{
+        '& > .MuiPaper-root':{
+            background: 'rgba(0, 0, 0,0.9)'
+        }
     }
 }))

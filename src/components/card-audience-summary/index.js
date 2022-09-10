@@ -1,6 +1,5 @@
-import { Typography } from '@mui/material';
-import React from 'react';
-import Iconify from '../Iconify';
+import { Typography, Popover, Box } from '@mui/material';
+import React, { useState } from 'react';
 import useStyles from './styles'
 import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
@@ -12,6 +11,15 @@ const headerCard = '/assets/svg/header_card.svg'
 
 export default function CardAudienceSummary({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
+    const [hover, setHover] = useState(null);
+
+
+    const handleHoverOpen = (event) => {
+        setHover(event.currentTarget);
+      };
+      const handleHoverClose = () => {
+        setHover(null);
+      };
 
     function renderBalancedTargeting(){
         const target = data.balancedTargeting
@@ -29,9 +37,47 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                     <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
                                         {`Cryptocurrencies used:`}
                                     </Typography>
-                                    <Typography className={styles.txtUnderline} variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
+                                    <Typography
+                                        onMouseEnter={handleHoverOpen}
+                                        onMouseLeave={handleHoverClose}
+                                        className={styles.txtUnderline}
+                                        variant="span"
+                                        textAlign={'center'}
+                                        color="#6A7B8A" marginBottom={0.2}>
                                     Show chosen cryptocurrencies
                                     </Typography>
+                                    <Popover
+                                        id="mouse-over-popover"
+                                        open={Boolean(hover)}
+                                        anchorEl={hover}
+                                        anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                        }}
+                                        onClose={handleHoverClose}
+                                        disableRestoreFocus
+                                        sx={{
+                                        pointerEvents: 'none',
+                                        }}
+                                        className={styles.ctnPopover}
+                                    >
+                                        <Box sx={{ p: 2, width: 220 }}>
+                                            {target.cryptoCurrency.map(item => {
+                                                if(item === 'Select...'){
+                                                    return null
+                                                }
+                                                return (
+                                                    <Typography key={item} variant="body2" sx={{ color: '#fff' }} textAlign="center">
+                                                        {item}
+                                                    </Typography>
+                                                )
+                                            })}
+                                        </Box>
+                                    </Popover>
                                 </div>
                             </div>
                         )}
