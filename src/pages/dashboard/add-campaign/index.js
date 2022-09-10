@@ -477,53 +477,53 @@ export default function AddCampaign({ content }) {
           <div className={styles.availWrapper}>
           <Grid container spacing={4} className={styles.gridAvailability}>
             <Grid item md={4} xl={3} xs={12}>
-              <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveChecbox : {}}`}>
+              <div 
+                onClick={() => {
+                  handleChangeDefaultValue('1', 'campaign_end_date_type')
+                  deactivateErrorBoxAvailability()
+                }}
+                className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                  <CheckboxAds
-                    isActive={formValues.campaign_end_date_type === '1'}
-                    onChange={() => {
-                      handleChangeDefaultValue('1', 'campaign_end_date_type')
-                      deactivateErrorBoxAvailability()
-                    }} />
-                  <span>After:</span>
+                  <CheckboxAds isActive={formValues.campaign_end_date_type === '1'} />
                 </div>
                 <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveInput : {}}`}>
-                  <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
-                </div>
-                <div className={styles.rightWrapper}>
+                  <span>After:</span>
+                  <span><b>90</b></span>
                   <span>Days</span>
                 </div>
               </div>
             </Grid>
             <Grid item md={4} xl={3} xs={12}>
-            <div className={`${styles.inputGray} ${formValues.campaign_end_date_type !== '2' ? styles.unactiveChecbox : {}}`}>
+            <div
+              onClick={() => {
+                handleChangeDefaultValue('2', 'campaign_end_date_type')
+                deactivateErrorBoxAvailability()
+              }}
+              className={`${styles.inputGray} ${formValues.campaign_end_date_type !== '2' ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-                <CheckboxAds
-                  isActive={formValues.campaign_end_date_type === '2'}
-                  onChange={() => {
-                    handleChangeDefaultValue('2', 'campaign_end_date_type')
-                    deactivateErrorBoxAvailability()()
-                  }} />
-                <span>On</span>
+                  <CheckboxAds isActive={formValues.campaign_end_date_type === '2'} />
               </div>
-              <div className={styles.altDateWrapper}>
-                <div className={styles.containerDate}>
-                  <DatePicker selected={formValues.campaign_end_date} onChange={(date) => setFormValues({...formValues,  campaign_end_date: date})} />
-                </div>
-                <img src={blackCalendar} alt="calendar" />
+              <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '2' ? styles.unactiveInput : {}}`}>
+                <span>After:</span>
+                <span><b>21</b></span>
+                <span>Days</span>
               </div>
             </div>
             </Grid>
             <Grid item md={4} xl={3} xs={12}>
-              <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}}`}>
+              <div
+                onClick={() => {
+                  handleChangeDefaultValue('3', 'campaign_end_date_type')
+                  deactivateErrorBoxAvailability()
+                }}
+                className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                  <CheckboxAds
-                    isActive={formValues.campaign_end_date_type === '3'}
-                    onChange={() => {
-                      handleChangeDefaultValue('3', 'campaign_end_date_type')
-                      deactivateErrorBoxAvailability()()
-                    }} />
-                  <span>Never</span>
+                    <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
+                </div>
+                <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}}`}>
+                  <span>After:</span>
+                  <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
+                  <span>Days</span>
                 </div>
               </div>
             </Grid>
@@ -609,6 +609,9 @@ export default function AddCampaign({ content }) {
                             })
                           }
                           setSelectedAudience(index)
+                          setTimeout(() => {
+                            window.location.href = '#create-audience'
+                          }, 100)
                         }}
                         selectedAudience={selectedAudience}
                         selectedPage={selectedAudience === index}

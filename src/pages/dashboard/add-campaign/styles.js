@@ -66,8 +66,11 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     containerDate: {
+        display: 'flex',
+        alignItems:'center',
+        justifyContent: 'center',
         '& > .react-datepicker-wrapper > .react-datepicker__input-container > input':{
-            width: '100%',
+            width: '120px',
             height: 44,
             background: 'transparent',
             border: 0,
@@ -83,12 +86,13 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     inputGray: {
+        position: 'relative',
         flexDirection: 'row',
         alignItems: 'center',
         display: 'flex',
         background: '#F1F1F1',
         height: 44,
-        paddingLeft: 12,
+        // paddingLeft: 12,
         paddingRight: 12,
         borderRadius: 8,
         marginRight: 40,
@@ -99,6 +103,7 @@ const useStyles = makeStyles((theme) => ({
     },
     leftWrapper :{
         display: 'flex',
+        paddingLeft: 12,
         '& > img': {
             width: 22,
             height: 22,
@@ -107,24 +112,38 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     midWrapper: {
-        marginLeft: 12,
+        paddingLeft: 12,
         marginRight: 12,
+        width:'100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        // background: 'yellow',
         '& > input': {
             fontFamily: 'Public Sans,sans-serif',
             border: 0,
-            height: 44,
+            height: 30,
             width: 44,
-            background: '#F1F1F1',
+            background: '#fff',
             borderRadius: 8,
-            paddingLeft: 12,
-            paddingRight: 12,
+            marginLeft: 12,
+            marginRight: 12,
             fontSize: 15,
-            outline: 'none'
+            outline: 'none',
+            textAlign: 'center',
         },
+        '& > span':{
+            '& > b':{
+                marginLeft: 12,
+                marginRight: 12
+            }
+        }
     },
     unactiveInput: {
         '& > input': {
             color: '#808080',
+            background: '#F1F1F1 !important'
         },
     },
     altDateWrapper: {

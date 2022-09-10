@@ -757,7 +757,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     }
 
     return (
-        <div className={styles.ctnRoot}>
+        <div className={styles.ctnRoot} id="create-audience">
             <Typography variant="h6" marginBottom={2} textAlign="center">
                 {`Define Audience ${selectedAudience + 1}`}
             </Typography>
