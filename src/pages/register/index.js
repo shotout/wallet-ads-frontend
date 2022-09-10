@@ -267,7 +267,7 @@ export default function Register(){
                                                 </InputAdornment>
                                             )
                                         }}
-                                        placeholder="Confrim Password" />
+                                        placeholder="Confirm Password" />
                                 </div> 
                             </Grid>
                         </Grid>
@@ -300,7 +300,8 @@ export default function Register(){
     }
 
     return (
-        <Page title="Register">
+        <Page title="Sign Up">
+        <meta name="description" content="Create your WALLETADS account now!" />
             <div className={styles.ctnRoot}>
                 {renderHeader()}
                 {renderInput()}

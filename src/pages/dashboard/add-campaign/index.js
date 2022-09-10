@@ -715,7 +715,7 @@ export default function AddCampaign({ content }) {
               <img src={askIcon} alt="ask" />
             </div>
             <Typography variant="body2"  color='#808080'>
-              Recommended size 1400x400px 
+              Recommended size 1400x350px 
             </Typography>
           </div>
           <BannerPicker typeScreen="banner-collection" file={bannerCollection} onDelete={() => {setBannerCollection(null)}} onDrop={changeBannerCollection} label={"Add banner"} />
@@ -937,7 +937,8 @@ export default function AddCampaign({ content }) {
 
   return (
 
-    <Page title="Add Campaign">
+    <Page title="Campaign Creation">
+      <meta name="description" content="Create your campaign on WALLETADS now!" />
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
         <HeaderUser />

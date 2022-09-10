@@ -21,7 +21,7 @@ export default function Invoice(){
         return (
             <div className={styles.ctnTitle}>
                 <Typography variant="h6">
-                    Edit Profile
+                    Invoices
                 </Typography>
             </div>
         )
@@ -67,7 +67,7 @@ export default function Invoice(){
                         <Fragment key={item}>
                             <Grid item md={2.4} sm={12}>
                                 <Typography variant="body1">
-                                    10.08.2022
+                                    10.08.202222
                                 </Typography>
                             </Grid>
                             <Grid item md={2.4} sm={12}>
@@ -112,14 +112,14 @@ export default function Invoice(){
                 <div className={styles.ctnCard}>
                     {renderTitle()}
                     {renderListTitle()}
-                    {renderListItem()}
+                    
                 </div>
             </div>
         )
     }
 
     return(
-        <Page title="Invoice">
+        <Page title="Invoices" description="Find your WALLETADS invoices.">
           <div className={styles.ctnRoot}>
             <div className={styles.ctnWrapper}>
                 <HeaderUser />
