@@ -11,7 +11,7 @@ const pricetagIcon = '/assets/pricetag_icon.png'
 const headerCard = '/assets/svg/header_card.svg'
 const editIcon = '/assets/svg/pencil.svg'
 
-export default function CardAudience({ showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
+export default function CardAudience({ isError, showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
 
     function renderBalancedTargeting(){
@@ -86,11 +86,6 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                     </span>
                     <input name="budget" placeholder='0' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
                 </div>
-                {data.budgetAds === '' && (
-                    <Typography variant="body2" textAlign={'center'} color="#AD4061">
-                        *This field is required.
-                    </Typography>
-                )}
             </div>
         )
     }
@@ -191,13 +186,13 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
     return (
         <div className={styles.ctnAudience}>
                 <div
-                    className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''}`}
+                    className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${isError ? styles.ctnRedBorder : ''}`}
                     onClick={() => {
                         if(!data.selectedCategory){
                             if(typeof onPressCard === 'function') onPressCard()
                         }
                     }}>
-                    <div className={styles.headerAudience}>
+                    <div className={`${styles.headerAudience} ${isError ? styles.borderTopError : ''}`}>
                         <div className={styles.ctnWrapper}>
                             <SvgIconStyle src={headerCard} sx={{ width: 1, height: 1, bgcolor: !selectedPage && isSomeAudienceActive ? '#757474' : '#7589FA' }} />
                         </div>
@@ -234,7 +229,6 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                             <SvgIconStyle src={editIcon} sx={{ width: 1, height: 1, bgcolor: '#000' }} />
                         </div>
                     )}
-            
             </div>
         </div>
     )

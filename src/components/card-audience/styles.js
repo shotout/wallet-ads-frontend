@@ -31,7 +31,7 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
+        width: '98%',
         paddingBottom: 12,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -40,7 +40,7 @@ export default makeStyles((theme) => ({
         '& > h5':{
             zIndex: 99
         },
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     ctnWrapper: {
         position: 'absolute',
@@ -190,6 +190,12 @@ export default makeStyles((theme) => ({
         overflow: 'hidden',
     },
     redBorder: {
-        borderColor: '#AD4061'
+        borderColor: '#AD4061',
+    },
+    ctnRedBorder: {
+        border: '2px solid red',
+    },
+    borderTopError:{
+        borderTop: '2px solid red',
     }
 }))

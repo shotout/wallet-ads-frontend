@@ -76,6 +76,12 @@ export default function AddCampaign({ content }) {
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
+  const [errorBox, setErrorBox] = useState({
+    errorAudience: false,
+    errorAds: false,
+    errorBoxCampaignName: false,
+    errorBoxAvailability: false
+  })
   useEffect(() => {
     getCampaignItem()
     if(content && content.length > 0){
@@ -150,6 +156,74 @@ export default function AddCampaign({ content }) {
     }
   }
 
+  const validateSubmit = () => {
+    const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
+    let isAdsValid = false
+    const isCampaignNameValid = !formValues.campaign_name
+    const isAvailabilityValid = !formValues.campaign_end_date_type
+    pictureData.forEach(ads => {
+      if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
+        isAdsValid = true
+      }
+    })
+    if(isAudienceValid.length > 0 && isAdsValid){
+      handleSubmit()
+    }else{
+      setErrorBox({
+        errorAds: !isAdsValid,
+        errorAudience: isAudienceValid.length === 0,
+        errorBoxCampaignName: isCampaignNameValid,
+        errorBoxAvailability: isAvailabilityValid
+      })
+      if(isCampaignNameValid){
+        window.location.href = '#campaign-name'
+      }else if(isAvailabilityValid){
+        window.location.href = '#availability-section'
+      }else if(isAudienceValid.length === 0){
+        window.location.href = '#card-audience'
+      }else if(!isAdsValid){
+        window.location.href = '#card-ads'
+      }
+    }
+  }
+
+  const deactivateErrorCampaign = () => {
+    if(errorBox.errorAds){
+      setErrorBox({
+        ...errorBox,
+        errorBoxCampaignName: false
+      })
+    }
+  }
+
+  const deactivateErrorBoxAvailability = () => {
+    if(errorBox.errorAds){
+      setErrorBox({
+        ...errorBox,
+        errorBoxAvailability: false
+      })
+    }
+  }
+
+  const deactivateErrorBoxAds = () => {
+    if(errorBox.errorAds){
+      setErrorBox({
+        ...errorBox,
+        errorAds: false
+      })
+    }
+  }
+
+  const checkIsAudienceAdsSelected = (index) => {
+    let isAudienceSelected = false
+    pictureData.forEach(ads => {
+      if(ads.fe_id.includes(index)){
+        isAudienceSelected = true
+      }
+    })
+    return isAudienceSelected
+  }
+
   const handleChangeValues = (event, stateName) => {
     setFormValues({
       ...formValues,
@@ -175,6 +249,12 @@ export default function AddCampaign({ content }) {
       return item
     })
     setAudienceForm(restructureData)
+    if(errorBox.errorAudience){
+      setErrorBox({
+        ...errorBox,
+        errorAudience: false
+      })
+    }
   }
 
   const handleSaveAudienceValue = (value) => {
@@ -201,6 +281,7 @@ export default function AddCampaign({ content }) {
 
   const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture) => {
     let file = null;
+    deactivateErrorBoxAds()
     if(isPicture){
       file = acceptedFiles[0]
       const reader = new FileReader();
@@ -230,7 +311,7 @@ export default function AddCampaign({ content }) {
           if(stateName === 'fe_id'){
             const listAudience = pict.fe_id
             const isThere = pict.fe_id.find(ctn => ctn === acceptedFiles)
-            if(isThere){
+            if(isThere || isThere === 0){
               return {
                 ...pict,
                 [stateName]: pict.fe_id.filter(ctn => ctn !== acceptedFiles)
@@ -345,7 +426,7 @@ export default function AddCampaign({ content }) {
 
   function renderCampaignName(){
     return (
-      <div className={styles.ctnSection}>
+      <div className={`${styles.ctnSection} ${errorBox.errorBoxCampaignName ? styles.ctnRedBorder : ''}`} id="campaign-name">
         <div className={styles.ctnIcon}>
           <img src={campaignIcon} alt="campaign" />
         </div>
@@ -354,7 +435,14 @@ export default function AddCampaign({ content }) {
             Campaign Name
           </Typography>
           <div className={styles.ctnGray}>
-            <input placeholder='New campaign' type="text" onChange={(event) => { handleChangeValues(event, 'campaign_name')}} value={formValues.campaign_name} />
+            <input
+              placeholder='New campaign'
+              type="text"
+              onChange={(event) => { 
+                handleChangeValues(event, 'campaign_name')
+                deactivateErrorCampaign()
+              }}
+              value={formValues.campaign_name} />
           </div>
         </div>
         <div className={styles.ctnRightInput}>
@@ -373,9 +461,8 @@ export default function AddCampaign({ content }) {
   }
 
   function renderAvailability(){
-
     return (
-      <div className={styles.ctnSection}>
+      <div className={`${styles.ctnSection} ${errorBox.errorBoxAvailability ? styles.ctnRedBorder : ''}`} id="availability-section">
         <div className={styles.ctnIcon}>
           <img src={calendarIcon} alt="campaign" />
         </div>
@@ -391,7 +478,12 @@ export default function AddCampaign({ content }) {
             <Grid item md={4} xl={3} xs={12}>
               <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                  <CheckboxAds isActive={formValues.campaign_end_date_type === '1'} onChange={() => {handleChangeDefaultValue('1', 'campaign_end_date_type')}} />
+                  <CheckboxAds
+                    isActive={formValues.campaign_end_date_type === '1'}
+                    onChange={() => {
+                      handleChangeDefaultValue('1', 'campaign_end_date_type')
+                      deactivateErrorBoxAvailability()
+                    }} />
                   <span>After:</span>
                 </div>
                 <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '1' ? styles.unactiveInput : {}}`}>
@@ -405,7 +497,12 @@ export default function AddCampaign({ content }) {
             <Grid item md={4} xl={3} xs={12}>
             <div className={`${styles.inputGray} ${formValues.campaign_end_date_type !== '2' ? styles.unactiveChecbox : {}}`}>
               <div className={styles.leftWrapper}>
-                <CheckboxAds isActive={formValues.campaign_end_date_type === '2'} onChange={() => {handleChangeDefaultValue('2', 'campaign_end_date_type')}} />
+                <CheckboxAds
+                  isActive={formValues.campaign_end_date_type === '2'}
+                  onChange={() => {
+                    handleChangeDefaultValue('2', 'campaign_end_date_type')
+                    deactivateErrorBoxAvailability()()
+                  }} />
                 <span>On</span>
               </div>
               <div className={styles.altDateWrapper}>
@@ -419,7 +516,12 @@ export default function AddCampaign({ content }) {
             <Grid item md={4} xl={3} xs={12}>
               <div className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}}`}>
                 <div className={styles.leftWrapper}>
-                  <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} onChange={() => {handleChangeDefaultValue('3', 'campaign_end_date_type')}} />
+                  <CheckboxAds
+                    isActive={formValues.campaign_end_date_type === '3'}
+                    onChange={() => {
+                      handleChangeDefaultValue('3', 'campaign_end_date_type')
+                      deactivateErrorBoxAvailability()()
+                    }} />
                   <span>Never</span>
                 </div>
               </div>
@@ -492,7 +594,24 @@ export default function AddCampaign({ content }) {
           <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
                     <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={index.toString()}>
-                      <CardAudience onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}} showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index} isSomeAudienceActive={selectedAudience !== null} key={index.toString()} data={item} onPressCard={() => { setSelectedAudience(index)}} selectedAudience={selectedAudience} selectedPage={selectedAudience === index} label={`Audience ${index + 1}:`} />
+                      <CardAudience
+                        isError={errorBox.errorAudience}
+                        onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}}
+                        showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index}
+                        isSomeAudienceActive={selectedAudience !== null}
+                        key={index.toString()} data={item}
+                        onPressCard={() => { 
+                          if(errorBox.errorAudience){
+                            setErrorBox({
+                              ...errorBox,
+                              errorAudience: false
+                            })
+                          }
+                          setSelectedAudience(index)
+                        }}
+                        selectedAudience={selectedAudience}
+                        selectedPage={selectedAudience === index}
+                        label={`Audience ${index + 1}:`} />
                     </Grid>
                 ))}
             </Grid>
@@ -697,7 +816,7 @@ export default function AddCampaign({ content }) {
 
   function renderCardAdCreation(content, index){
     return (
-      <div className={styles.inputCollectionCard} key={index.toString()}>
+      <div className={`${styles.inputCollectionCard} ${errorBox.errorAds ? styles.ctnRedBorder : ''}`} key={index.toString()}>
         <div className={styles.ctnInputCollectionPageWrapper}>
           {renderLeftAdCreation(content, index)}
           {renderRightAdCreation(content, index)}
@@ -714,17 +833,21 @@ export default function AddCampaign({ content }) {
             </div>
           </div>
           <Grid container spacing={2}>
-              {audienceForm.map((item, audienceIndex) => (
+              {audienceForm.map((item, audienceIndex) => {
+                const isActive = content.fe_id.includes(audienceIndex)
+                const isEditable = isActive && checkIsAudienceAdsSelected(audienceIndex)
+                return (
                   <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
                     <div className={styles.ctnAudienceWrapper}>
-                      <div className={`${styles.ctnAudienceItem} ${item.optimized === false ? styles.ctnDisable : {}}`} onClick={() => {
-                        if(item.optimized){
+                      <div className={`${styles.ctnAudienceItem} ${(item.optimized === false || checkIsAudienceAdsSelected(audienceIndex)) ? styles.ctnDisable : {}}`} onClick={() => {
+                        if(item.optimized && isEditable || (!isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))){
+                          deactivateErrorBoxAds()
                           handleChangePicture(audienceIndex, 'fe_id', index)
                         }
                       }}>
                         <CheckboxAds
                           
-                          isActive={content.fe_id.includes(audienceIndex)} />
+                          isActive={isActive} />
                         <Typography variant="subtitle1" color="#808080">
                           {`Audience ${audienceIndex + 1}`}
                         </Typography>
@@ -732,7 +855,8 @@ export default function AddCampaign({ content }) {
                       {renderAdAudience(item)}
                     </div>
                 </Grid>
-                ))}
+                )
+              })}
           </Grid>
         </div>
       </div>
@@ -741,7 +865,7 @@ export default function AddCampaign({ content }) {
 
   function renderAdCreation(){
     return (
-      <div className={styles.ctnAdCreation}>
+      <div className={styles.ctnAdCreation} id="card-ads">
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
@@ -802,7 +926,7 @@ export default function AddCampaign({ content }) {
   function renderSetupAirdrop(){
     return (
       <div className={styles.setupAirdropWrapper}>
-        <DefaultButton isLoading={loadingSubmit} label={"Setup Airdrop"} onClick={handleSubmit} />
+        <DefaultButton isLoading={loadingSubmit} label={"Setup Airdrop"} onClick={validateSubmit} />
       </div>
     )
   }

@@ -453,6 +453,9 @@ const useStyles = makeStyles((theme) => ({
         '& > span':{
             fontWeight: '800'
         }
+    },
+    ctnRedBorder:{
+        border: '2px solid red'
     }
 }))
 
