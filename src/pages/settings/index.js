@@ -1,16 +1,16 @@
 import { Grid, IconButton, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
-import DefaultButton from '../../../components/default-button';
-import AvatarPicker from '../../../components/avatar-picker';
-import HeaderUser from "../../../components/header-user"
-import Page from "../../../components/Page"
+import DefaultButton from '../../components/default-button';
+import AvatarPicker from '../../components/avatar-picker';
+import HeaderUser from "../../components/header-user"
+import Page from "../../components/Page"
 import useStyles from './styles'
-import Layout from '../../../layouts';
-import Iconify from '../../../components/Iconify';
-import { getUserData, setAuthorizationCookie } from '../../../helpers/auth';
-import responseValidatorObj from '../../../helpers/responseValidatorObj';
-import { handleUpdateProfile } from '../../../utils/requests';
-import AuthFooter from '../../../components/auth-footer';
+import Layout from '../../layouts';
+import Iconify from '../../components/Iconify';
+import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
+import responseValidatorObj from '../../helpers/responseValidatorObj';
+import { handleUpdateProfile } from '../../utils/requests';
+import AuthFooter from '../../components/auth-footer';
 
 
 SettingUser.getLayout = function getLayout(page) {

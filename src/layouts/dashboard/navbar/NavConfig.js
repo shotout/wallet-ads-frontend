@@ -1,4 +1,5 @@
 // components
+import { routes } from '../../../helpers/routes';
 import SvgIconStyle from '../../../components/SvgIconStyle';
 
 // ----------------------------------------------------------------------
@@ -17,12 +18,12 @@ const ICONS = {
 const sidebarConfig = [
   {
     items: [
-      { title: 'Overview (Coming Soon)', path: '/dashboard/overview', icon: ICONS.dashboard, disabled: true },
-      { title: 'Create a campaign', path: '/dashboard/add-campaign', icon: ICONS.campaign },
-      { title: 'Invoices', path: '/dashboard/invoices', icon: ICONS.invoices },
-      { title: 'Integrations (Coming Soon)', path: '/dashboard/integrations', icon: ICONS.integration,disabled: true },
+      { title: 'Overview (Coming Soon)', path: '/overview', icon: ICONS.dashboard, disabled: true },
+      { title: 'Create a campaign', path: routes.createCampaign, icon: ICONS.campaign },
+      { title: 'Invoices', path: routes.invoices, icon: ICONS.invoices },
+      { title: 'Integrations (Coming Soon)', path: '/integrations', icon: ICONS.integration,disabled: true },
       { title: 'Audience Manager (Coming Soon)', path: '/dashboard/audience-manager', icon: ICONS.audience,disabled: true },
-      { title: 'Settings', path: '/dashboard/setting-user', icon: ICONS.settings },
+      { title: 'Settings', path: routes.settings, icon: ICONS.settings },
     ],
   },
 ];

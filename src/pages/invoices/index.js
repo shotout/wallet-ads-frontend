@@ -1,12 +1,12 @@
 import { Grid, Typography } from '@mui/material';
-import SvgIconStyle from '../../../components/SvgIconStyle';
-import HeaderUser from "../../../components/header-user"
-import Page from "../../../components/Page"
+import SvgIconStyle from '../../components/SvgIconStyle';
+import HeaderUser from "../../components/header-user"
+import Page from "../../components/Page"
 import useStyles from './styles'
 import { Fragment } from 'react';
-import Layout from '../../../layouts';
-import { getUserData } from '../../../helpers/auth';
-import AuthFooter from '../../../components/auth-footer';
+import Layout from '../../layouts';
+import { getUserData } from '../../helpers/auth';
+import AuthFooter from '../../components/auth-footer';
 
 const downloadIcon = '/assets/svg/download.svg'
 

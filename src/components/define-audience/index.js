@@ -15,12 +15,9 @@ import {
 import CardAudienceSummary from '../card-audience-summary';
 import FilePicker from '../file-picker';
 import SvgIconStyle from '../SvgIconStyle';
-import { questionObj } from 'src/pages/dashboard/add-campaign/questioMarkPopup';
+import { questionObj } from '../../pages/create-campaign/questioMarkPopup';
 
 const targetIcon = '/assets/svg/target_background.svg'
-const purpleAsk = '/assets/purple_ask.png'
-const redAsk = '/assets/red_ask.png'
-const grayAsk = '/assets/ask_gray.png'
 const askSvg = '/assets/svg/ask.svg'
 
 const listAirdropReceived = [

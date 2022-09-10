@@ -8,6 +8,7 @@ import { requestRegister } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Link from 'next/link';
 import AuthFooter from '../../components/auth-footer';
+import { routes } from '../../helpers/routes';
 
 const appIcon = '/assets/wallet_ads_logo.png'
 const emailBanner = '/assets/email_banner.png'
@@ -83,7 +84,7 @@ export default function Register(){
             <div className={styles.ctnDirectRegister}>
                 <span>Already have an account?</span>
                 <div>
-                    <Link href='/login'>
+                    <Link href={routes.login}>
                         Login
                     </Link>
                 </div>

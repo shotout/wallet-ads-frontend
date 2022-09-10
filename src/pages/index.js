@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getAuthorizationHeader } from '../helpers/auth';
+import { routes } from '../helpers/routes';
 
 
 export default function Index() {
@@ -9,9 +10,9 @@ export default function Index() {
   useEffect(() => {
     if (router.pathname == '/') {
       if(getAuthorizationHeader() && getAuthorizationHeader().Authorization){
-        router.push('/dashboard/add-campaign');  
+        router.push(routes.createCampaign);  
       }else{
-        router.push('/login');
+        router.push(routes.login);
       }
     }
   });

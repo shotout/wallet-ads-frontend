@@ -9,6 +9,7 @@ import Iconify from '../../components/Iconify';
 import Page from "../../components/Page";
 import useStyles from "./styles";
 import AuthFooter from '../../components/auth-footer';
+import { routes } from '../../helpers/routes';
 const appIcon = '/assets/wallet_ads_logo.png'
 
 const defaultErrorState = {
@@ -82,7 +83,7 @@ export default function Login() {
             <div className={styles.ctnDirectRegister}>
                 <span>New here?</span>
                 <div>
-                    <Link href='/register'>
+                    <Link href={routes.register}>
                         Create an account now
                     </Link>
                 </div>

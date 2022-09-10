@@ -1,23 +1,23 @@
 import { Box, Grid, Popover, Typography } from '@mui/material';
 import useStyles from './styles'
-import BannerPicker from '../../../components/banner-picker';
-import CollectionPreview from '../../../components/collection-preview';
-import CheckboxAds from '../../../components/checkbox';
+import BannerPicker from '../../components/banner-picker';
+import CollectionPreview from '../../components/collection-preview';
+import CheckboxAds from '../../components/checkbox';
 import React, { useCallback, useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
-import DefineAudience from '../../../components/define-audience';
-import CardAudience from '../../../components/card-audience';
-import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../../helpers/calculator';
-import Page from '../../../components/Page';
-import Layout from '../../../layouts';
-import HeaderUser from '../../../components/header-user';
-import { getUserData } from '../../../helpers/auth';
-import { getCampaignItem, handleAddCampaign } from '../../../utils/requests';
-import DefaultButton from '../../../components/default-button';
+import DefineAudience from '../../components/define-audience';
+import CardAudience from '../../components/card-audience';
+import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
+import Page from '../../components/Page';
+import Layout from '../../layouts';
+import HeaderUser from '../../components/header-user';
+import { getUserData } from '../../helpers/auth';
+import { getCampaignItem, handleAddCampaign } from '../../utils/requests';
+import DefaultButton from '../../components/default-button';
 import moment from 'moment';
-import AuthFooter from '../../../components/auth-footer';
+import AuthFooter from '../../components/auth-footer';
 import { bannerText, questionObj } from './questioMarkPopup';
 
 // ----------------------------------------------------------------------
