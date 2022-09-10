@@ -57,7 +57,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                 </Typography>
                                 <div>
                                     <Typography variant="span" textAlign={'center'} marginBottom={0.1}>
-                                        Airdrop Received:
+                                        Airdrops Received:
                                     </Typography>
                                     <Typography variant="span" textAlign={'center'} color="#6A7B8A" marginBottom={0.2}>
                                     {target.airdropReceived}

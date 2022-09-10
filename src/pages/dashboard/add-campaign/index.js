@@ -809,7 +809,8 @@ export default function AddCampaign({ content }) {
 
   return (
 
-    <Page title="Add Campaign">
+    <Page title="Campaign Creation">
+      <meta name="description" content="Create your campaign on WALLETADS now!" />
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
         <HeaderUser />

@@ -16,27 +16,27 @@ const defaultErrorState = {
     password: null
 }
 
-export default function Login(){
+export default function Login() {
     const styles = useStyles()
     const [values, setValues] = useState({
-      email: '',
-      password: '',
-      showPassword: false,
-      isLoading: false
+        email: '',
+        password: '',
+        showPassword: false,
+        isLoading: false
     });
     const [errorMessage, setErrorMessage] = useState(defaultErrorState)
 
     const handleChange = (prop) => (event) => {
-      setValues({ ...values, [prop]: event.target.value });
+        setValues({ ...values, [prop]: event.target.value });
     };
-  
+
     const handleClickShowPassword = () => {
-      setValues({ ...values, showPassword: !values.showPassword });
+        setValues({ ...values, showPassword: !values.showPassword });
     };
 
 
-    const handleSubmit = async() => {
-        try{
+    const handleSubmit = async () => {
+        try {
             setErrorMessage(defaultErrorState)
             setValues({ ...values, isLoading: true })
             const body = {
@@ -47,9 +47,9 @@ export default function Login(){
             setAuthorizationCookie(res)
             window.location.href = '/'
             // setValues({ ...values, isLoading: false })
-        }catch(err){
-            if(err.data){
-                if(err.data.errors){
+        } catch (err) {
+            if (err.data) {
+                if (err.data.errors) {
                     setErrorMessage(responseValidatorObj(err.data.errors))
                 }
             }
@@ -58,10 +58,10 @@ export default function Login(){
     }
 
     const handleMouseDownPassword = (event) => {
-      event.preventDefault();
+        event.preventDefault();
     };
 
-    function renderHeader(){
+    function renderHeader() {
         return (
             <div className={styles.ctnHeader}>
                 <img src={appIcon} alt="wallet-ads" />
@@ -69,7 +69,7 @@ export default function Login(){
         )
     }
 
-    function renderForgotPassword(){
+    function renderForgotPassword() {
         return (
             <div className={styles.ctnForgotPassword}>
                 <span>Forgot Password</span>
@@ -77,7 +77,7 @@ export default function Login(){
         )
     }
 
-    function renderDirectRegister(){
+    function renderDirectRegister() {
         return (
             <div className={styles.ctnDirectRegister}>
                 <span>New here?</span>
@@ -90,7 +90,7 @@ export default function Login(){
         )
     }
 
-    function renderInput(){
+    function renderInput() {
         return (
             <div className={styles.ctnInput}>
                 <div className={styles.ctnTitle}>
@@ -121,20 +121,20 @@ export default function Login(){
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                                        {values.showPassword ? (
-                                            <Iconify icon="eva:eye-fill" width={24} height={24} />
-                                        ) : (
-                                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                                        )}
+                                            {values.showPassword ? (
+                                                <Iconify icon="eva:eye-fill" width={24} height={24} />
+                                            ) : (
+                                                <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                                            )}
                                         </IconButton>
                                     </InputAdornment>
                                 )
                             }}
-                            />
+                        />
                     </div>
                     {renderForgotPassword()}
                 </div>
-                    <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={"Login"} />
+                <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={"Login"} />
                 {renderDirectRegister()}
             </div>
         )
@@ -142,6 +142,7 @@ export default function Login(){
 
     return (
         <Page title="Login">
+        <meta name="description" content="Login to your WALLETADS account now!" />
             <div className={styles.ctnRoot}>
                 {renderHeader()}
                 {renderInput()}

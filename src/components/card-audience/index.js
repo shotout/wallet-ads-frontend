@@ -35,7 +35,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                         )}
                         {target.airdropReceived && (
                             <Typography variant="span" textAlign={'center'} paragraph>
-                                {`+ Airdrop Received: ${target.airdropReceived}`}
+                                {`+ Airdrops Received: ${target.airdropReceived}`}
                             </Typography>
                         )}
                     </div>
@@ -106,7 +106,7 @@ export default function CardAudience({ showArrow, label, selectedPage, isSomeAud
                         {renderPrice()}
                     {!isEdit && (
                         <Typography variant="span" textAlign={'center'} paragraph>
-                            {`USD${getAudiencePrice(data)} per airdrop `}
+                            {`USD${getAudiencePrice(data)} per sendout `}
                         </Typography>
                     )}
                     {!isEdit && (
