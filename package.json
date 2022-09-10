@@ -47,6 +47,7 @@
     "react": "^17.0.1",
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-animations": "^1.0.0",
+    "react-currency-input-field": "^3.6.4",
     "react-datepicker": "^4.8.0",
     "react-dom": "^17.0.2",
     "react-dropzone": "^14.2.2",

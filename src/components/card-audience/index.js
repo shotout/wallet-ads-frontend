@@ -5,6 +5,7 @@ import useStyles from './styles'
 import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
 import SvgIconStyle from '../SvgIconStyle';
+import CurrencyInput from "react-currency-input-field";
 
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
@@ -84,7 +85,18 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                     <span>
                         USD
                     </span>
-                    <input name="budget" placeholder='0' maxLength={5} value={`${data.budgetAds}`} onChange={onChangeBudget} type="text"  />
+                    <CurrencyInput
+                        name="currencyInput"
+                        id="currencyInput"
+                        data-number-stepfactor="100"
+                        value={data.budgetAds}
+                        placeholder=""
+                        onChange={onChangeBudget}
+                        // onBlur={handleOnBlur}
+                        allowDecimals={false}
+                        disableAbbreviations
+                        maxLength={5} 
+                    />
                 </div>
             </div>
         )

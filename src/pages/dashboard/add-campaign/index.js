@@ -116,7 +116,7 @@ export default function AddCampaign({ content }) {
 
         "campaign_audiences": audienceForm.map((audience, index) => ({
               "fe_id": index,
-              "price": audience.budgetAds,
+              "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
 
               "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
               "detailed_targeting_year":audience.balancedTargeting.year,
@@ -241,9 +241,10 @@ export default function AddCampaign({ content }) {
   const handleChangeBudget = (event, stateName, contentIndex) => {
     const restructureData = audienceForm.map((item, index) => {
       if(index === contentIndex){
+        console.log("Check value:", event.target.value)
         return {
           ...item,
-          budgetAds: event.target.value.replace(/[^0-9]/g, '')
+          budgetAds: event.target.value.replace(/[^\d.]/gi, "")
         }
       }
       return item
