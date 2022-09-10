@@ -592,7 +592,7 @@ export default function AddCampaign({ content }) {
               <img src={askIcon} alt="ask" />
             </div>
             <Typography variant="body2"  color='#808080'>
-              Recommended size 1400x400px 
+              Recommended size 1400x350px 
             </Typography>
           </div>
           <BannerPicker typeScreen="banner-collection" file={bannerCollection} onDelete={() => {setBannerCollection(null)}} onDrop={changeBannerCollection} label={"Add banner"} />

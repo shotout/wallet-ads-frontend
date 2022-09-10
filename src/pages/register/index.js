@@ -267,7 +267,7 @@ export default function Register(){
                                                 </InputAdornment>
                                             )
                                         }}
-                                        placeholder="Confrim Password" />
+                                        placeholder="Confirm Password" />
                                 </div> 
                             </Grid>
                         </Grid>
