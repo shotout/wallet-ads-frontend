@@ -8,11 +8,14 @@ import {
   Typography,
   Checkbox,
   ListItemText,
-  Grid
+  Grid,
+  Popover,
+  Box
 } from '@mui/material';
 import CardAudienceSummary from '../card-audience-summary';
 import FilePicker from '../file-picker';
 import SvgIconStyle from '../SvgIconStyle';
+import { questionObj } from 'src/pages/dashboard/add-campaign/questioMarkPopup';
 
 const targetIcon = '/assets/svg/target_background.svg'
 const purpleAsk = '/assets/purple_ask.png'
@@ -50,6 +53,8 @@ const listAvailableCredit = [
 export default function DefineAudience({ selectedAudience, initialData, onAdd = () => {} }){
     const [activeAudience, setActiveAudience] = useState(null)
     const [formValues, setFormValues] = useState(null)
+    const [activePopover, setActivePopover] = useState(null);
+    const [hover, setHover] = useState(null);
 
     useEffect(() => {
         if(activeAudience !== selectedAudience){
@@ -61,6 +66,15 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             })
         }
     }, [selectedAudience])
+
+    const handleHoverOpen = (event, popoverName) => {
+      setHover(event.currentTarget);
+      setActivePopover(popoverName)
+    };
+     
+    const handleHoverClose = () => {
+      setHover(null);
+    };
 
     const handleSubmitAudience = () => {
         if(formValues.balancedTargeting && formValues.balancedTargeting.cryptoCurrency){
@@ -111,14 +125,34 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return ''
     }
 
-    const getAskIcon = (categoryName) => {
-        if(categoryName === formValues.selectedCategory){
-            if(categoryName === 'detail-targeting'){
-                return purpleAsk
-            }
-            return redAsk
-        }
-        return grayAsk
+    function renderPopover(type, content){
+      return(
+          <Popover
+            id={type}
+            open={Boolean(hover) && activePopover === type}
+            anchorEl={hover}
+            anchorOrigin={{
+            vertical: 'left',
+            horizontal: 'center',
+            }}
+            transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+            }}
+            onClose={handleHoverClose}
+            disableRestoreFocus
+            sx={{
+            pointerEvents: 'none',
+            }}
+            className={styles.ctnPopover}
+        >
+            <Box sx={{ p: 2, maxWidth: 260 }}>
+                <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+                    {content || ''}
+                </Typography>
+            </Box>
+        </Popover>
+      )
     }
 
     const isCategorySelected = (categoryName) => {
@@ -230,7 +264,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                             +Cryptocurrencies used
                         </Typography>
-                        <div className={styles.askCtn}>
+                        <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'cryptocurrencies_used')}} onMouseLeave={handleHoverClose}>
+                            {renderPopover('cryptocurrencies_used', questionObj.cryptocurrencies_used)}
                             <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                         </div>
                     </div>
@@ -281,7 +316,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                             +Account age
                         </Typography>
-                        <div className={styles.askCtn}>
+                        <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'account_age')}} onMouseLeave={handleHoverClose}>
+                            {renderPopover('account_age', questionObj.account_age)}
                             <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                         </div>
                     </div>
@@ -327,7 +363,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Available credit in wallet
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'available_credit_in_wallet')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('available_credit_in_wallet', questionObj.available_credit_in_wallet)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                             </div>
                         </div>
@@ -354,7 +391,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Trading Volume
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'trading_volume')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('trading_volume', questionObj.trading_volume)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                             </div>
                         </div>
@@ -381,7 +419,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Airdrops Received
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'airdrops_received')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('airdrops_received', questionObj.airdrops_received)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                             </div>
                         </div>
@@ -505,7 +544,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +Amount of transactions
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'amount_of_transaction')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('amount_of_transaction', questionObj.amount_of_transaction)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                             </div>
                         </div>
@@ -548,7 +588,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="body2" color={getCategoryColor('detail-targeting')}>
                                 +NFT Purchases
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'nft_Purchases')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('nft_Purchases', questionObj.nft_Purchases)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('detail-targeting', '#8C65CC') }} />
                             </div>
                         </div>
@@ -669,7 +710,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                             <Typography variant="h6" color={getCategoryColor('upload')} marginBottom={0}>
                                 UPLOAD YOUR OWN AUDIENCE
                             </Typography>
-                            <div className={styles.askCtn}>
+                            <div className={styles.askCtn} onMouseEnter={(event) => {handleHoverOpen(event, 'upload_audience')}} onMouseLeave={handleHoverClose}>
+                                {renderPopover('upload_audience', questionObj.upload_audience)}
                                 <SvgIconStyle src={askSvg} sx={{ width: 1, height: 1, color: getCategoryColor('upload', '#AD4061') }} />
                             </div>
                         </div>

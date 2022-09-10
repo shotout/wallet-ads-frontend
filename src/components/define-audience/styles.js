@@ -395,5 +395,13 @@ export default makeStyles((theme) => ({
                 fontSize: '15px !important',
             }
         }
+    },
+    ctnPopover:{
+        '& > .MuiPaper-root':{
+            background: 'rgba(0, 0, 0,0.9)'
+        }
+    },
+    askCtn: {
+        cursor: 'pointer'
     }
 }))

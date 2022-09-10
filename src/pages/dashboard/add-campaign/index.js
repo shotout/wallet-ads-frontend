@@ -1,4 +1,4 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Popover, Typography } from '@mui/material';
 import useStyles from './styles'
 import BannerPicker from '../../../components/banner-picker';
 import CollectionPreview from '../../../components/collection-preview';
@@ -18,6 +18,7 @@ import { getCampaignItem, handleAddCampaign } from '../../../utils/requests';
 import DefaultButton from '../../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../../components/auth-footer';
+import { bannerText, questionObj } from './questioMarkPopup';
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +50,8 @@ const initialPicture = [
 export default function AddCampaign({ content }) {
   const styles = useStyles()
   // const { themeStretch } = useSettings();
+  const [hover, setHover] = useState(null);
+  const [activePopover, setActivePopover] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null)
   const [logoCollection, setLogoCollection] = useState(null)
   const [pictureData, setPicture] = useState(initialPicture)
@@ -213,6 +216,15 @@ export default function AddCampaign({ content }) {
       })
     }
   }
+  
+  const handleHoverOpen = (event, popoverName) => {
+    setHover(event.currentTarget);
+    setActivePopover(popoverName)
+  };
+   
+  const handleHoverClose = () => {
+    setHover(null);
+  };
 
   const checkIsAudienceAdsSelected = (index) => {
     let isAudienceSelected = false
@@ -380,6 +392,36 @@ export default function AddCampaign({ content }) {
       reader.readAsDataURL(file);
     }
   }, []);
+
+  function renderPopover(type, content){
+    return(
+        <Popover
+          id={type}
+          open={Boolean(hover) && activePopover === type}
+          anchorEl={hover}
+          anchorOrigin={{
+          vertical: 'left',
+          horizontal: 'center',
+          }}
+          transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+          }}
+          onClose={handleHoverClose}
+          disableRestoreFocus
+          sx={{
+          pointerEvents: 'none',
+          }}
+          className={styles.ctnPopover}
+      >
+          <Box sx={{ p: 2, maxWidth: 260 }}>
+              <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+                  {content || ''}
+              </Typography>
+          </Box>
+      </Popover>
+    )
+  }
 
   function renderAdAudience(item){
     if(item.selectedCategory === 'detail-targeting'){
@@ -643,10 +685,15 @@ export default function AddCampaign({ content }) {
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
-                <Typography variant="h6">
+                <Typography
+                  variant="h6">
                   Ad name
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img 
+                  onMouseEnter={(event) => {handleHoverOpen(event, 'ad_name')}}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon} alt="ask" />
+              {renderPopover('ad_name', questionObj.ad_name)}
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
@@ -659,7 +706,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Media
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'media')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('media',questionObj.media)}
             </div>
             {/* <Typography variant="body2"  color='#808080'>
               Recommended size 350x350px 
@@ -685,7 +737,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Collection page name
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'collection_page_name')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('collection_page_name',questionObj.collection_page_name)}
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
@@ -698,7 +755,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                 Add logo
               </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'logo_text')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('logo_text',bannerText('350x350px'))}
             </div>
             <Typography variant="body2"  color='#808080'>
               Recommended size 350x350px 
@@ -712,7 +774,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Add banner
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'logo_text')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('logo_text',bannerText('400x350px'))}
             </div>
             <Typography variant="body2"  color='#808080'>
               Recommended size 1400x350px 
@@ -726,7 +793,11 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Collection page text
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img 
+                  onMouseEnter={(event) => {handleHoverOpen(event, 'collection_page_text')}}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon} alt="ask" />
+              {renderPopover('collection_page_text', questionObj.collection_page_text)}
             </div>
           </div>
           <div className={styles.textAreaCollection}>
@@ -746,7 +817,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Ad text
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'ad_text')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('ad_text',questionObj.ad_text)}
             </div>
           </div>
           <div className={styles.textAreaCollection}>
@@ -777,7 +853,12 @@ export default function AddCampaign({ content }) {
                 <Typography variant="h6">
                   Add social media links
                 </Typography>
-              <img src={askIcon} alt="ask" />
+              <img
+                onMouseEnter={(event) => {handleHoverOpen(event, 'add_social_media_link')}}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask" />
+              {renderPopover('add_social_media_link',questionObj.add_social_media_link)}
             </div>
           </div>
           <div className={styles.inputCollectionIcon}>

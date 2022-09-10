@@ -228,7 +228,8 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: 20,
         padding: 20,
         borderRadius: 20,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: 'relative'
     },
     ctnInputCollectionPageWrapper: {
         width: '100%',
@@ -255,15 +256,21 @@ const useStyles = makeStyles((theme) => ({
         justifyContent :'space-between',
         alignItems: 'center',
         marginBottom: 12,
+        position: 'relative'
     },
     leftTitle: {
         display: 'flex',
         alignItems: 'center',
+        position: 'relative',
         '& > img': {
             width: 16,
             height: 16,
             objectFit: 'contain',
-            marginLeft: 8
+            marginLeft: 8,
+            cursor: 'pointer'
+        },
+        '& > div':{
+            position: 'relative',
         }
     },
     inputCollectionWrapper: {
@@ -475,6 +482,11 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnRedBorder:{
         border: '2px solid red'
+    },
+    ctnPopover:{
+        '& > .MuiPaper-root':{
+            background: 'rgba(0, 0, 0,0.9)'
+        }
     }
 }))
 
