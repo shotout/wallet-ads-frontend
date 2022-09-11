@@ -455,7 +455,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
-                            select
+                            // select
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
@@ -736,7 +736,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     </div>
                     <div className={styles.ctnInputSelect}>
                         <TextField
-                            select
+                            // select
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"

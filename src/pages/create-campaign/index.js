@@ -37,10 +37,8 @@ const addIcon = '/assets/add_icon.png'
 const askIcon = '/assets/ask_icon.png'
 
 const discordIcon = '/assets/discord.png'
-const facebookIcon = '/assets/facebook.png'
-const instagramIcon = '/assets/instagram.png'
+const telegramIcon = '/assets/telegram.png'
 const mediumIcon = '/assets/medium.png'
-const twitterIcon = '/assets/twitter.png'
 const websiteIcon = '/assets/website.png'
 
 const initialPicture = [
@@ -65,10 +63,8 @@ export default function AddCampaign({ content }) {
     ads_page_description: "",
     ads_page_website: "",
     ads_page_discord: "",
-    ads_page_twitter: "",
-    ads_page_instagram: "",
     ads_page_medium: "",
-    ads_page_facebook: "",
+    ads_page_telegram: "",
   })
   const [selectedAudience, setSelectedAudience] = useState(null)
   const [loadingSubmit, setLoadingSubmit] = useState(null)
@@ -102,7 +98,7 @@ export default function AddCampaign({ content }) {
       //   ads_page_twitter: "",
       //   ads_page_instagram: "",
       //   ads_page_medium: "",
-      //   ads_page_facebook: "",
+      //   ads_page_telegram: "",
       // })
     }
   }, [])
@@ -139,10 +135,8 @@ export default function AddCampaign({ content }) {
         "ads_page_description": formValues.ads_page_description,
         "ads_page_website": formValues.ads_page_website,
         "ads_page_discord": formValues.ads_page_discord,
-        "ads_page_twitter": formValues.ads_page_twitter,
-        "ads_page_instagram": formValues.ads_page_instagram,
         "ads_page_medium": formValues.ads_page_medium,
-        "ads_page_facebook": formValues.ads_page_facebook,
+        "ads_page_telegram": formValues.ads_page_telegram,
         // "ads_page_external_page": "https://external.com",
         "ads_page_logo": logoCollection ? logoCollection.fileBase64 : null,
         "ads_page_banner": bannerCollection ? bannerCollection.fileBase64 : null,
@@ -565,7 +559,7 @@ export default function AddCampaign({ content }) {
                 <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}}`}>
                   <span>After:</span>
                   <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
-                  <span>Days</span>
+                  <span>{isNaN(formValues.campaign_end_day) || formValues.campaign_end_day === '' || Number(formValues.campaign_end_day) === 1 ? 'Day' :'Days'}</span>
                 </div>
               </div>
             </Grid>
@@ -870,20 +864,12 @@ export default function AddCampaign({ content }) {
             <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
-            <img src={twitterIcon} alt="twitter" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_twitter')}} value={formValues.ads_page_twitter} placeholder="" type="text"  />
-          </div>
-          <div className={styles.inputCollectionIcon}>
-            <img src={instagramIcon} alt="instagram" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_instagram')}} value={formValues.ads_page_instagram} placeholder="" type="text"  />
-          </div>
-          <div className={styles.inputCollectionIcon}>
             <img src={mediumIcon} alt="medium" />
             <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder="" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
-            <img src={facebookIcon} alt="facebook" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_facebook')}} value={formValues.ads_page_facebook} placeholder="" type="text"  />
+            <img src={telegramIcon} alt="telegram" />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_telegram')}} value={formValues.ads_page_telegram} placeholder="" type="text"  />
           </div>
         </div>
       </div>
