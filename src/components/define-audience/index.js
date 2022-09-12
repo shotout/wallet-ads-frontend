@@ -51,19 +51,18 @@ const listAirdropReceived = [
 const listAmountTransaction = [
 '-',
   '0',
-  '1-5',
-  '6-10',
-  '>10'
+  'Min. 1',
+  'Min. 5',
+  'Min. 10'
 ]
 
 const listAvailableCredit = [
     'Select...',
     'USD0',
-    'USD1-100',
-    'USD100-1,000',
-    'USD1,000-10,000',
-    'USD10,000-100,000',
-    '> USD100,000'
+    'Min. USD1',
+    'Min. USD100',
+    'Min. USD1,000',
+    'Min. USD100,000'
 ]
 
 
