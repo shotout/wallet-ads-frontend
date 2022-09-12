@@ -14,7 +14,8 @@ const appIcon = '/assets/wallet_ads_logo.png'
 
 const defaultErrorState = {
     email: null,
-    password: null
+    password: null,
+    errorValidation: null
 }
 
 export default function Login() {
@@ -52,6 +53,12 @@ export default function Login() {
             if (err.data) {
                 if (err.data.errors) {
                     setErrorMessage(responseValidatorObj(err.data.errors))
+                }
+                if(err.data.message && !err.data.errors){
+                    setErrorMessage({
+                        ...errorMessage,
+                        errorValidation: err.data.message
+                    })
                 }
             }
             setValues({ ...values, isLoading: false })
@@ -91,6 +98,19 @@ export default function Login() {
         )
     }
 
+    function renderRedBox(){
+        if(errorMessage.errorValidation){
+            return (
+                <div className={styles.ctnRedBox}>
+                    <Typography variant="body1" color="#fff" textAlign={"center"}>
+                        {errorMessage.errorValidation}
+                    </Typography>
+                </div>
+            )
+        }
+        return null
+    }
+
     function renderInput() {
         return (
             <div className={styles.ctnInput}>
@@ -99,6 +119,7 @@ export default function Login() {
                         Login
                     </Typography>
                 </div>
+                {renderRedBox()}
                 <div className={styles.ctnForm}>
                     <div className={styles.inputWrapper}>
                         <TextField
