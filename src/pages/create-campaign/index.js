@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Popover, Typography } from '@mui/material';
+import { Box, Grid, Popover, Typography } from '@mui/material';
 import useStyles from './styles'
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -439,7 +439,6 @@ export default function AddCampaign({ content }) {
               <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
                   {content || ''}
               </Typography>
-              <Button variant="contained">Documentation</Button>
           </Box>
       </Popover>
     )
