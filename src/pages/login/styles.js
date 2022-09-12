@@ -33,7 +33,7 @@ export default makeStyles((theme) => ({
         marginBottom: 80
     },
     ctnTitle: {
-        marginBottom: 40
+        marginBottom: 20
     },
     ctnForm:{
         '& $inputWrapper:first-child':{
@@ -92,5 +92,11 @@ export default makeStyles((theme) => ({
                 textDecoration:' underline'
             },
         }
+    },
+    ctnRedBox:{
+        marginBottom: 20,
+        background: '#AD4061',
+        padding: 12,
+        borderRadius: 12,
     }
 }))
