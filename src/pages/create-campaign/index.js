@@ -1,4 +1,4 @@
-import { Box, Grid, Popover, Typography } from '@mui/material';
+import { Box, Button, Grid, Popover, Typography } from '@mui/material';
 import useStyles from './styles'
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -18,6 +18,7 @@ import { getCampaignItem, handleAddCampaign } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
+import SuccessAddCampaign from 'src/components/success-add-campaign';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -88,6 +89,7 @@ export default function AddCampaign({ content }) {
   })
   const [selectedAudience, setSelectedAudience] = useState(null)
   const [loadingSubmit, setLoadingSubmit] = useState(null)
+  const [showModalSuccess, setModalSuccess] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
@@ -234,6 +236,10 @@ export default function AddCampaign({ content }) {
   const handleHoverOpen = (event, popoverName) => {
     setHover(event.currentTarget);
     setActivePopover(popoverName)
+  };
+  
+  const handleShowModalSuccess = (event) => {
+    setModalSuccess(true);
   };
    
   const handleHoverClose = () => {
@@ -432,6 +438,7 @@ export default function AddCampaign({ content }) {
               <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
                   {content || ''}
               </Typography>
+              <Button variant="contained">Documentation</Button>
           </Box>
       </Popover>
     )
@@ -1017,7 +1024,13 @@ export default function AddCampaign({ content }) {
   function renderSetupAirdrop(){
     return (
       <div className={styles.setupAirdropWrapper}>
-        <DefaultButton isLoading={loadingSubmit} label={"Setup Airdrop"} onClick={validateSubmit} />
+        <DefaultButton
+          isLoading={loadingSubmit}
+          label={"Setup Airdrop"}
+          onClick={(event) => {
+            handleShowModalSuccess(event)
+            validateSubmit()
+          }} />
       </div>
     )
   }
@@ -1036,6 +1049,7 @@ export default function AddCampaign({ content }) {
         {renderSetupAirdrop()}
         </div>
         <AuthFooter />
+        <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={() => { setModalSuccess(null)}} />
       </div>
     </Page>
   );
