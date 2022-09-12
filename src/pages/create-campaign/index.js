@@ -18,7 +18,7 @@ import { getCampaignItem, handleAddCampaign } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
-import SuccessAddCampaign from 'src/components/success-add-campaign';
+import SuccessAddCampaign from '../../components/success-add-campaign';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -169,6 +169,7 @@ export default function AddCampaign({ content }) {
           }))
       }
       const res = await handleAddCampaign(objRes)
+      handleShowModalSuccess()
       setLoadingSubmit(false)
     }catch(err){
       setLoadingSubmit(false)
@@ -1027,10 +1028,7 @@ export default function AddCampaign({ content }) {
         <DefaultButton
           isLoading={loadingSubmit}
           label={"Setup Airdrop"}
-          onClick={(event) => {
-            handleShowModalSuccess(event)
-            validateSubmit()
-          }} />
+          onClick={validateSubmit} />
       </div>
     )
   }
