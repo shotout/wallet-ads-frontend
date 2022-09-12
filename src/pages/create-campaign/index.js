@@ -19,6 +19,7 @@ import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
 import SuccessAddCampaign from '../../components/success-add-campaign';
+import AddPaymentMethod from 'src/components/add-payment-method';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -1047,6 +1048,7 @@ export default function AddCampaign({ content }) {
         </div>
         <AuthFooter />
         <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={() => { setModalSuccess(null)}} />
+        <AddPaymentMethod isVisible={false} />
       </div>
     </Page>
   );
