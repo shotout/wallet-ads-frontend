@@ -39,7 +39,11 @@ export default function Login() {
 
     const handleSubmit = async () => {
         try {
-            setErrorMessage(defaultErrorState)
+            setErrorMessage({
+                email: null,
+                password: null,
+                errorValidation: null
+            })
             setValues({ ...values, isLoading: true })
             const body = {
                 email: values.email,
@@ -56,7 +60,8 @@ export default function Login() {
                 }
                 if(err.data.message && !err.data.errors){
                     setErrorMessage({
-                        ...errorMessage,
+                        email: null,
+                        password: null,
                         errorValidation: err.data.message
                     })
                 }
