@@ -9,18 +9,19 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
-import { calculateAirdropPerUser, checkIsFormMax, getAudiencePrice, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
+import { calculateAirdropPerUser, checkIsFormMax, getAudiencePrice, getTotalBudget, getTotalUserGetAirdrop, parsePriceToCategory } from '../../helpers/calculator';
 import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import { getUserData } from '../../helpers/auth';
-import { createSession, handleAddCampaign, getCampaignDetail } from '../../utils/requests';
+import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
 import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
 import { useStripe } from '@stripe/react-stripe-js';
+import { BACKEND_URL } from '../../helpers/constants';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -108,69 +109,121 @@ export default function AddCampaign({ content, params }) {
   })
   const [showCreditCard, setShowCreditCard] = useState(null)
 
-  useEffect(() => {
-    console.log("Check content :", content)
-    if(params && params.status === 'success'){
-      // getCampaignDetail(null, params.id)
+  function normalizeInitialData(value){
+    if(value === '0' || value === 0){
+      return null
+    }
+    return value
+  }
 
+  console.log("Check content:", content)
+
+  function getAdsId(id){
+    const adsIdArr = []
+    content.audiences.forEach((aud, index) => {
+      if(aud.ads_id === id){
+        adsIdArr.push(index)
+      }
+    })
+    return adsIdArr
+  }
+
+  useEffect(() => {
+    if(params && params.status === 'success'){
       setModalSuccess('credit-card')
     }
     if(content && params.status === 'fail'){
-      console.log("Check content.type:", content.type)
+      const adsPage = content.ads_page
+      const adsLogo = adsPage.images.find(item => item.type === "ads_logo")
+      const adsBanner = adsPage.images.find(item => item.type === "ads_banner")
+      setLogoCollection({
+        preview: adsLogo && adsLogo.url ? `${BACKEND_URL}${adsLogo.url}` : null
+      })
+      setBannerCollection({
+        preview: adsBanner && adsBanner.url ? `${BACKEND_URL}${adsBanner.url}` : null
+      })
+      const adCreation = content.ads.map(item => ({
+        ...item,
+        fe_id: getAdsId(item.id),
+        image: item.image.url ?  `${BACKEND_URL}${item.image.url}` : null
+      }))
+      const audienceArr = content.audiences.map(item => {
+        const targeting = item.detail_target
+        return {
+          id: item.id,
+          optimized: parsePriceToCategory(item.price_airdrop) !== null,
+          selectedCategory: parsePriceToCategory(item.price_airdrop),
+          budgetAds: (item.price || '').toString(),
+          detailTargeting: {
+            availableCredit: normalizeInitialData(targeting.available_credit_wallet),
+            tradingVolume: normalizeInitialData(targeting.trading_volume),
+            transactionAmount: normalizeInitialData(targeting.amount_transaction),
+            amountDays: normalizeInitialData(targeting.amount_transaction_day),
+            creatorName: normalizeInitialData(targeting.nft_purchases),
+          },
+          balancedTargeting: { 
+            cryptoCurrency: normalizeInitialData(targeting.cryptocurrency_used),
+            year: normalizeInitialData(targeting.account_age_year),
+            months: normalizeInitialData(targeting.account_age_month),
+            day: normalizeInitialData(targeting.account_age_day),
+            airdropReceived: normalizeInitialData(targeting.airdrops_received),
+          }
+        }
+      })
+      setPicture(adCreation)
+      setAudienceForm(audienceArr)
       setFormValues({
         campaign_name: content.name,
         campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
         campaign_end_date_type: content.type.toString(),
         campaign_end_date: new Date(),
         campaign_end_date_day: content.type === 3 ? content.availability : '7',
-        ads_page_name: "",
-        ads_page_description: "",
-        ads_page_website: "",
-        ads_page_discord: "",
-        ads_page_twitter: "",
-        ads_page_instagram: "",
-        ads_page_medium: "",
-        ads_page_telegram: "",
+        ads_page_name: adsPage.name,
+        ads_page_description: adsPage.description,
+        ads_page_website: adsPage.website,
+        ads_page_discord: adsPage.discord,
+        ads_page_medium: adsPage.medium,
+        ads_page_telegram: adsPage.telegram,
       })
     }
   }, [])
 
   const handleResetPage = () => {
     setModalSuccess(null)
-    setHover(null)
-    setActivePopover(null)
-    setBannerCollection(null)
-    setLogoCollection(null)
-    setPicture(initialPicture)
-    setFormValues({
-      campaign_name: '',
-      campaign_start_date: new Date(),
-      campaign_end_date_type: '',
-      campaign_end_date: new Date(),
-      campaign_end_day: '7',
-      ads_page_name: "",
-      ads_page_description: "",
-      ads_page_website: "",
-      ads_page_discord: "",
-      ads_page_medium: "",
-      ads_page_telegram: "",
-    })
-    setSelectedAudience(null)
-    setLoadingSubmit(null)
+    // setHover(null)
+    // setActivePopover(null)
+    // setBannerCollection(null)
+    // setLogoCollection(null)
+    // setPicture(initialPicture)
+    // setFormValues({
+    //   campaign_name: '',
+    //   campaign_start_date: new Date(),
+    //   campaign_end_date_type: '',
+    //   campaign_end_date: new Date(),
+    //   campaign_end_day: '7',
+    //   ads_page_name: "",
+    //   ads_page_description: "",
+    //   ads_page_website: "",
+    //   ads_page_discord: "",
+    //   ads_page_medium: "",
+    //   ads_page_telegram: "",
+    // })
+    // setSelectedAudience(null)
+    // setLoadingSubmit(null)
   
-    setAudienceForm([
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    ])
-    setErrorBox({
-      errorAudience: false,
-      errorAds: false,
-      errorBoxCampaignName: false,
-      errorBoxAvailability: false
-    })
-    setShowCreditCard(null)
+    // setAudienceForm([
+    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    // ])
+    // setErrorBox({
+    //   errorAudience: false,
+    //   errorAds: false,
+    //   errorBoxCampaignName: false,
+    //   errorBoxAvailability: false
+    // })
+    // setShowCreditCard(null)
   }
 
   const directStripe = () => {
@@ -179,7 +232,7 @@ export default function AddCampaign({ content, params }) {
   })
   }
 
-  const handleSubmit = async(modalType) => {
+  const handleSubmit = async() => {
     try{
       setLoadingSubmit(true)
       const objRes = {
@@ -190,6 +243,7 @@ export default function AddCampaign({ content, params }) {
         "campaign_end_date": moment(formValues.campaign_end_date).format('YYYY-MM-DD'),
 
         "campaign_audiences": audienceForm.map((audience, index) => ({
+              "id": audience.id,
               "fe_id": index,
               "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
               "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience) : null,
@@ -224,7 +278,12 @@ export default function AddCampaign({ content, params }) {
             image: campaign.image ? campaign.image.fileBase64 : null
           }))
       }
-      const res =await handleAddCampaign(objRes)
+      let res = null
+      if(params.id){
+        res = await handleEditCampaign(objRes, params.id)
+      }else{
+        res = await handleAddCampaign(objRes)
+      }
       const session = await createSession({
           campaign_id: res.data.id,
           campaign_name: formValues.campaign_name,
@@ -1144,7 +1203,6 @@ export async function getServerSideProps(context) {
   const isMobile = Boolean(UA.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   ))
-  console.log("Check params:", context.query)
   let params = {}
   let content = null
   if(isMobile){
@@ -1166,7 +1224,7 @@ export async function getServerSideProps(context) {
 
   if(context.query){
     params = context.query
-    if(context.query.id){
+    if(context.query.id && context.query.status === 'fail'){
       const res = await getCampaignDetail(context, context.query.id)
       content = res.data
     }

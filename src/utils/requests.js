@@ -24,6 +24,12 @@ export const handleAddCampaign = (data) => axios({
   data,
 });
 
+export const handleEditCampaign = (data, id) => axios({
+  url: `/campaigns/${id}`,
+  method: 'PATCH',
+  data,
+});
+
 export const getCampaignItem = (ctx) => axios({
   url: '/campaigns',
   method: 'GET',

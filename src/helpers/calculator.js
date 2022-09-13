@@ -11,6 +11,19 @@ export const getAudiencePrice = (data) => {
     return 0.039
 }
 
+export const parsePriceToCategory = (price) => {
+    if(price === '0.039'){
+        return 'optimized'
+    }
+    if(price === '0.019'){
+        return 'upload'
+    }
+    if(price === '0.079') {
+        return 'detail-targeting'
+    }
+    return null
+}
+
 export const calculateAirdropPerUser = (data) => {
     const audiencePrice = getAudiencePrice(data)
     const budgetPrice = data.budgetAds ? Number(data.budgetAds.replace(',','.')) : null
