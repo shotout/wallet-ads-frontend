@@ -134,6 +134,18 @@ export default function Invoice(){
 
 export async function getServerSideProps(context) {
     const userData = getUserData(context)
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+    ))
+    if(isMobile){
+      return {
+          redirect: {
+              permanent: false,
+              destination: `/forbidden`
+          }
+      }
+    }
     if(!userData){
         return {
             redirect: {

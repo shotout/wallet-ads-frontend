@@ -9,7 +9,11 @@ export default makeStyles((theme) => ({
         justifyContent: 'space-between',
         position: 'absolute',
         bottom: 0,
-        width: '100%'
+        width: '100%',
+        [theme.breakpoints.down('sm')]:{
+            flexDirection: 'column',
+            padding: '10px 20px'
+        }
     },
     ctnLink: {
         '& > a':{
@@ -17,7 +21,13 @@ export default makeStyles((theme) => ({
             textDecoration: 'none',
             marginRight: 30,
             fontWeight: 'bold',
-            fontSize: 15
+            fontSize: 15,
+            [theme.breakpoints.down('sm')]:{
+                marginLeft: 30
+            }
+        },
+        [theme.breakpoints.down('sm')]:{
+            marginBottom: 8
         }
     }
 }))
