@@ -1098,7 +1098,9 @@ export default function AddCampaign({ content }) {
           callbackSuccess={(modalType) => {
             handleSubmit(modalType)
           }}
+          totalBudget={getTotalBudget(audienceForm)}
           isVisible={showCreditCard}
+          // isVisible
           handleHoverClose={() => { setShowCreditCard(null)}} />
       </div>
     </Page>

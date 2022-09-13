@@ -7,7 +7,6 @@ import useStyles from './styles'
 // import CheckoutForm from '../checkout-form';
 import { useState } from 'react';
 import { formatCreditCardNumber, formatCVC, formatExpirationDate } from '../../helpers/creditCardUtil';
-import CurrencyInput from "react-currency-input-field";
 import { handlePayment } from '../../utils/requests';
 
 const ccImage = '/assets/credit_card.png'
@@ -15,13 +14,12 @@ const ccImage = '/assets/credit_card.png'
 
 // const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
-export default function CreditCard({ isVisible = null, handleHoverClose, callbackSuccess }){
+export default function CreditCard({ totalBudget, isVisible = null, handleHoverClose, callbackSuccess }){
     const styles = useStyles()
     const [cardValue, setCard] = useState({
         card_number: '',
         expiry: '',
         cvc: '',
-        amount: '',
         description: ''
     })
     const [isLoading, setLoading] = useState(false)
@@ -29,7 +27,6 @@ export default function CreditCard({ isVisible = null, handleHoverClose, callbac
         card_number: false,
         expiry: false,
         cvc: false,
-        amount: false,
         errorMessage: null
     })
 
@@ -37,14 +34,12 @@ export default function CreditCard({ isVisible = null, handleHoverClose, callbac
         try{
             const expMonth = cardValue.expiry.split('/')[0]
             const expYear = cardValue.expiry.split('/')[1]
-            const totalAmount = cardValue.amount.replace(',', '')
-            if(expYear && expMonth && totalAmount){
+            if(expYear && expMonth){
                 setLoading(true)
                 setErrorForm({
                     card_number: false,
                     expiry: false,
                     cvc: false,
-                    amount: false,
                     errorMessage: null
                 })
                 const payload = {
@@ -52,7 +47,7 @@ export default function CreditCard({ isVisible = null, handleHoverClose, callbac
                     exp_month: expMonth,
                     exp_year: `20${expYear}`,
                     cvc: cardValue.cvc,
-                    amount: totalAmount,
+                    amount: (totalBudget || 0) * 100,
                     Description: '',
                 }
                 await handlePayment(payload)
@@ -169,21 +164,6 @@ export default function CreditCard({ isVisible = null, handleHoverClose, callbac
                             </div>
                         </Grid>
                     </Grid>
-                    <div className={`${styles.inputWrapper} ${errorForm.amount ? styles.errorAmount : ''}`}>
-                        <CurrencyInput
-                            value={cardValue.amount}
-                            onChange={handleChange('amount')}
-                            fullWidth
-                            size='small'
-                            prefix="$"
-                            allowDecimals={false}
-                            disableAbbreviations
-                            maxLength={5} 
-                            name="currencyInput"
-                            id="currencyInput"
-                            data-number-stepfactor="100"
-                            placeholder="Amount" />
-                    </div>
                     <div className={styles.btnWrapper}>
                         <DefaultButton label={"Add Credit Card"} onClick={handleSubmit} isLoading={isLoading} />
                         <DefaultButton
