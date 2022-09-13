@@ -9,18 +9,18 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
-import { checkIsFormMax, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
+import { calculateAirdropPerUser, checkIsFormMax, getAudiencePrice, getTotalBudget, getTotalUserGetAirdrop } from '../../helpers/calculator';
 import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import { getUserData } from '../../helpers/auth';
-import { getCampaignItem, handleAddCampaign } from '../../utils/requests';
+import { createSession, handleAddCampaign, getCampaignDetail } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
 import SuccessAddCampaign from '../../components/success-add-campaign';
-// import AddPaymentMethod from '../../components/add-payment-method';
-import CreditCard from '../../components/credit-card';
+import AddPaymentMethod from '../../components/add-payment-method';
+import { useStripe } from '@stripe/react-stripe-js';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -68,8 +68,9 @@ const initialPicture = [
   {image: null, fe_id: [], name: '', description: '' },
 ]
 
-export default function AddCampaign({ content }) {
+export default function AddCampaign({ content, params }) {
   const styles = useStyles()
+  const stripe = useStripe();
   // const { themeStretch } = useSettings();
   const [hover, setHover] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -77,8 +78,8 @@ export default function AddCampaign({ content }) {
   const [logoCollection, setLogoCollection] = useState(null)
   const [pictureData, setPicture] = useState(initialPicture)
   const [formValues, setFormValues] = useState({
-    campaign_name: content.name,
-    campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+    campaign_name: '',
+    campaign_start_date: new Date(),
     campaign_end_date_type: '',
     campaign_end_date: new Date(),
     campaign_end_day: '7',
@@ -105,27 +106,32 @@ export default function AddCampaign({ content }) {
     errorBoxCampaignName: false,
     errorBoxAvailability: false
   })
-  const [showCreditCard, setShowCreditCard] = useState(false)
+  const [showCreditCard, setShowCreditCard] = useState(null)
 
   useEffect(() => {
-    getCampaignItem()
-    if(content && content.length > 0){
-      // const data = content[0]
-      // setFormValues({
-      //   campaign_name: data.name,
-      //   campaign_start_date: data.start_date ? new Date(data.start_date) : new Date(),
-      //   campaign_end_date_type: '',
-      //   campaign_end_date: new Date(),
-      //   campaign_end_date_day: '7',
-      //   ads_page_name: "",
-      //   ads_page_description: "",
-      //   ads_page_website: "",
-      //   ads_page_discord: "",
-      //   ads_page_twitter: "",
-      //   ads_page_instagram: "",
-      //   ads_page_medium: "",
-      //   ads_page_telegram: "",
-      // })
+    console.log("Check content :", content)
+    if(params && params.status === 'success'){
+      // getCampaignDetail(null, params.id)
+
+      setModalSuccess('credit-card')
+    }
+    if(content && params.status === 'fail'){
+      console.log("Check content.type:", content.type)
+      setFormValues({
+        campaign_name: content.name,
+        campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+        campaign_end_date_type: content.type.toString(),
+        campaign_end_date: new Date(),
+        campaign_end_date_day: content.type === 3 ? content.availability : '7',
+        ads_page_name: "",
+        ads_page_description: "",
+        ads_page_website: "",
+        ads_page_discord: "",
+        ads_page_twitter: "",
+        ads_page_instagram: "",
+        ads_page_medium: "",
+        ads_page_telegram: "",
+      })
     }
   }, [])
 
@@ -137,8 +143,8 @@ export default function AddCampaign({ content }) {
     setLogoCollection(null)
     setPicture(initialPicture)
     setFormValues({
-      campaign_name: content.name,
-      campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+      campaign_name: '',
+      campaign_start_date: new Date(),
       campaign_end_date_type: '',
       campaign_end_date: new Date(),
       campaign_end_day: '7',
@@ -164,7 +170,13 @@ export default function AddCampaign({ content }) {
       errorBoxCampaignName: false,
       errorBoxAvailability: false
     })
-    setShowCreditCard(false)
+    setShowCreditCard(null)
+  }
+
+  const directStripe = () => {
+    stripe.redirectToCheckout({
+      sessionId: showCreditCard ? showCreditCard.sessionId : null
+  })
   }
 
   const handleSubmit = async(modalType) => {
@@ -180,6 +192,8 @@ export default function AddCampaign({ content }) {
         "campaign_audiences": audienceForm.map((audience, index) => ({
               "fe_id": index,
               "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
+              "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience) : null,
+              "total_user": calculateAirdropPerUser(audience),
 
               "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
               "detailed_targeting_year":audience.balancedTargeting.year,
@@ -210,8 +224,15 @@ export default function AddCampaign({ content }) {
             image: campaign.image ? campaign.image.fileBase64 : null
           }))
       }
-      await handleAddCampaign(objRes)
-      setModalSuccess(modalType)
+      const res =await handleAddCampaign(objRes)
+      const session = await createSession({
+          campaign_id: res.data.id,
+          campaign_name: formValues.campaign_name,
+          total_budget: getTotalBudget(audienceForm) * 100,
+      })
+      setShowCreditCard({
+        sessionId: session.id,
+      })
       setLoadingSubmit(false)
     }catch(err){
       setLoadingSubmit(false)
@@ -229,7 +250,7 @@ export default function AddCampaign({ content }) {
       }
     })
     if(isAudienceValid.length > 0 && isAdsValid){
-      setShowCreditCard(true)
+      handleSubmit()
     }else{
       setErrorBox({
         errorAds: !isAdsValid,
@@ -316,7 +337,6 @@ export default function AddCampaign({ content }) {
   const handleChangeBudget = (event, stateName, contentIndex) => {
     const restructureData = audienceForm.map((item, index) => {
       if(index === contentIndex){
-        console.log("Check value:", event.target.value)
         return {
           ...item,
           budgetAds: event.target.value.replace(/[^\d.]/gi, "")
@@ -1093,15 +1113,24 @@ export default function AddCampaign({ content }) {
         </div>
         <AuthFooter />
         <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={handleResetPage} />
-        {/* <AddPaymentMethod isVisible={false} /> */}
-        <CreditCard
+        <AddPaymentMethod
+          callbackSuccess={(modalType) => {
+            setModalSuccess(modalType)
+          }}
+          totalBudget={getTotalBudget(audienceForm)}
+          showCreditCard={showCreditCard}
+          isVisible={showCreditCard}
+          directStripe={directStripe}
+          // isVisible
+          handleHoverClose={() => { setShowCreditCard(null)}} />
+        {/* <CreditCard
           callbackSuccess={(modalType) => {
             handleSubmit(modalType)
           }}
           totalBudget={getTotalBudget(audienceForm)}
           isVisible={showCreditCard}
           // isVisible
-          handleHoverClose={() => { setShowCreditCard(null)}} />
+          handleHoverClose={() => { setShowCreditCard(null)}} /> */}
       </div>
     </Page>
   );
@@ -1115,6 +1144,9 @@ export async function getServerSideProps(context) {
   const isMobile = Boolean(UA.match(
     /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
   ))
+  console.log("Check params:", context.query)
+  let params = {}
+  let content = null
   if(isMobile){
     return {
         redirect: {
@@ -1131,11 +1163,20 @@ export async function getServerSideProps(context) {
           }
       }
   }
-  const res = await getCampaignItem(context)
+
+  if(context.query){
+    params = context.query
+    if(context.query.id){
+      const res = await getCampaignDetail(context, context.query.id)
+      content = res.data
+    }
+
+  }
   return {
     props: {
       userData,
-      content: res.data.data
+      content,
+      params 
     }, // will be passed to the page component as props
   }
 }

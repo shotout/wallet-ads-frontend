@@ -5,15 +5,19 @@ import useStyles from './styles'
 
 const ccImage = '/assets/credit_card.png'
 
-export default function AddPaymentMethod({ isVisible = null, handleHoverClose }){
+export default function AddPaymentMethod({ isVisible = null, handleHoverClose, callbackSuccess, directStripe }){
     const styles = useStyles()
 
+    const handleChooseCreditCard = () => {
+        handleHoverClose()
+        if(typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency')
+    }
 
     return (
         <Popover
           id={"success-campaign"}
           open={Boolean(isVisible)}
-          anchorEl={isVisible}
+          anchorEl={isVisible ? isVisible.sessionId : null}
           anchorOrigin={{
             vertical: 'center',
             horizontal: 'center',
@@ -39,10 +43,10 @@ export default function AddPaymentMethod({ isVisible = null, handleHoverClose })
                     </Typography>
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <DefaultButton ctnBtnStyle={styles.btnStyle} label={"Add credit card"} />
+                    <DefaultButton onClick={directStripe} ctnBtnStyle={styles.btnStyle} label={"Add credit card"} />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <DefaultButton ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`} label={"I would like to pay using cryptocurrencies"} />
+                    <DefaultButton ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`} onClick={handleChooseCreditCard} label={"I would like to pay using cryptocurrencies"} />
                 </Grid>
             </Grid>
                 <div className={styles.ctnClose} onClick={handleHoverClose}>

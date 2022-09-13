@@ -30,8 +30,20 @@ export const getCampaignItem = (ctx) => axios({
   ctx
 });
 
+export const getCampaignDetail = (ctx, id) => axios({
+  url: `/campaigns/${id}`,
+  method: 'GET',
+  ctx
+});
+
 export const handlePayment = (data) => axios({
   url: '/pay/charges',
+  method: 'POST',
+  data,
+});
+
+export const createSession = (data) => axios({
+  url: '/pay/intent',
   method: 'POST',
   data,
 });

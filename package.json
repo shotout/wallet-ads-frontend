@@ -42,7 +42,7 @@
     "lodash": "^4.17.21",
     "material-ui-flat-pagination": "^4.1.2",
     "moment": "^2.29.4",
-    "next": "^12.0.7",
+    "next": "^12.3.0",
     "next-useragent": "^2.8.0",
     "nookies": "^2.5.2",
     "nprogress": "^0.2.0",
