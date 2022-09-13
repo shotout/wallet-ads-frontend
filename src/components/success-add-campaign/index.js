@@ -9,7 +9,7 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
     const styles = useStyles()
 
     const handleDirectCampaign = () => {
-        window.location.href = routes.createCampaign
+        handleHoverClose()
     }
 
     return (
@@ -25,7 +25,7 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
             vertical: 'center',
             horizontal: 'center',
           }}
-          onClose={handleHoverClose}
+          onClose={handleDirectCampaign}
           className={styles.ctnPopover}
       >
           <div className={styles.ctnWrapper}>
@@ -37,7 +37,7 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
                         Your campaign has successfully been scheduled and is currently in review by our team!
                 </Typography>
                 <Typography variant="subtitle1" sx={{ color: '#fff' }} marginTop={1} textAlign="center">
-                    You will receive an email as soon as the campaign is running.
+                    {isVisible === 'cryptocurrency' ? 'Our team will send you an email with the payment details for cryptocurrencies within the next 24 hours.' : 'You will receive an email as soon as the campaign is running.'}
                 </Typography>
                 <div className={styles.ctnBtnCampaign} onClick={handleDirectCampaign}>
                     <Typography variant="body2" fontWeight={"bold"} sx={{ color: '#fff' }} textAlign="center">

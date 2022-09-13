@@ -29,3 +29,9 @@ export const getCampaignItem = (ctx) => axios({
   method: 'GET',
   ctx
 });
+
+export const handlePayment = (data) => axios({
+  url: '/pay/charges',
+  method: 'POST',
+  data,
+});

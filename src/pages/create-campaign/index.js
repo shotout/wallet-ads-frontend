@@ -19,7 +19,8 @@ import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import AuthFooter from '../../components/auth-footer';
 import SuccessAddCampaign from '../../components/success-add-campaign';
-import AddPaymentMethod from 'src/components/add-payment-method';
+// import AddPaymentMethod from '../../components/add-payment-method';
+import CreditCard from '../../components/credit-card';
 
 const questionObj = {
   availability: "To keep the users' wallets clean and to deliver high-quality advertisement, the ad will be auto-deletes from the users' wallets after a certain amount of time. ",
@@ -104,6 +105,8 @@ export default function AddCampaign({ content }) {
     errorBoxCampaignName: false,
     errorBoxAvailability: false
   })
+  const [showCreditCard, setShowCreditCard] = useState(false)
+
   useEffect(() => {
     getCampaignItem()
     if(content && content.length > 0){
@@ -126,7 +129,45 @@ export default function AddCampaign({ content }) {
     }
   }, [])
 
-  const handleSubmit = async() => {
+  const handleResetPage = () => {
+    setModalSuccess(null)
+    setHover(null)
+    setActivePopover(null)
+    setBannerCollection(null)
+    setLogoCollection(null)
+    setPicture(initialPicture)
+    setFormValues({
+      campaign_name: content.name,
+      campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+      campaign_end_date_type: '',
+      campaign_end_date: new Date(),
+      campaign_end_day: '7',
+      ads_page_name: "",
+      ads_page_description: "",
+      ads_page_website: "",
+      ads_page_discord: "",
+      ads_page_medium: "",
+      ads_page_telegram: "",
+    })
+    setSelectedAudience(null)
+    setLoadingSubmit(null)
+  
+    setAudienceForm([
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    ])
+    setErrorBox({
+      errorAudience: false,
+      errorAds: false,
+      errorBoxCampaignName: false,
+      errorBoxAvailability: false
+    })
+    setShowCreditCard(false)
+  }
+
+  const handleSubmit = async(modalType) => {
     try{
       setLoadingSubmit(true)
       const objRes = {
@@ -169,8 +210,8 @@ export default function AddCampaign({ content }) {
             image: campaign.image ? campaign.image.fileBase64 : null
           }))
       }
-      const res = await handleAddCampaign(objRes)
-      handleShowModalSuccess()
+      await handleAddCampaign(objRes)
+      setModalSuccess(modalType)
       setLoadingSubmit(false)
     }catch(err){
       setLoadingSubmit(false)
@@ -188,7 +229,7 @@ export default function AddCampaign({ content }) {
       }
     })
     if(isAudienceValid.length > 0 && isAdsValid){
-      handleSubmit()
+      setShowCreditCard(true)
     }else{
       setErrorBox({
         errorAds: !isAdsValid,
@@ -1027,8 +1068,12 @@ export default function AddCampaign({ content }) {
       <div className={styles.setupAirdropWrapper}>
         <DefaultButton
           isLoading={loadingSubmit}
+          onClick={validateSubmit}
+          // onClick={() => {
+          //   setModalSuccess('cryptocurrency')
+          // }}
           label={"Setup Airdrop"}
-          onClick={validateSubmit} />
+           />
       </div>
     )
   }
@@ -1047,8 +1092,14 @@ export default function AddCampaign({ content }) {
         {renderSetupAirdrop()}
         </div>
         <AuthFooter />
-        <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={() => { setModalSuccess(null)}} />
-        <AddPaymentMethod isVisible={false} />
+        <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={handleResetPage} />
+        {/* <AddPaymentMethod isVisible={false} /> */}
+        <CreditCard
+          callbackSuccess={(modalType) => {
+            handleSubmit(modalType)
+          }}
+          isVisible={showCreditCard}
+          handleHoverClose={() => { setShowCreditCard(null)}} />
       </div>
     </Page>
   );
