@@ -487,6 +487,19 @@ const useStyles = makeStyles((theme) => ({
         '& > .MuiPaper-root':{
             background: 'rgba(0, 0, 0,0.9)'
         }
+    },
+    ctnInputColumn:{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        '& > #red-alert':{
+            color: '#E83155',
+            fontSize: 14,
+            marginTop: 6
+        }
+    },
+    ctnRedBorderInput:{
+        border: '1px solid #E83155'
     }
 }))
 

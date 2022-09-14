@@ -96,10 +96,10 @@ export default function AddCampaign({ content, params }) {
   const [showModalSuccess, setModalSuccess] = useState(null)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
   const [errorBox, setErrorBox] = useState({
     errorAudience: false,
@@ -425,10 +425,10 @@ export default function AddCampaign({ content, params }) {
 
   const handleAddAudience = () => {
     const addData = [
-      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '0.000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '1000', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     ]
     const listData = [...audienceForm]
     setAudienceForm(listData.concat(addData))
@@ -636,7 +636,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
           <div className={styles.ctnDate}>
             <div className={styles.containerDate}>
-              <DatePicker  selected={formValues.campaign_start_date} onChange={(date) => setFormValues({...formValues,  campaign_start_date: date})} />
+              <DatePicker selected={formValues.campaign_start_date} onChange={(date) => setFormValues({...formValues,  campaign_start_date: date})} />
             </div>
             <img src={blackCalendar} alt="calendar" />
           </div>
@@ -695,20 +695,24 @@ export default function AddCampaign({ content, params }) {
             </div>
             </Grid>
             <Grid item md={4} xl={3} xs={12}>
+
+            <div className={styles.ctnInputColumn}>
               <div
                 onClick={() => {
                   handleChangeDefaultValue('3', 'campaign_end_date_type')
                   deactivateErrorBoxAvailability()
                 }}
-                className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}}`}>
-                <div className={styles.leftWrapper}>
+                className={`${styles.inputGray} ${styles.fixedWidth} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}} ${Number(formValues.campaign_end_day) > 90 ? styles.ctnRedBorderInput : ''}`}>
+                  <div className={styles.leftWrapper}>
                     <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
-                </div>
-                <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}}`}>
-                  <span>After:</span>
-                  <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
-                  <span>{isNaN(formValues.campaign_end_day) || formValues.campaign_end_day === '' || Number(formValues.campaign_end_day) === 1 ? 'Day' :'Days'}</span>
-                </div>
+                  </div>
+                  <div className={`${styles.midWrapper} ${formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}}`}>
+                    <span>After:</span>
+                    <input value={formValues.campaign_end_day} onChange={event => {handleChangeValues(event, 'campaign_end_day')}} type={'text'} />
+                    <span>{isNaN(formValues.campaign_end_day) || formValues.campaign_end_day === '' || Number(formValues.campaign_end_day) === 1 ? 'Day' :'Days'}</span>
+                  </div>
+                  </div>
+                  {Number(formValues.campaign_end_day) > 90 && <span id="red-alert">Please enter less than 91 days.</span>}
               </div>
             </Grid>
             </Grid>
@@ -1005,19 +1009,19 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={websiteIcon} alt="website" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder="" type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder="yoursite.io" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={discordIcon} alt="discord" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder="" type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder="https://discord.gg/abcdef" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={mediumIcon} alt="medium" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder="" type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder="https://medium.com/@YourMediumHandle" type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={telegramIcon} alt="telegram" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_telegram')}} value={formValues.ads_page_telegram} placeholder="" type="text"  />
+            <input onChange={(value) => {handleChangeValues(value, 'ads_page_telegram')}} value={formValues.ads_page_telegram} placeholder="https://t.me/abcdef" type="text"  />
           </div>
         </div>
       </div>

@@ -79,7 +79,7 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'relative',
-        marginTop: 10,
+        marginTop: 4,
         '& > span': {
             textAlign: 'left',
             fontSize: '1.25rem',
@@ -179,8 +179,9 @@ export default makeStyles((theme) => ({
         height: 140,
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        display: 'flex'
+        // alignItems: 'flex-end',
+        display: 'flex',
+        marginBottom: 10
     },
     txtCurrency:{
         textOverflow: 'ellipsis',
@@ -198,5 +199,12 @@ export default makeStyles((theme) => ({
     },
     borderTopError:{
         borderTop: '2px solid red',
+    },
+    desctTitle:{
+        marginBottom: 4,
+        '& > b':{
+            color: '#808080',
+            marginRight: 4
+        }
     }
 }))

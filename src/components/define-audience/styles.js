@@ -28,7 +28,9 @@ export default makeStyles((theme) => ({
         paddingLeft: 0,
         paddingRight: 0,
         borderRadius: 20,
-        minHeight: 98
+        minHeight: 98,
+        position: 'relative',
+        overflow: 'hidden'
     },
     ctnHeader: {
         display: 'flex',
@@ -403,5 +405,15 @@ export default makeStyles((theme) => ({
     },
     askCtn: {
         cursor: 'pointer'
+    },
+    ctnComingSoon:{
+        width: '100%',
+        height: '100%',
+        background: 'rgba(252, 252, 252,0.9)',
+        position: 'absolute',
+        top: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems:' center'
     }
 }))

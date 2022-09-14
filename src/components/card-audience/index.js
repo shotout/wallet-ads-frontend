@@ -81,6 +81,9 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
     function renderPrice(){
         return (
             <div className={styles.inputPriceWrapper}>
+                <Typography variant='body1' textAlign={"center"} fontWeight="bold">
+                    Budget:
+                </Typography>
                 <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
                     <span>
                         USD
@@ -133,6 +136,10 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
             return (
                 <div className={styles.ctnDescAudience}>
                     <div className={styles.ctnDefaultContentWrapper}>
+                        <Typography variant="body1" className={styles.desctTitle} fontWeight="800" color="#000" textAlign={'center'}>
+                            <b>+</b>
+                        Optimized Targeting:
+                        </Typography>
                         <Typography variant="span" textAlign={'center'} paragraph>
                         The audience consists of a broad mix of users, optimized by our algorithm.
                         </Typography>
@@ -160,9 +167,13 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
             return (
                 <div className={styles.ctnDescAudience}>
                     <div className={styles.ctnDefaultContentWrapper}>
+                        <Typography variant="body1" className={styles.desctTitle} fontWeight="800" color="#000" textAlign={'center'}>
+                                <b>+</b>
+                        Your own audience:
+                        </Typography>
                         {data.audienceFile && (
                             <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
-                            {`+ Audience: ${data.audienceFile.name}`}
+                            {`${data.audienceFile.name}`}
                         </Typography>
                         )}
                         </div>

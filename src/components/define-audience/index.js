@@ -476,13 +476,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <TextField
                             // select
                             fullWidth
-                            placeholder="Select..."
+                            placeholder=""
                             variant="outlined"
                             disabled={!isCategorySelected('detail-targeting')}
                             // value={formValues.balancedTargeting.airdropReceived}
                             // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
-                        {['...Select'].map((option) => (
+                        {[].map((option) => (
                             <MenuItem className={styles.txtOption} key={option} value={option}>
                             {option}
                             </MenuItem>
@@ -668,9 +668,9 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             <div
                 className={styles.ctnCard}
                 onClick={() => {
-                    if(formValues.selectedCategory !== 'detail-targeting'){
-                        onChangeBasicValue('selectedCategory','detail-targeting')
-                    }
+                    // if(formValues.selectedCategory !== 'detail-targeting'){
+                    //     onChangeBasicValue('selectedCategory','detail-targeting')
+                    // }
                 }}>
                 <div className={styles.ctnHeader}>
                     <div className={styles.ctnBgBtn}>
@@ -699,6 +699,11 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 {renderInputAirdop()}
                 {renderDetailInput()}
                 {renderComingSoonInput()}
+                <div className={styles.ctnComingSoon}>
+                    <Typography variant="h3" color="#808080" textAlign={"center"}>
+                        Coming soon
+                    </Typography>
+                </div>
             </div>
         )
     }
@@ -757,13 +762,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         <TextField
                             // select
                             fullWidth
-                            placeholder="Select..."
+                            placeholder=""
                             variant="outlined"
                             disabled={!isCategorySelected('detail-targeting')}
                             // value={formValues.balancedTargeting.airdropReceived}
                             // onChange={(target) => {handleChangeBalanceTarget(target, 'airdropReceived')}}
                             >
-                        {['...Select'].map((option) => (
+                        {[''].map((option) => (
                             <MenuItem className={styles.txtOption} key={option} value={option}>
                             {option}
                             </MenuItem>
@@ -781,8 +786,8 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
         return (
             <div className={styles.ctnLeftContent}>
                 {renderOptimizeTargeting()}
-                {renderBalance()}
                 {renderDetail()}
+                {renderBalance()}
             </div>
         )
     }
