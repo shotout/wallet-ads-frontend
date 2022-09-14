@@ -252,8 +252,8 @@ export default function AddCampaign({ content, params }) {
               "file": audience.audienceFile && audience.audienceFile.fileBase64 ? audience.audienceFile.fileBase64 : null,
               "fe_id": index,
               "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
-              "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience) : null,
-              "total_user": calculateAirdropPerUser(audience),
+              "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience).toString() : null,
+              "total_user": calculateAirdropPerUser(audience).toString(),
 
               "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
               "detailed_targeting_year":audience.balancedTargeting.year,
