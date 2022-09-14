@@ -409,6 +409,15 @@ export default function AddCampaign({ content, params }) {
     })
   }
 
+  const handleResetErrorValue = (stateName) => {
+    if(errorInput[stateName]){
+      setErrorInput({
+        ...errorInput,
+        [stateName]: null
+      })
+    }
+  }
+
   const handleChangeDefaultValue = (value, stateName) => {
     setFormValues({
       ...formValues,
@@ -529,10 +538,11 @@ export default function AddCampaign({ content, params }) {
     setPicture(restructureData)
   }
 
-  const changeBannerCollection = useCallback((acceptedFiles) => {
+  const changeBannerCollection = (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
       const reader = new FileReader();
+      handleResetErrorValue('collectionBanner')
       reader.onload = (event) => {
         setBannerCollection({
           ...Object.assign(file, {
@@ -543,11 +553,12 @@ export default function AddCampaign({ content, params }) {
       };
       reader.readAsDataURL(file);
     }
-  }, []);
+  }
 
   const changeLogoCollection = useCallback((acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
+      handleResetErrorValue('collectionLogo')
       const reader = new FileReader();
       reader.onload = (event) => {
         setLogoCollection({
@@ -931,7 +942,10 @@ export default function AddCampaign({ content, params }) {
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_name')}} value={formValues.ads_page_name} placeholder='Add your collection page name here' type="text"  />
+            <input onChange={(value) => {
+              handleResetErrorValue('collectionPageName')
+              handleChangeValues(value, 'ads_page_name')
+            }} value={formValues.ads_page_name} placeholder='Add your collection page name here' type="text"  />
             {renderErrorText(errorInput.collectionPageName)}
           </div>
         </div>
@@ -952,7 +966,12 @@ export default function AddCampaign({ content, params }) {
               Recommended size 350x350px 
             </Typography>
           </div>
-          <BannerPicker typeScreen="logo" label={"Add logo"} file={logoCollection} onDelete={() => {setLogoCollection(null)}} onDrop={changeLogoCollection} />
+          <BannerPicker
+            typeScreen="logo"
+            label={"Add logo"}
+            file={logoCollection}
+            onDelete={() => {setLogoCollection(null)}}
+            onDrop={changeLogoCollection} />
           {renderErrorText(errorInput.collectionLogo)}
         </div>
         <div className={styles.ctnInputCollection}>
@@ -989,7 +1008,13 @@ export default function AddCampaign({ content, params }) {
             </div>
           </div>
           <div className={styles.textAreaCollection}>
-            <textarea onChange={(value) => {handleChangeValues(value, 'ads_page_description')}} value={formValues.ads_page_description} placeholder='Add your collection page text here'   />
+            <textarea
+              onChange={(value) => {
+                handleChangeValues(value, 'ads_page_description')
+                handleResetErrorValue('collectionDesc')
+              }}
+              value={formValues.ads_page_description}
+              placeholder='Add your collection page text here'   />
             {renderErrorText(errorInput.collectionDesc)}
           </div>
         </div>
@@ -1053,21 +1078,49 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={websiteIcon} alt="website" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_website')}} value={formValues.ads_page_website} placeholder="yoursite.io" type="text"  />
+            <input
+              onChange={(value) => {
+                handleResetErrorValue('collectionSocialMedia')
+                handleChangeValues(value, 'ads_page_website')
+              }}
+              value={formValues.ads_page_website}
+              placeholder="yoursite.io"
+              type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={discordIcon} alt="discord" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_discord')}} value={formValues.ads_page_discord} placeholder="https://discord.gg/abcdef" type="text"  />
+            <input
+              onChange={(value) => {
+                handleResetErrorValue('collectionSocialMedia')
+                handleChangeValues(value, 'ads_page_discord')
+              }}
+              value={formValues.ads_page_discord}
+              placeholder="https://discord.gg/abcdef"
+              type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={mediumIcon} alt="medium" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_medium')}} value={formValues.ads_page_medium} placeholder="https://medium.com/@YourMediumHandle" type="text"  />
+            <input
+              onChange={(value) => {
+                handleResetErrorValue('collectionSocialMedia')
+                handleChangeValues(value, 'ads_page_medium')
+              }}
+              value={formValues.ads_page_medium}
+              placeholder="https://medium.com/@YourMediumHandle"
+              type="text"  />
           </div>
           <div className={styles.inputCollectionIcon}>
             <img src={telegramIcon} alt="telegram" />
-            <input onChange={(value) => {handleChangeValues(value, 'ads_page_telegram')}} value={formValues.ads_page_telegram} placeholder="https://t.me/abcdef" type="text"  />
+            <input
+              onChange={(value) => {
+                handleResetErrorValue('collectionSocialMedia')
+                handleChangeValues(value, 'ads_page_telegram')
+              }}
+              value={formValues.ads_page_telegram}
+              placeholder="https://t.me/abcdef"
+              type="text"  />
           </div>
-        {renderErrorText(errorInput.collectionLogo)}
+        {renderErrorText(errorInput.collectionSocialMedia)}
         </div>
       </div>
     )
