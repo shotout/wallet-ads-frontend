@@ -11,6 +11,7 @@ import useStyles from "./styles";
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 const appIcon = '/assets/wallet_ads_logo.png'
+import nookies from 'nookies'
 
 const defaultErrorState = {
     email: null,
@@ -184,6 +185,7 @@ export async function getServerSideProps(context) {
     const isMobile = Boolean(UA.match(
       /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
     ))
+    nookies.destroy(context, 'authorization', { path: '/' })
     if(isMobile){
       return {
           redirect: {
