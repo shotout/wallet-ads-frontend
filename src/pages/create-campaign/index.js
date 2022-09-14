@@ -307,6 +307,7 @@ export default function AddCampaign({ content, params }) {
     const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
     let isAdsValid = false
     let inputValid = true
+    let selectedAdsAudience = []
     const errorObj = {
       campaignName: formValues.campaign_name === '',
       collectionPageName: formValues.ads_page_name === '',
@@ -324,14 +325,17 @@ export default function AddCampaign({ content, params }) {
     }
     pictureData.forEach(ads => {
       if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
+        ads.fe_id.forEach(feId => { selectedAdsAudience.push(feId)})
         isAdsValid = true
       }
     })
-    if(isAudienceValid.length > 0 && isAdsValid && inputValid){
+    const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.length ? true : false
+    console.log("Check asd:", isAudienceFormAdsValid, selectedAdsAudience)
+    if(isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid){
       handleSubmit()
     }else{
       setErrorBox({
-        errorAds: !isAdsValid,
+        errorAds: !isAdsValid  || !isAudienceFormAdsValid,
         errorAudience: isAudienceValid.length === 0,
         errorBoxCampaignName: isCampaignNameValid,
         errorBoxAvailability: isAvailabilityValid
@@ -342,7 +346,7 @@ export default function AddCampaign({ content, params }) {
         window.location.href = '#availability-section'
       }else if(isAudienceValid.length === 0){
         window.location.href = '#card-audience'
-      }else if(!isAdsValid){
+      }else if(!isAdsValid || !isAudienceFormAdsValid){
         window.location.href = '#card-ads'
       }
     }
