@@ -118,6 +118,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
       if(file.name.includes("xlsx") || file.name.includes("csv")){
             setFormValues({
                 ...formValues,
+                selectedCategory: 'upload',
                 audienceFile: Object.assign(file, {
                     preview: URL.createObjectURL(file),
                 })
