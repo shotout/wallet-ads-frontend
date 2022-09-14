@@ -450,7 +450,7 @@ export default function AddCampaign({ content, params }) {
       if(index === selectedAudience){
         return {
           ...value,
-          budgetAds: '1000'
+          budgetAds: item.budgetAds === '' ? '1000' : item.budgetAds
         }
       }
       return item
