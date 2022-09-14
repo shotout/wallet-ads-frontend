@@ -315,12 +315,13 @@ export default function AddCampaign({ content, params }) {
       collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
       collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
       collectionDesc: formValues.ads_page_description === '',
-      collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+      // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+      // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
     }
-    const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName, collectionSocialMedia} = errorObj
+    const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName} = errorObj
     const isCampaignNameValid = !formValues.campaign_name
     const isAvailabilityValid = !formValues.campaign_end_date_type
-    if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName || collectionSocialMedia){
+    if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName){
       setErrorInput(errorObj)
       inputValid = false
     }
