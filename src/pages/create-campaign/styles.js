@@ -500,6 +500,13 @@ const useStyles = makeStyles((theme) => ({
     },
     ctnRedBorderInput:{
         border: '1px solid #E83155'
+    },
+    ctnError:{
+        marginTop: 4,
+        '& > span':{
+            color: '#E83155',
+            fontSize: 14,
+        }
     }
 }))
 

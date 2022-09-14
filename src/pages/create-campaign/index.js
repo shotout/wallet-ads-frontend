@@ -107,6 +107,14 @@ export default function AddCampaign({ content, params }) {
     errorBoxAvailability: false
   })
   const [showCreditCard, setShowCreditCard] = useState(null)
+  const [errorInput, setErrorInput] = useState({
+    campaignName: null,
+    collectionPageName: null,
+    collectionLogo: null,
+    collectionBanner: null,
+    collectionDesc: null,
+    collectionSocialMedia: null
+  })
 
   function normalizeInitialData(value){
     if(value === '0' || value === 0){
@@ -114,8 +122,6 @@ export default function AddCampaign({ content, params }) {
     }
     return value
   }
-
-  console.log("Check content:", content)
 
   function getAdsId(id){
     const adsIdArr = []
@@ -300,14 +306,28 @@ export default function AddCampaign({ content, params }) {
   const validateSubmit = () => {
     const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
     let isAdsValid = false
+    let inputValid = true
+    const errorObj = {
+      campaignName: formValues.campaign_name === '',
+      collectionPageName: formValues.ads_page_name === '',
+      collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
+      collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
+      collectionDesc: formValues.ads_page_discord === '',
+      collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+    }
+    const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName, collectionSocialMedia} = errorObj
     const isCampaignNameValid = !formValues.campaign_name
     const isAvailabilityValid = !formValues.campaign_end_date_type
+    if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName || collectionSocialMedia){
+      setErrorInput(errorObj)
+      inputValid = false
+    }
     pictureData.forEach(ads => {
       if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
         isAdsValid = true
       }
     })
-    if(isAudienceValid.length > 0 && isAdsValid){
+    if(isAudienceValid.length > 0 && isAdsValid && inputValid){
       handleSubmit()
     }else{
       setErrorBox({
@@ -562,6 +582,17 @@ export default function AddCampaign({ content, params }) {
           </Box>
       </Popover>
     )
+  }
+
+  function renderErrorText(isShow, errorMessage){
+    if(isShow){
+      return (
+        <div className={styles.ctnError}>
+          <span>{errorMessage || 'Please check this field.'}</span>
+        </div>
+      )
+    }
+    return null
   }
 
   function renderAdAudience(item){
@@ -843,6 +874,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.inputCollectionWrapper}>
             <input value={content.name} onChange={(event) => {handleChangePicture(event, 'name', index)}} placeholder='Add your ad name here' type="text"  />
+            {renderErrorText(errorBox.errorAds && !content.name)}
           </div>
         </div>
         <div className={styles.ctnInputCollection}>
@@ -868,6 +900,7 @@ export default function AddCampaign({ content, params }) {
             file={content.image}
             onDelete={() => {removePictureAdCreation(index)}}
             onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
+            {renderErrorText(errorBox.errorAds && !content.image)}
         </div>
       </div>
     )
@@ -892,6 +925,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.inputCollectionWrapper}>
             <input onChange={(value) => {handleChangeValues(value, 'ads_page_name')}} value={formValues.ads_page_name} placeholder='Add your collection page name here' type="text"  />
+            {renderErrorText(errorInput.collectionPageName)}
           </div>
         </div>
         <div className={styles.ctnInputCollection}>
@@ -912,6 +946,7 @@ export default function AddCampaign({ content, params }) {
             </Typography>
           </div>
           <BannerPicker typeScreen="logo" label={"Add logo"} file={logoCollection} onDelete={() => {setLogoCollection(null)}} onDrop={changeLogoCollection} />
+          {renderErrorText(errorInput.collectionLogo)}
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
@@ -931,6 +966,7 @@ export default function AddCampaign({ content, params }) {
             </Typography>
           </div>
           <BannerPicker typeScreen="banner-collection" file={bannerCollection} onDelete={() => {setBannerCollection(null)}} onDrop={changeBannerCollection} label={"Add banner"} />
+          {renderErrorText(errorInput.collectionBanner)}
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
@@ -947,6 +983,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.textAreaCollection}>
             <textarea onChange={(value) => {handleChangeValues(value, 'ads_page_description')}} value={formValues.ads_page_description} placeholder='Add your collection page text here'   />
+            {renderErrorText(errorInput.collectionDesc)}
           </div>
         </div>
       </div>
@@ -972,6 +1009,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <div className={styles.textAreaCollection}>
             <textarea value={content.description} onChange={(event) => {handleChangePicture(event, 'description', index)}}  placeholder='Add your ad text here'   />
+            {renderErrorText(errorBox.errorAds && !content.description)}
           </div>
         </div>
       </div>
@@ -1022,6 +1060,7 @@ export default function AddCampaign({ content, params }) {
             <img src={telegramIcon} alt="telegram" />
             <input onChange={(value) => {handleChangeValues(value, 'ads_page_telegram')}} value={formValues.ads_page_telegram} placeholder="https://t.me/abcdef" type="text"  />
           </div>
+        {renderErrorText(errorInput.collectionLogo)}
         </div>
       </div>
     )

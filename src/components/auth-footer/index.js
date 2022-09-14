@@ -14,17 +14,17 @@ export default function AuthFooter(){
                     </a>
                 </Link>
                 <Link href="#">
-                    <a target={"_blank"}>
+                    <a>
                         Terms and Conditions / AGB
                     </a>
                 </Link>
                 <Link href="#">
-                    <a target={"_blank"}>
+                    <a>
                         Privacy
                     </a>
                 </Link>
                 <Link href="#">
-                    <a target={"_blank"}>
+                    <a>
                         Cookie Policy
                     </a>
                 </Link>
