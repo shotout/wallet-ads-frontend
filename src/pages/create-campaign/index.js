@@ -182,7 +182,7 @@ export default function AddCampaign({ content, params }) {
         campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
         campaign_end_date_type: content.type.toString(),
         campaign_end_date: new Date(),
-        campaign_end_date_day: content.type === 3 ? content.availability : '7',
+        campaign_end_day: content.type === 3 ? content.availability : '7',
         ads_page_name: adsPage.name,
         ads_page_description: adsPage.description,
         ads_page_website: adsPage.website,
@@ -244,7 +244,7 @@ export default function AddCampaign({ content, params }) {
         "campaign_name": formValues.campaign_name,
         "campaign_start_date": moment(formValues.campaign_start_date).format('YYYY-MM-DD'),
         "campaign_end_date_type": formValues.campaign_end_date_type,
-        "campaign_end_date_day":  formValues.campaign_end_date_day,
+        "campaign_end_date_day":  formValues.campaign_end_day,
         "campaign_end_date": moment(formValues.campaign_end_date).format('YYYY-MM-DD'),
 
         "campaign_audiences": audienceForm.map((audience, index) => ({
