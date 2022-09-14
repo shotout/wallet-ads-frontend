@@ -244,7 +244,7 @@ export default function AddCampaign({ content, params }) {
         "campaign_name": formValues.campaign_name,
         "campaign_start_date": moment(formValues.campaign_start_date).format('YYYY-MM-DD'),
         "campaign_end_date_type": formValues.campaign_end_date_type,
-        "campaign_end_date_day":  formValues.campaign_end_day,
+        "campaign_end_date_day": formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null,
         "campaign_end_date": moment(formValues.campaign_end_date).format('YYYY-MM-DD'),
 
         "campaign_audiences": audienceForm.map((audience, index) => ({
