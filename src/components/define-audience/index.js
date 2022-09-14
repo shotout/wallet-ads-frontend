@@ -116,13 +116,18 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     const handleInputFile = (value) => {
       const file = value[0]
       if(file.name.includes("xlsx") || file.name.includes("csv")){
-            setFormValues({
-                ...formValues,
-                selectedCategory: 'upload',
-                audienceFile: Object.assign(file, {
-                    preview: URL.createObjectURL(file),
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setFormValues({
+                    ...formValues,
+                    selectedCategory: 'upload',
+                    audienceFile: Object.assign(file, {
+                        preview: URL.createObjectURL(file),
+                        fileBase64: event.target.result
+                    })
                 })
-            })
+            }
+            reader.readAsDataURL(file);
       }
     }
     const removeFile = () => {

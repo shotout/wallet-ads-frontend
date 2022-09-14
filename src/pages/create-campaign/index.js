@@ -249,6 +249,7 @@ export default function AddCampaign({ content, params }) {
 
         "campaign_audiences": audienceForm.map((audience, index) => ({
               "id": audience.id,
+              "file": audience.audienceFile && audience.audienceFile.fileBase64 ? audience.audienceFile.fileBase64 : null,
               "fe_id": index,
               "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
               "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience) : null,
@@ -313,7 +314,7 @@ export default function AddCampaign({ content, params }) {
       collectionPageName: formValues.ads_page_name === '',
       collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
       collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
-      collectionDesc: formValues.ads_page_discord === '',
+      collectionDesc: formValues.ads_page_description === '',
       collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
     }
     const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName, collectionSocialMedia} = errorObj
@@ -329,8 +330,7 @@ export default function AddCampaign({ content, params }) {
         isAdsValid = true
       }
     })
-    const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.length ? true : false
-    console.log("Check asd:", isAudienceFormAdsValid, selectedAdsAudience)
+    const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.filter(item => item.selectedCategory !== null).length ? true : false
     if(isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid){
       handleSubmit()
     }else{
