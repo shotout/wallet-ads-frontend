@@ -8,11 +8,25 @@ export default function AuthFooter(){
     return (
         <div className={styles.ctnRoot}>
             <div className={styles.ctnLink}>
-                <Link href="#">
-                    Imprint
+                <Link href="https://www.walletads.io/impressum">
+                    <a target={"_blank"}>
+                        Imprint
+                    </a>
                 </Link>
                 <Link href="#">
-                    Terms of use
+                    <a target={"_blank"}>
+                        Terms and Conditions / AGB
+                    </a>
+                </Link>
+                <Link href="#">
+                    <a target={"_blank"}>
+                        Privacy
+                    </a>
+                </Link>
+                <Link href="#">
+                    <a target={"_blank"}>
+                        Cookie Policy
+                    </a>
                 </Link>
             </div>
             <div className={styles.ctnCopyright}>
