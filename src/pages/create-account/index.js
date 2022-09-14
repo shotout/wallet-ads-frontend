@@ -8,6 +8,7 @@ import { requestRegister } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Link from 'next/link';
 import { routes } from '../../helpers/routes';
+import AuthFooter from '../../components/auth-footer';
 
 const appIcon = '/assets/wallet_ads_logo.png'
 const emailBanner = '/assets/email_banner.png'
@@ -25,6 +26,7 @@ const defaultState = {
     email:"",
     password:"",
     password_confirmation:"",
+    country: ''
 }
 
 export default function Register(){
@@ -190,7 +192,23 @@ export default function Register(){
                                     </Grid>
                                 </Grid>
                             </Grid>
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <TextField
+                                        value={values.country}
+                                        onChange={handleChange('country')}
+                                        error={errorMessage.country}
+                                        helperText={errorMessage.country}
+                                        size='small'
+                                        fullWidth
+                                        placeholder="Country/Region" />
+                                </div> 
+                            </Grid>
+                            <Grid item md={6} xs={12} />
 
+                        </Grid>
+                        <div className={styles.ctnGridBottom} />
+                        <Grid container spacing={2}>
                             <Grid item md={6} xs={12}>
                                 <div className={styles.inputWrapper}>
                                     <TextField
@@ -301,11 +319,12 @@ export default function Register(){
 
     return (
         <Page title="Sign Up">
-        <meta name="description" content="Create your WALLETADS account now!" />
+            <meta name="description" content="Create your WALLETADS account now!" />
             <div className={styles.ctnRoot}>
                 {renderHeader()}
                 {renderInput()}
                 {renderSuccess()}
+                <AuthFooter />
             </div>
         </Page>
     )

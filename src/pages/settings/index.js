@@ -18,6 +18,7 @@ SettingUser.getLayout = function getLayout(page) {
 };
 
 const defaultState = {
+    country:"",
     company_name:"",
     tax_id:"",
     first_name:"",
@@ -82,6 +83,7 @@ export default function SettingUser({ userData }){
             form.append('city', values.city)
             form.append('phone', values.phone)
             form.append('email', values.email)
+            form.append('country', values.country)
             {values.password && form.append('password', values.password)}
             {values.password_confirmation && form.append('password_confirmation', values.password_confirmation)}
             {avatarSource && form.append('photo', avatarSource)}
@@ -215,6 +217,24 @@ export default function SettingUser({ userData }){
                                     </Grid>
                                 </Grid>
                             </Grid>
+
+                            <Grid item md={6} xs={12}>
+                                <div className={styles.inputWrapper}>
+                                    <InputLabel shrink>Contry/Region</InputLabel>
+                                    <TextField
+                                        value={values.country}
+                                        onChange={handleChange('country')}
+                                        error={errorMessage.country}
+                                        helperText={errorMessage.country}
+                                        size='small'
+                                        fullWidth />
+                                </div> 
+                            </Grid>
+
+                            <Grid item md={6} xs={12} />
+                        </Grid>
+                        <div className={styles.ctnGridBottom} />
+                        <Grid container spacing={2}>
 
                             <Grid item md={6} xs={12}>
                                 <div className={styles.inputWrapper}>

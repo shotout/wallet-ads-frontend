@@ -65,5 +65,13 @@ export default makeStyles((theme) => ({
     },
     btnSave:{
         marginTop: 40
+    },
+
+    ctnGridBottom:{
+        paddingTop: 20,
+        marginTop: 20,
+        borderTop: '1px solid #B3B3B3',
+        paddingLeft: 20,
+        width: '100%'
     }
 }))

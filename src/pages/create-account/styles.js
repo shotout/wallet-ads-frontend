@@ -30,13 +30,23 @@ export default makeStyles((theme) => ({
         borderRadius: 28,
         padding: 20,
         background: '#E4E6FA',
-        marginBottom: 80
+        marginBottom: 80,
+        overflow: 'hidden'
     },
     ctnTitle: {
         marginBottom: 40
     },
     ctnForm:{
-        marginBottom: 30
+        marginBottom: 30,
+        // paddingLeft: 20,
+        '& > .MuiGrid-container':{
+            '& > .MuiGrid-item':{
+                // paddingLeft: '0px !important'
+                // '& > .Mui-error':{
+                //     marginLeft: '0px !important'
+                // }
+            }
+        }
     },
     inputWrapper:{
         '& > .MuiFormControl-root':{
@@ -97,5 +107,12 @@ export default makeStyles((theme) => ({
             height: 96,
             objectFit: 'contain',
         }
+    },
+    ctnGridBottom:{
+        paddingTop: 20,
+        marginTop: 20,
+        borderTop: '1px solid #fff',
+        paddingLeft: 20,
+        width: '100%'
     }
 }))
