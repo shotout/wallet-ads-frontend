@@ -7,7 +7,6 @@ import useStyles from "./styles";
 import { requestRegister } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Link from 'next/link';
-import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 
 const appIcon = '/assets/wallet_ads_logo.png'
@@ -307,7 +306,6 @@ export default function Register(){
                 {renderHeader()}
                 {renderInput()}
                 {renderSuccess()}
-                <AuthFooter />
             </div>
         </Page>
     )

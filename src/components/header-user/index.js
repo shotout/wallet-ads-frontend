@@ -1,15 +1,16 @@
 import { Typography } from '@mui/material'
-import { handleLogout } from '../../helpers/auth'
+import { BACKEND_URL } from '../../helpers/constants'
+import { getUserData, handleLogout } from '../../helpers/auth'
 import SvgIconStyle from '../SvgIconStyle'
 import useStyles from './styles'
 
 const appIcon = '/assets/wallet_ads_logo.png'
-const notificationIcon = '/assets/notification_icon.png'
-const blackAskIcon = '/assets/blackask_icon.png'
+const avatarDummy = '/assets/avatar_dummy.png'
 const logoutIcon = '/assets/svg/logout.svg'
 
 export default function HeaderUser({ label, ctnBtnStyle = '' }){
     const styles = useStyles()
+    const userData = getUserData()
     return (
         <div className={styles.ctnHeaderWrapper}>
           <img src={appIcon} alt="app-icon" />
@@ -29,7 +30,7 @@ export default function HeaderUser({ label, ctnBtnStyle = '' }){
               <img src={notificationIcon} alt="notification" id="notification" />
             </div> */}
             <div className={styles.ctnIconHeader}>
-              {/* <img src={'https://images.tokopedia.net/img/cache/200-square/product-1/2019/3/18/1993669/1993669_8198edc5-ab9b-4ee8-ba29-83c2fdc439a1.jpg'} alt="avatar" id="avatar" /> */}
+              <img src={userData.data && userData.data.photo ? `${BACKEND_URL}/${userData.data.photo}` : avatarDummy} alt="avatar" id="avatar" />
             </div>
           </div>
         </div>

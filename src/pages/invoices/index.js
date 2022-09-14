@@ -6,7 +6,6 @@ import useStyles from './styles'
 import { Fragment } from 'react';
 import Layout from '../../layouts';
 import { getUserData } from '../../helpers/auth';
-import AuthFooter from '../../components/auth-footer';
 
 const downloadIcon = '/assets/svg/download.svg'
 
@@ -125,7 +124,6 @@ export default function Invoice(){
                 <HeaderUser />
                 {renderContent()}
             </div>
-            <AuthFooter />
         </div>
         </Page>
     )

@@ -17,7 +17,6 @@ import { getUserData } from '../../helpers/auth';
 import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
-import AuthFooter from '../../components/auth-footer';
 import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
 import { useStripe } from '@stripe/react-stripe-js';
@@ -1174,7 +1173,7 @@ export default function AddCampaign({ content, params }) {
         {renderCollectionPage()}
         {renderSetupAirdrop()}
         </div>
-        <AuthFooter />
+        {/* <AuthFooter /> */}
         <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={handleResetPage} />
         <AddPaymentMethod
           callbackSuccess={(modalType) => {

@@ -12,6 +12,7 @@ import { HEADER, NAVBAR } from '../../config';
 //
 import NavbarVertical from './navbar/NavbarVertical';
 import NavbarHorizontal from './navbar/NavbarHorizontal';
+import AuthFooter from '../../components/auth-footer';
 
 // ----------------------------------------------------------------------
 
@@ -94,8 +95,14 @@ export default function DashboardLayout({ children }) {
       {/* <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} /> */}
 
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-
+      <Box 
+        sx={{
+          position: 'relative',
+          width: '100%'
+        }}>
       <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+      <AuthFooter />
+      </Box>
     </Box>
   );
 }

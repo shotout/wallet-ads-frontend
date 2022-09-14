@@ -5,7 +5,8 @@ export default makeStyles((theme) => ({
         position: 'relative',
         background: '#fff',
         minHeight: '98vh',
-        paddingBottom: 80
+        paddingBottom: 80,
+        width: '100%'
     },
     ctnWrapper: {
         maxWidth: '1366px',
