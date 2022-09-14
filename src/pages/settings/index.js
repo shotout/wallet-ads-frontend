@@ -351,30 +351,31 @@ export default function SettingUser({ userData }){
 }
 
 export async function getServerSideProps(context) {
-    const userData = getUserData(context)
-    const UA = context.req.headers['user-agent'];
-    const isMobile = Boolean(UA.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    ))
-    if(isMobile){
-      return {
-          redirect: {
-              permanent: false,
-              destination: `/forbidden`
-          }
-      }
-    }
-    if(!userData){
-        return {
-            redirect: {
-                permanent: false,
-                destination: `/login`
+    try{
+        const userData = getUserData(context)
+        const UA = context.req.headers['user-agent'];
+        const isMobile = Boolean(UA.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+        ))
+        if(isMobile){
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: `/forbidden`
+                }
             }
         }
-    }
-    return {
-      props: {
-        userData
-      }, // will be passed to the page component as props
-    }
+        return {
+            props: {
+                userData
+            }, // will be passed to the page component as props
+        }
+    }catch(err){
+        return {
+          redirect: {
+              permanent: false,
+              destination: `/login`
+          }
+        }
+      }
 }

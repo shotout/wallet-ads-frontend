@@ -13,8 +13,7 @@ import { calculateAirdropPerUser, checkIsFormMax, getAudiencePrice, getTotalBudg
 import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
-import { getUserData } from '../../helpers/auth';
-import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign } from '../../utils/requests';
+import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign, getProfilUser } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import SuccessAddCampaign from '../../components/success-add-campaign';
@@ -1302,43 +1301,42 @@ export default function AddCampaign({ content, params }) {
 
 
 export async function getServerSideProps(context) {
-  const userData = getUserData(context)
-  const UA = context.req.headers['user-agent'];
-  const isMobile = Boolean(UA.match(
-    /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-  ))
-  let params = {}
-  let content = null
-  if(isMobile){
-    return {
-        redirect: {
-            permanent: false,
-            destination: `/forbidden`
-        }
-    }
-  }
-  if(!userData){
+  try{
+    await getProfilUser(context)
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+    ))
+    let params = {}
+    let content = null
+    if(isMobile){
       return {
           redirect: {
               permanent: false,
-              destination: `/login`
+              destination: `/forbidden`
           }
       }
-  }
-
-  if(context.query){
-    params = context.query
-    if(context.query.id && context.query.status === 'fail'){
-      const res = await getCampaignDetail(context, context.query.id)
-      content = res.data
     }
+    if(context.query){
+      params = context.query
+      if(context.query.id && context.query.status === 'fail'){
+        const res = await getCampaignDetail(context, context.query.id)
+        content = res.data
+      }
 
-  }
-  return {
-    props: {
-      userData,
-      content,
-      params 
-    }, // will be passed to the page component as props
+    }
+    return {
+      props: {
+        content,
+        params 
+      }, // will be passed to the page component as props
+    }
+  }catch(err){
+    return {
+      redirect: {
+          permanent: false,
+          destination: `/login`
+      }
+    }
   }
 }

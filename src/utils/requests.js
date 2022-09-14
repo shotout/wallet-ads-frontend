@@ -36,6 +36,12 @@ export const getCampaignItem = (ctx) => axios({
   ctx
 });
 
+export const getProfilUser = (ctx) => axios({
+  url: '/user',
+  method: 'GET',
+  ctx
+});
+
 export const getCampaignDetail = (ctx, id) => axios({
   url: `/campaigns/${id}`,
   method: 'GET',
