@@ -431,7 +431,7 @@ export default function AddCampaign({ content, params }) {
       if(index === contentIndex){
         return {
           ...item,
-          budgetAds: event.target.value.replace(/[^\d.]/gi, "")
+          budgetAds: event.target.value.replace(/[^\d.]/gi, "").replace('.','')
         }
       }
       return item
