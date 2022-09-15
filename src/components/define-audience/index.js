@@ -124,7 +124,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     selectedCategory: 'upload',
                     audienceFile: Object.assign(file, {
                         preview: URL.createObjectURL(file),
-                        fileBase64: event.target.result.replace(result, 'data:@file')
+                        // fileBase64: event.target.result.replace(result, 'data:@file')
                     })
                 })
             }

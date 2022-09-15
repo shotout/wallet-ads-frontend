@@ -241,61 +241,96 @@ export default function AddCampaign({ content, params }) {
   const directStripe = () => {
     stripe.redirectToCheckout({
       sessionId: showCreditCard ? showCreditCard.sessionId : null
-  })
+    })
+  }
+
+  const getAudienceArr = () => {
+    
+    const campaignData = []
+    audienceForm.forEach((audience, index) => {
+      if(audience.selectedCategory){
+        campaignData.push({
+          "id": audience.id,
+          "file": audience.audienceFile && audience.audienceFile ? audience.audienceFile : null,
+          "fe_id": index,
+          "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
+          "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience).toString() : null,
+          "total_user": calculateAirdropPerUser(audience).toString(),
+  
+          "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
+          "detailed_targeting_year":audience.balancedTargeting.year,
+          "detailed_targeting_month":audience.balancedTargeting.months,
+          "detailed_targeting_day":audience.balancedTargeting.day,
+  
+          "detailed_targeting_available_credit_wallet": audience.detailTargeting.availableCredit,
+          "detailed_targeting_trading_volume": audience.detailTargeting.tradingVolume,
+          "detailed_targeting_airdrops": audience.balancedTargeting.airdropReceived,
+  
+          "detailed_targeting_amount_transaction": audience.detailTargeting.transactionAmount,
+          "detailed_targeting_amount_transaction_day": audience.detailTargeting.amountDays,
+          "detailed_targeting_nft_purchases": audience.detailTargeting.creatorName,
+      })
+      }
+    })
+    return campaignData
   }
 
   const handleSubmit = async() => {
     try{
-      setLoadingSubmit(true)
-      const objRes = {
-        "campaign_name": formValues.campaign_name,
-        "campaign_start_date": moment(formValues.campaign_start_date).format('YYYY-MM-DD'),
-        "campaign_end_date_type": formValues.campaign_end_date_type,
-        "campaign_end_date_day": formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null,
-        "campaign_end_date": moment(formValues.campaign_end_date).format('YYYY-MM-DD'),
-
-        "campaign_audiences": audienceForm.map((audience, index) => ({
-              "id": audience.id,
-              "file": audience.audienceFile && audience.audienceFile.fileBase64 ? audience.audienceFile.fileBase64 : null,
-              "fe_id": index,
-              "price": audience.budgetAds ? audience.budgetAds.replace(',','') : '',
-              "price_airdrop": audience.selectedCategory ? getAudiencePrice(audience).toString() : null,
-              "total_user": calculateAirdropPerUser(audience).toString(),
-
-              "detailed_targeting_cryptocurrency": audience.balancedTargeting.cryptoCurrency,
-              "detailed_targeting_year":audience.balancedTargeting.year,
-              "detailed_targeting_month":audience.balancedTargeting.months,
-              "detailed_targeting_day":audience.balancedTargeting.day,
-
-              "detailed_targeting_available_credit_wallet": audience.detailTargeting.availableCredit,
-              "detailed_targeting_trading_volume": audience.detailTargeting.tradingVolume,
-              "detailed_targeting_airdrops": audience.balancedTargeting.airdropReceived,
-
-              "detailed_targeting_amount_transaction": audience.detailTargeting.transactionAmount,
-              "detailed_targeting_amount_transaction_day": audience.detailTargeting.amountDays,
-              "detailed_targeting_nft_purchases": audience.detailTargeting.creatorName,
-          })),
-    
-        "ads_page_name": formValues.ads_page_name,
-        "ads_page_description": formValues.ads_page_description,
-        "ads_page_website": formValues.ads_page_website,
-        "ads_page_discord": formValues.ads_page_discord,
-        "ads_page_medium": formValues.ads_page_medium,
-        "ads_page_telegram": formValues.ads_page_telegram,
-        // "ads_page_external_page": "https://external.com",
-        "ads_page_logo": logoCollection ? logoCollection.fileBase64 : null,
-        "ads_page_banner": bannerCollection ? bannerCollection.fileBase64 : null,
-    
-        "campaign_ads": pictureData.map(campaign => ({
-            ...campaign,
-            image: campaign.image ? campaign.image.fileBase64 : null
-          }))
-      }
       let res = null
+      setLoadingSubmit(true)
+      const campaignData = getAudienceArr()
+      const formRes = new FormData()
+      formRes.append('campaign_name', formValues.campaign_name)
+      formRes.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'))
+      formRes.append('campaign_end_date_type', formValues.campaign_end_date_type)
+      formRes.append('campaign_end_date_day', formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null)
+      formRes.append('campaign_end_date', moment(formValues.campaign_end_date).format('YYYY-MM-DD'))
+      
+      formRes.append('ads_page_name', formValues.ads_page_name)
+      formRes.append('ads_page_description', formValues.ads_page_description)
+      formRes.append('ads_page_website', formValues.ads_page_website)
+      formRes.append('ads_page_discord', formValues.ads_page_discord)
+      formRes.append('ads_page_medium', formValues.ads_page_medium)
+      formRes.append('ads_page_telegram', formValues.ads_page_telegram)
+      formRes.append('ads_page_logo', logoCollection)
+      formRes.append('ads_page_banner', bannerCollection)
+
+      pictureData.forEach((ads, adsIndex) => {
+        if(ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id)
+        if(ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name)
+        if(ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description)
+        if(ads.fe_id) formRes.append(`campaign_ads[${adsIndex}][fe_id]`, ads.fe_id)
+        if(ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image)
+      })
+      
+      campaignData.forEach((campaign, indexCampaign) => {
+        if(campaign.fe_id) formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id)
+        if(campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id)
+        if(campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file)
+        if(campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price)
+        if(campaign.price_airdrop) formRes.append(`campaign_audiences[${indexCampaign}][price_airdrop]`, campaign.price_airdrop)
+        if(campaign.total_user) formRes.append(`campaign_audiences[${indexCampaign}][total_user]`, campaign.total_user)
+        if(campaign.detailed_targeting_year) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_year]`, campaign.detailed_targeting_year)
+        if(campaign.detailed_targeting_month) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_month]`, campaign.detailed_targeting_month)
+        if(campaign.detailed_targeting_day) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_day]`, campaign.detailed_targeting_day)
+        if(campaign.detailed_targeting_available_credit_wallet) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_available_credit_wallet]`, campaign.detailed_targeting_available_credit_wallet)
+        if(campaign.detailed_targeting_trading_volume) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_trading_volume]`, campaign.detailed_targeting_trading_volume)
+        if(campaign.detailed_targeting_airdrops) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_airdrops]`, campaign.detailed_targeting_airdrops)
+        if(campaign.detailed_targeting_amount_transaction) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction]`, campaign.detailed_targeting_amount_transaction)
+        if(campaign.detailed_targeting_amount_transaction_day) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction_day]`, campaign.detailed_targeting_amount_transaction_day)
+        if(campaign.detailed_targeting_nft_purchases) formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_nft_purchases]`, campaign.detailed_targeting_nft_purchases)
+        if(campaign.detailed_targeting_cryptocurrency && campaign.detailed_targeting_cryptocurrency.length) {
+          campaign.detailed_targeting_cryptocurrency.forEach((currency, currencyIndex) => {
+            formRes.append(`campaign_audiences[${indexCampaign}][detailed_targeting_cryptocurrency][${currencyIndex}]`, currency)
+          })
+        }
+      })
+
       if(params.id){
-        res = await handleEditCampaign(objRes, params.id)
+        res = await handleEditCampaign(formRes, params.id)
       }else{
-        res = await handleAddCampaign(objRes)
+        res = await handleAddCampaign(formRes)
       }
       const session = await createSession({
           campaign_id: res.data.id,
@@ -314,6 +349,13 @@ export default function AddCampaign({ content, params }) {
     }
   }
 
+  const isAdsArrValid = (ads) => {
+    if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
+      return true
+    }
+    return false
+  }
+
   const validateSubmit = () => {
     try{
       const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
@@ -323,8 +365,8 @@ export default function AddCampaign({ content, params }) {
       const errorObj = {
         campaignName: formValues.campaign_name === '',
         collectionPageName: formValues.ads_page_name === '',
-        collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
-        collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
+        collectionLogo: logoCollection ? false : true,
+        collectionBanner: bannerCollection ? false : true,
         collectionDesc: formValues.ads_page_description === '',
         // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
         // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
@@ -336,12 +378,14 @@ export default function AddCampaign({ content, params }) {
         setErrorInput(errorObj)
         inputValid = false
       }
+      const arrValid = []
       pictureData.forEach(ads => {
-        if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
+        if(isAdsArrValid(ads)){
           ads.fe_id.forEach(feId => { selectedAdsAudience.push(feId)})
-          isAdsValid = true
+          arrValid.push(ads)
         }
       })
+      isAdsValid = arrValid.length === pictureData.length
       const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.filter(item => item.selectedCategory !== null).length ? true : false
       if(isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid){
         if(showCreditCard.sessionId && showCreditCard.campaignId){
@@ -507,7 +551,7 @@ export default function AddCampaign({ content, params }) {
                   ...Object.assign(file, {
                     preview: URL.createObjectURL(file),
                   }),
-                  fileBase64:event.target.result
+                  // fileBase64:event.target.result
                 }
               }
             }
@@ -570,7 +614,7 @@ export default function AddCampaign({ content, params }) {
           ...Object.assign(file, {
             preview: URL.createObjectURL(file),
           }),
-          fileBase64:event.target.result
+          // fileBase64:event.target.result
         })
       };
       reader.readAsDataURL(file);
@@ -587,7 +631,7 @@ export default function AddCampaign({ content, params }) {
           ...Object.assign(file, {
             preview: URL.createObjectURL(file),
           }),
-          fileBase64:event.target.result
+          // fileBase64:event.target.result
         })
       };
       reader.readAsDataURL(file);
@@ -1159,7 +1203,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderCardAdCreation(content, index){
     return (
-      <div className={`${styles.inputCollectionCard} ${errorBox.errorAds ? styles.ctnRedBorder : ''}`} key={index.toString()}>
+      <div className={`${styles.inputCollectionCard} ${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''}`} key={index.toString()}>
         <div className={styles.ctnInputCollectionPageWrapper}>
           {renderLeftAdCreation(content, index)}
           {renderRightAdCreation(content, index)}
@@ -1195,7 +1239,7 @@ export default function AddCampaign({ content, params }) {
                           {`Audience ${audienceIndex + 1}`}
                         </Typography>
                       </div>
-                      {renderErrorText(errorBox.errorAds&& !isActive && item.optimized)}
+                      {renderErrorText(errorBox.errorAds&& !isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))}
                       {renderAdAudience(item)}
                     </div>
                 </Grid>

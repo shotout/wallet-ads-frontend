@@ -22,12 +22,18 @@ export const handleAddCampaign = (data) => axios({
   url: '/campaigns',
   method: 'POST',
   data,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }
 });
 
 export const handleEditCampaign = (data, id) => axios({
   url: `/campaigns/${id}`,
   method: 'PATCH',
   data,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }
 });
 
 export const getCampaignItem = (ctx) => axios({
