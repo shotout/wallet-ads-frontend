@@ -296,6 +296,7 @@ export default function AddCampaign({ content, params }) {
       })
       setShowCreditCard({
         sessionId: session.id,
+        campaignId: res.data.id
       })
       setLoadingSubmit(false)
     }catch(err){
@@ -1280,7 +1281,6 @@ export default function AddCampaign({ content, params }) {
             setModalSuccess(modalType)
           }}
           totalBudget={getTotalBudget(audienceForm)}
-          showCreditCard={showCreditCard}
           isVisible={showCreditCard}
           directStripe={directStripe}
           // isVisible

@@ -59,3 +59,9 @@ export const createSession = (data) => axios({
   method: 'POST',
   data,
 });
+
+export const payCyrptoCurrency = (data) => axios({
+  url: '/pay/method',
+  method: 'POST',
+  data,
+});

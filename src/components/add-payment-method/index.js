@@ -1,4 +1,6 @@
 import { Grid, Popover, Typography } from '@mui/material'
+import { useState } from 'react'
+import { payCyrptoCurrency } from '../../utils/requests'
 import DefaultButton from '../default-button'
 import Iconify from '../Iconify'
 import useStyles from './styles'
@@ -7,10 +9,16 @@ const ccImage = '/assets/credit_card.png'
 
 export default function AddPaymentMethod({ isVisible = null, handleHoverClose, callbackSuccess, directStripe }){
     const styles = useStyles()
+    const [loading, setLoading] = useState(false)
 
-    const handleChooseCreditCard = () => {
-        handleHoverClose()
+    const handleChooseCrypto = async() => {
+        setLoading(true)
+        await payCyrptoCurrency({
+            campaign_id: isVisible.campaignId
+        })
         if(typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency')
+        handleHoverClose()
+        setLoading(false)
     }
 
     return (
@@ -46,10 +54,10 @@ export default function AddPaymentMethod({ isVisible = null, handleHoverClose, c
                     <DefaultButton onClick={directStripe} ctnBtnStyle={styles.btnStyle} label={"Add credit card"} />
                 </Grid>
                 <Grid item md={6} xs={12}>
-                    <DefaultButton ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`} onClick={handleChooseCreditCard} label={"I would like to pay using cryptocurrencies"} />
+                    <DefaultButton isLoading={loading} ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`} onClick={handleChooseCrypto} label={"I would like to pay using cryptocurrencies"} />
                 </Grid>
             </Grid>
-                <div className={styles.ctnClose} onClick={handleHoverClose}>
+                <div className={styles.ctnClose} onClick={handleChooseCrypto}>
                     <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
                 </div>
           </div>
