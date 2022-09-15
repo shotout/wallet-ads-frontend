@@ -284,7 +284,7 @@ export default function AddCampaign({ content, params }) {
       formRes.append('campaign_name', formValues.campaign_name)
       formRes.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'))
       formRes.append('campaign_end_date_type', formValues.campaign_end_date_type)
-      formRes.append('campaign_end_date_day', formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null)
+      if(formValues.campaign_end_date_type === '3') formRes.append('campaign_end_date_day', formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null)
       formRes.append('campaign_end_date', moment(formValues.campaign_end_date).format('YYYY-MM-DD'))
       
       formRes.append('ads_page_name', formValues.ads_page_name)
@@ -300,7 +300,11 @@ export default function AddCampaign({ content, params }) {
         if(ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id)
         if(ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name)
         if(ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description)
-        if(ads.fe_id) formRes.append(`campaign_ads[${adsIndex}][fe_id]`, ads.fe_id)
+        if(ads.fe_id.length > 0) {
+          ads.fe_id.forEach((feId, feIndex) => {
+            formRes.append(`campaign_ads[${adsIndex}][fe_id][${feIndex}]`, feId)
+          })
+        }
         if(ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image)
       })
       
