@@ -91,13 +91,14 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                     <CurrencyInput
                         name="currencyInput"
                         id="currencyInput"
-                        data-number-stepfactor="100"
                         value={data.budgetAds}
                         placeholder=""
                         onChange={onChangeBudget}
                         // onBlur={handleOnBlur}
                         allowDecimals={false}
+                        allowNegativeValue={false}
                         disableAbbreviations
+                        groupSeparator=','
                         maxLength={5} 
                     />
                 </div>
