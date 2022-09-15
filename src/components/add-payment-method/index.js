@@ -7,17 +7,17 @@ import useStyles from './styles'
 
 const ccImage = '/assets/credit_card.png'
 
-export default function AddPaymentMethod({ isVisible = null, handleHoverClose, callbackSuccess, directStripe }){
+export default function AddPaymentMethod({ isVisible = null, handleHoverClose, callbackSuccess, directStripe, onClose, showCreditCard }){
     const styles = useStyles()
     const [loading, setLoading] = useState(false)
 
     const handleChooseCrypto = async() => {
+        handleHoverClose()
         setLoading(true)
-        await payCyrptoCurrency({
-            campaign_id: isVisible.campaignId
+        payCyrptoCurrency({
+            campaign_id: showCreditCard.campaignId
         })
         if(typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency')
-        handleHoverClose()
         setLoading(false)
     }
 
@@ -57,7 +57,7 @@ export default function AddPaymentMethod({ isVisible = null, handleHoverClose, c
                     <DefaultButton isLoading={loading} ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`} onClick={handleChooseCrypto} label={"I would like to pay using cryptocurrencies"} />
                 </Grid>
             </Grid>
-                <div className={styles.ctnClose} onClick={handleChooseCrypto}>
+                <div className={styles.ctnClose} onClick={onClose}>
                     <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
                 </div>
           </div>

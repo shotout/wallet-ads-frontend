@@ -10,6 +10,10 @@ const editIcon = '/assets/edit_icon.png'
 export default function BannerPicker({ label, file,typeScreen, onDelete, ...other }){
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
+    //   maxSize: 1000000,
+      accept: {
+        'image/*': ['.png', '.gif', '.jpeg', '.jpg']
+      },
       ...other,
     });
     const styles = useStyles()
@@ -30,6 +34,7 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, ...othe
                     </div>
                     <div className={styles.ctnLogoRight}>
                         <div className={styles.ctnIcon} {...getRootProps()}>
+                            <input {...getInputProps()} />
                             <img src={editIcon} alt="edit" />
                         </div>
                         <div className={styles.ctnIcon} onClick={onDelete}>
@@ -46,6 +51,8 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, ...othe
                         <img src={file === null ? null : typeof file === 'string' ? file : file.preview || null} alt="banner-source" />
                         <div className={styles.bannerOptionWrapper}>
                             <div className={styles.ctnIcon} {...getRootProps()}>
+
+                                <input {...getInputProps()} />
                                 <img src={editIcon} alt="edit" />
                             </div>
                             <div className={styles.ctnIcon} onClick={onDelete}>
@@ -58,6 +65,7 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, ...othe
         }
         return (
             <div className={styles.btnPicker} {...getRootProps()}>
+                <input {...getInputProps()} />
                 <img src={whiteCameraIcon} alt="camera" />
                 <Typography variant="subtitle1" color={'#fff'}>
                     {label}

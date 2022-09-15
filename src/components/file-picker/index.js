@@ -30,6 +30,7 @@ export default function FilePicker({ label, file,typeScreen, onDelete, btnStyle=
                     </div>
                     <div className={styles.ctnLogoRight}>
                         <div className={styles.ctnIcon} {...getRootProps()}>
+                            <input {...getInputProps()} />
                             <img src={editIcon} alt="edit" />
                         </div>
                         <div className={styles.ctnIcon} onClick={onDelete}>
@@ -42,6 +43,7 @@ export default function FilePicker({ label, file,typeScreen, onDelete, btnStyle=
         return (
             <div className={styles.centerizedItem}>
                 <div className={`${styles.btnPicker} ${btnStyle}`} {...getRootProps()}>
+                    <input {...getInputProps()} />
                     <Typography variant="subtitle1" color={'#fff'}>
                         {label}
                     </Typography>

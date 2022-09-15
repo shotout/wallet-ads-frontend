@@ -105,7 +105,11 @@ export default function AddCampaign({ content, params }) {
     errorBoxCampaignName: false,
     errorBoxAvailability: false
   })
-  const [showCreditCard, setShowCreditCard] = useState(null)
+  const [showCreditCard, setShowCreditCard] = useState({
+    isVisible: false,
+    sessionId: null,
+    campaignId: null,
+  })
   const [errorInput, setErrorInput] = useState({
     campaignName: null,
     collectionPageName: null,
@@ -194,40 +198,40 @@ export default function AddCampaign({ content, params }) {
 
   const handleResetPage = () => {
     setModalSuccess(null)
-    // setHover(null)
-    // setActivePopover(null)
-    // setBannerCollection(null)
-    // setLogoCollection(null)
-    // setPicture(initialPicture)
-    // setFormValues({
-    //   campaign_name: '',
-    //   campaign_start_date: new Date(),
-    //   campaign_end_date_type: '',
-    //   campaign_end_date: new Date(),
-    //   campaign_end_day: '7',
-    //   ads_page_name: "",
-    //   ads_page_description: "",
-    //   ads_page_website: "",
-    //   ads_page_discord: "",
-    //   ads_page_medium: "",
-    //   ads_page_telegram: "",
-    // })
-    // setSelectedAudience(null)
-    // setLoadingSubmit(null)
+    setHover(null)
+    setActivePopover(null)
+    setBannerCollection(null)
+    setLogoCollection(null)
+    setPicture(initialPicture)
+    setFormValues({
+      campaign_name: '',
+      campaign_start_date: new Date(),
+      campaign_end_date_type: '',
+      campaign_end_date: new Date(),
+      campaign_end_day: '7',
+      ads_page_name: "",
+      ads_page_description: "",
+      ads_page_website: "",
+      ads_page_discord: "",
+      ads_page_medium: "",
+      ads_page_telegram: "",
+    })
+    setSelectedAudience(null)
+    setLoadingSubmit(null)
   
-    // setAudienceForm([
-    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    //   {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    // ])
-    // setErrorBox({
-    //   errorAudience: false,
-    //   errorAds: false,
-    //   errorBoxCampaignName: false,
-    //   errorBoxAvailability: false
-    // })
-    // setShowCreditCard(null)
+    setAudienceForm([
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    ])
+    setErrorBox({
+      errorAudience: false,
+      errorAds: false,
+      errorBoxCampaignName: false,
+      errorBoxAvailability: false
+    })
+    setShowCreditCard(null)
   }
 
   const directStripe = () => {
@@ -296,60 +300,73 @@ export default function AddCampaign({ content, params }) {
       })
       setShowCreditCard({
         sessionId: session.id,
-        campaignId: res.data.id
+        campaignId: res.data.id,
+        isVisible: true
       })
       setLoadingSubmit(false)
     }catch(err){
+      console.log("Check err:", err)
       setLoadingSubmit(false)
     }
   }
 
   const validateSubmit = () => {
-    const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
-    let isAdsValid = false
-    let inputValid = true
-    let selectedAdsAudience = []
-    const errorObj = {
-      campaignName: formValues.campaign_name === '',
-      collectionPageName: formValues.ads_page_name === '',
-      collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
-      collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
-      collectionDesc: formValues.ads_page_description === '',
-      // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
-      // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
-    }
-    const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName} = errorObj
-    const isCampaignNameValid = !formValues.campaign_name
-    const isAvailabilityValid = !formValues.campaign_end_date_type
-    if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName){
-      setErrorInput(errorObj)
-      inputValid = false
-    }
-    pictureData.forEach(ads => {
-      if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
-        ads.fe_id.forEach(feId => { selectedAdsAudience.push(feId)})
-        isAdsValid = true
+    try{
+      const isAudienceValid = audienceForm.filter(audience => audience.selectedCategory !== null && audience.budgetAds !== '')
+      let isAdsValid = false
+      let inputValid = true
+      let selectedAdsAudience = []
+      const errorObj = {
+        campaignName: formValues.campaign_name === '',
+        collectionPageName: formValues.ads_page_name === '',
+        collectionLogo: logoCollection && logoCollection.fileBase64 ? false : true,
+        collectionBanner: bannerCollection && bannerCollection.fileBase64 ? false : true,
+        collectionDesc: formValues.ads_page_description === '',
+        // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+        // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
       }
-    })
-    const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.filter(item => item.selectedCategory !== null).length ? true : false
-    if(isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid){
-      handleSubmit()
-    }else{
-      setErrorBox({
-        errorAds: !isAdsValid  || !isAudienceFormAdsValid,
-        errorAudience: isAudienceValid.length === 0,
-        errorBoxCampaignName: isCampaignNameValid,
-        errorBoxAvailability: isAvailabilityValid
+      const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName} = errorObj
+      const isCampaignNameValid = !formValues.campaign_name
+      const isAvailabilityValid = !formValues.campaign_end_date_type
+      if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName){
+        setErrorInput(errorObj)
+        inputValid = false
+      }
+      pictureData.forEach(ads => {
+        if(ads.image && ads.fe_id.length > 0 && ads.description && ads.name){
+          ads.fe_id.forEach(feId => { selectedAdsAudience.push(feId)})
+          isAdsValid = true
+        }
       })
-      if(isCampaignNameValid){
-        window.location.href = '#campaign-name'
-      }else if(isAvailabilityValid){
-        window.location.href = '#availability-section'
-      }else if(isAudienceValid.length === 0){
-        window.location.href = '#card-audience'
-      }else if(!isAdsValid || !isAudienceFormAdsValid){
-        window.location.href = '#card-ads'
+      const isAudienceFormAdsValid = selectedAdsAudience.length === audienceForm.filter(item => item.selectedCategory !== null).length ? true : false
+      if(isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid){
+        if(showCreditCard.sessionId && showCreditCard.campaignId){
+          setShowCreditCard({
+            ...showCreditCard,
+            isVisible: true
+          })
+        }else{
+          handleSubmit()
+        }
+      }else{
+        setErrorBox({
+          errorAds: !isAdsValid  || !isAudienceFormAdsValid,
+          errorAudience: isAudienceValid.length === 0,
+          errorBoxCampaignName: isCampaignNameValid,
+          errorBoxAvailability: isAvailabilityValid
+        })
+        if(isCampaignNameValid){
+          window.location.href = '#campaign-name'
+        }else if(isAvailabilityValid){
+          window.location.href = '#availability-section'
+        }else if(isAudienceValid.length === 0){
+          window.location.href = '#card-audience'
+        }else if(!isAdsValid || !isAudienceFormAdsValid){
+          window.location.href = '#card-ads'
+        }
       }
+    }catch(err){
+      console.log("err :", err)
     }
   }
 
@@ -1281,10 +1298,18 @@ export default function AddCampaign({ content, params }) {
             setModalSuccess(modalType)
           }}
           totalBudget={getTotalBudget(audienceForm)}
-          isVisible={showCreditCard}
+          showCreditCard={showCreditCard}
+          isVisible={showCreditCard.isVisible}
           directStripe={directStripe}
           // isVisible
-          handleHoverClose={() => { setShowCreditCard(null)}} />
+          onClose={() => {setShowCreditCard({ ...showCreditCard, isVisible: false })}}
+          handleHoverClose={() => { 
+            handleResetPage()
+            setShowCreditCard({ 
+              sessionId: null,
+              campaignId: null,
+              isVisible: false })
+          }} />
         {/* <CreditCard
           callbackSuccess={(modalType) => {
             handleSubmit(modalType)
