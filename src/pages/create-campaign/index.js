@@ -1263,16 +1263,19 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCreateAnotherAd(){
-    return (
-      <div className={styles.btnCreateAd} onClick={() => {
-        const currentArr = [...pictureData]
-        currentArr.push({image: null, fe_id: [], name: '', description: '' })
-        setPicture(currentArr)
-      }}>
-        <img src={addIcon} alt="addIcon" />
-        <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Create another ad</Typography>
-      </div>
-    )
+    if(pictureData.length < audienceForm.filter(item => item.selectedCategory !== null).length){
+      return (
+        <div className={styles.btnCreateAd} onClick={() => {
+          const currentArr = [...pictureData]
+          currentArr.push({image: null, fe_id: [], name: '', description: '' })
+          setPicture(currentArr)
+        }}>
+          <img src={addIcon} alt="addIcon" />
+          <Typography variant='h6' color={'#B3B3B3'} fontWeight='bold'>Create another ad</Typography>
+        </div>
+      )
+    }
+    return null
   }
 
   function renderAddAudience(){
