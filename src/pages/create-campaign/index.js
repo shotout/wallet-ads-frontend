@@ -1243,13 +1243,14 @@ export default function AddCampaign({ content, params }) {
                           {`Audience ${audienceIndex + 1}`}
                         </Typography>
                       </div>
-                      {renderErrorText(errorBox.errorAds&& !isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))}
+                      {renderErrorText(errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))}
                       {renderAdAudience(item)}
                     </div>
                 </Grid>
                 )
               })}
           </Grid>
+          {renderErrorText(errorBox.errorAds && content.fe_id.length === 0)}
         </div>
       </div>
     )
