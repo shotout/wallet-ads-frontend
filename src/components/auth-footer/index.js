@@ -13,18 +13,18 @@ export default function AuthFooter(){
                         Imprint
                     </a>
                 </Link>
-                <Link href="#">
-                    <a>
+                <Link href="terms">
+                    <a target={"_blank"}>
                         Terms and Conditions / AGB
                     </a>
                 </Link>
-                <Link href="#">
-                    <a>
+                <Link href="privacy">
+                    <a target={"_blank"}>
                         Privacy
                     </a>
                 </Link>
-                <Link href="#">
-                    <a>
+                <Link href="cookies">
+                    <a target={"_blank"}>
                         Cookie Policy
                     </a>
                 </Link>

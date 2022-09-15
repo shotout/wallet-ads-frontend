@@ -98,6 +98,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                         allowDecimals={false}
                         allowNegativeValue={false}
                         disableAbbreviations
+                        fixedDecimalLength={0}
                         groupSeparator=','
                         maxLength={5} 
                     />
