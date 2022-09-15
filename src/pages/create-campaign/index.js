@@ -231,7 +231,11 @@ export default function AddCampaign({ content, params }) {
       errorBoxCampaignName: false,
       errorBoxAvailability: false
     })
-    setShowCreditCard(null)
+    setShowCreditCard({ 
+      sessionId: null,
+      campaignId: null,
+      isVisible: false
+    })
   }
 
   const directStripe = () => {
@@ -1308,7 +1312,8 @@ export default function AddCampaign({ content, params }) {
             setShowCreditCard({ 
               sessionId: null,
               campaignId: null,
-              isVisible: false })
+              isVisible: false
+            })
           }} />
         {/* <CreditCard
           callbackSuccess={(modalType) => {
