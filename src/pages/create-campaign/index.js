@@ -25,10 +25,10 @@ const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
   add_social_media_link: "On your collection page, you can link to your social media pages. If you do not have an account on one of the pages, just leave the field empty.",
   ad_name: "This is the name of your advertisement.",
-  media: "Upload an ad image. This will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 100 MB",
+  media: "Upload an ad image. This will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 50 MB",
   ad_text: "This will be the description that shows along with your wallet ad.",
   collection_page_name: "Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.",
-  logo_text: 'Upload a banner for the collection page. Recommended size: 350x350px',
+  logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
 }
 
