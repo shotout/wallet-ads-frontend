@@ -59,6 +59,16 @@ export default function Invoice(){
     }
 
     function renderListItem(){
+        const isNoData = true
+        if(isNoData){
+            return (
+                <div className={styles.ctnItem}>
+                    <Typography variant='h4' color="#B3B3B3" marginY={4} textAlign={"center"}>
+                    No invoices available
+                    </Typography>
+                </div>
+            )
+        }
         return (
             <div className={styles.ctnItem}>
                 <Grid container spacing={4}>
@@ -111,7 +121,7 @@ export default function Invoice(){
                 <div className={styles.ctnCard}>
                     {renderTitle()}
                     {renderListTitle()}
-                    
+                    {renderListItem()}
                 </div>
             </div>
         )
