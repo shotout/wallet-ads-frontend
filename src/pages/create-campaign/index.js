@@ -20,7 +20,8 @@ import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
 import { useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../helpers/constants';
-import { normalizeCurrency } from 'src/helpers/currency';
+import { normalizeCurrency } from '../../helpers/currency';
+import { getFutureDate } from '../../helpers/dateHelper';
 
 const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
@@ -69,9 +70,8 @@ export default function AddCampaign({ content, params }) {
   const [pictureData, setPicture] = useState(initialPicture)
   const [formValues, setFormValues] = useState({
     campaign_name: '',
-    campaign_start_date: new Date(),
+    campaign_start_date: new Date(getFutureDate(2)),
     campaign_end_date_type: '',
-    campaign_end_date: new Date(),
     campaign_end_day: '7',
     ads_page_name: "",
     ads_page_description: "",
@@ -173,9 +173,8 @@ export default function AddCampaign({ content, params }) {
       setAudienceForm(audienceArr)
       setFormValues({
         campaign_name: content.name,
-        campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(),
+        campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
         campaign_end_date_type: content.type.toString(),
-        campaign_end_date: new Date(),
         campaign_end_day: content.type === 3 ? content.availability : '7',
         ads_page_name: adsPage.name,
         ads_page_description: adsPage.description,
@@ -196,9 +195,8 @@ export default function AddCampaign({ content, params }) {
     setPicture(initialPicture)
     setFormValues({
       campaign_name: '',
-      campaign_start_date: new Date(),
+      campaign_start_date: new Date(getFutureDate(2)),
       campaign_end_date_type: '',
-      campaign_end_date: new Date(),
       campaign_end_day: '7',
       ads_page_name: "",
       ads_page_description: "",
@@ -265,6 +263,7 @@ export default function AddCampaign({ content, params }) {
     })
     return campaignData
   }
+  console.log("CHECK FUTURE DATE:", getFutureDate(2))
 
   const handleSubmit = async() => {
     try{
@@ -745,7 +744,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
           <div className={styles.ctnDate}>
             <div className={styles.containerDate}>
-              <DatePicker selected={formValues.campaign_start_date} onChange={(date) => setFormValues({...formValues,  campaign_start_date: date})} />
+              <DatePicker minDate={new Date(getFutureDate(2))} selected={formValues.campaign_start_date} onChange={(date) => setFormValues({...formValues,  campaign_start_date: date})} />
             </div>
             <img src={blackCalendar} alt="calendar" />
           </div>

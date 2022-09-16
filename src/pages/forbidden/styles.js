@@ -9,8 +9,8 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
         maxWidth: 260,
         '& > img':{
-            width: 120,
-            height: 120,
+            width: 240,
+            height: 140,
             objectFit: 'contain',
             marginBottom: 20
         }

@@ -6,7 +6,7 @@ import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
 import SvgIconStyle from '../SvgIconStyle';
 import CurrencyInput from "react-currency-input-field";
-import { normalizeCurrency } from 'src/helpers/currency';
+import { normalizeCurrency } from '../../helpers/currency';
 
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'

@@ -23,11 +23,18 @@ export default makeStyles((theme) => ({
             fontWeight: 'bold',
             fontSize: 15,
             [theme.breakpoints.down('sm')]:{
-                marginLeft: 30
+                marginLeft: 0,
+                marginRight: 0
             }
         },
         [theme.breakpoints.down('sm')]:{
-            marginBottom: 8
+            marginBottom: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            '& > a':{
+                textAlign: 'center',
+                marginTop: 8
+            }
         }
     }
 }))
