@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://backend.walletads.io'
+export const BACKEND_URL = 'https://backend-dev.walletads.io'
