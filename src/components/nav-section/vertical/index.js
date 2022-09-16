@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 // @mui
 import { List, Box } from '@mui/material';
 //
-import { ListSubheaderStyle } from './style';
+// import { ListSubheaderStyle } from './style';
 import NavList from './NavList';
 
 // ----------------------------------------------------------------------
@@ -15,8 +15,8 @@ NavSectionVertical.propTypes = {
 export default function NavSectionVertical({ navConfig, isCollapse, ...other }) {
   return (
     <Box {...other}>
-      {navConfig.map((group) => (
-        <List key={group.subheader} disablePadding sx={{ px: 2, paddingTop: 2 }}>
+      {navConfig.map((group, index) => (
+        <List key={index.toString()} disablePadding sx={{ px: 2, paddingTop: 2 }}>
           {/* <ListSubheaderStyle
             disableGutters
             sx={{

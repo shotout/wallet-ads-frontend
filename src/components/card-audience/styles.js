@@ -160,10 +160,10 @@ export default makeStyles((theme) => ({
     ctnEdit: {
         position: 'absolute',
         cursor: 'pointer',
-        right: -12,
+        right: -2,
         width: 20,
         height: 20,
-        top: 30
+        top: 8
     },
     inputPriceWrapper:{
         marginBottom: 6,
@@ -206,5 +206,21 @@ export default makeStyles((theme) => ({
             color: '#808080',
             marginRight: 4
         }
+    },
+    ctnBox:{
+        display: 'flex',
+        alignItems: 'center',
+        padding: '10px 20px',
+        '& > div:first-child':{
+            marginRight: 20
+        }
+    },
+    ctnIcon:{
+        width: 30,
+        height: 30,
+        borderRadius: 30 / 2,
+        background: '#7089FF',
+        padding: 7,
+        cursor: 'pointer'
     }
 }))

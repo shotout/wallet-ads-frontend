@@ -12,6 +12,11 @@ export default function AvatarPicker({ initialPhoto, avatarSource, onRemove = ()
 
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections, } = useDropzone({
       multiple: false,
+      accept: {
+        'image/png': ['.png'],
+        'image/jpeg': ['.jpeg'],
+        'image/jpg': ['.jpg'],
+      },
       ...other,
     });
 
@@ -32,6 +37,7 @@ export default function AvatarPicker({ initialPhoto, avatarSource, onRemove = ()
     function renderImage(){
         return (
             <div className={styles.ctnAvatar} {...getRootProps()}>
+                <input {...getInputProps()} />
                 {renderAvatar()}
             </div>
         )
@@ -41,6 +47,7 @@ export default function AvatarPicker({ initialPhoto, avatarSource, onRemove = ()
         return (
             <div className={styles.ctnOption}>
                 <div {...getRootProps()}>
+                    <input {...getInputProps()} />
                     <img src={editIcon} alt="edit" />
                 </div>
                 {(avatarSource || initialPhoto) && (

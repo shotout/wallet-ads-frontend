@@ -1,10 +1,17 @@
 import { makeStyles } from "@mui/styles";
+import { NAVBAR } from "../../config";
 
 const useStyles = makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
         background: '#fff',
-        paddingBottom: 60
+        paddingBottom: 60,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        [theme.breakpoints.up('xl')]:{
+            paddingRight: NAVBAR.DASHBOARD_COLLAPSE_WIDTH
+        }
     },
     ctnSection: {
         display: 'flex',

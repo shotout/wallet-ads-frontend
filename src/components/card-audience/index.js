@@ -1,8 +1,7 @@
-import { Typography } from '@mui/material';
-import React, { useEffect, useRef } from 'react';
+import { Box, Button, Popover, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
 import Iconify from '../Iconify';
 import useStyles from './styles'
-import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
 import SvgIconStyle from '../SvgIconStyle';
 import CurrencyInput from "react-currency-input-field";
@@ -12,10 +11,20 @@ const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
 const headerCard = '/assets/svg/header_card.svg'
 const editIcon = '/assets/svg/pencil.svg'
+const deleteIcon = '/assets/svg/delete.svg'
 
-export default function CardAudience({ isError, showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
+export default function CardAudience({ isError, showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {}, onRemove }){
     const styles = useStyles()
     const inputEl = useRef(null);
+    const [anchorEl, setAnchorEl] = useState(null)
+  
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
 
     useEffect(() => {
         if(data.selectedCategory){
@@ -27,6 +36,48 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
             }, 100)
         }
     }, [data])
+
+    function renderPopover(){
+        const open = Boolean(anchorEl);
+        const id = open ? 'simple-popover' : undefined;
+      return(
+        <div>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'center',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'center',
+              horizontal: 'left',
+            }}
+          >
+            <div className={styles.ctnBox}>
+                <div
+                    className={styles.ctnIcon}
+                    onClick={() => {
+                        onPressCard()
+                        handleClose()
+                    }}>
+                    <SvgIconStyle src={editIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
+                </div>
+                <div
+                    className={styles.ctnIcon}
+                    onClick={() => {
+                        handleClose()
+                        onRemove()
+                    }}>
+                    <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
+                </div>
+            </div>
+          </Popover>
+        </div>
+      )
+    }
 
     function renderBalancedTargeting(){
         const target = data.balancedTargeting
@@ -265,10 +316,11 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                         </div>
                     )}
                     {data.selectedCategory && (
-                        <div className={styles.ctnEdit} onClick={onPressCard}>
-                            <SvgIconStyle src={editIcon} sx={{ width: 1, height: 1, bgcolor: '#000' }} />
+                        <div className={styles.ctnEdit} onClick={handleClick}>
+                            <Iconify icon={'bi:three-dots-vertical'} color="#000" width={28} height={28} />
                         </div>
                     )}
+                    {renderPopover()}
             </div>
         </div>
     )

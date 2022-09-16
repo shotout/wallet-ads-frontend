@@ -3,7 +3,7 @@ import useStyles from './styles'
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
 import CheckboxAds from '../../components/checkbox';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -23,6 +23,7 @@ import { BACKEND_URL } from '../../helpers/constants';
 import { normalizeCurrency } from '../../helpers/currency';
 import { getFutureDate } from '../../helpers/dateHelper';
 import { routes } from '../../helpers/routes';
+import { makeId } from '../../utils/general';
 
 const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
@@ -86,10 +87,10 @@ export default function AddCampaign({ content, params }) {
   const [showModalSuccess, setModalSuccess] = useState(false)
 
   const [audienceForm, setAudienceForm] = useState([
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-    {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {audienceId: makeId() , optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {audienceId: makeId() , optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {audienceId: makeId() , optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+    {audienceId: makeId() , optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
   ])
   const [errorBox, setErrorBox] = useState({
     errorAudience: false,
@@ -212,10 +213,10 @@ export default function AddCampaign({ content, params }) {
     setLoadingSubmit(null)
   
     setAudienceForm([
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     ])
     setErrorBox({
       errorAudience: false,
@@ -446,10 +447,6 @@ export default function AddCampaign({ content, params }) {
     setHover(event.currentTarget);
     setActivePopover(popoverName)
   };
-  
-  const handleShowModalSuccess = (event) => {
-    setModalSuccess(true);
-  };
    
   const handleHoverClose = () => {
     setHover(null);
@@ -523,10 +520,10 @@ export default function AddCampaign({ content, params }) {
 
   const handleAddAudience = () => {
     const addData = [
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
-      {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
+      {audienceId: makeId(), optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
     ]
     const listData = [...audienceForm]
     setAudienceForm(listData.concat(addData))
@@ -621,7 +618,7 @@ export default function AddCampaign({ content, params }) {
           open={Boolean(hover) && activePopover === type}
           anchorEl={hover}
           anchorOrigin={{
-          vertical: 'left',
+          vertical: 'top',
           horizontal: 'center',
           }}
           transformOrigin={{
@@ -886,7 +883,7 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnRowAudience}>
           <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
-                    <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={index.toString()} id={`card-audience-${index}`}>
+                    <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId} id={`card-audience-${index}`}>
                       <CardAudience
                         isError={errorBox.errorAudience}
                         onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}}
@@ -904,6 +901,20 @@ export default function AddCampaign({ content, params }) {
                           setTimeout(() => {
                             window.location.href = '#create-audience'
                           }, 100)
+                        }}
+                        onRemove={() => {
+                          const fixingData = audienceForm.map(aud => {
+                            if(aud.audienceId === item.audienceId){
+                              return {audienceId: item.audienceId, optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }}
+                            }
+                            return aud
+                          })
+                          const fixingAds = pictureData.map(ads => ({
+                              ...ads,
+                              fe_id: ads.fe_id.filter(adsId => adsId !== index)
+                            }))
+                          setPicture(fixingAds)
+                          setAudienceForm(fixingData)
                         }}
                         selectedAudience={selectedAudience}
                         selectedPage={selectedAudience === index}

@@ -56,8 +56,8 @@ function CollapseDrawerProvider({ children }) {
   return (
     <CollapseDrawerContext.Provider
       value={{
-        isCollapse: collapse.click && !collapse.hover,
-        collapseClick: collapse.click,
+        isCollapse: !collapse.hover,
+        collapseClick: true,
         collapseHover: collapse.hover,
         onToggleCollapse: handleToggleCollapse,
         onHoverEnter: handleHoverEnter,

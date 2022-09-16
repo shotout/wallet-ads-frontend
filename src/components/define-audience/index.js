@@ -145,7 +145,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
             open={Boolean(hover) && activePopover === type}
             anchorEl={hover}
             anchorOrigin={{
-            vertical: 'left',
+            vertical: 'top',
             horizontal: 'center',
             }}
             transformOrigin={{
@@ -285,7 +285,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                     <div className={styles.ctnInputMultipleSelect}>
                         <Select
                             multiple
-                            select
+                            select="true"
                             fullWidth
                             placeholder="Select..."
                             variant="outlined"
