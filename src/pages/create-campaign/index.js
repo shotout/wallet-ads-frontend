@@ -22,6 +22,7 @@ import { useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../helpers/constants';
 import { normalizeCurrency } from '../../helpers/currency';
 import { getFutureDate } from '../../helpers/dateHelper';
+import { routes } from '../../helpers/routes';
 
 const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
@@ -82,7 +83,7 @@ export default function AddCampaign({ content, params }) {
   })
   const [selectedAudience, setSelectedAudience] = useState(null)
   const [loadingSubmit, setLoadingSubmit] = useState(null)
-  const [showModalSuccess, setModalSuccess] = useState(null)
+  const [showModalSuccess, setModalSuccess] = useState(false)
 
   const [audienceForm, setAudienceForm] = useState([
     {optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }},
@@ -874,7 +875,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderCardAudience(){
     return (
-      <div className={styles.cardAudienceWrapper} id="card-audience">
+      <div className={styles.cardAudienceWrapper}>
         <div className={styles.ctnTitle}>
             <div className={styles.rowTitle} />
             <Typography variant="h5" marginTop={2} marginX={2} paragraph>
@@ -885,7 +886,7 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnRowAudience}>
           <Grid container spacing={2}>
                 {audienceForm.map((item, index) => (
-                    <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={index.toString()}>
+                    <Grid item md={4} lg={3} sm={6} xs={12} className={styles.ctnSectionAd} key={index.toString()} id={`card-audience-${index}`}>
                       <CardAudience
                         isError={errorBox.errorAudience}
                         onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}}
@@ -1339,7 +1340,11 @@ export default function AddCampaign({ content, params }) {
         {renderSetupAirdrop()}
         </div>
         {/* <AuthFooter /> */}
-        <SuccessAddCampaign isVisible={showModalSuccess} handleHoverClose={handleResetPage} />
+        <SuccessAddCampaign
+        isVisible={showModalSuccess}
+        handleHoverClose={() => {
+          window.location.href = routes.createCampaign
+        }} />
         <AddPaymentMethod
           callbackSuccess={(modalType) => {
             setModalSuccess(modalType)

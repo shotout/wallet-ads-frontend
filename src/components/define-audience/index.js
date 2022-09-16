@@ -795,6 +795,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 <CardAudienceSummary
                     onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}}
                     isEdit
+                    selectedAudience={selectedAudience}
                     isDisable={!formValues.audienceFile && formValues.selectedCategory === 'upload'}
                     onAdd={handleSubmitAudience}
                     data={formValues}

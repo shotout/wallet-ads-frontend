@@ -9,7 +9,7 @@ const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
 const headerCard = '/assets/svg/header_card.svg'
 
-export default function CardAudienceSummary({ label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {}, isDisable }){
+export default function CardAudienceSummary({ selectedAudience, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {}, isDisable }){
     console.log("Check disable :", isDisable)
     const styles = useStyles()
     const [hover, setHover] = useState(null);
@@ -303,7 +303,7 @@ export default function CardAudienceSummary({ label, selectedPage, isSomeAudienc
                                         onAdd()
                                     }
                                 }}
-                                href={isDisable ? undefined : "#card-audience"}>
+                                href={isDisable ? undefined : `#card-audience-${selectedAudience}`}>
                                 <Typography variant="body1" fontWeight={'bold'} color="#fff" textAlign={'center'}>
                                     Add audience
                                 </Typography>
