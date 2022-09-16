@@ -6,6 +6,7 @@ import _ from 'lodash'
 import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calculator';
 import SvgIconStyle from '../SvgIconStyle';
 import CurrencyInput from "react-currency-input-field";
+import { normalizeCurrency } from 'src/helpers/currency';
 
 const triangleIcon = '/assets/triangle.png'
 const pricetagIcon = '/assets/pricetag_icon.png'
@@ -125,7 +126,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
+                            {`${normalizeCurrency(calculateAirdropPerUser(data))} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops
@@ -156,7 +157,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
+                            {`${normalizeCurrency(calculateAirdropPerUser(data))} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops
@@ -189,7 +190,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                     {!isEdit && (
                         <div className={styles.ctnAmount}>
                             <Typography variant="h6" color={'#7589FA'} textAlign={'center'}>
-                            {`${calculateAirdropPerUser(data).toLocaleString()} users`}
+                            {`${normalizeCurrency(calculateAirdropPerUser(data))} users`}
                             </Typography>
                             <Typography variant="span" textAlign={'center'} paragraph>
                             In this audience will receive airdrops

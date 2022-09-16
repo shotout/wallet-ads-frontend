@@ -20,6 +20,7 @@ import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
 import { useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../helpers/constants';
+import { normalizeCurrency } from 'src/helpers/currency';
 
 const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
@@ -860,7 +861,7 @@ export default function AddCampaign({ content, params }) {
               Total Budget
             </Typography>
             <Typography variant="subtitle1" fontSize={20} color={'#667C8B'} marginBottom={1} paragraph>
-              {`USD${getTotalBudget(audienceForm).toLocaleString()}`}
+              {`USD${normalizeCurrency(getTotalBudget(audienceForm))}`}
             </Typography>
           </div>
           {/* <div className={styles.ctnHorizontalRow} /> */}
@@ -869,7 +870,7 @@ export default function AddCampaign({ content, params }) {
             That's great!
             </Typography>
             <Typography variant="subtitle1" fontSize={20} className={styles.txtUserAirdrop} marginBottom={1} paragraph>
-            <span>{`${getTotalUserGetAirdrop(audienceForm).toLocaleString()} users`}</span> will receive your airdrop
+            <span>{`${normalizeCurrency(getTotalUserGetAirdrop(audienceForm))} users`}</span> will receive your airdrop
             </Typography>
           </div>
         </div>
