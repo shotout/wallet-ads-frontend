@@ -80,7 +80,10 @@ export default makeStyles((theme) => ({
     },
     ctnRightContent: {
         width: '100%',
-        marginRight: 22
+        marginRight: 22,
+        position: 'sticky',
+        top: 0,
+        paddingBottom: '20px'
     },
     ctnPurple: {
         background: '#8C65CC'

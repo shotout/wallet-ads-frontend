@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Iconify from '../Iconify';
 import useStyles from './styles'
 import _ from 'lodash'
@@ -15,6 +15,18 @@ const editIcon = '/assets/svg/pencil.svg'
 
 export default function CardAudience({ isError, showArrow, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {} }){
     const styles = useStyles()
+    const inputEl = useRef(null);
+
+    useEffect(() => {
+        if(data.selectedCategory){
+            setTimeout(() => {
+                if(inputEl.current && inputEl.current.focus){
+                    console.log("Cchange focus label:", label)
+                    inputEl.current.focus()
+                }
+            }, 100)
+        }
+    }, [data])
 
     function renderBalancedTargeting(){
         const target = data.balancedTargeting
@@ -94,6 +106,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                         id="currencyInput"
                         value={data.budgetAds}
                         placeholder=""
+                        ref={inputEl}
                         onChange={onChangeBudget}
                         // onBlur={handleOnBlur}
                         allowDecimals={false}

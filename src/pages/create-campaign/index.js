@@ -192,7 +192,9 @@ export default function AddCampaign({ content, params }) {
     setActivePopover(null)
     setBannerCollection(null)
     setLogoCollection(null)
-    setPicture(initialPicture)
+    setPicture([
+      {image: null, fe_id: [], name: '', description: '' },
+    ])
     setFormValues({
       campaign_name: '',
       campaign_start_date: new Date(getFutureDate(2)),
@@ -534,27 +536,20 @@ export default function AddCampaign({ content, params }) {
     deactivateErrorBoxAds()
     if(isPicture){
       file = acceptedFiles[0]
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const finalData = pictureData.map((pict, index) => {
-          if(index === indexContent){
-            if(isPicture){
-              return {
-                ...pict,
-                [stateName]: {
-                  ...Object.assign(file, {
-                    preview: URL.createObjectURL(file),
-                  }),
-                  // fileBase64:event.target.result
-                }
-              }
+      const finalData = pictureData.map((pict, index) => {
+        if(index === indexContent){
+          if(isPicture){
+            return {
+              ...pict,
+              [stateName]: Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              })
             }
           }
-          return pict
-        })
-        setPicture(finalData)
-      };
-      reader.readAsDataURL(file);
+        }
+        return pict
+      })
+      setPicture(finalData)
     }else{
       const restructureData = pictureData.map((pict, index) => {
         if(index === indexContent){
@@ -601,36 +596,22 @@ export default function AddCampaign({ content, params }) {
   const changeBannerCollection = (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
-      const reader = new FileReader();
       handleResetErrorValue('collectionBanner')
-      reader.onload = (event) => {
-        setBannerCollection({
-          ...Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          }),
-          // fileBase64:event.target.result
-        })
-      };
-      reader.readAsDataURL(file);
+      setBannerCollection(Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }))
     }
   }
 
-  const changeLogoCollection = useCallback((acceptedFiles) => {
+  const changeLogoCollection = (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (file) {
       handleResetErrorValue('collectionLogo')
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setLogoCollection({
-          ...Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          }),
-          // fileBase64:event.target.result
-        })
-      };
-      reader.readAsDataURL(file);
+      setLogoCollection(Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      }))
     }
-  }, []);
+  }
 
   function renderPopover(type, content){
     return(
@@ -713,6 +694,20 @@ export default function AddCampaign({ content, params }) {
         </div>
       )
     }
+    if(item.selectedCategory === 'upload'){
+      return (
+        <div className={styles.ctnAdAudience}>
+          <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={"center"} marginTop={1}>
+              <span>+</span>
+              Your own audience
+          </Typography>
+          <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={"center"}>
+            {item.audienceFile.name}
+          </Typography>
+        </div>
+      )
+    }
+    return null
     
   }
 
@@ -976,6 +971,12 @@ export default function AddCampaign({ content, params }) {
             typeScreen="logo"
             label={"Add media"}
             file={content.image}
+            accept={{
+              'image/png': ['.png'],
+              'image/jpeg': ['.jpeg'],
+              'image/jpg': ['.jpg'],
+              'image/gif': ['.gif'],
+            }}
             onDelete={() => {removePictureAdCreation(index)}}
             onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
             {renderErrorText(errorBox.errorAds && !content.image)}

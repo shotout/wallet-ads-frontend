@@ -792,7 +792,13 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
     function renderRightContent(){
         return (
             <div className={styles.ctnRightContent}>
-                <CardAudienceSummary onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}} isEdit onAdd={handleSubmitAudience} data={formValues} label="Summary" />
+                <CardAudienceSummary
+                    onChangeBudget={event => {onChangeBasicValue('budgetAds',event.target.value)}}
+                    isEdit
+                    isDisable={!formValues.audienceFile && formValues.selectedCategory === 'upload'}
+                    onAdd={handleSubmitAudience}
+                    data={formValues}
+                    label="Summary" />
             </div>
         )
     }

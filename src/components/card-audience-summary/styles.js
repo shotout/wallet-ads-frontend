@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
         marginRight: 20,
         padding: 20,
         borderRadius: 20,
-        marginBottom: 40,
+        // marginBottom: 40,
         paddingTop: 0,
         display: 'flex',
         // justifyContent: 'center',
@@ -179,5 +179,8 @@ export default makeStyles((theme) => ({
         '& > .MuiPaper-root':{
             background: 'rgba(0, 0, 0,0.9)'
         }
+    },
+    disableBtn:{
+        background: '#808080 !important'
     }
 }))

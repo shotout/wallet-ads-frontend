@@ -22,6 +22,9 @@ export const handleUpdateProfile = (data) => axios({
   url: '/user',
   method: 'POST',
   data,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  }
 });
 
 export const handleAddCampaign = (data) => axios({
