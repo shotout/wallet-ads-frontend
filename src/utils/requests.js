@@ -1,5 +1,11 @@
 import axios from './axios';
 
+export const verifyAccount = (token, ctx) => axios({
+  url: `/auth/verify/${token}`,
+  method: 'GET',
+  ctx
+});
+
 export const requestLogin = (data) => axios({
   url: '/auth/login',
   method: 'POST',

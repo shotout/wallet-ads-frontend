@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import { requestLogin } from '../../utils/requests';
+import { requestLogin, verifyAccount } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import Iconify from '../../components/Iconify';
 import Page from "../../components/Page";
@@ -19,7 +19,7 @@ const defaultErrorState = {
     errorValidation: null
 }
 
-export default function Login() {
+export default function Login({ isVerifyValid }) {
     const styles = useStyles()
     const [values, setValues] = useState({
         email: '',
@@ -117,6 +117,28 @@ export default function Login() {
         return null
     }
 
+    function renderGreenBox(){
+        if(isVerifyValid === 'valid'){
+            return (
+                <div className={styles.ctnGreenBox}>
+                    <Typography variant="body1" color="#fff" textAlign={"center"}>
+                        Your account has been activated. You can now login with your email address and your password.
+                    </Typography>
+                </div>
+            )
+        }
+        if(isVerifyValid === 'invalid'){
+            return (
+                <div className={styles.ctnRedBox}>
+                    <Typography variant="body1" color="#fff" textAlign={"center"}>
+                        Token expired.
+                    </Typography>
+                </div>
+            )
+        }
+        return null
+    }
+
     function renderInput() {
         return (
             <div className={styles.ctnInput}>
@@ -126,6 +148,7 @@ export default function Login() {
                     </Typography>
                 </div>
                 {renderRedBox()}
+                {renderGreenBox()}
                 <div className={styles.ctnForm}>
                     <div className={styles.inputWrapper}>
                         <TextField
@@ -181,21 +204,35 @@ export default function Login() {
 }
 
 export async function getServerSideProps(context) {
-    const UA = context.req.headers['user-agent'];
-    const isMobile = Boolean(UA.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    ))
-    nookies.destroy(context, 'authorization', { path: '/' })
-    if(isMobile){
-      return {
-          redirect: {
-              permanent: false,
-              destination: `/forbidden`
-          }
-      }
-    }
-    return {
-      props: {
-      }, // will be passed to the page component as props
+    const { verify } = context.query
+    try{
+        if(verify){
+            await verifyAccount(verify, context)
+        }
+        const UA = context.req.headers['user-agent'];
+        const isMobile = Boolean(UA.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+        ))
+        nookies.destroy(context, 'authorization', { path: '/' })
+        if(isMobile){
+            return {
+                redirect: {
+                    permanent: false,
+                    destination: `/forbidden`
+                }
+            }
+        }
+        return {
+            props: {
+                isVerifyValid: verify ? 'valid' : null
+            }, // will be passed to the page component as props
+        }
+    }catch(err){
+        console.log("Error verify:", err)
+        return {
+            props: {
+                isVerifyValid: verify ? 'invalid' : null
+            }, // will be passed to the page component as props
+        }
     }
 }

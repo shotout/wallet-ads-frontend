@@ -98,5 +98,11 @@ export default makeStyles((theme) => ({
         background: '#AD4061',
         padding: 12,
         borderRadius: 12,
-    }
+    },
+    ctnGreenBox:{
+        marginBottom: 20,
+        background: '#1FCB96',
+        padding: 12,
+        borderRadius: 12,
+    },
 }))
