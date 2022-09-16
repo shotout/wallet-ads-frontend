@@ -100,6 +100,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                         disableAbbreviations
                         fixedDecimalLength={0}
                         groupSeparator=','
+                        decimalSeparator='.'
                         maxLength={5} 
                     />
                 </div>
