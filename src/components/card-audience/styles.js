@@ -47,7 +47,10 @@ export default makeStyles((theme) => ({
         width: '100%',
         height: '100%',
         top: -6,
-        objectFit: 'contain'
+        objectFit: 'contain',
+        [theme.breakpoints.down('xl')]:{
+            width: '74%'
+        }
     },
     ctnDescAudience: {
         marginTop: 20,

@@ -10,7 +10,6 @@ const pricetagIcon = '/assets/pricetag_icon.png'
 const headerCard = '/assets/svg/header_card.svg'
 
 export default function CardAudienceSummary({ selectedAudience, label, selectedPage, isSomeAudienceActive, data = undefined, onPressCard, isEdit, onAdd, onChangeBudget = () => {}, isDisable }){
-    console.log("Check disable :", isDisable)
     const styles = useStyles()
     const [hover, setHover] = useState(null);
 

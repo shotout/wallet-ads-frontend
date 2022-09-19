@@ -1,4 +1,4 @@
-import { Box, Button, Popover, Typography } from '@mui/material';
+import { Popover, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import Iconify from '../Iconify';
 import useStyles from './styles'
@@ -30,7 +30,6 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
         if(data.selectedCategory){
             setTimeout(() => {
                 if(inputEl.current && inputEl.current.focus){
-                    console.log("Cchange focus label:", label)
                     inputEl.current.focus()
                 }
             }, 100)

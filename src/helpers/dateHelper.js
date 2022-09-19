@@ -18,7 +18,6 @@ export const parseTimerHoursFormat = (duration, hideNull) => {
       const hours = Math.floor(Number((duration / 3600)));
       const minutes = (duration % 3600) / 60;
       const second = duration % 60;
-      console.log('Check parse value:', minutes, second);
       if (hideNull) {
         return `${hours < 1 ? '' : hours}${minutes < 1 ? '00' : `${padSecond(Math.floor(minutes))}`}${second === 0 ? ':00' : `:${padSecond(Math.floor(second))}`}`;
       }
@@ -47,9 +46,7 @@ export const reformatDate = (valueDate) => {
   return new Date();
 };
 
-export const convertLocalTimeToUTC = (time) => {
-  return moment.utc(time).format('YYYY-MM-DD HH:mm');
-};
+export const convertLocalTimeToUTC = (time) => moment.utc(time).format('YYYY-MM-DD HH:mm');
 
 export const convertUTCToLocalTime = (utcTime) => {
   const offsetTime = moment().utcOffset();

@@ -8,7 +8,6 @@ const deleteIcon = '/assets/delete_icon.png'
 const editIcon = '/assets/edit_icon.png'
 
 export default function BannerPicker({ label, file,typeScreen, onDelete, ...other }){
-    console.log("CHeck other:", other)
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
     //   maxSize: 1000000,

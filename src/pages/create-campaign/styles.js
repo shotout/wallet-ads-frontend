@@ -514,6 +514,19 @@ const useStyles = makeStyles((theme) => ({
             color: '#E83155',
             fontSize: 14,
         }
+    },
+    ctnDeleteADs:{
+        position: 'absolute',
+        top: 10,
+        right: 20,
+    },
+    ctnIconDeletAds:{
+        width: 30,
+        height: 30,
+        background: '#000',
+        borderRadius: 30 / 2,
+        padding: 6,
+        cursor: 'pointer'
     }
 }))
 

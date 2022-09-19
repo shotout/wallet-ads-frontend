@@ -24,6 +24,7 @@ import { normalizeCurrency } from '../../helpers/currency';
 import { getFutureDate } from '../../helpers/dateHelper';
 import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
+import SvgIconStyle from '../../components/SvgIconStyle';
 
 const questionObj = {
   collection_page_text: "Add a text for your collection page to describe what it is about.",
@@ -56,9 +57,10 @@ const discordIcon = '/assets/discord.png'
 const telegramIcon = '/assets/telegram.png'
 const mediumIcon = '/assets/medium.png'
 const websiteIcon = '/assets/website.png'
+const deleteIcon = '/assets/svg/delete.svg'
 
 const initialPicture = [
-  {image: null, fe_id: [], name: '', description: '' },
+  {image: null, fe_id: [], name: '', description: '', adsId: makeId() },
 ]
 
 export default function AddCampaign({ content, params }) {
@@ -146,7 +148,8 @@ export default function AddCampaign({ content, params }) {
       const adCreation = content.ads.map(item => ({
         ...item,
         fe_id: getAdsId(item.id),
-        image: item.image.url ?  `${BACKEND_URL}${item.image.url}` : null
+        image: item.image.url ?  `${BACKEND_URL}${item.image.url}` : null,
+        adsId: makeId(),
       }))
       const audienceArr = content.audiences.map(item => {
         const targeting = item.detail_target
@@ -195,7 +198,7 @@ export default function AddCampaign({ content, params }) {
     setBannerCollection(null)
     setLogoCollection(null)
     setPicture([
-      {image: null, fe_id: [], name: '', description: '' },
+      {image: null, fe_id: [], name: '', description: '', adsId: makeId() },
     ])
     setFormValues({
       campaign_name: '',
@@ -267,7 +270,6 @@ export default function AddCampaign({ content, params }) {
     })
     return campaignData
   }
-  console.log("CHECK FUTURE DATE:", getFutureDate(2))
 
   const handleSubmit = async() => {
     try{
@@ -303,7 +305,7 @@ export default function AddCampaign({ content, params }) {
       })
       
       campaignData.forEach((campaign, indexCampaign) => {
-        if(campaign.fe_id) formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id)
+        if(campaign.fe_id || campaign.fe_id === 0) formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id)
         if(campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id)
         if(campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file)
         if(campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price)
@@ -509,7 +511,8 @@ export default function AddCampaign({ content, params }) {
       if(index === selectedAudience){
         return {
           ...value,
-          budgetAds: item.budgetAds === '' ? '1000' : item.budgetAds
+          budgetAds: item.budgetAds === '' ? '1000' : item.budgetAds,
+          audienceFile: value.selectedCategory !== 'upload' && value.audienceFile  ? null : value.audienceFile
         }
       }
       return item
@@ -1210,7 +1213,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderCardAdCreation(content, index){
     return (
-      <div className={`${styles.inputCollectionCard} ${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''}`} key={index.toString()}>
+      <div className={`${styles.inputCollectionCard} ${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''}`} key={content.adsId}>
         <div className={styles.ctnInputCollectionPageWrapper}>
           {renderLeftAdCreation(content, index)}
           {renderRightAdCreation(content, index)}
@@ -1255,6 +1258,13 @@ export default function AddCampaign({ content, params }) {
           </Grid>
           {renderErrorText(errorBox.errorAds && content.fe_id.length === 0)}
         </div>
+        {pictureData.length > 1 && (
+          <div className={styles.ctnDeleteADs}>
+            <div className={styles.ctnIconDeletAds} onClick={() => { setPicture(pictureData.filter(ads => ads.adsId !== content.adsId))}}>
+              <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
+            </div>
+          </div>
+        )}
       </div>
     )
   }
@@ -1280,7 +1290,7 @@ export default function AddCampaign({ content, params }) {
       return (
         <div className={styles.btnCreateAd} onClick={() => {
           const currentArr = [...pictureData]
-          currentArr.push({image: null, fe_id: [], name: '', description: '' })
+          currentArr.push({image: null, fe_id: [], name: '', description: '', adsId: makeId() })
           setPicture(currentArr)
         }}>
           <img src={addIcon} alt="addIcon" />
