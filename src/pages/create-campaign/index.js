@@ -983,19 +983,20 @@ export default function AddCampaign({ content, params }) {
             typeScreen="logo"
             label={"Add media"}
             file={content.image}
-            accept={{
-              'image/png': ['.png'],
-              'image/jpeg': ['.jpeg'],
-              'image/jpg': ['.jpg'],
-              'image/gif': ['.gif'],
-              'image/svg+xml': ['.svg'],
-              'video/mp4': ['.mp4', '.MP4'],
-              'video/webm': ['.webm'],
-              'audio/mpeg': ['.mp3'],
-              'audio/mp4': ['.mp4'],
-              'audio/ogg': ['.oga'],
-              'video/ogg': ['.ogv']
-            }}
+            acceptAllFile={true}
+            // accept={{
+            //   'image/png': ['.png'],
+            //   'image/jpeg': ['.jpeg'],
+            //   'image/jpg': ['.jpg'],
+            //   'image/gif': ['.gif'],
+            //   'image/svg+xml': ['.svg'],
+            //   'video/mp4': ['.mp4', '.MP4'],
+            //   'video/webm': ['.webm'],
+            //   'audio/mpeg': ['.mp3'],
+            //   'audio/mp4': ['.mp4'],
+            //   'audio/ogg': ['.oga'],
+            //   'video/ogg': ['.ogv']
+            // }}
             onDelete={() => {removePictureAdCreation(index)}}
             onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
             {renderErrorText(errorBox.errorAds && !content.image)}

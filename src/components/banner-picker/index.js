@@ -7,11 +7,11 @@ const whiteCameraIcon = '/assets/camera_icon.png'
 const deleteIcon = '/assets/delete_icon.png'
 const editIcon = '/assets/edit_icon.png'
 
-export default function BannerPicker({ label, file,typeScreen, onDelete, ...other }){
+export default function BannerPicker({ label, file,typeScreen, onDelete, acceptAllFile, ...other }){
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
     //   maxSize: 1000000,
-      accept: {
+      accept: acceptAllFile ? {} : {
         'image/png': ['.png'],
         'image/jpeg': ['.jpeg'],
         'image/jpg': ['.jpg'],
