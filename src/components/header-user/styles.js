@@ -11,7 +11,7 @@ export default makeStyles((theme) => ({
         marginBottom: 20,
         marginLeft: 20,
         marginRight: 20,
-        '& > img':{
+        '& > #app-icon':{
             width: 220,
             height: 50,
             objectFit: 'contain'

@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { routes } from '../../helpers/routes';
 import AuthFooter from '../../components/auth-footer';
 
-const appIcon = '/assets/wallet_ads_logo.png'
+const appIcon = '/assets/svg/wallet_logo.svg'
 const emailBanner = '/assets/email_banner.png'
 
 

@@ -298,7 +298,7 @@ export default function AddCampaign({ content, params }) {
         if(ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description)
         if(ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
-            formRes.append(`campaign_ads[${adsIndex}][fe_id][${feIndex}]`, feId)
+            formRes.append(`campaign_ads[${adsIndex}][fe_id][${feIndex}]`, audienceForm.findIndex(aud => aud.audienceId === feId))
           })
         }
         if(ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image)
@@ -892,7 +892,8 @@ export default function AddCampaign({ content, params }) {
                         onChangeBudget={(event) => {handleChangeBudget(event, 'budgetAds', index)}}
                         showArrow={audienceForm.length > 4 ? selectedAudience === index && selectedAudience > 3 : selectedAudience === index}
                         isSomeAudienceActive={selectedAudience !== null}
-                        key={index.toString()} data={item}
+                        key={index.toString()}
+                        data={item}
                         onPressCard={() => { 
                           if(errorBox.errorAudience){
                             setErrorBox({
@@ -906,15 +907,11 @@ export default function AddCampaign({ content, params }) {
                           }, 100)
                         }}
                         onRemove={() => {
-                          const fixingData = audienceForm.map(aud => {
-                            if(aud.audienceId === item.audienceId){
-                              return {audienceId: item.audienceId, optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }}
-                            }
-                            return aud
-                          })
+                          const fixingData = audienceForm.filter(aud => aud.audienceId !== item.audienceId)
+                          fixingData.push({audienceId: makeId() , optimized: false, selectedCategory: null, budgetAds: '', detailTargeting: {amountDays: ''}, balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null }})
                           const fixingAds = pictureData.map(ads => ({
                               ...ads,
-                              fe_id: ads.fe_id.filter(adsId => adsId !== index)
+                              fe_id: ads.fe_id.filter(adsId => adsId !== item.audienceId)
                             }))
                           setPicture(fixingAds)
                           setAudienceForm(fixingData)
@@ -986,12 +983,20 @@ export default function AddCampaign({ content, params }) {
             typeScreen="logo"
             label={"Add media"}
             file={content.image}
-            accept={{
-              'image/png': ['.png'],
-              'image/jpeg': ['.jpeg'],
-              'image/jpg': ['.jpg'],
-              'image/gif': ['.gif'],
-            }}
+            acceptAllFile={true}
+            // accept={{
+            //   'image/png': ['.png'],
+            //   'image/jpeg': ['.jpeg'],
+            //   'image/jpg': ['.jpg'],
+            //   'image/gif': ['.gif'],
+            //   'image/svg+xml': ['.svg'],
+            //   'video/mp4': ['.mp4', '.MP4'],
+            //   'video/webm': ['.webm'],
+            //   'audio/mpeg': ['.mp3'],
+            //   'audio/mp4': ['.mp4'],
+            //   'audio/ogg': ['.oga'],
+            //   'video/ogg': ['.ogv']
+            // }}
             onDelete={() => {removePictureAdCreation(index)}}
             onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
             {renderErrorText(errorBox.errorAds && !content.image)}
@@ -1231,15 +1236,15 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
               {audienceForm.map((item, audienceIndex) => {
-                const isActive = content.fe_id.includes(audienceIndex)
-                const isEditable = isActive && checkIsAudienceAdsSelected(audienceIndex)
+                const isActive = content.fe_id.includes(item.audienceId)
+                const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId)
                 return (
-                  <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={audienceIndex.toString()}>
+                  <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
                     <div className={styles.ctnAudienceWrapper}>
-                      <div className={`${styles.ctnAudienceItem} ${(item.optimized === false || checkIsAudienceAdsSelected(audienceIndex)) ? styles.ctnDisable : {}}`} onClick={() => {
-                        if(item.optimized && isEditable || (!isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))){
+                      <div className={`${styles.ctnAudienceItem} ${(item.optimized === false || checkIsAudienceAdsSelected(item.audienceId)) ? styles.ctnDisable : {}}`} onClick={() => {
+                        if(item.optimized && isEditable || (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))){
                           deactivateErrorBoxAds()
-                          handleChangePicture(audienceIndex, 'fe_id', index)
+                          handleChangePicture(item.audienceId, 'fe_id', index)
                         }
                       }}>
                         <CheckboxAds
@@ -1249,7 +1254,7 @@ export default function AddCampaign({ content, params }) {
                           {`Audience ${audienceIndex + 1}`}
                         </Typography>
                       </div>
-                      {renderErrorText(errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(audienceIndex))}
+                      {renderErrorText(errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))}
                       {renderAdAudience(item)}
                     </div>
                 </Grid>
