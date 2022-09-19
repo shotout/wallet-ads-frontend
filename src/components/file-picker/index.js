@@ -10,6 +10,13 @@ const fileIcon = '/assets/file_red.png'
 export default function FilePicker({ label, file,typeScreen, onDelete, btnStyle='', ...other }){
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
+      accept: {
+        'text/csv': ['.csv'],
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+        'file/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
+        'application/vnd.ms-excel': ['.xls'],
+        'file/vnd.ms-excel': ['.xls'],
+      },
       ...other,
     });
     const styles = useStyles()

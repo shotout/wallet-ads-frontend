@@ -4,7 +4,7 @@ import { getUserData, handleLogout } from '../../helpers/auth'
 import SvgIconStyle from '../SvgIconStyle'
 import useStyles from './styles'
 
-const appIcon = '/assets/wallet_ads_logo.png'
+const appIcon = '/assets/svg/wallet_logo.svg'
 const avatarDummy = '/assets/avatar_dummy.png'
 const logoutIcon = '/assets/svg/logout.svg'
 
@@ -13,7 +13,7 @@ export default function HeaderUser({ label, ctnBtnStyle = '' }){
     const userData = getUserData()
     return (
         <div className={styles.ctnHeaderWrapper}>
-          <img src={appIcon} alt="app-icon" />
+          <img id="app-icon" src={appIcon} alt="app-icons" />
           <div className={styles.rightHeader}>
             <div className={styles.ctnLogout} onClick={handleLogout}>
               <Typography variant="span" fontWeight={'bold'} fontSize={14}>

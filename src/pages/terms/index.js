@@ -5,7 +5,7 @@ import AuthFooter from '../../components/auth-footer';
 import Page from '../../components/Page';
 import useStyles from './styles';
 
-const appIcon = '/assets/wallet_ads_logo.png'
+const appIcon = '/assets/svg/wallet_logo.svg'
 
 export default function Privacy(){
     const styles = useStyles()

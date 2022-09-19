@@ -10,8 +10,10 @@ import Page from "../../components/Page";
 import useStyles from "./styles";
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
-const appIcon = '/assets/wallet_ads_logo.png'
 import nookies from 'nookies'
+
+
+const appIcon = '/assets/svg/wallet_logo.svg'
 
 const defaultErrorState = {
     email: null,
