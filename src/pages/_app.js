@@ -35,8 +35,7 @@ import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 
 
-const stripePromise = loadStripe('pk_live_51LcRhPDKJFuPZhC4e8vwI5EGotJV9L07hZA5D3qqOmJjSDWK1PRv447YubnDP2Rt3Hm6rUhmEPfMaoFR9zcN5ajY00OcQS3hZj');
-// const stripePromise = loadStripe('pk_test_51LcRhPDKJFuPZhC477dIkviGDuKDS9vYyxGqH5RGH11LdnU9O1hl83bINQUOTxM9PjSfCA0jjiasDroLtyN4mEdo00LaTnnleG');
+const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 // ----------------------------------------------------------------------
 

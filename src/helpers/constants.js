@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'https://backend-dev.walletads.io'
+export const BACKEND_URL = process.env.BACKEND_URL
