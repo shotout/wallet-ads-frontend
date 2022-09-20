@@ -941,6 +941,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderLeftAdCreation(content, index){
+    console.log("Check content.image:", content.image)
     return (
       <div className={styles.ctnLeftCollection}>
         <div className={styles.ctnInputCollection}>
@@ -997,9 +998,22 @@ export default function AddCampaign({ content, params }) {
             //   'audio/ogg': ['.oga'],
             //   'video/ogg': ['.ogv']
             // }}
+            maxFileSize={50 * 1000000}
+            callbackError={() => {
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: 'The file exceeds the maximum filesize of 50 MB.'
+              })
+            }}
             onDelete={() => {removePictureAdCreation(index)}}
-            onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
-            {renderErrorText(errorBox.errorAds && !content.image)}
+            onDrop={(value) => {
+              handleChangePicture(value, 'image', index, true)
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: null
+              })
+            }} />
+            {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
         </div>
       </div>
     )

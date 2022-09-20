@@ -31,10 +31,10 @@ import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 
 import MuiCoreTheme from '../theme/MuiCoreTheme';
 
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
-
+import Popup from '../components/Popup';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 // ----------------------------------------------------------------------
@@ -58,7 +58,6 @@ function MyApp(props) {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
-
       </Head>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -71,9 +70,7 @@ function MyApp(props) {
                       <RtlLayout>
                         <ProgressBar />
 
-                        <Elements stripe={stripePromise}>
-                          {getLayout(<Component {...pageProps} />)}
-                        </Elements>
+                        <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>
@@ -83,10 +80,10 @@ function MyApp(props) {
           </CollapseDrawerProvider>
         </PersistGate>
       </ReduxProvider>
+      {/* <Popup /> */}
     </>
   );
 }
-
 
 // ----------------------------------------------------------------------
 
@@ -103,4 +100,4 @@ MyApp.getInitialProps = async (context) => {
   };
 };
 
-export default MyApp
+export default MyApp;

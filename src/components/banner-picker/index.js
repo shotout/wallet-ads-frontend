@@ -6,8 +6,26 @@ import { useDropzone } from 'react-dropzone';
 const whiteCameraIcon = '/assets/camera_icon.png'
 const deleteIcon = '/assets/delete_icon.png'
 const editIcon = '/assets/edit_icon.png'
+const fileIcon = '/assets/file_red.png'
 
-export default function BannerPicker({ label, file,typeScreen, onDelete, acceptAllFile, ...other }){
+export default function BannerPicker({ label, file,typeScreen, callbackError, onDelete, acceptAllFile, ...other }){
+
+    const handleReject = (params) =>{
+        if(typeof other.onDrop === 'function') {
+            if(other.maxFileSize){
+                if(params[0].size < other.maxFileSize){
+                    other.onDrop(params)
+                }else{
+                    if(typeof callbackError === 'function') {
+                        callbackError()
+                    }
+                }
+            }else{
+                other.onDrop(params)
+            }
+        }
+    }
+
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
     //   maxSize: 1000000,
@@ -17,23 +35,54 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, acceptA
         'image/jpg': ['.jpg'],
       },
       ...other,
+      onDrop: handleReject,
     });
     const styles = useStyles()
+
+    function isImage(){
+        if(file.name){
+            const fileName = file.name
+            if(fileName.includes("jpg") || fileName.includes("png") || fileName.includes("jpeg") || fileName.includes("gif")){
+                return true
+            }
+        }
+        return false
+    }
+
+    function renderLeftContent(){
+        if(isImage()){
+            return (
+                <div className={styles.leftRow}>
+                    <img className={styles.logoImg} src={file === null ? null : typeof file === 'string' ? file : file.preview || null} alt="logo" />
+                    <div className={styles.ctnDesc}>
+                    {file.name && (
+                        <Typography variant="body1">
+                            Logo
+                        </Typography>
+                    )}
+                    </div>
+                </div>
+            )
+        }
+        return (
+            <div className={styles.leftRow}>
+                <img className={styles.logoFile} src={fileIcon} alt="logo" />
+                <div className={styles.ctnDesc}>
+                {file.name && (
+                    <Typography variant="body1">
+                        {file.name}
+                    </Typography>
+                )}
+                </div>
+            </div>
+        )
+    }
 
     function renderContent(){
         if(file && typeScreen === 'logo'){
             return (
                 <div className={styles.ctnRowLogo}>
-                    <div className={styles.leftRow}>
-                        <img className={styles.logoImg} src={file === null ? null : typeof file === 'string' ? file : file.preview || null} alt="logo" />
-                        <div className={styles.ctnDesc}>
-                        {file.name && (
-                            <Typography variant="body1">
-                                Logo
-                            </Typography>
-                        )}
-                        </div>
-                    </div>
+                    {renderLeftContent()}
                     <div className={styles.ctnLogoRight}>
                         <div className={styles.ctnIcon} {...getRootProps()}>
                             <input {...getInputProps()} />

@@ -184,7 +184,7 @@ export default makeStyles((theme) => ({
         justifyContent: 'flex-end',
         // alignItems: 'flex-end',
         display: 'flex',
-        marginBottom: 10
+        marginBottom: 6
     },
     txtCurrency:{
         textOverflow: 'ellipsis',
