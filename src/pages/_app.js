@@ -80,7 +80,7 @@ function MyApp(props) {
           </CollapseDrawerProvider>
         </PersistGate>
       </ReduxProvider>
-      <Popup />
+      {/* <Popup /> */}
     </>
   );
 }
