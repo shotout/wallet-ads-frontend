@@ -75,7 +75,13 @@ const useStyles = makeStyles((theme) => ({
     ctnLogoRight:{
         display: 'flex',
         alignItems: 'center'
-    }
+    },
+    logoFile: {
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        marginRight: 12
+    },
 }))
 
 export default useStyles
