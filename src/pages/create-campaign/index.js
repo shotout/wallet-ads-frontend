@@ -13,7 +13,7 @@ import { calculateAirdropPerUser, checkIsFormMax, getAudiencePrice, getTotalBudg
 import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
-import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign, getProfilUser } from '../../utils/requests';
+import { createSession, handleAddCampaign, getCampaignDetail, handleEditCampaign, getProfilUser, getCampaignItem } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import SuccessAddCampaign from '../../components/success-add-campaign';
@@ -155,6 +155,7 @@ export default function AddCampaign({ content, params }) {
         const targeting = item.detail_target
         return {
           id: item.id,
+          audienceId: makeId(),
           optimized: parsePriceToCategory(item.price_airdrop) !== null,
           selectedCategory: parsePriceToCategory(item.price_airdrop),
           budgetAds: (item.price || '').toString(),
@@ -940,8 +941,8 @@ export default function AddCampaign({ content, params }) {
     )
   }
 
+  console.log("Check content.image:", content)
   function renderLeftAdCreation(content, index){
-    console.log("Check content.image:", content.image)
     return (
       <div className={styles.ctnLeftCollection}>
         <div className={styles.ctnInputCollection}>
