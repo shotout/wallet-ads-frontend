@@ -201,7 +201,9 @@ const Popup = () => {
                               background: 'white',
                               position: 'center',
                             }}
-                          ></Button>
+                          >
+                            exit
+                          </Button>
                           <Button
                             variant="contained"
                             color="secondary"
