@@ -1013,7 +1013,7 @@ export default function AddCampaign({ content, params }) {
                 errorFileSize: null
               })
             }} />
-            {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize === 'error-file-size' ? 'Max size: 50 MB' : null)}
+            {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
         </div>
       </div>
     )
