@@ -998,9 +998,22 @@ export default function AddCampaign({ content, params }) {
             //   'audio/ogg': ['.oga'],
             //   'video/ogg': ['.ogv']
             // }}
+            maxFileSize={50 * 1000000}
+            callbackError={() => {
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: 'error-file-size'
+              })
+            }}
             onDelete={() => {removePictureAdCreation(index)}}
-            onDrop={(value) => {handleChangePicture(value, 'image', index, true)}} />
-            {renderErrorText(errorBox.errorAds && !content.image)}
+            onDrop={(value) => {
+              handleChangePicture(value, 'image', index, true)
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: null
+              })
+            }} />
+            {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize === 'error-file-size' ? 'Max size: 50 MB' : null)}
         </div>
       </div>
     )

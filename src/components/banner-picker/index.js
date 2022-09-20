@@ -8,7 +8,24 @@ const deleteIcon = '/assets/delete_icon.png'
 const editIcon = '/assets/edit_icon.png'
 const fileIcon = '/assets/file_red.png'
 
-export default function BannerPicker({ label, file,typeScreen, onDelete, acceptAllFile, ...other }){
+export default function BannerPicker({ label, file,typeScreen, callbackError, onDelete, acceptAllFile, ...other }){
+
+    const handleReject = (params) =>{
+        if(typeof other.onDrop === 'function') {
+            if(other.maxFileSize){
+                if(params[0].size < other.maxFileSize){
+                    other.onDrop(params)
+                }else{
+                    if(typeof callbackError === 'function') {
+                        callbackError()
+                    }
+                }
+            }else{
+                other.onDrop(params)
+            }
+        }
+    }
+
     const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
       multiple: false,
     //   maxSize: 1000000,
@@ -18,6 +35,7 @@ export default function BannerPicker({ label, file,typeScreen, onDelete, acceptA
         'image/jpg': ['.jpg'],
       },
       ...other,
+      onDrop: handleReject,
     });
     const styles = useStyles()
 

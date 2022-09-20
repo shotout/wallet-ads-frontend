@@ -239,7 +239,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                         Your own audience:
                         </Typography>
                         {data.audienceFile && (
-                            <Typography variant="span" textAlign={'center'} marginBottom={0.2}>
+                            <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
                             {`${data.audienceFile.name}`}
                         </Typography>
                         )}
