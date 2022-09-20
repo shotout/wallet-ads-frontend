@@ -1002,7 +1002,7 @@ export default function AddCampaign({ content, params }) {
             callbackError={() => {
               setErrorBox({
                 ...errorBox,
-                errorFileSize: 'error-file-size'
+                errorFileSize: 'The file exceeds the maximum filesize of 50 MB.'
               })
             }}
             onDelete={() => {removePictureAdCreation(index)}}
