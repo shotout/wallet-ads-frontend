@@ -207,7 +207,7 @@ export default function CardAudience({ isError, showArrow, label, selectedPage, 
                             <b>+</b>
                         Optimized Targeting:
                         </Typography>
-                        <Typography variant="span" textAlign={'center'} paragraph>
+                        <Typography variant="span" textAlign={'center'}>
                         The audience consists of a broad mix of users, optimized by our algorithm.
                         </Typography>
                     </div>
