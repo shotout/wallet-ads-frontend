@@ -71,6 +71,7 @@ function MyApp(props) {
                         <ProgressBar />
 
                         <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
+                        <Popup />
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>
@@ -80,7 +81,6 @@ function MyApp(props) {
           </CollapseDrawerProvider>
         </PersistGate>
       </ReduxProvider>
-      {/* <Popup /> */}
     </>
   );
 }
