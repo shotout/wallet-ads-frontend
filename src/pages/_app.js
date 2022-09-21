@@ -34,7 +34,10 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-import Popup from '../components/Popup';
+
+import { CookiesProvider } from 'react-cookie';
+
+import ModalCookie from '../components/modal-cookie';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 // ----------------------------------------------------------------------
@@ -68,10 +71,11 @@ function MyApp(props) {
                   <MotionLazyContainer>
                     <ThemeColorPresets>
                       <RtlLayout>
-                        <ProgressBar />
-
-                        <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
-                        <Popup />
+                        <CookiesProvider>
+                          <ProgressBar />
+                          <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
+                          <ModalCookie />
+                        </CookiesProvider>
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>

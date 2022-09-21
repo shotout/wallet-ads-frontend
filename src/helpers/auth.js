@@ -1,5 +1,13 @@
 import nookies, { parseCookies, setCookie, destroyCookie } from "nookies";
 
+export const setConsentCookie = (consentObj) => {
+    const options = {
+      maxAge: 200 * 24 * 60 * 60,
+      path: '/',
+    };
+    setCookie(null, 'siteSetting', JSON.stringify(consentObj), options);
+};
+
 export const setAuthorizationCookie = (authorizationObj) => {
     const options = {
       maxAge: 200 * 24 * 60 * 60,
