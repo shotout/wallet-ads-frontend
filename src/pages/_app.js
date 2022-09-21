@@ -35,8 +35,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
 
-import { CookiesProvider } from 'react-cookie';
-
 import ModalCookie from '../components/modal-cookie';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
@@ -71,11 +69,9 @@ function MyApp(props) {
                   <MotionLazyContainer>
                     <ThemeColorPresets>
                       <RtlLayout>
-                        <CookiesProvider>
                           <ProgressBar />
                           <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
                           <ModalCookie />
-                        </CookiesProvider>
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>
