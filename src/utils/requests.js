@@ -80,3 +80,9 @@ export const payCyrptoCurrency = (data) => axios({
   method: 'POST',
   data,
 });
+
+export const getInvoicesList = (ctx = null) => axios({
+  url: `/invoices`,
+  method: 'GET',
+  ctx
+});

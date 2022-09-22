@@ -6,6 +6,12 @@ import useStyles from './styles'
 import { Fragment } from 'react';
 import Layout from '../../layouts';
 import { getUserData } from '../../helpers/auth';
+import { getInvoicesList } from '../../utils/requests';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import { BACKEND_URL } from '../../helpers/constants';
+import { reformatCurrency } from '../../helpers/currency';
+import moment from 'moment';
 
 const downloadIcon = '/assets/svg/download.svg'
 
@@ -13,7 +19,7 @@ Invoice.getLayout = function getLayout(page) {
     return <Layout>{page}</Layout>;
 };
 
-export default function Invoice(){
+export default function Invoice({ content }){
     const styles = useStyles()
 
     function renderTitle(){
@@ -59,8 +65,7 @@ export default function Invoice(){
     }
 
     function renderListItem(){
-        const isNoData = true
-        if(isNoData){
+        if(content.length === 0){
             return (
                 <div className={styles.ctnItem}>
                     <Typography variant='h4' color="#B3B3B3" marginY={4} textAlign={"center"}>
@@ -72,38 +77,42 @@ export default function Invoice(){
         return (
             <div className={styles.ctnItem}>
                 <Grid container spacing={4}>
-                    {['Unpaid', 'Paid'].map(item => (
-                        <Fragment key={item}>
+                    {content.map(item => (
+                        <Fragment key={item.id.toString()}>
                             <Grid item md={2.4} sm={12}>
                                 <Typography variant="body1">
-                                    10.08.202222
+                                    {moment(item.invoice_date).format('YYYY.MM.DD')}
                                 </Typography>
                             </Grid>
                             <Grid item md={2.4} sm={12}>
                                 <Typography variant="body1">
-                                    Invoice X55A
+                                    {item.invoice_number}
                                 </Typography>
                             </Grid>
                             <Grid item md={2.4} sm={12}>
                                 <Typography variant="body1">
-                                    Credit Card
+                                {item.payment_method}
                                 </Typography>
                             </Grid>
                             <Grid item md={2.4} sm={12}>
                                 <Typography variant="body1">
-                                    USD500
+                                    {`USD${reformatCurrency(item.amount)}`}
                                 </Typography>
                             </Grid>
                             <Grid item md={2.4} sm={12}>
                                 <div className={styles.ctnStatusItem}>
                                     <div className={styles.leftStatusItem}>
-                                        <div className={`${styles.ctnStatusDot} ${item === 'Paid' ? styles.greenBg : {}}`} />
+                                        <div className={`${styles.ctnStatusDot} ${item.payment_status === 1 ? styles.greenBg : {}}`} />
                                         <Typography variant="body1">
-                                            {item}
+                                            {item.payment_status ? 'Paid' : 'Unpaid'}
                                         </Typography>
                                     </div>
                                     <div className={styles.ctnDownload}>
-                                        <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: '#7589FA' }} />
+                                        <Link href={`${BACKEND_URL}${item.invoice_url}`}>
+                                            <a target={"_blank"}>
+                                                <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: item.payment_status ? '#71CE62' : '#E83155' }} />
+                                            </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </Grid>
@@ -140,6 +149,14 @@ export default function Invoice(){
 }
 
 
+Invoice.propTypes = {
+    content: PropTypes.array,
+};
+
+Invoice.defaultProps = {
+    content: [],
+};
+
 export async function getServerSideProps(context) {
     const userData = getUserData(context)
     const UA = context.req.headers['user-agent'];
@@ -154,6 +171,9 @@ export async function getServerSideProps(context) {
           }
       }
     }
+
+    const res = await getInvoicesList(context)
+    console.log("Check invoices:", res)
     if(!userData){
         return {
             redirect: {
@@ -164,7 +184,8 @@ export async function getServerSideProps(context) {
     }
     return {
       props: {
-        userData
+        userData,
+        content: res.data || []
       }, // will be passed to the page component as props
     }
 }

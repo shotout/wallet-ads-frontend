@@ -941,7 +941,6 @@ export default function AddCampaign({ content, params }) {
     )
   }
 
-  console.log("Check content.image:", content)
   function renderLeftAdCreation(content, index){
     return (
       <div className={styles.ctnLeftCollection}>
