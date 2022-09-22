@@ -8,6 +8,19 @@ export const setConsentCookie = (consentObj) => {
     setCookie(null, 'siteSetting', JSON.stringify(consentObj), options);
 };
 
+export const getConsentCookie = (ctx) => {
+  let siteCookie = null;
+  if (ctx) {
+    siteCookie = nookies.get(ctx).siteSetting;
+  } else {
+    siteCookie = parseCookies({}).siteSetting;
+  }
+  if(siteCookie){
+    return JSON.parse(siteCookie);
+  }
+  return null
+};
+
 export const setAuthorizationCookie = (authorizationObj) => {
     const options = {
       maxAge: 200 * 24 * 60 * 60,

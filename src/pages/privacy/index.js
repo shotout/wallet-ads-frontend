@@ -1,18 +1,22 @@
 import { Typography } from '@mui/material';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AuthFooter from '../../components/auth-footer';
 import Page from '../../components/Page';
 import useStyles from './styles';
 
 const appIcon = '/assets/svg/wallet_logo.svg'
 
-export default function Privacy(){
+export default function Privacy({ initLang }){
     const styles = useStyles()
     const [language, setLanguage] = useState('en')
 
+    useEffect(() => {
+        setLanguage(initLang)
+    }, [])
+
     function renderContent(){
-        if(language === 'ge'){
+        if(language === 'de'){
             return (
                 <div className={styles.ctnDesc}>
                     <Typography variant='h4' fontWeight={"800"} marginBottom={2}>Datenschutz</Typography>
@@ -350,7 +354,7 @@ export default function Privacy(){
         return (
             <div className={styles.ctnHeader}>
                 <div className={styles.ctnLeft}>
-                    <Typography onClick={() => {setLanguage('ge')}} variant='h6' color="#7589FA" fontWeight={"800"}>DEUTSCHE VERSION</Typography>
+                    <Typography onClick={() => {setLanguage('de')}} variant='h6' color="#7589FA" fontWeight={"800"}>DEUTSCHE VERSION</Typography>
                     <Typography onClick={() => {setLanguage('en')}} variant='h6' color="#7589FA" fontWeight={"800"}>ENGLISH VERSION</Typography>
                 </div>
                 <div className={styles.ctnRight}>
@@ -375,4 +379,16 @@ export default function Privacy(){
             </div>
         </Page>
     )
+}
+
+export async function getServerSideProps(context) {
+    let initLang = 'en'
+    if(context.query.init_lang){
+        initLang = context.query.init_lang
+    }
+    return {
+        props: {
+            initLang
+        }
+    }
 }

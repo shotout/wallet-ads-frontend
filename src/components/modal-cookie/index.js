@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../i18n';
 import i18next from 'i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStyles from './PopupStyle';
 import { Switch, Grid, Popover } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -11,23 +11,37 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { routes } from '../../helpers/routes';
-import { setConsentCookie } from '../../helpers/auth';
+import { getConsentCookie, setConsentCookie } from '../../helpers/auth';
+import _ from 'lodash'
 
-const Popup = () => {
+const ModalCookie = ({ countryId }) => {
   const styles = useStyles();
   const [values, setFormValues] = useState({
     essentialCookie: true,
     marketingCookie: true,
     functionalCookie: true,
     analyticCookie: true,
+    acceptCookie: null
   })
   const [showPopover, setShowPopover] = useState(false)
 
+  useEffect(() => {
+    const initialCookie = getConsentCookie()
+    if(!_.isEmpty(initialCookie)){
+      setFormValues(initialCookie)
+    }
+    if(countryId === 'de'){
+      i18n.changeLanguage('de')
+    }
+  }, [])
+
   const handleSubmit = (status) => {
-    setConsentCookie({
+    const objCookie = {
       ...values,
       acceptCookie: status
-    })
+    }
+    setConsentCookie(objCookie)
+    setFormValues(objCookie)
   }
 
   const handleChange = (prop) => (event) => {
@@ -136,7 +150,7 @@ const Popup = () => {
                       background: 'black',
                       position: 'center',
                     }}
-                    onClick={() => setShowPopover(false)}
+                    onClick={() => {handleSubmit('accept')}}
                   >
                     {i18next.t('SaveChanges')}
                   </Button>
@@ -148,7 +162,7 @@ const Popup = () => {
 
   return (
     <div>
-      <I18nextProvider i18n={i18n}>
+      <I18nextProvider i18n={i18n} defaultNS={countryId}>
         <CookieConsent
           location="bottom"
           buttonText={i18next.t('Accept')}
@@ -157,7 +171,7 @@ const Popup = () => {
           cookieValue={true}
           hideOnAccept
           declineCookieValue={false}
-          style={{ background: 'black' }}
+          style={{ background: 'black', alignItems: 'center' }}
           contentStyle={{ height: '100%' }}
           onAccept={() => {handleSubmit('accept')}}
           onDecline={() => {handleSubmit('decline')}}
@@ -168,18 +182,17 @@ const Popup = () => {
             fontWeight: '600',
             // fontFamily: 'Muli !important',
             fontFamily: 'Muli',
-            height: 28
+            height: 28,
           }}
           declineButtonStyle={{ color: 'white', background: 'black', border: '1px solid #FFFFFF' }}
           expires={365}
-          // visible="show"
-          visible={"byCookieValue"}
+          visible={values.acceptCookie === null ? 'show' : 'hidden'}
         >
           <div className={styles.ctnRoot}>
             <div className={styles.ctnText}>
               <span>
                 {i18next.t('CookieConsentText')}{' '}
-                <Link href={routes.privacy}>
+                <Link href={`${routes.privacy}?init_lang=${(i18next.resolvedLanguage === 'de' || countryId === 'de' ? 'de' : 'en')}`}>
                   <a style={{ color: 'white' }}>{i18next.t('PrivacyPolicy')}</a>
                 </Link>
               </span>
@@ -205,4 +218,4 @@ const Popup = () => {
   );
 };
 
-export default Popup;
+export default ModalCookie;

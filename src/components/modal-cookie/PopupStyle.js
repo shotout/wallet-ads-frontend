@@ -5,12 +5,16 @@ const useStyles = makeStyles((theme) => ({
     // background: 'red',
     display: 'flex',
     position: 'relative',
+    alignItems: 'center'
   },
   ctnText: {
     display: 'flex',
     flexDirection: 'column',
-    paddingRight: 20,
-    '& > span':{}
+    paddingRight: 12,
+    flexGrow: 1,
+    '& > span':{
+      fontSize: 12
+    }
   },
   ctnBtn: {
     minWidth: 100,

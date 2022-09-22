@@ -36,19 +36,20 @@ import { loadStripe } from '@stripe/stripe-js';
 
 
 import ModalCookie from '../components/modal-cookie';
+import Axios from 'axios';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
   Component: PropTypes.any,
+  countryId: PropTypes.any,
   pageProps: PropTypes.object,
   settings: PropTypes.object,
 };
 
 function MyApp(props) {
-  const { Component, pageProps, settings } = props;
-
+  const { Component, pageProps, settings, countryId } = props;
   const getLayout = Component.getLayout ?? ((page) => page);
   const options = {
     // passing the client secret obtained from the server
@@ -71,7 +72,7 @@ function MyApp(props) {
                       <RtlLayout>
                           <ProgressBar />
                           <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
-                          <ModalCookie />
+                          <ModalCookie countryId={countryId} />
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>
@@ -93,10 +94,11 @@ MyApp.getInitialProps = async (context) => {
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
 
   const settings = getSettings(cookies);
-
+  const res = await Axios.get('https://ipapi.co/json/')
   return {
     ...appProps,
     settings,
+    countryId: (res.data.country || '').toLowerCase()
   };
 };
 
