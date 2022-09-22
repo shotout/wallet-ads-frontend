@@ -10,7 +10,6 @@ import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile } from '../../utils/requests';
-import AuthFooter from '../../components/auth-footer';
 
 
 SettingUser.getLayout = function getLayout(page) {
@@ -344,7 +343,6 @@ export default function SettingUser({ userData }){
                 <HeaderUser />
                 {renderContent()}
             </div>
-            <AuthFooter />
         </div>
         </Page>
     )

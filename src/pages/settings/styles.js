@@ -4,8 +4,10 @@ export default makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
         background: '#fff',
-        minHeight: '98vh',
-        paddingBottom: 80
+        paddingBottom: 80,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     ctnWrapper: {
         maxWidth: '1366px',
