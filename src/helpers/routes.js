@@ -3,5 +3,6 @@ export const routes = {
     register: '/create-account',
     createCampaign: '/create-campaign',
     invoices: '/invoices',
-    settings: '/settings'
+    settings: '/settings',
+    privacy: '/privacy',
 }
