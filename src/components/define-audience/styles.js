@@ -8,7 +8,8 @@ export default makeStyles((theme) => ({
         marginRight: 20,
         marginBottom: 20,
         padding: 20,
-        borderRadius: 20
+        borderRadius: 20,
+        position: 'relative'
     },
     ctnMainContent:{
         display: 'flex',
@@ -418,5 +419,11 @@ export default makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems:' center'
+    },
+    ctnClose:{
+        position: 'absolute',
+        top: 10,
+        right: 20,
+        cursor: 'pointer'
     }
 }))

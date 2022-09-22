@@ -527,6 +527,12 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 30 / 2,
         padding: 6,
         cursor: 'pointer'
+    },
+    ctnCounter:{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingTop: 10,
     }
 }))
 

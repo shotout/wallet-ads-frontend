@@ -15,6 +15,7 @@ import {
 import CardAudienceSummary from '../card-audience-summary';
 import FilePicker from '../file-picker';
 import SvgIconStyle from '../SvgIconStyle';
+import Iconify from '../Iconify';
 
 const questionObj = {
     cryptocurrencies_used: "Target users that own specific cryptocurrencies. If you select several cryptocurrencies, you will target all users that own at least one of the chosen cryptocurrencies.",
@@ -56,7 +57,7 @@ const listAvailableCredit = [
 ]
 
 
-export default function DefineAudience({ selectedAudience, initialData, onAdd = () => {} }){
+export default function DefineAudience({ selectedAudience, initialData, onAdd = () => {}, onClose }){
     const [activeAudience, setActiveAudience] = useState(null)
     const [formValues, setFormValues] = useState(null)
     const [activePopover, setActivePopover] = useState(null);
@@ -829,6 +830,10 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 {`Define Audience ${selectedAudience + 1}`}
             </Typography>
             {renderContent()}
+
+            <div className={styles.ctnClose} onClick={onClose}>
+                <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
+            </div>
         </div>
     )
 }

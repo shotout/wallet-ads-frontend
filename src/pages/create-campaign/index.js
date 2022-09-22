@@ -374,7 +374,7 @@ export default function AddCampaign({ content, params }) {
       }
       const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName} = errorObj
       const isCampaignNameValid = !formValues.campaign_name
-      const isAvailabilityValid = !formValues.campaign_end_date_type
+      const isAvailabilityValid = !formValues.campaign_end_date_type || (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90)
       if(campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName){
         setErrorInput(errorObj)
         inputValid = false
@@ -933,7 +933,7 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.ctnDefineAudience}>
         {renderTargeting()}
         {renderCardAudience()}
-        {selectedAudience !== null && <DefineAudience onAdd={(value) => {handleSaveAudienceValue(value)}} initialData={audienceForm[selectedAudience]} selectedAudience={selectedAudience} />}
+        {selectedAudience !== null && <DefineAudience onClose={() => {setSelectedAudience(null)}} onAdd={(value) => {handleSaveAudienceValue(value)}} initialData={audienceForm[selectedAudience]} selectedAudience={selectedAudience} />}
         {renderAddAudience()}
         {renderBudget()}
         {/* {} */}
@@ -1109,8 +1109,17 @@ export default function AddCampaign({ content, params }) {
                 handleChangeValues(value, 'ads_page_description')
                 handleResetErrorValue('collectionDesc')
               }}
+              maxLength={1000}
               value={formValues.ads_page_description}
               placeholder='Add your collection page text here'   />
+              <div className={styles.ctnCounter}>
+                <Typography variant="body2"  color='#808080'>
+                  {`${formValues.ads_page_description.length} characters`}
+                </Typography>
+                <Typography variant="body2"  color='#808080'>
+                  Maximum 1000 characters
+                </Typography>
+              </div>
             {renderErrorText(errorInput.collectionDesc)}
           </div>
         </div>
