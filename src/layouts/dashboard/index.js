@@ -90,7 +90,7 @@ export default function DashboardLayout({ children }) {
     <Box
       sx={{
         display: { lg: 'flex' },
-        // minHeight: { lg: 1 },
+        minHeight: { lg: 1 },
       }}
     >
       {/* <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} /> */}

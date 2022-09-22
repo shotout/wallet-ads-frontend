@@ -1,15 +1,22 @@
 import { makeStyles } from '@mui/styles';
+import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
     ctnRoot: {
         position: 'relative',
         background: '#fff',
-        minHeight: '98vh',
-        paddingBottom: 80,
-        width: '100%'
+        paddingBottom: 60,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minHeight: '100%',
+        paddingRight: 20,
+        paddingLeft: 20
     },
     ctnWrapper: {
         maxWidth: '1366px',
+        width:'100%',
+        minHeight: '82vh',
         margin: 'auto',
         backgroundColor: '#E4E6FA',
         padding: 20,
