@@ -33,6 +33,7 @@ export default makeStyles((theme) => ({
         background: '#D0D4EF',
         padding: 20,
         borderRadius: 20,
+        minHeight: '64vh'
     },
     ctnCard:{
         background: '#fff',
