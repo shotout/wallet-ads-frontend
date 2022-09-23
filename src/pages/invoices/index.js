@@ -1,9 +1,9 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Popover, Typography } from '@mui/material';
 import SvgIconStyle from '../../components/SvgIconStyle';
 import HeaderUser from "../../components/header-user"
 import Page from "../../components/Page"
 import useStyles from './styles'
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import Layout from '../../layouts';
 import { getUserData } from '../../helpers/auth';
 import { getInvoicesList } from '../../utils/requests';
@@ -12,15 +12,73 @@ import Link from 'next/link';
 import { BACKEND_URL } from '../../helpers/constants';
 import { reformatCurrency } from '../../helpers/currency';
 import moment from 'moment';
+import { dateToUnix } from '../../helpers/dateHelper';
 
 const downloadIcon = '/assets/svg/download.svg'
+const iconShort = '/assets/short_icon.png'
 
 Invoice.getLayout = function getLayout(page) {
     return <Layout>{page}</Layout>;
 };
 
 export default function Invoice({ content }){
+    const [listContent, setContent] = useState({
+        sortItem: 'a-z',
+        content: content || []
+    })
     const styles = useStyles()
+    const [hover, setHover] = useState(null);
+    const [activePopover, setActivePopover] = useState(null);
+
+    const handleShort = () => {
+        if(listContent.sortItem === 'a-z'){
+            setContent({
+                sortItem: 'z-a',
+                content: listContent.content.sort((a, b) => dateToUnix(b.invoice_date) - dateToUnix(a.invoice_date))
+            })
+        }
+        if(listContent.sortItem === 'z-a'){
+            setContent({
+                sortItem: 'a-z',
+                content: listContent.content.sort((a, b) => dateToUnix(a.invoice_date) - dateToUnix(b.invoice_date))
+            })
+        }
+    }
+   
+    const handleHoverClose = () => {
+        setHover(null);
+    };
+
+
+  function renderPopover(type, content){
+    return(
+        <Popover
+          id={type}
+          open={Boolean(hover) && activePopover === type}
+          anchorEl={hover}
+          anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+          }}
+          transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+          }}
+          onClose={handleHoverClose}
+          disableRestoreFocus
+          sx={{
+          pointerEvents: 'none',
+          }}
+          className={styles.ctnPopover}
+      >
+          <Box sx={{ p: 2, maxWidth: 260 }}>
+              <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+                  {content || ''}
+              </Typography>
+          </Box>
+      </Popover>
+    )
+  }
 
     function renderTitle(){
         return (
@@ -35,28 +93,36 @@ export default function Invoice({ content }){
     function renderListTitle(){
         return (
             <Grid container spacing={4}>
-                <Grid item md={2.4} sm={12}>
-                    <Typography variant="body1" fontWeight={"500"}>
+                <Grid item md={2} sm={12} display="flex" alignItems="center">
+                    <Typography variant="body1" fontWeight={"bold"} onClick={handleShort} sx={{ cursor: 'pointer'}}>
                         Invoice Date
                     </Typography>
+                    <div className={styles.ctnIconShort} onClick={handleShort}>
+                        <img src={iconShort} alt="ic-short" />
+                    </div>
                 </Grid>
-                <Grid item md={2.4} sm={12}>
-                    <Typography variant="body1" fontWeight={"500"}>
+                <Grid item md={2} sm={12}>
+                    <Typography variant="body1" fontWeight={"bold"}>
                         Invoice
                     </Typography>
                 </Grid>
-                <Grid item md={2.4} sm={12}>
-                    <Typography variant="body1" fontWeight={"500"}>
+                <Grid item md={2} sm={12}>
+                    <Typography variant="body1" fontWeight={"bold"}>
+                        Campaign Name
+                    </Typography>
+                </Grid>
+                <Grid item md={2} sm={12}>
+                    <Typography variant="body1" fontWeight={"bold"}>
                         Payment Method
                     </Typography>
                 </Grid>
-                <Grid item md={2.4} sm={12}>
-                    <Typography variant="body1" fontWeight={"500"}>
+                <Grid item md={2} sm={12}>
+                    <Typography variant="body1" fontWeight={"bold"}>
                         Amount billed
                     </Typography>
                 </Grid>
-                <Grid item md={2.4} sm={12}>
-                    <Typography variant="body1" fontWeight={"500"}>
+                <Grid item md={2} sm={12}>
+                    <Typography variant="body1" fontWeight={"bold"}>
                         Status
                     </Typography>
                 </Grid>
@@ -77,29 +143,35 @@ export default function Invoice({ content }){
         return (
             <div className={styles.ctnItem}>
                 <Grid container spacing={4}>
-                    {content.map(item => (
+                    {listContent.content.map(item => (
                         <Fragment key={item.id.toString()}>
-                            <Grid item md={2.4} sm={12}>
+                            <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
-                                    {moment(item.invoice_date).format('YYYY.MM.DD')}
+                                    {moment(item.invoice_date).format('DD-MM-YYYY')}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2.4} sm={12}>
+                            <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
                                     {item.invoice_number}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2.4} sm={12}>
+                            <Grid item md={2} sm={12}>
+                                <Typography variant="body1" className={styles.txtCampaignName}>
+                                    {item.campaign_name}
+                                    {/* Lorem ipsum sit dolor amet lorem ipsum sit dolor amet lorem ipsum */}
+                                </Typography>
+                            </Grid>
+                            <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
                                 {item.payment_method}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2.4} sm={12}>
+                            <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
                                     {`USD${reformatCurrency(item.amount)}`}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2.4} sm={12}>
+                            <Grid item md={2} sm={12}>
                                 <div className={styles.ctnStatusItem}>
                                     <div className={styles.leftStatusItem}>
                                         <div className={`${styles.ctnStatusDot} ${item.payment_status === 1 ? styles.greenBg : {}}`} />

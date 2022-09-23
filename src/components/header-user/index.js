@@ -30,7 +30,7 @@ export default function HeaderUser({ label, ctnBtnStyle = '' }){
               <img src={notificationIcon} alt="notification" id="notification" />
             </div> */}
             <div className={styles.ctnIconHeader}>
-              <img src={userData.data && userData.data.photo ? `${BACKEND_URL}/${userData.data.photo}` : avatarDummy} alt="avatar" id="avatar" />
+              <img src={userData.data && userData.data.photo ? `${BACKEND_URL}${userData.data.photo.url}` : avatarDummy} alt="avatar" id="avatar" />
             </div>
           </div>
         </div>

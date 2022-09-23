@@ -9,14 +9,15 @@ export default makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        minHeight: '100%',
-        paddingRight: 20,
-        paddingLeft: 20
+        [theme.breakpoints.up('xl')]:{
+            paddingRight: NAVBAR.DASHBOARD_COLLAPSE_WIDTH
+        },
+        [theme.breakpoints.down('xl')]:{
+            paddingRight: 20
+        }
     },
     ctnWrapper: {
         maxWidth: '1366px',
-        width:'100%',
-        minHeight: '82vh',
         margin: 'auto',
         backgroundColor: '#E4E6FA',
         padding: 20,
@@ -26,6 +27,7 @@ export default makeStyles((theme) => ({
         marginLeft: 20,
         marginRight: 20,
         boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
+        width: '100%',
     },
     ctnContent:{
         background: '#D0D4EF',
@@ -70,5 +72,21 @@ export default makeStyles((theme) => ({
     },
     greenBg:{
         background: '#71CE62'
+    },
+    ctnIconShort:{
+        '& > img':{
+            width: 20,
+            height: 20,
+            objectFit: 'contain',
+            marginLeft: 4
+        },
+        cursor: 'pointer'
+    },
+    txtCampaignName:{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        WebkitLineClamp: 1,
     }
 }))

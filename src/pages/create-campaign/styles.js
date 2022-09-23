@@ -11,7 +11,23 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         [theme.breakpoints.up('xl')]:{
             paddingRight: NAVBAR.DASHBOARD_COLLAPSE_WIDTH
+        },
+        [theme.breakpoints.down('xl')]:{
+            paddingRight: 20
         }
+    },
+    ctnWrapper: {
+        maxWidth: '1366px',
+        margin: 'auto',
+        backgroundColor: '#E4E6FA',
+        padding: 20,
+        marginTop: 20,
+        marginBottom: 20,
+        borderRadius: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        width: '100%',
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
     ctnSection: {
         display: 'flex',
@@ -431,18 +447,6 @@ const useStyles = makeStyles((theme) => ({
         '& > div > div > .react-datepicker-wrapper > .react-datepicker__input-container > input':{
             color: '#808080'
         }
-    },
-    ctnWrapper: {
-        maxWidth: '1366px',
-        margin: 'auto',
-        backgroundColor: '#E4E6FA',
-        padding: 20,
-        marginTop: 20,
-        marginBottom: 20,
-        borderRadius: 20,
-        marginLeft: 20,
-        marginRight: 20,
-        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
     fixedWidth:{
         width: '100%',
