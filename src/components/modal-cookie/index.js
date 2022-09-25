@@ -161,8 +161,8 @@ const ModalCookie = ({ countryId }) => {
   }
 
   return (
-    <div>
       <I18nextProvider i18n={i18n} defaultNS={countryId}>
+        <div className={`${styles.ctnRootTop} ${i18next.resolvedLanguage === 'de' ? styles.ctnRootDe : ''}`}>
         <CookieConsent
           location="bottom"
           buttonText={i18next.t('Accept')}
@@ -172,6 +172,7 @@ const ModalCookie = ({ countryId }) => {
           hideOnAccept
           declineCookieValue={false}
           style={{ background: 'black', alignItems: 'center' }}
+          buttonClasses="button-ctn"
           contentStyle={{ height: '100%' }}
           onAccept={() => {handleSubmit('accept')}}
           onDecline={() => {handleSubmit('decline')}}
@@ -212,9 +213,8 @@ const ModalCookie = ({ countryId }) => {
             </div>
           </div>
         </CookieConsent>
+      </div>
       </I18nextProvider>
-      
-    </div>
   );
 };
 

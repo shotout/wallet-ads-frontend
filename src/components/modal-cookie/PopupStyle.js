@@ -5,7 +5,10 @@ const useStyles = makeStyles((theme) => ({
     // background: 'red',
     display: 'flex',
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
+    [theme.breakpoints.down('md')]:{
+      flexDirection: 'column'
+    }
   },
   ctnText: {
     display: 'flex',
@@ -20,10 +23,18 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 100,
     height: 28,
     border: '1px solid #fff',
-    marginRight: '-20px !important'
+    marginRight: '-20px !important',
+    [theme.breakpoints.down('md')]:{
+      position: 'absolute',
+      bottom: -58,
+      marginLeft: 60,
+    }
   },
   ctnBtnDe:{
-    minWidth: 140
+    minWidth: 140,
+    [theme.breakpoints.down('md')]:{
+      marginLeft: 100
+    }
   },
   btnManage:{
     justifyContent: 'center',
@@ -53,6 +64,31 @@ const useStyles = makeStyles((theme) => ({
     padding: '40px 20px 30px 40px',
     marginLeft: 20,
     marginRight: 40,
+  },
+  ctnRootTop:{
+    position: 'relative',
+    [theme.breakpoints.down('md')]:{
+      '& > div':{
+        '& > div:last-child':{
+          // background: 'red',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingRight: 100
+        }
+      }
+    }
+  },
+  ctnRootDe:{
+    [theme.breakpoints.down('md')]:{
+      '& > div':{
+        '& > div:last-child':{
+          // background: 'red',
+          paddingRight: 130
+        }
+      }
+    }
   },
 }));
 

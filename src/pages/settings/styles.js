@@ -1,5 +1,5 @@
 import { makeStyles } from '@mui/styles';
-import { NAVBAR } from 'src/config';
+import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
     ctnRoot: {
