@@ -48,28 +48,33 @@ export default function Invoice({ content }){
     const handleHoverClose = () => {
         setHover(null);
     };
+  
+    const handleHoverOpen = (event, popoverName) => {
+      setHover(event.currentTarget);
+      setActivePopover(popoverName)
+    };
 
 
   function renderPopover(type, content){
     return(
         <Popover
-          id={type}
-          open={Boolean(hover) && activePopover === type}
-          anchorEl={hover}
-          anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-          }}
-          transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-          }}
-          onClose={handleHoverClose}
-          disableRestoreFocus
-          sx={{
-          pointerEvents: 'none',
-          }}
-          className={styles.ctnPopover}
+            id={type}
+            open={Boolean(hover) && activePopover === type}
+            anchorEl={hover}
+            anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+            }}
+            transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+            }}
+            onClose={handleHoverClose}
+            disableRestoreFocus
+            sx={{
+            pointerEvents: 'none',
+            }}
+            className={styles.ctnPopover}
       >
           <Box sx={{ p: 2, maxWidth: 260 }}>
               <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
@@ -150,17 +155,38 @@ export default function Invoice({ content }){
                                     {moment(item.invoice_date).format('MM/DD/YYYY')}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2.4} sm={12}>
-                            <Typography variant="body1" className={styles.txtCampaignName}>
+                            <Grid item md={2.4} sm={12} position="relative">
+                                <Typography
+                                    variant="body1"
+                                    className={styles.txtCampaignName}>
+                                        <span
+                                            onMouseEnter={(event) => {handleHoverOpen(event, `invoice_number${item.id}`)}}
+                                            onMouseLeave={() => {
+                                                if(activePopover === `invoice_number${item.id}`){
+                                                    setHover(null);
+                                                    setActivePopover(null)
+                                                }
+                                            }}>
                                     {item.invoice_number}
-                                    {/* 20222009_Test-KUG TEST Invoice panjang */}
+                                    </span>
                                 </Typography>
+                                {activePopover === `invoice_number${item.id}` && renderPopover(`invoice_number${item.id}`, item.invoice_number)}
                             </Grid>
                             <Grid item md={2} sm={12}>
                                 <Typography variant="body1" className={styles.txtCampaignName}>
+                                    <span
+                                        onMouseEnter={(event) => {handleHoverOpen(event, `campaign_name${item.id}`)}}
+                                        onMouseLeave={() => {
+                                            if(activePopover === `campaign_name${item.id}`){
+                                                    setHover(null);
+                                                    setActivePopover(null)
+                                            }
+                                        }}>
                                     {item.campaign_name}
+                                    </span>
                                     {/* Lorem ipsum sit dolor amet lorem ipsum sit dolor amet lorem ipsum */}
                                 </Typography>
+                                {activePopover === `campaign_name${item.id}` && renderPopover(`campaign_name${item.id}`, item.campaign_name)}
                             </Grid>
                             <Grid item md={1.8} sm={12}>
                                 <Typography variant="body1">

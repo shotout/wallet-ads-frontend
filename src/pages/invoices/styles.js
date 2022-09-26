@@ -89,5 +89,10 @@ export default makeStyles((theme) => ({
         display: '-webkit-box',
         WebkitBoxOrient: 'vertical',
         WebkitLineClamp: 1,
-    }
+    },
+    ctnPopover:{
+        '& > .MuiPaper-root':{
+            background: 'rgba(0, 0, 0,0.9)'
+        }
+    },
 }))
