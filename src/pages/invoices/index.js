@@ -147,7 +147,7 @@ export default function Invoice({ content }){
                         <Fragment key={item.id.toString()}>
                             <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
-                                    {moment(item.invoice_date).format('DD-MM-YYYY')}
+                                    {moment(item.invoice_date).format('DD/MM/YYYY')}
                                 </Typography>
                             </Grid>
                             <Grid item md={2} sm={12}>
@@ -182,7 +182,7 @@ export default function Invoice({ content }){
                                     <div className={styles.ctnDownload}>
                                         <Link href={`${BACKEND_URL}${item.invoice_url}`}>
                                             <a target={"_blank"}>
-                                                <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: item.payment_status ? '#71CE62' : '#E83155' }} />
+                                                <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: '#7589FA' }} />
                                             </a>
                                         </Link>
                                     </div>
@@ -245,7 +245,6 @@ export async function getServerSideProps(context) {
     }
 
     const res = await getInvoicesList(context)
-    console.log("Check invoices:", res)
     if(!userData){
         return {
             redirect: {
