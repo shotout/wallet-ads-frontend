@@ -152,8 +152,8 @@ export default function Invoice({ content }){
                             </Grid>
                             <Grid item md={2.4} sm={12}>
                             <Typography variant="body1" className={styles.txtCampaignName}>
-                                    {/* {item.invoice_number} */}
-                                    20222009_Test-KUG TEST Invoice panjang
+                                    {item.invoice_number}
+                                    {/* 20222009_Test-KUG TEST Invoice panjang */}
                                 </Typography>
                             </Grid>
                             <Grid item md={2} sm={12}>
