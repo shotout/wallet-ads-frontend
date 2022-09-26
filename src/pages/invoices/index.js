@@ -147,7 +147,7 @@ export default function Invoice({ content }){
                         <Fragment key={item.id.toString()}>
                             <Grid item md={2} sm={12}>
                                 <Typography variant="body1">
-                                    {moment(item.invoice_date).format('DD/MM/YYYY')}
+                                    {moment(item.invoice_date).format('MM/DD/YYYY')}
                                 </Typography>
                             </Grid>
                             <Grid item md={2} sm={12}>
