@@ -92,8 +92,8 @@ export default function Invoice({ content }){
 
     function renderListTitle(){
         return (
-            <Grid container spacing={4}>
-                <Grid item md={2} sm={12} display="flex" alignItems="center">
+            <Grid container spacing={3}>
+                <Grid item md={1.8} sm={12} display="flex">
                     <Typography variant="body1" fontWeight={"bold"} onClick={handleShort} sx={{ cursor: 'pointer'}}>
                         Invoice Date
                     </Typography>
@@ -101,7 +101,7 @@ export default function Invoice({ content }){
                         <img src={iconShort} alt="ic-short" />
                     </div>
                 </Grid>
-                <Grid item md={2} sm={12}>
+                <Grid item md={2.4} sm={12}>
                     <Typography variant="body1" fontWeight={"bold"}>
                         Invoice
                     </Typography>
@@ -111,7 +111,7 @@ export default function Invoice({ content }){
                         Campaign Name
                     </Typography>
                 </Grid>
-                <Grid item md={2} sm={12}>
+                <Grid item md={1.8} sm={12}>
                     <Typography variant="body1" fontWeight={"bold"}>
                         Payment Method
                     </Typography>
@@ -142,17 +142,18 @@ export default function Invoice({ content }){
         }
         return (
             <div className={styles.ctnItem}>
-                <Grid container spacing={4}>
+                <Grid container spacing={3}>
                     {listContent.content.map(item => (
                         <Fragment key={item.id.toString()}>
-                            <Grid item md={2} sm={12}>
+                            <Grid item md={1.8} sm={12} display="flex">
                                 <Typography variant="body1">
                                     {moment(item.invoice_date).format('MM/DD/YYYY')}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} sm={12}>
-                                <Typography variant="body1">
-                                    {item.invoice_number}
+                            <Grid item md={2.4} sm={12}>
+                            <Typography variant="body1" className={styles.txtCampaignName}>
+                                    {/* {item.invoice_number} */}
+                                    20222009_Test-KUG TEST Invoice panjang
                                 </Typography>
                             </Grid>
                             <Grid item md={2} sm={12}>
@@ -161,7 +162,7 @@ export default function Invoice({ content }){
                                     {/* Lorem ipsum sit dolor amet lorem ipsum sit dolor amet lorem ipsum */}
                                 </Typography>
                             </Grid>
-                            <Grid item md={2} sm={12}>
+                            <Grid item md={1.8} sm={12}>
                                 <Typography variant="body1">
                                 {item.payment_method}
                                 </Typography>
