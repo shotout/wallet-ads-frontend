@@ -37,7 +37,7 @@ export default makeStyles((theme) => ({
   },
   ctnForm: {
     '& $inputWrapper:first-child': {
-      marginBottom: 30,
+      marginBottom: 20,
     },
   },
   inputWrapper: {
@@ -106,7 +106,6 @@ export default makeStyles((theme) => ({
     borderRadius: 12,
   },
   ctnTextNote: {
-    lineHeight: 19,
     marginBottom: 20,
   },
 }));

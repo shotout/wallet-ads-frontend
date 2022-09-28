@@ -1,60 +1,18 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
-import { TextField, Typography } from '@mui/material';
+import React from 'react';
+import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
+import Iconify from '../../components/Iconify';
 import Page from '../../components/Page';
 import AuthFooter from '../../components/auth-footer';
 import useStyles from './styles';
 import DefaultButton from '../../components/default-button';
 import { routes } from '../../helpers/routes';
-import { requestResetPassword } from '../../utils/requests';
-import responseValidatorObj from '../../helpers/responseValidatorObj';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
 export default function forgotPassword() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const styles = useStyles();
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [values, setValues] = useState({
-    email: '',
-    isLoading: false,
-  });
-
-  const [errorMessage, setErrorMessage] = useState({
-    email: null,
-  });
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      setErrorMessage({
-        email: null,
-      });
-      setValues({ ...values, isLoading: true });
-      const body = {
-        email: values.email,
-      };
-      const res = await requestResetPassword(body);
-      setValues({ ...values, isLoading: false });
-    } catch (err) {
-      if (err.data) {
-        if (err.data.errors) {
-          setErrorMessage(responseValidatorObj(err.data.errors));
-        }
-        if (err.data.message && !err.data.errors) {
-          setErrorMessage({
-            email: null,
-          });
-        }
-      }
-      setValues({ ...values, isLoading: false });
-    }
-  };
 
   function renderHeader() {
     return (
@@ -73,7 +31,7 @@ export default function forgotPassword() {
           </Typography>
         </div>
         <div className={styles.ctnTextNote}>
-          <Typography variant="subtitle1" fontWeight={'700'} textAlign={'center'}>
+          <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
             Enter your email address and you will receive an email with instructions on how to reset your password.
           </Typography>
         </div>
@@ -81,15 +39,16 @@ export default function forgotPassword() {
           <div className={styles.inputWrapper}>
             <TextField
               fullWidth
-              value={values.email}
-              onChange={handleChange('email')}
-              error={errorMessage.email}
-              helperText={errorMessage.email}
+              // value={values.email}
+              // onChange={handleChange('email')}
+              // fullWidth
+              // error={errorMessage.email}
+              // helperText={errorMessage.email}
               placeholder="Email"
             />
           </div>
         </div>
-        <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Reset Password'} />
+        <DefaultButton label={'Reset Password'} />
         {renderDirectRegister()}
       </div>
     );

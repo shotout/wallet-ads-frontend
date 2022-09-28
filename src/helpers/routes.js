@@ -6,4 +6,5 @@ export const routes = {
   settings: '/settings',
   privacy: '/privacy',
   forgotPassword: '/forgot-password',
+  changePassword: '/change=passwprd',
 };
