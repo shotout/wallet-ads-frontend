@@ -1,8 +1,9 @@
 export const routes = {
-    login: '/login',
-    register: '/create-account',
-    createCampaign: '/create-campaign',
-    invoices: '/invoices',
-    settings: '/settings',
-    privacy: '/privacy',
-}
+  login: '/login',
+  register: '/create-account',
+  createCampaign: '/create-campaign',
+  invoices: '/invoices',
+  settings: '/settings',
+  privacy: '/privacy',
+  forgotPassword: '/forgot-password',
+};
