@@ -117,3 +117,23 @@ export default function forgotPassword() {
     </Page>
   );
 }
+
+export async function getServerSideProps(context) {
+  try {
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
+    if (isMobile) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/forbidden`,
+        },
+      };
+    }
+    return {
+      props: {}, // will be passed to the page component as props
+    };
+  } catch (err) {
+    console.log('Error verify:', err);
+  }
+}
