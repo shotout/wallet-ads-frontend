@@ -28,6 +28,20 @@ export const requestResetPassword = (data) =>
     data,
   });
 
+export const requestCheckToken = (data) =>
+  axios({
+    url: '/auth/check-token',
+    method: 'POST',
+    data,
+  });
+
+export const handleResetPassword = (data) =>
+  axios({
+    url: '/auth/reset-password',
+    method: 'POST',
+    data,
+  });
+
 export const handleUpdateProfile = (data) =>
   axios({
     url: '/user',

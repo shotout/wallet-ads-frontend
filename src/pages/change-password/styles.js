@@ -36,7 +36,7 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
   },
   ctnForm: {
-    '& $inputWrapper:first-child': {
+    '& $inputWrapper': {
       marginBottom: 20,
     },
   },

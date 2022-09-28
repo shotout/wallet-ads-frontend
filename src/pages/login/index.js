@@ -20,7 +20,7 @@ const defaultErrorState = {
   errorValidation: null,
 };
 
-export default function Login({ isVerifyValid }) {
+export default function Login({ isVerifyValid, changePassword }) {
   const styles = useStyles();
   const [values, setValues] = useState({
     email: '',
@@ -118,11 +118,13 @@ export default function Login({ isVerifyValid }) {
   }
 
   function renderGreenBox() {
-    if (isVerifyValid === 'valid') {
+    if (isVerifyValid === 'valid' || changePassword === 'success') {
       return (
         <div className={styles.ctnGreenBox}>
           <Typography variant="body1" color="#fff" textAlign={'center'}>
-            Your account has been activated. You can now login with your email address and your password.
+            {changePassword
+              ? 'Your password has been successfully changed! You can now login with you new password.'
+              : 'Your account has been activated. You can now login with your email address and your password.'}
           </Typography>
         </div>
       );
@@ -205,7 +207,7 @@ export default function Login({ isVerifyValid }) {
 }
 
 export async function getServerSideProps(context) {
-  const { verify } = context.query;
+  const { verify, pwdreset } = context.query;
   try {
     if (verify) {
       await verifyAccount(verify, context);
@@ -224,6 +226,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         isVerifyValid: verify ? 'valid' : null,
+        changePassword: pwdreset ? 'success' : null,
       }, // will be passed to the page component as props
     };
   } catch (err) {
@@ -231,6 +234,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         isVerifyValid: verify ? 'invalid' : null,
+        changePassword: pwdreset ? 'success' : null,
       }, // will be passed to the page component as props
     };
   }
