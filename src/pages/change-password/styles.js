@@ -39,11 +39,28 @@ export default makeStyles((theme) => ({
     '& $inputWrapper': {
       marginBottom: 20,
     },
+    '& $inputWrapperDisabled': {
+      marginBottom: 20,
+    },
   },
   inputWrapper: {
     '& > .MuiFormControl-root': {
       '& > .MuiOutlinedInput-root': {
         backgroundColor: '#fff',
+        // '& > .Mui-focused':{
+        '& > .MuiOutlinedInput-notchedOutline': {
+          border: 'none',
+        },
+      },
+      '& > .MuiInputLabel-root.Mui-focused': {
+        color: '#7089FF !important',
+      },
+    },
+  },
+  inputWrapperDisabled: {
+    '& > .MuiFormControl-root': {
+      '& > .MuiOutlinedInput-root': {
+        backgroundColor: '#D9D9D9',
         // '& > .Mui-focused':{
         '& > .MuiOutlinedInput-notchedOutline': {
           border: 'none',
@@ -107,5 +124,10 @@ export default makeStyles((theme) => ({
   },
   ctnTextNote: {
     marginBottom: 20,
+  },
+  btnDisabled: {
+    '& .MuiOutlinedInput-root': {
+      backgroundColor: 'rgb(232, 241, 250)',
+    },
   },
 }));
