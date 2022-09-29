@@ -25,7 +25,7 @@ const defaultErrorState = {
   token: false,
 };
 
-export default function changePassword({ isVerifyValid, token }) {
+export default function changePassword({ isVerifyValid, token, datas }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const styles = useStyles();
 
@@ -107,14 +107,17 @@ export default function changePassword({ isVerifyValid, token }) {
         </div>
         {renderGreenBox()}
         <div className={styles.ctnForm}>
-          <div className={styles.inputWrapper}>
+          <div className={styles.inputWrapperDisabled}>
             <TextField
               fullWidth
-              value={values.email}
+              value={datas.data?.email}
               onChange={handleChange('email')}
               error={errorMessage.email}
               helperText={errorMessage.email}
               placeholder="Email"
+              className={styles.btnDisabled}
+              InputLabelProps
+              disabled
             />
           </div>
           <div className={styles.inputWrapper}>
@@ -216,12 +219,14 @@ export default function changePassword({ isVerifyValid, token }) {
 
 export async function getServerSideProps(context) {
   const { verify } = context.query;
+  let datas;
   try {
     if (verify) {
       const data = {
         token: verify,
       };
-      await requestCheckToken(data);
+      datas = await requestCheckToken(data);
+      console.log(datas);
     } else {
       return {
         redirect: {
@@ -245,6 +250,7 @@ export async function getServerSideProps(context) {
       props: {
         isVerifyValid: verify ? 'valid' : null,
         token: verify ?? null,
+        datas,
       }, // will be passed to the page component as props
     };
   } catch (err) {
