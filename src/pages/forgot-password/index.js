@@ -105,7 +105,10 @@ export default function forgotPassword() {
             {count ? (
               <>
                 You did not receive the email? Check your spam folder or wait{' '}
-                <span className={styles.ctnTimer}> {timer} seconds </span>to resend the recovery email.
+                <span className={styles.ctnTimer}>
+                  {timer} {timer > 1 ? 'seconds' : 'second'}{' '}
+                </span>
+                to resend the recovery email.
               </>
             ) : (
               <>
