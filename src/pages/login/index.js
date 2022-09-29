@@ -87,7 +87,7 @@ export default function Login({ isVerifyValid, changePassword }) {
     return (
       <div className={styles.ctnForgotPassword}>
         <Link href={routes.forgotPassword}>
-          <span>Forgot Password</span>
+          Forgot Password
         </Link>
       </div>
     );

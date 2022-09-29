@@ -1,7 +1,7 @@
 import { CircularProgress } from '@material-ui/core';
 import useStyles from './styles';
 
-export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onClick = () => {} }) {
+export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onClick = () => {}, disabled }) {
   const styles = useStyles();
 
   const handlePress = () => {
@@ -18,8 +18,8 @@ export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onCl
   }
 
   return (
-    <div onClick={handlePress} className={`${styles.ctnBtn} ${ctnBtnStyle}`}>
+    <button onClick={handlePress} className={`${styles.ctnBtn} ${ctnBtnStyle}`} disabled={disabled}>
       {renderContent()}
-    </div>
+    </button>
   );
 }

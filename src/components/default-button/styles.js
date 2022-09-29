@@ -20,6 +20,7 @@ export default makeStyles((theme) => ({
         },
         '& > .MuiCircularProgress-colorPrimary':{
             color: '#fff'
-        }
+        },
+        border: 0
     },
 }))
