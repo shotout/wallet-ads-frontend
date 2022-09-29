@@ -23,5 +23,8 @@
   "zh": "简体中文",
   "pt": "󠁥󠁮󠁧󠁿Português",
   "id": "󠁥󠁮󠁧󠁿Bahasa Indonesia",
-  "ar": "󠁥󠁮󠁧󠁿العربيّة"
+  "ar": "󠁥󠁮󠁧󠁿العربيّة",
+  "lbl_login" : "Login",
+  "lbl_create_account": "Create New Account"
 }
+

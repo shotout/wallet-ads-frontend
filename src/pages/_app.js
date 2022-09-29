@@ -34,6 +34,8 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+//i18n
+import { appWithTranslation } from 'next-i18next';
 
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
@@ -70,9 +72,9 @@ function MyApp(props) {
                   <MotionLazyContainer>
                     <ThemeColorPresets>
                       <RtlLayout>
-                          <ProgressBar />
-                          <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
-                          <ModalCookie countryId={countryId} />
+                        <ProgressBar />
+                        <Elements stripe={stripePromise}>{getLayout(<Component {...pageProps} />)}</Elements>
+                        <ModalCookie countryId={countryId} />
                       </RtlLayout>
                     </ThemeColorPresets>
                   </MotionLazyContainer>
@@ -94,12 +96,12 @@ MyApp.getInitialProps = async (context) => {
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
 
   const settings = getSettings(cookies);
-  const res = await Axios.get('https://ipapi.co/json/')
+  const res = await Axios.get('https://ipapi.co/json/');
   return {
     ...appProps,
     settings,
-    countryId: (res.data.country || '').toLowerCase()
+    countryId: (res.data.country || '').toLowerCase(),
   };
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

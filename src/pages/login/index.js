@@ -11,6 +11,8 @@ import useStyles from './styles';
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 import nookies from 'nookies';
+// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
@@ -21,6 +23,7 @@ const defaultErrorState = {
 };
 
 export default function Login({ isVerifyValid, changePassword }) {
+  const { t } = useTranslation();
   const styles = useStyles();
   const [values, setValues] = useState({
     email: '',
@@ -86,9 +89,7 @@ export default function Login({ isVerifyValid, changePassword }) {
   function renderForgotPassword() {
     return (
       <div className={styles.ctnForgotPassword}>
-        <Link href={routes.forgotPassword}>
-          Forgot Password
-        </Link>
+        <Link href={routes.forgotPassword}>Forgot Password</Link>
       </div>
     );
   }
@@ -239,3 +240,11 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+// export async function getStaticProps({ locale }) {
+//   return {
+//     props: {
+//       ...(await serverSideTranslations(locale, ['common'])),
+//     },
+//   };
+// }

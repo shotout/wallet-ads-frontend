@@ -1,3 +1,5 @@
+const { i18n } = require('./next-i18next.config');
+
 module.exports = {
   env: {
     API_URL: process.env.API_URL,
@@ -6,6 +8,7 @@ module.exports = {
   },
   experimental: {
     // Enables the styled-components SWC transform
-    styledComponents: true
-  }
-}
+    styledComponents: true,
+  },
+  i18n,
+};
