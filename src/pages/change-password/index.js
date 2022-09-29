@@ -225,7 +225,6 @@ export async function getServerSideProps(context) {
         token: verify,
       };
       datas = await requestCheckToken(data);
-      console.log(datas);
     } else {
       return {
         redirect: {
@@ -253,7 +252,6 @@ export async function getServerSideProps(context) {
       }, // will be passed to the page component as props
     };
   } catch (err) {
-    console.log('Error verify:', err.data);
     return {
       props: {
         isVerifyValid: verify ? 'invalid' : null,
