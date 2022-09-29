@@ -116,7 +116,6 @@ export default function changePassword({ isVerifyValid, token, datas }) {
               helperText={errorMessage.email}
               placeholder="Email"
               className={styles.btnDisabled}
-              InputLabelProps
               disabled
             />
           </div>
