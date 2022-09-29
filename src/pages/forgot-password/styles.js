@@ -22,6 +22,16 @@ export default makeStyles((theme) => ({
       objectFit: 'contain',
     },
   },
+  ctnLogo: {
+    marginBottom: 30,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: '30%',
+      objectFit: 'contain',
+    },
+  },
   ctnInput: {
     marginLeft: 100,
     maxWidth: 420,
@@ -108,5 +118,13 @@ export default makeStyles((theme) => ({
   ctnTextNote: {
     lineHeight: 19,
     marginBottom: 20,
+  },
+  ctnLink: {
+    color: '#7089FF',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+  },
+  ctnTimer: {
+    color: '#7089FF',
   },
 }));

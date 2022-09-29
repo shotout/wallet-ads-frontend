@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TextField, Typography } from '@mui/material';
 import Link from 'next/link';
 import Page from '../../components/Page';
@@ -11,6 +10,7 @@ import { requestResetPassword } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
+const mailSuccess = '/assets/svg/mail_success.svg';
 
 export default function forgotPassword() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -26,6 +26,18 @@ export default function forgotPassword() {
     email: null,
   });
 
+  const [sent, setSent] = useState(false);
+  const [count, setCount] = useState(false);
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    if (timer > 0) {
+      setTimeout(() => setTimer(timer - 1), 1000);
+    } else {
+      setCount(false);
+    }
+  }, [timer]);
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -40,6 +52,7 @@ export default function forgotPassword() {
         email: values.email,
       };
       const res = await requestResetPassword(body);
+      res.status === 'success' && setSent(true);
       setValues({ ...values, isLoading: false });
     } catch (err) {
       if (err.data) {
@@ -60,6 +73,50 @@ export default function forgotPassword() {
     return (
       <div className={styles.ctnHeader}>
         <img src={appIcon} alt="wallet-ads" />
+      </div>
+    );
+  }
+
+  function resendEmail() {
+    handleSubmit();
+    setCount(true);
+    setTimer(45);
+  }
+
+  function renderSuccessSentMail() {
+    return (
+      <div className={styles.ctnInput}>
+        <div className={styles.ctnTitle}>
+          <Typography variant="h4" fontWeight={'800'} textAlign={'center'}>
+            Email has been sent!
+          </Typography>
+        </div>
+        <div className={styles.ctnLogo}>
+          <img src={mailSuccess} alt="wallet-ads" />
+        </div>
+        <div className={styles.ctnGreenBox}>
+          <Typography variant="body1" color="#fff" textAlign={'center'}>
+            We have sent an email with a password recovery link to your email inbox. Please follow the instructions in
+            the email to reset your password.
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle1" color="#000" textAlign={'center'}>
+            {count ? (
+              <>
+                You did not receive the email? Check your spam folder or wait{' '}
+                <span className={styles.ctnTimer}> {timer} seconds </span>to resend the recovery email.
+              </>
+            ) : (
+              <>
+                You did not receive the email? Check your spam folder or{' '}
+                <span onClick={resendEmail} className={styles.ctnLink}>
+                  resend email.
+                </span>
+              </>
+            )}
+          </Typography>
+        </div>
       </div>
     );
   }
@@ -111,7 +168,7 @@ export default function forgotPassword() {
       <meta name="description" content="Login to your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
-        {renderInput()}
+        {sent ? renderSuccessSentMail() : renderInput()}
         <AuthFooter />
       </div>
     </Page>
