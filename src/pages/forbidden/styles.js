@@ -8,14 +8,23 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     maxWidth: '100%',
     padding: 20,
-    clear: 'both',
+    height: '100%',
+
     '& > img': {
-      width: '40%',
+      width: '20%',
       height: 'auto',
       objectFit: 'contain',
       marginBottom: 20,
     },
-    height: '100%',
+
+    [theme.breakpoints.down('md')]: {
+      '& > img': {
+        width: '40%',
+        height: 'auto',
+        objectFit: 'contain',
+        marginBottom: 20,
+      },
+    },
   },
   ctnFooter: {
     display: 'flex',
@@ -23,7 +32,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     [theme.breakpoints.down('md')]: {
-      height: 230,
+      height: 100,
     },
   },
   txtDesc: {
@@ -36,17 +45,19 @@ export default makeStyles((theme) => ({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
-    '& > img': {
-      width: '50%',
-      height: 50,
-      objectFit: 'contain',
-    },
-    '& > .menu': {
+    [theme.breakpoints.down('md')]: {
       '& > img': {
-        width: '40%',
+        width: '50%',
         height: 50,
         objectFit: 'contain',
-        float: 'right',
+      },
+      '& > .menu': {
+        '& > img': {
+          width: '40%',
+          height: 50,
+          objectFit: 'contain',
+          float: 'right',
+        },
       },
     },
   },
