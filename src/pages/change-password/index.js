@@ -1,14 +1,12 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
 import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import Link from 'next/link';
 import Iconify from '../../components/Iconify';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Page from '../../components/Page';
 import AuthFooter from '../../components/auth-footer';
 import useStyles from './styles';
 import DefaultButton from '../../components/default-button';
-import { requestCheckToken, handleResetPassword, verifyAccount } from '../../utils/requests';
+import { requestCheckToken, handleResetPassword } from '../../utils/requests';
 import nookies from 'nookies';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
@@ -25,7 +23,7 @@ const defaultErrorState = {
   token: false,
 };
 
-export default function changePassword({ isVerifyValid, token, datas }) {
+export default function ChangePassword({ isVerifyValid, token, datas }) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const styles = useStyles();
 
