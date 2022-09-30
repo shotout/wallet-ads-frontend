@@ -12,7 +12,7 @@ import responseValidatorObj from '../../helpers/responseValidatorObj';
 const appIcon = '/assets/svg/wallet_logo.svg';
 const mailSuccess = '/assets/svg/mail_success.svg';
 
-export default function forgotPassword() {
+export default function ForgotPassword() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const styles = useStyles();
 
