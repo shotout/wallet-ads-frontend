@@ -141,6 +141,7 @@ export default function ForgotPassword() {
           <div className={styles.inputWrapper}>
             <TextField
               fullWidth
+              autoComplete="email"
               value={values.email}
               onChange={handleChange('email')}
               error={errorMessage.email}
