@@ -8,7 +8,7 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     maxWidth: '100%',
     padding: 20,
-    backgroundColor: 'red',
+    clear: 'both',
     '& > img': {
       width: 240,
       height: 140,
@@ -22,16 +22,8 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    maxWidth: '100%',
     padding: 20,
-    backgroundColor: 'blue',
-    '& > img': {
-      width: 240,
-      height: 140,
-      objectFit: 'contain',
-      marginBottom: 20,
-    },
-    height: 'auto',
+    position: 'relative',
   },
   txtDesc: {
     '& > b': {

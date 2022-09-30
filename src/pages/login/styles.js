@@ -72,6 +72,7 @@ export default makeStyles((theme) => ({
       cursor: 'pointer',
       '& > a': {
         fontFamily: 'Public Sans,sans-serif',
+        color: '#7089FF',
         textDecoration: ' underline',
       },
     },
