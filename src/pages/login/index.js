@@ -89,7 +89,9 @@ export default function Login({ isVerifyValid, changePassword }) {
   function renderForgotPassword() {
     return (
       <div className={styles.ctnForgotPassword}>
-        <Link href={routes.forgotPassword}>Forgot Password</Link>
+        <div>
+          <Link href={routes.forgotPassword}>Forgot Password</Link>
+        </div>
       </div>
     );
   }
@@ -119,7 +121,7 @@ export default function Login({ isVerifyValid, changePassword }) {
   }
 
   function renderGreenBox() {
-    if (isVerifyValid === 'valid' || changePassword === 'success') {
+    if (isVerifyValid || changePassword === 'success') {
       return (
         <div className={styles.ctnGreenBox}>
           <Typography variant="body1" color="#fff" textAlign={'center'}>
@@ -210,9 +212,6 @@ export default function Login({ isVerifyValid, changePassword }) {
 export async function getServerSideProps(context) {
   const { verify, pwdreset } = context.query;
   try {
-    if (verify) {
-      await verifyAccount(verify, context);
-    }
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
     nookies.destroy(context, 'authorization', { path: '/' });
@@ -224,9 +223,10 @@ export async function getServerSideProps(context) {
         },
       };
     }
+    console.log(!verify);
     return {
       props: {
-        isVerifyValid: verify ? 'valid' : null,
+        isVerifyValid: verify ? true : false,
         changePassword: pwdreset ? 'success' : null,
       }, // will be passed to the page component as props
     };
@@ -234,7 +234,7 @@ export async function getServerSideProps(context) {
     console.log('Error verify:', err);
     return {
       props: {
-        isVerifyValid: verify ? 'invalid' : null,
+        isVerifyValid: verify ?? true,
         changePassword: pwdreset ? 'success' : null,
       }, // will be passed to the page component as props
     };

@@ -144,6 +144,7 @@ export default function ForgotPassword() {
               value={values.email}
               onChange={handleChange('email')}
               error={errorMessage.email}
+              type="email"
               helperText={errorMessage.email}
               placeholder="Email"
             />
