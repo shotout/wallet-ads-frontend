@@ -7,6 +7,7 @@ import { routes } from './../../helpers/routes';
 
 const disableAsset = '/assets/disable.png';
 const appIcon = '/assets/svg/wallet_logo.svg';
+const menuIcon = '/assets/svg/menu.svg';
 
 export default function NoMobile() {
   const styles = useStyles();
@@ -16,6 +17,9 @@ export default function NoMobile() {
         <Link href={routes.walletads}>
           <img src={appIcon} alt="wallet-ads" />
         </Link>
+        <div className="menu">
+          <img src={menuIcon} alt="wallet-ads" />
+        </div>
       </div>
     );
   }

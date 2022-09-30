@@ -32,12 +32,22 @@ export default makeStyles((theme) => ({
     },
   },
   ctnHeader: {
-    marginTop: 10,
-    marginLeft: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
     '& > img': {
       width: '50%',
       height: 50,
       objectFit: 'contain',
+    },
+    '& > .menu': {
+      '& > img': {
+        width: '40%',
+        height: 50,
+        objectFit: 'contain',
+        float: 'right',
+      },
     },
   },
 }));
