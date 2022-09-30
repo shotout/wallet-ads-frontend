@@ -10,8 +10,8 @@ export default makeStyles((theme) => ({
     padding: 20,
     clear: 'both',
     '& > img': {
-      width: 240,
-      height: 140,
+      width: '40%',
+      height: 'auto',
       objectFit: 'contain',
       marginBottom: 20,
     },
@@ -22,8 +22,9 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
-    padding: 20,
-    position: 'relative',
+    [theme.breakpoints.down('md')]: {
+      height: 230,
+    },
   },
   txtDesc: {
     '& > b': {
@@ -34,7 +35,7 @@ export default makeStyles((theme) => ({
     marginTop: 10,
     marginLeft: 10,
     '& > img': {
-      width: '40%',
+      width: '50%',
       height: 50,
       objectFit: 'contain',
     },

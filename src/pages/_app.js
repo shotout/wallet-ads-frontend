@@ -34,9 +34,6 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-//i18n
-import { appWithTranslation } from 'next-i18next';
-
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
@@ -104,4 +101,4 @@ MyApp.getInitialProps = async (context) => {
   };
 };
 
-export default appWithTranslation(MyApp);
+export default MyApp;

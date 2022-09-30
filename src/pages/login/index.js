@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import { requestLogin, verifyAccount } from '../../utils/requests';
+import { requestLogin } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import Iconify from '../../components/Iconify';
 import Page from '../../components/Page';
@@ -11,8 +11,6 @@ import useStyles from './styles';
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 import nookies from 'nookies';
-// import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useTranslation } from 'next-i18next';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
@@ -23,7 +21,6 @@ const defaultErrorState = {
 };
 
 export default function Login({ isVerifyValid, changePassword }) {
-  const { t } = useTranslation();
   const styles = useStyles();
   const [values, setValues] = useState({
     email: '',
@@ -223,7 +220,6 @@ export async function getServerSideProps(context) {
         },
       };
     }
-    console.log(!verify);
     return {
       props: {
         isVerifyValid: verify ? true : false,
@@ -231,7 +227,6 @@ export async function getServerSideProps(context) {
       }, // will be passed to the page component as props
     };
   } catch (err) {
-    console.log('Error verify:', err);
     return {
       props: {
         isVerifyValid: verify ?? true,
@@ -240,11 +235,3 @@ export async function getServerSideProps(context) {
     };
   }
 }
-
-// export async function getStaticProps({ locale }) {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ['common'])),
-//     },
-//   };
-// }

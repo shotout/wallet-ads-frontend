@@ -1,7 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
+import Link from 'next/link';
 import AuthFooter from '../../components/auth-footer';
 import useStyles from './styles';
+import { routes } from './../../helpers/routes';
 
 const disableAsset = '/assets/disable.png';
 const appIcon = '/assets/svg/wallet_logo.svg';
@@ -11,7 +13,9 @@ export default function NoMobile() {
   function renderHeader() {
     return (
       <div className={styles.ctnHeader}>
-        <img src={appIcon} alt="wallet-ads" />
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
       </div>
     );
   }
@@ -27,7 +31,7 @@ export default function NoMobile() {
       <div>{renderHeader()}</div>
       <div className={styles.ctnWrapper}>
         <img src={disableAsset} alt="disable" />
-        <Typography variant="subtitle1" className={styles.txtDesc} textAlign="center">
+        <Typography variant="h4" className={styles.txtDesc} textAlign="center">
           To enter the <b>WALLETADS Campaign Dashboard</b>, please use a desktop device for the best experience. Thank
           you!
         </Typography>
