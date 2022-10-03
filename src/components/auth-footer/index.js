@@ -15,14 +15,10 @@ export default function AuthFooter() {
           <a target={'_blank'}>Terms and Conditions / AGB</a>
         </Link>
         <Link href="privacy">
-          <a className={styles.ctnHidden} target={'_blank'}>
-            Privacy
-          </a>
+          <a target={'_blank'}>Privacy</a>
         </Link>
         <Link href="cookies">
-          <a className={styles.ctnHidden} target={'_blank'}>
-            Cookie Policy
-          </a>
+          <a target={'_blank'}>Cookie Policy</a>
         </Link>
       </div>
       <div className={styles.ctnCopyright}>

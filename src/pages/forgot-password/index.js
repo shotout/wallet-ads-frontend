@@ -38,22 +38,14 @@ export default function ForgotPassword() {
     }
   }, [timer]);
 
-  useEffect(() => {
-    const listener = (event) => {
-      if (event.code === 'Enter' || event.code === 13) {
-        console.log('Enter key was pressed. Run your function.');
-        event.preventDefault();
-        handleSubmit();
-      }
-    };
-    document.addEventListener('keydown', listener);
-    return () => {
-      document.removeEventListener('keydown', listener);
-    };
-  }, []);
-
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const onKeyDownHandler = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit();
+    }
   };
 
   const handleSubmit = async () => {
@@ -154,18 +146,20 @@ export default function ForgotPassword() {
           </Typography>
         </div>
         <div className={styles.ctnForm}>
-          <div className={styles.inputWrapper}>
-            <TextField
-              fullWidth
-              autoComplete="email"
-              value={values.email}
-              onChange={handleChange('email')}
-              error={errorMessage.email}
-              type="email"
-              helperText={errorMessage.email}
-              placeholder="Email"
-            />
-          </div>
+          <form onKeyDown={onKeyDownHandler}>
+            <div className={styles.inputWrapper}>
+              <TextField
+                fullWidth
+                autoComplete="email"
+                value={values.email}
+                onChange={handleChange('email')}
+                error={errorMessage.email}
+                type="email"
+                helperText={errorMessage.email}
+                placeholder="Email"
+              />
+            </div>
+          </form>
         </div>
         <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Reset Password'} />
         {renderDirectRegister()}

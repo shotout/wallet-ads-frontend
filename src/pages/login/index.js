@@ -30,15 +30,11 @@ export default function Login({ isVerifyValid, changePassword }) {
   });
   const [errorMessage, setErrorMessage] = useState(defaultErrorState);
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
   useEffect(() => {
     const listener = (event) => {
+      console.log(values);
       if (event.code === 'Enter' || event.code === 13) {
-        console.log('Enter key was pressed. Run your function.');
-        event.preventDefault();
+        console.log(values);
         handleSubmit();
       }
     };
@@ -48,12 +44,23 @@ export default function Login({ isVerifyValid, changePassword }) {
     };
   }, []);
 
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
+  const onKeyDownHandler = (e) => {
+    if (e.keyCode === 13) {
+      handleSubmit();
+    }
+  };
+
   const handleSubmit = async () => {
     try {
+      console.log(values);
       setErrorMessage({
         email: null,
         password: null,
@@ -168,45 +175,48 @@ export default function Login({ isVerifyValid, changePassword }) {
         {renderRedBox()}
         {renderGreenBox()}
         <div className={styles.ctnForm}>
-          <div className={styles.inputWrapper}>
-            <TextField
-              value={values.email}
-              autoComplete="email"
-              onChange={handleChange('email')}
-              fullWidth
-              error={errorMessage.email}
-              helperText={errorMessage.email}
-              placeholder="Email"
-            />
-          </div>
-          <div className={styles.inputWrapper}>
-            <TextField
-              fullWidth
-              autoComplete="password"
-              placeholder="Password"
-              type={values.showPassword ? 'text' : 'password'}
-              value={values.password}
-              error={errorMessage.password}
-              helperText={errorMessage.password}
-              onChange={handleChange('password')}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                      {values.showPassword ? (
-                        <Iconify icon="eva:eye-fill" width={24} height={24} />
-                      ) : (
-                        <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
+          <form onKeyDown={onKeyDownHandler}>
+            <div className={styles.inputWrapper}>
+              <TextField
+                value={values.email}
+                autoComplete="email"
+                onChange={handleChange('email')}
+                fullWidth
+                error={errorMessage.email}
+                helperText={errorMessage.email}
+                placeholder="Email"
+              />
+            </div>
+            <div className={styles.inputWrapper}>
+              <TextField
+                fullWidth
+                autoComplete="password"
+                placeholder="Password"
+                type={values.showPassword ? 'text' : 'password'}
+                value={values.password}
+                error={errorMessage.password}
+                helperText={errorMessage.password}
+                onChange={handleChange('password')}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                        {values.showPassword ? (
+                          <Iconify icon="eva:eye-fill" width={24} height={24} />
+                        ) : (
+                          <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </div>
+          </form>
           {renderForgotPassword()}
         </div>
         <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Login'} />
+
         {renderDirectRegister()}
       </div>
     );

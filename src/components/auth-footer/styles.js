@@ -25,6 +25,7 @@ export default makeStyles((theme) => ({
       [theme.breakpoints.down('sm')]: {
         marginLeft: 10,
         marginRight: 10,
+        display: 'grid',
       },
     },
     [theme.breakpoints.down('sm')]: {
