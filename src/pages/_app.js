@@ -34,6 +34,7 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+import initMamoto from './mamoto'
 
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
@@ -61,7 +62,9 @@ function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <Script src="./mamoto.js" />
+      <Script id="load-mamoto" dangerouslySetInnerHTML={{
+        __html: `${initMamoto()}`
+      }} />
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <CollapseDrawerProvider>
