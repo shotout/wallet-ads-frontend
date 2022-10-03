@@ -92,7 +92,9 @@ export default function Login({ isVerifyValid, changePassword }) {
   function renderHeader() {
     return (
       <div className={styles.ctnHeader}>
-        <img src={appIcon} alt="wallet-ads" />
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
       </div>
     );
   }
