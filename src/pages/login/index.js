@@ -155,6 +155,7 @@ export default function Login({ isVerifyValid, changePassword }) {
           <div className={styles.inputWrapper}>
             <TextField
               value={values.email}
+              autoComplete="email"
               onChange={handleChange('email')}
               fullWidth
               error={errorMessage.email}
@@ -165,6 +166,7 @@ export default function Login({ isVerifyValid, changePassword }) {
           <div className={styles.inputWrapper}>
             <TextField
               fullWidth
+              autoComplete="password"
               placeholder="Password"
               type={values.showPassword ? 'text' : 'password'}
               value={values.password}
