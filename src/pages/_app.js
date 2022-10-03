@@ -34,7 +34,7 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import initMamoto from './mamoto';
+import initMamoto from './matomo';
 
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
