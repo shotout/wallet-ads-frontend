@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-script-component-in-head */
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
@@ -12,6 +13,7 @@ import PropTypes from 'prop-types';
 import cookie from 'cookie';
 // next
 import Head from 'next/head';
+import Script from 'next/script';
 import App from 'next/app';
 // utils
 import { getSettings } from '../utils/settings';
@@ -59,6 +61,19 @@ function MyApp(props) {
     <>
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <Script strategy="afterInteractive" id="matomoAnalytics">
+          {`var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="https://walletads.matomo.cloud/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '1']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src='//cdn.matomo.cloud/walletads.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+          })();`}
+        </Script>
       </Head>
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
