@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthFooter from '../../components/auth-footer';
 import useStyles from './styles';
 import { routes } from './../../helpers/routes';
+import { Router } from 'next/router';
 
 const disableAsset = '/assets/disable.png';
 const appIcon = '/assets/svg/wallet_logo.svg';
@@ -38,16 +39,16 @@ export default function NoMobile() {
       </div>
 
       <div className={styles.ctnLink}>
-        <Link href="https://www.walletads.io/impressum">
+        <Link href={routes.walletadsFeature}>
           <a target={'_blank'}>Feature</a>
         </Link>
-        <Link href="terms">
+        <Link href={routes.walletadsExplore}>
           <a target={'_blank'}>Explore</a>
         </Link>
-        <Link href="privacy">
+        <Link href={routes.walletadsContact}>
           <a target={'_blank'}>Contact</a>
         </Link>
-        <Link href="cookies">
+        <Link href={routes.walletadsLogin}>
           <a target={'_blank'}>Login</a>
         </Link>
       </div>
