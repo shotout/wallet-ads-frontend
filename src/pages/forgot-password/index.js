@@ -38,6 +38,20 @@ export default function ForgotPassword() {
     }
   }, [timer]);
 
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === 'Enter' || event.code === 13) {
+        console.log('Enter key was pressed. Run your function.');
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+    document.addEventListener('keydown', listener);
+    return () => {
+      document.removeEventListener('keydown', listener);
+    };
+  }, []);
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };

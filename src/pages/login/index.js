@@ -1,6 +1,6 @@
 import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { requestLogin } from '../../utils/requests';
@@ -33,6 +33,20 @@ export default function Login({ isVerifyValid, changePassword }) {
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
+
+  useEffect(() => {
+    const listener = (event) => {
+      if (event.code === 'Enter' || event.code === 13) {
+        console.log('Enter key was pressed. Run your function.');
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+    document.addEventListener('keydown', listener);
+    return () => {
+      document.removeEventListener('keydown', listener);
+    };
+  }, []);
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
