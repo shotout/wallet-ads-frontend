@@ -23,8 +23,6 @@ export default makeStyles((theme) => ({
       fontWeight: 'bold',
       fontSize: 15,
       [theme.breakpoints.down('sm')]: {
-        marginLeft: 10,
-        marginRight: 10,
         display: 'grid',
       },
     },
