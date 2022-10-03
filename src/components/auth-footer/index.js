@@ -11,6 +11,7 @@ export default function AuthFooter() {
         <Link href="https://www.walletads.io/impressum">
           <a target={'_blank'}>Imprint</a>
         </Link>
+
         <Link href="terms">
           <a target={'_blank'}>Terms and Conditions / AGB</a>
         </Link>
