@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import cookie from 'cookie';
 // next
 import Head from 'next/head';
+import Script from 'next/script';
 import App from 'next/app';
 // utils
 import { getSettings } from '../utils/settings';
@@ -60,6 +61,7 @@ function MyApp(props) {
       <Head>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      <Script src="./mamoto.js" />
       <ReduxProvider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <CollapseDrawerProvider>
