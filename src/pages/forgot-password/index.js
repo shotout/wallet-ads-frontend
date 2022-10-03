@@ -44,6 +44,7 @@ export default function ForgotPassword() {
 
   const onKeyDownHandler = (e) => {
     if (e.keyCode === 13) {
+      e.preventDefault();
       handleSubmit();
     }
   };
@@ -145,8 +146,8 @@ export default function ForgotPassword() {
             Enter your email address and you will receive an email with instructions on how to reset your password.
           </Typography>
         </div>
-        <div className={styles.ctnForm}>
-          <form onKeyDown={onKeyDownHandler}>
+        <form onKeyDown={onKeyDownHandler}>
+          <div className={styles.ctnForm}>
             <div className={styles.inputWrapper}>
               <TextField
                 fullWidth
@@ -159,9 +160,9 @@ export default function ForgotPassword() {
                 placeholder="Email"
               />
             </div>
-          </form>
-        </div>
-        <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Reset Password'} />
+          </div>
+          <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Reset Password'} />
+        </form>
         {renderDirectRegister()}
       </div>
     );

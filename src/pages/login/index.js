@@ -40,6 +40,7 @@ export default function Login({ isVerifyValid, changePassword }) {
 
   const onKeyDownHandler = (e) => {
     if (e.keyCode === 13) {
+      e.preventDefault();
       handleSubmit();
     }
   };
