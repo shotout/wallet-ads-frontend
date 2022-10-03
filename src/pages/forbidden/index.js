@@ -17,7 +17,7 @@ export default function NoMobile() {
   function renderHeader() {
     return (
       <div className={styles.ctnHeader}>
-        <Link href={routes.walletads}>
+        <Link href={routes.walletadsMain}>
           <img src={appIcon} alt="wallet-ads" />
         </Link>
         <div className="menu">
@@ -30,7 +30,7 @@ export default function NoMobile() {
   const renderMenu = () => (
     <div className={styles.ctnMenuRoot}>
       <div className={styles.ctnHeader}>
-        <Link href={routes.walletads}>
+        <Link href={routes.walletadsMain}>
           <img src={appIcon} alt="wallet-ads" />
         </Link>
         <div className="menu">
