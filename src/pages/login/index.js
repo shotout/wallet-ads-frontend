@@ -30,20 +30,6 @@ export default function Login({ isVerifyValid, changePassword }) {
   });
   const [errorMessage, setErrorMessage] = useState(defaultErrorState);
 
-  useEffect(() => {
-    const listener = (event) => {
-      console.log(values);
-      if (event.code === 'Enter' || event.code === 13) {
-        console.log(values);
-        handleSubmit();
-      }
-    };
-    document.addEventListener('keydown', listener);
-    return () => {
-      document.removeEventListener('keydown', listener);
-    };
-  }, []);
-
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
@@ -175,7 +161,7 @@ export default function Login({ isVerifyValid, changePassword }) {
         {renderRedBox()}
         {renderGreenBox()}
         <div className={styles.ctnForm}>
-          <form onKeyDown={onKeyDownHandler}>
+          <form onSubmit={() => handleSubmit()} onKeyDown={onKeyDownHandler}>
             <div className={styles.inputWrapper}>
               <TextField
                 value={values.email}
