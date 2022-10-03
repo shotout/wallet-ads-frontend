@@ -61,4 +61,35 @@ export default makeStyles((theme) => ({
       },
     },
   },
+  ctnMenuRoot: {
+    position: 'absolute',
+    top: 0,
+    width: '100%',
+
+    backgroundColor: '#fff',
+    '& > .close': {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      padding: 10,
+
+      width: '100%',
+      fontSize: 20,
+    },
+  },
+  ctnLink: {
+    marginTop: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    '& > a': {
+      width: '100%',
+      color: '#000',
+      textDecoration: 'none',
+      padding: 15,
+      fontWeight: 'bold',
+      fontSize: 15,
+    },
+  },
 }));
