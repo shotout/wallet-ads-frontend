@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-script-component-in-head */
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
