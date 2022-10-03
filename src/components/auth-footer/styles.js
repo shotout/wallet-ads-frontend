@@ -17,24 +17,40 @@ export default makeStyles((theme) => ({
   },
   ctnLink: {
     textAlign: 'center',
+    padding: 5,
+
     '& >  a': {
       color: '#fff',
       textDecoration: 'none',
       fontWeight: 'bold',
       fontSize: 14,
-      borderRight: `1px solid white`,
-      paddingLeft: 15,
-      paddingRight: 15,
     },
     [theme.breakpoints.down('sm')]: {
       marginBottom: 8,
       marginTop: 8,
       '& > a': {
         marginTop: 8,
+        paddingLeft: 20,
+        paddingRight: 20,
+        lineHeight: 2,
+      },
+    },
+    [theme.breakpoints.down('lg')]: {
+      marginBottom: 8,
+      marginTop: 8,
+      '& > a': {
+        marginTop: 8,
+        paddingLeft: 20,
+        paddingRight: 20,
+        lineHeight: 2,
       },
     },
   },
-
+  ctnBorder: {
+    [theme.breakpoints.down('sm')]: {
+      borderRight: `1px solid white`,
+    },
+  },
   ctnHidden: {
     [theme.breakpoints.down('sm')]: {
       display: 'none',
