@@ -35,6 +35,9 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
+// matomo file
+import initMamoto from './matomo';
+
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
@@ -62,25 +65,9 @@ function MyApp(props) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Script
-        id="matomoInit"
+        id="load-mamoto"
         dangerouslySetInnerHTML={{
-          __html: `
-        var _paq = (window._paq = window._paq || []);
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-          var u = 'https://walletads.matomo.cloud/';
-          _paq.push(['setTrackerUrl', u + 'matomo.php']);
-          _paq.push(['setSiteId', '1']);
-          var d = document,
-            g = d.createElement('script'),
-            s = d.getElementsByTagName('script')[0];
-          g.async = true;
-          g.src = '//cdn.matomo.cloud/walletads.matomo.cloud/matomo.js';
-          s.parentNode.insertBefore(g, s);
-        })();
-      `,
+          __html: `${initMamoto()}`,
         }}
       />
       <ReduxProvider store={store}>
