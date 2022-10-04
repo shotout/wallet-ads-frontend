@@ -18,12 +18,8 @@ export default makeStyles((theme) => ({
   },
   ctnPromo: {
     width: '100%',
-    // paddingTop: 10,
-    // paddingBottom: 40,
-
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: '#CACCED',
     padding: '20px 40px 40px 40px',
   },
   ctnGroup: {
@@ -37,10 +33,13 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: '100%',
     border: 0,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
     '& fieldset': {
       borderTopRightRadius: 0,
       borderBottomRightRadius: 0,
-      backgroundColor: '#fff',
+      color: 'black',
     },
   },
   ctnApply: {
@@ -74,5 +73,11 @@ export default makeStyles((theme) => ({
     color: '#7089FF',
     textDecoration: 'underline',
     cursor: 'pointer',
+  },
+  ctnBackgroundBlue: {
+    backgroundColor: '#CACCED',
+  },
+  ctnBackgroundSuccess: {
+    backgroundColor: '#1FCB96',
   },
 }));

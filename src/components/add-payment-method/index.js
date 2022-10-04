@@ -4,8 +4,14 @@ import { payCyrptoCurrency } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
+import responseValidatorObj from './../../helpers/responseValidatorObj';
 
 const ccImage = '/assets/credit_card.png';
+
+const defaultErr = {
+  promoCodeErr: null,
+  errorValidation: null,
+};
 
 export default function AddPaymentMethod({
   isVisible = null,
@@ -18,6 +24,13 @@ export default function AddPaymentMethod({
   const styles = useStyles();
   const [loading, setLoading] = useState(false);
   const [isPromoAvail, setIsPromoAvail] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(defaultErr);
+  const [values, setValues] = useState({
+    promoCode: '',
+    isApplied: false,
+    isLoading: false,
+    promoVal: '',
+  });
 
   const handleChooseCrypto = async () => {
     handleHoverClose();
@@ -28,6 +41,56 @@ export default function AddPaymentMethod({
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     setLoading(false);
   };
+
+  const handleSubmit = () => {
+    try {
+      setErrorMsg({
+        promoCodeErr: null,
+      });
+      setValues({ ...values, isLoading: true });
+      const body = {
+        promoCode: values.promoCode,
+      };
+      // const res = await requestLogin(body);
+
+      setValues({ ...values, isLoading: false, isPromoAvail: false });
+    } catch (err) {
+      if (err.data) {
+        if (err.data.errors) {
+          setErrorMsg(responseValidatorObj(err.data.errors));
+        }
+        if (err.data.message && !err.data.errors) {
+          setErrorMsg({
+            promoCodeErr: null,
+            errorValidation: err.data.message,
+          });
+        }
+      }
+      setValues({ ...values, isLoading: false });
+    }
+  };
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const renderFormPromoCode = () => (
+    <div className={styles.ctnGroup}>
+      <TextField
+        fullWidth
+        className={styles.ctnInput}
+        size="small"
+        placeholder="Enter promo code"
+        variant="outlined"
+        onChange={handleChange}
+        value={values.promoCode}
+        error={'tes'}
+        helperText={'tes'}
+      />
+      {/* <input className={styles.ctnInput} /> */}
+      <DefaultButton ctnBtnStyle={styles.ctnApply} onClick={handleSubmit} label="Apply" />
+    </div>
+  );
 
   return (
     <Popover
@@ -84,20 +147,32 @@ export default function AddPaymentMethod({
             <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
           </div>
         </div>
-        <div className={styles.ctnPromo}>
-          {/* <Typography variant="body1" color="#000" textAlign={'center'}>
-            Do you have a promo code?{' '}
-            <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
-              Click here.
-            </span>
-          </Typography> */}
-          {/* <FormGroup row> */}
-          <div className={styles.ctnGroup}>
-            <TextField fullWidth className={styles.ctnInput} size="small" />
-            {/* <input className={styles.ctnInput} /> */}
-            <DefaultButton ctnBtnStyle={styles.ctnApply} />
-          </div>
-          {/* </FormGroup> */}
+        <div
+          className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
+            values.isApplied && styles.ctnBackgroundSuccess
+          }`}
+        >
+          {!values.isApplied ? (
+            isPromoAvail ? (
+              renderFormPromoCode()
+            ) : (
+              <Typography variant="body1" color="#000" textAlign={'center'}>
+                Do you have a promo code?{' '}
+                <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
+                  Click here.
+                </span>
+              </Typography>
+            )
+          ) : (
+            <>
+              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
+                {`Promo code ${values.promoCode} successfully apllied!`}
+              </Typography>
+              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
+                {`Your discount of ${values.promoCode} will be applied shown on the invoice`}
+              </Typography>
+            </>
+          )}
         </div>
       </div>
     </Popover>
