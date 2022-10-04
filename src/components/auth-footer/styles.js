@@ -12,29 +12,43 @@ export default makeStyles((theme) => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
-      padding: '10px 20px',
+      padding: '10px 0px',
     },
   },
   ctnLink: {
-    '& > a': {
+    textAlign: 'center',
+    padding: 5,
+
+    '& >  a': {
       color: '#fff',
       textDecoration: 'none',
-      marginRight: 30,
       fontWeight: 'bold',
-      fontSize: 15,
-      [theme.breakpoints.down('sm')]: {
-        display: 'grid',
-      },
+      fontSize: 14,
     },
     [theme.breakpoints.down('sm')]: {
       marginBottom: 8,
-      display: 'flex',
-      justifyContent: 'space-around',
-      flexDirection: 'row',
+      marginTop: 8,
       '& > a': {
-        textAlign: 'center',
         marginTop: 8,
+        paddingLeft: 20,
+        paddingRight: 20,
+        lineHeight: 2,
       },
+    },
+    [theme.breakpoints.down('lg')]: {
+      marginBottom: 8,
+      marginTop: 8,
+      '& > a': {
+        marginTop: 8,
+        paddingLeft: 20,
+        paddingRight: 20,
+        lineHeight: 2,
+      },
+    },
+  },
+  ctnBorder: {
+    [theme.breakpoints.down('sm')]: {
+      borderRight: `1px solid white`,
     },
   },
   ctnHidden: {

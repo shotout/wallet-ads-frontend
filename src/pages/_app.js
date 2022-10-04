@@ -34,6 +34,11 @@ import MuiCoreTheme from '../theme/MuiCoreTheme';
 
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
+<<<<<<< HEAD
+=======
+
+// matomo file
+>>>>>>> develop
 import initMamoto from './matomo';
 
 import ModalCookie from '../components/modal-cookie';

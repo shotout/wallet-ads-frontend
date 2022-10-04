@@ -7,5 +7,10 @@ export const routes = {
   privacy: '/privacy',
   forgotPassword: '/forgot-password',
   changePassword: '/change=passwprd',
-  walletads: 'https://dashboard.walletads.io/',
+  walletads: 'https://walletads.io/',
+  walletadsDashboard: 'https://dashboard.walletads.io/',
+  walletadsFeature: 'https://www.walletads.io/#features',
+  walletadsExplore: 'https://www.walletads.io/#explore',
+  walletadsContact: 'https://www.walletads.io/#signup',
+  walletadsLogin: 'https://dashboard.walletads.io/',
 };

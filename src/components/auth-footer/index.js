@@ -9,22 +9,31 @@ export default function AuthFooter() {
     <div className={styles.ctnRoot}>
       <div className={styles.ctnLink}>
         <Link href="https://www.walletads.io/impressum">
-          <a target={'_blank'}>Imprint</a>
+          <a className={styles.ctnBorder} target={'_blank'}>
+            Imprint
+          </a>
         </Link>
+
         <Link href="terms">
-          <a target={'_blank'}>Terms and Conditions / AGB</a>
+          <a target={'_blank'} style={{ clear: 'both', display: 'inline-block' }}>
+            Terms and Conditions / AGB
+          </a>
         </Link>
         <Link href="privacy">
-          <a target={'_blank'}>Privacy</a>
+          <a className={styles.ctnBorder} target={'_blank'}>
+            Privacy
+          </a>
         </Link>
         <Link href="cookies">
           <a target={'_blank'}>Cookie Policy</a>
         </Link>
       </div>
       <div className={styles.ctnCopyright}>
-        <Typography variant="body1" fontSize={15} color="#fff" fontWeight={'800'}>
-          ©2022 WALLETADS
-        </Typography>
+        <Link href="https://www.walletads.io">
+          <Typography variant="body1" fontSize={15} color="#fff" fontWeight={'800'}>
+            ©2022 WALLETADS
+          </Typography>
+        </Link>
       </div>
     </div>
   );
