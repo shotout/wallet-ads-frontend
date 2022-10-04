@@ -1727,13 +1727,11 @@ export default function AddCampaign({ content, params }) {
           }}
           totalBudget={getTotalBudget(audienceForm)}
           showCreditCard={showCreditCard}
-          // isVisible={showCreditCard.isVisible}
-          isVisible={true}
+          isVisible={showCreditCard.isVisible}
           directStripe={directStripe}
-          // isVisible
-          // onClose={() => {
-          //   setShowCreditCard({ ...showCreditCard, isVisible: false });
-          // }}
+          onClose={() => {
+            setShowCreditCard({ ...showCreditCard, isVisible: false });
+          }}
           handleHoverClose={() => {
             handleResetPage();
             setShowCreditCard({

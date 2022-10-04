@@ -84,11 +84,12 @@ export default function AddPaymentMethod({
         variant="outlined"
         onChange={handleChange}
         value={values.promoCode}
-        error={'tes'}
-        helperText={'tes'}
+        isLoading={values.isLoading}
+        // error={'tes'}
+        // helperText={'tes'}
       />
       {/* <input className={styles.ctnInput} /> */}
-      <DefaultButton ctnBtnStyle={styles.ctnApply} onClick={handleSubmit} label="Apply" />
+      <DefaultButton ctnBtnStyle={styles.ctnApply} onClick={handleSubmit} label={'Apply'} />
     </div>
   );
 
