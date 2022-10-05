@@ -40,6 +40,7 @@ import initMamoto from './matomo';
 
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
+import { getConsentCookie } from '../helpers/auth';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
 
 // ----------------------------------------------------------------------
@@ -99,16 +100,28 @@ function MyApp(props) {
 
 MyApp.getInitialProps = async (context) => {
   const appProps = await App.getInitialProps(context);
-
   const cookies = cookie.parse(context.ctx.req ? context.ctx.req.headers.cookie || '' : document.cookie);
-
   const settings = getSettings(cookies);
-  const res = await Axios.get('https://ipapi.co/json/');
-  return {
-    ...appProps,
-    settings,
-    countryId: (res.data.country || '').toLowerCase(),
-  };
+  try {
+    const initialCookie = getConsentCookie(context.ctx);
+    let res = null;
+    if (!initialCookie) {
+      console.log('Load ip api');
+      res = await Axios.get('https://ipapi.co/json/');
+    }
+    return {
+      ...appProps,
+      settings,
+      countryId: !initialCookie ? (res.data.country || '').toLowerCase() : null,
+    };
+  } catch (err) {
+    console.log('Err:', err);
+    return {
+      ...appProps,
+      settings,
+      countryId: null,
+    };
+  }
 };
 
 export default MyApp;

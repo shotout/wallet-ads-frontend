@@ -54,6 +54,30 @@ export default function Invoice({ content }){
       setActivePopover(popoverName)
     };
 
+    function renderLimitText(contentText){
+        if(contentText){
+            if(window.innerWidth <= 1080){
+                if(contentText.length > 12){
+                    return `${contentText.substring(0, 12)}...`
+                }
+            }
+            if(window.innerWidth > 1080 && window.innerWidth < 1300){
+                if(contentText.length > 14){
+                    return `${contentText.substring(0, 14)}...`
+                }
+            }
+
+            if(window.innerWidth > 1300){
+                if(contentText.length > 16){
+                    return `${contentText.substring(0, 16)}...`
+                }
+            }
+        }
+        return contentText
+    }
+
+
+    console.log("Check window.innerWidth:", window.innerWidth)
 
   function renderPopover(type, content){
     return(
@@ -157,8 +181,7 @@ export default function Invoice({ content }){
                             </Grid>
                             <Grid item md={2.4} sm={12} position="relative">
                                 <Typography
-                                    variant="body1"
-                                    className={styles.txtCampaignName}>
+                                    variant="body1">
                                         <span
                                             onMouseEnter={(event) => {handleHoverOpen(event, `invoice_number${item.id}`)}}
                                             onMouseLeave={() => {
@@ -167,7 +190,8 @@ export default function Invoice({ content }){
                                                     setActivePopover(null)
                                                 }
                                             }}>
-                                    {item.invoice_number}
+                                    {renderLimitText(item.invoice_number)}
+                                    {/* {renderLimitText('202209213_MEOWNYANTKT')} */}
                                     </span>
                                 </Typography>
                                 {activePopover === `invoice_number${item.id}` && renderPopover(`invoice_number${item.id}`, item.invoice_number)}
@@ -184,7 +208,6 @@ export default function Invoice({ content }){
                                         }}>
                                     {item.campaign_name}
                                     </span>
-                                    {/* Lorem ipsum sit dolor amet lorem ipsum sit dolor amet lorem ipsum */}
                                 </Typography>
                                 {activePopover === `campaign_name${item.id}` && renderPopover(`campaign_name${item.id}`, item.campaign_name)}
                             </Grid>
