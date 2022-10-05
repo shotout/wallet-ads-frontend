@@ -1693,6 +1693,7 @@ export default function AddCampaign({ content, params }) {
         <DefaultButton
           isLoading={loadingSubmit}
           onClick={validateSubmit}
+          ctnBtnStyle={styles.btnSetupAirdrop}
           // onClick={() => {
           //   setModalSuccess('cryptocurrency')
           // }}

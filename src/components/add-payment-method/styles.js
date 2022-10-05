@@ -17,6 +17,7 @@ export default makeStyles((theme) => ({
     },
   },
   ctnPromo: {
+    display: 'none', //just delete this line to show promocode
     width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
