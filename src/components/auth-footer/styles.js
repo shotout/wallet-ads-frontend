@@ -45,6 +45,16 @@ export default makeStyles((theme) => ({
         lineHeight: 2,
       },
     },
+    [theme.breakpoints.down('xl')]: {
+      marginBottom: 8,
+      marginTop: 8,
+      '& > a': {
+        marginTop: 8,
+        paddingLeft: 20,
+        paddingRight: 20,
+        lineHeight: 2,
+      },
+    },
   },
   ctnBorder: {
     [theme.breakpoints.down('sm')]: {
