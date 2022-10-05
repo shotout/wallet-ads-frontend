@@ -18,7 +18,14 @@ export default makeStyles((theme) => ({
   ctnLink: {
     textAlign: 'center',
     padding: 5,
-
+    marginBottom: 8,
+    marginTop: 8,
+    '& > a': {
+      marginTop: 8,
+      paddingLeft: 20,
+      paddingRight: 20,
+      lineHeight: 2,
+    },
     '& >  a': {
       color: '#fff',
       textDecoration: 'none',
@@ -36,16 +43,6 @@ export default makeStyles((theme) => ({
       },
     },
     [theme.breakpoints.down('lg')]: {
-      marginBottom: 8,
-      marginTop: 8,
-      '& > a': {
-        marginTop: 8,
-        paddingLeft: 20,
-        paddingRight: 20,
-        lineHeight: 2,
-      },
-    },
-    [theme.breakpoints.down('xl')]: {
       marginBottom: 8,
       marginTop: 8,
       '& > a': {
