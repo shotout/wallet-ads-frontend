@@ -47,7 +47,6 @@ export default makeStyles((theme) => ({
     height: '100%',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
-    textTransform: 'lowercase',
     width: '40%',
     border: 0,
   },
