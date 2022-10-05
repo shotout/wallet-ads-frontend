@@ -304,8 +304,9 @@ export default function AddCampaign({ content, params }) {
     });
   };
 
-  const directStripe = () => {
+  const directStripe = (params) => {
     stripe.redirectToCheckout({
+      promo: params,
       sessionId: showCreditCard ? showCreditCard.sessionId : null,
     });
   };
@@ -1086,7 +1087,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderCardAudience() {
     return (
-      <div className={styles.cardAudienceWrapper}>
+      <div className={styles.cardAudienceWrapper} id="define-audience-card">
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
@@ -1176,6 +1177,7 @@ export default function AddCampaign({ content, params }) {
           <DefineAudience
             onClose={() => {
               setSelectedAudience(null);
+              window.location.href = '#define-audience-card';
             }}
             onAdd={(value) => {
               handleSaveAudienceValue(value);

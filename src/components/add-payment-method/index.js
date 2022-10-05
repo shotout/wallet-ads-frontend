@@ -1,6 +1,6 @@
 import { Grid, Popover, Typography, FormGroup, TextField } from '@mui/material';
 import { useState } from 'react';
-import { payCyrptoCurrency } from '../../utils/requests';
+import { handleSubmitPromo, payCyrptoCurrency } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
@@ -30,34 +30,64 @@ export default function AddPaymentMethod({
     isApplied: false,
     isLoading: false,
     promoVal: '',
+    isSubmit: false,
   });
+
+  const handlePaymentChoose = async (type) => {
+    console.log(values.isSubmit);
+    if (isPromoAvail && !values.isSubmit) {
+      console.log('NOT SUBMITED');
+      handleSubmit();
+    } else {
+      if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
+        handleSubmit();
+      } else {
+        if (type === 'crypto') {
+          handleChooseCrypto();
+        } else {
+          directStripe(values.promoCode);
+        }
+      }
+    }
+  };
 
   const handleChooseCrypto = async () => {
     handleHoverClose();
     setLoading(true);
     payCyrptoCurrency({
+      promo: values.promoCode,
       campaign_id: showCreditCard.campaignId,
     });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     setLoading(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
       setErrorMsg({
         promoCodeErr: null,
+        errorValidation: null,
       });
-      setValues({ ...values, isLoading: true });
+      setValues({ ...values, isLoading: true, isSubmit: true });
       const body = {
-        promoCode: values.promoCode,
+        code: values.promoCode,
+        campaign_id: 32,
       };
-      // const res = await requestLogin(body);
-
-      setValues({ ...values, isLoading: false, isPromoAvail: false });
+      const res = await handleSubmitPromo(body);
+      setErrorMsg({
+        promoCodeErr: null,
+        errorValidation: null,
+      });
+      setValues({ ...values, isLoading: false, isPromoAvail: false, isApplied: true });
     } catch (err) {
+      console.log(err);
       if (err.data) {
         if (err.data.errors) {
-          setErrorMsg(responseValidatorObj(err.data.errors));
+          console.log('err', err);
+          setErrorMsg({
+            promoCodeErr: err.data.errors.code,
+            errorValidation: null,
+          });
         }
         if (err.data.message && !err.data.errors) {
           setErrorMsg({
@@ -66,31 +96,51 @@ export default function AddPaymentMethod({
           });
         }
       }
-      setValues({ ...values, isLoading: false });
+      setValues({ ...values, isLoading: false, isSubmit: true });
     }
   };
+
+  function renderRedBox() {
+    if (errorMsg.errorValidation) {
+      return (
+        <div className={styles.ctnErrText}>
+          <Typography variant="body1" color="#E83155">
+            {errorMsg.errorValidation}
+          </Typography>
+        </div>
+      );
+    }
+    return null;
+  }
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
   const renderFormPromoCode = () => (
-    <div className={styles.ctnGroup}>
-      <TextField
-        fullWidth
-        className={styles.ctnInput}
-        size="small"
-        placeholder="Enter promo code"
-        variant="outlined"
-        onChange={handleChange}
-        value={values.promoCode}
-        isLoading={values.isLoading}
-        // error={'tes'}
-        // helperText={'tes'}
-      />
-      {/* <input className={styles.ctnInput} /> */}
-      <DefaultButton ctnBtnStyle={styles.ctnApply} onClick={handleSubmit} label={'Apply'} />
-    </div>
+    <>
+      <div className={styles.ctnGroup}>
+        <TextField
+          fullWidth
+          className={styles.ctnInput}
+          size="small"
+          placeholder="Enter promo code"
+          variant="outlined"
+          onChange={handleChange('promoCode')}
+          value={values.promoCode}
+          error={errorMsg.promoCodeErr}
+          helperText={errorMsg.promoCodeErr}
+        />
+        {/* <input className={styles.ctnInput} /> */}
+        <DefaultButton
+          isLoading={values.isLoading}
+          ctnBtnStyle={styles.ctnApply}
+          onClick={handleSubmit}
+          label={'Apply'}
+        />
+      </div>
+      <div className={styles.ctnErrTextWrapper}>{renderRedBox()}</div>
+    </>
   );
 
   return (
@@ -133,13 +183,17 @@ export default function AddPaymentMethod({
               </Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <DefaultButton onClick={directStripe} ctnBtnStyle={styles.btnStyle} label={'Add credit card'} />
+              <DefaultButton
+                onClick={() => handlePaymentChoose('cc')}
+                ctnBtnStyle={styles.btnStyle}
+                label={'Add credit card'}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
               <DefaultButton
                 isLoading={loading}
                 ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
-                onClick={handleChooseCrypto}
+                onClick={() => handlePaymentChoose('crypto')}
                 label={'I would like to pay using cryptocurrencies'}
               />
             </Grid>

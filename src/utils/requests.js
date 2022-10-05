@@ -121,9 +121,9 @@ export const getInvoicesList = (ctx = null) =>
     ctx,
   });
 
-export const handleCheckVoucher = (data) =>
+export const handleSubmitPromo = (data) =>
   axios({
-    url: '/pay/method',
+    url: '/user/voucher',
     method: 'POST',
     data,
   });

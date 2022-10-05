@@ -40,7 +40,7 @@ export default function NoMobile() {
 
       <div className={styles.ctnLink}>
         <Link href={routes.walletadsFeature}>
-          <a target={'_blank'}>Feature</a>
+          <a target={'_blank'}>Features</a>
         </Link>
         <Link href={routes.walletadsExplore}>
           <a target={'_blank'}>Explore</a>

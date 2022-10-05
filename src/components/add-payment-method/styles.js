@@ -17,7 +17,7 @@ export default makeStyles((theme) => ({
     },
   },
   ctnPromo: {
-    display: 'none', //just delete this line to show promocode
+    // display: 'none', //just delete this line to show promocode
     width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
@@ -80,5 +80,13 @@ export default makeStyles((theme) => ({
   },
   ctnBackgroundSuccess: {
     backgroundColor: '#1FCB96',
+  },
+  ctnErrTextWrapper: {
+    height: 25,
+  },
+  ctnErrText: {
+    fontWeight: 'bold',
+    marginTop: 5,
+    marginLeft: 5,
   },
 }));
