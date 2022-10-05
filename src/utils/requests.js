@@ -120,3 +120,10 @@ export const getInvoicesList = (ctx = null) =>
     method: 'GET',
     ctx,
   });
+
+export const handleCheckVoucher = (data) =>
+  axios({
+    url: '/pay/method',
+    method: 'POST',
+    data,
+  });
