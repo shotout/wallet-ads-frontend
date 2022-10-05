@@ -71,7 +71,7 @@ export default function AddPaymentMethod({
       setValues({ ...values, isLoading: true, isSubmit: true });
       const body = {
         code: values.promoCode,
-        campaign_id: 32,
+        campaign_id: showCreditCard.campaignId,
       };
       const res = await handleSubmitPromo(body);
       setErrorMsg({
