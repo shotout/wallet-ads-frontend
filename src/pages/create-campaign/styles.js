@@ -401,7 +401,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btnSetupAirdrop: {
     height: 44,
-    width: 'auto',
+    width: 'auto !important',
     borderRadius: 12,
     display: 'flex',
     justifyContent: 'center',
