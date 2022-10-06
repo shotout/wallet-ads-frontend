@@ -305,8 +305,10 @@ export default function AddCampaign({ content, params }) {
   };
 
   const directStripe = (params) => {
+    // const sessionId = showCreditCard ? showCreditCard.sessionId : null;
+    // window.open(`/stripe?promo=${params}&sessionId=${sessionId}`, '_blank');
     stripe.redirectToCheckout({
-      promo: params,
+      // promo: params,
       sessionId: showCreditCard ? showCreditCard.sessionId : null,
     });
   };
