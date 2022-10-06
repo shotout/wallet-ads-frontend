@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAuthorizationHeader } from '../helpers/auth';
 
-const url = process.env.API_URL_PROD;
+const url = 'https://backend.walletads.io/api/v1';
 
 /**
  * Request Wrapper with default success/error actions
