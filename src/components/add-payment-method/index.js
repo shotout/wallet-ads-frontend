@@ -48,6 +48,14 @@ export default function AddPaymentMethod({
     onClose();
   };
 
+  const cancelPromo = () => {
+    setIsPromoAvail(!isPromoAvail);
+    setErrorMsg({
+      promoCodeErr: null,
+      errorValidation: null,
+    });
+  };
+
   const handlePaymentChoose = async (type) => {
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
@@ -148,7 +156,7 @@ export default function AddPaymentMethod({
           label={'Apply'}
         />
         <Typography variant="body1" color="#000" textAlign={'center'}>
-          <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnCancel}>
+          <span onClick={cancelPromo} className={styles.ctnCancel}>
             Cancel
           </span>
         </Typography>
@@ -225,7 +233,7 @@ export default function AddPaymentMethod({
             isPromoAvail ? (
               renderFormPromoCode()
             ) : (
-              <Typography variant="body1" color="#000" textAlign={'center'}>
+              <Typography variant="body1" color="#000" textAlign={'center'} className={styles.ctnPromoText}>
                 Do you have a promo code?{' '}
                 <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
                   Click here.

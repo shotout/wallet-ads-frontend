@@ -5,6 +5,7 @@ export default makeStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     width: '100%',
+    justifyContent: 'center',
     '& > .content': {
       padding: 30,
     },
@@ -95,5 +96,16 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
     marginTop: 5,
     marginLeft: 5,
+  },
+  ctnPromoText: {
+    marginTop: -20,
+  },
+  ccStyle: {
+    width: '100%',
+    alignSelf: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '60%',
+      margin: '0 auto',
+    },
   },
 }));
