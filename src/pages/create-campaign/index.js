@@ -304,13 +304,18 @@ export default function AddCampaign({ content, params }) {
     });
   };
 
-  const directStripe = (params) => {
-    // const sessionId = showCreditCard ? showCreditCard.sessionId : null;
-    // window.open(`/stripe?promo=${params}&sessionId=${sessionId}`, '_blank');
-    stripe.redirectToCheckout({
-      // promo: params,
-      sessionId: showCreditCard ? showCreditCard.sessionId : null,
+  const directStripe = async (params) => {
+    const session = await createSession({
+      promo: params,
+      campaign_id: showCreditCard.campaignId,
+      campaign_name: formValues.campaign_name,
+      total_budget: getTotalBudget(audienceForm) * 100,
     });
+    setShowCreditCard({
+      ...showCreditCard,
+      sessionId: session.id,
+    });
+    window.open(`${session?.url}`, '_blank');
   };
 
   const getAudienceArr = () => {
@@ -453,13 +458,14 @@ export default function AddCampaign({ content, params }) {
       } else {
         res = await handleAddCampaign(formRes);
       }
-      const session = await createSession({
-        campaign_id: res.data.id,
-        campaign_name: formValues.campaign_name,
-        total_budget: getTotalBudget(audienceForm) * 100,
-      });
+      // const session = await createSession({
+      //   campaign_id: res.data.id,
+      //   campaign_name: formValues.campaign_name,
+      //   total_budget: getTotalBudget(audienceForm) * 100,
+      // });
       setShowCreditCard({
-        sessionId: session.id,
+        // sessionId: session.id,
+        ...showCreditCard,
         campaignId: res.data.id,
         isVisible: true,
       });

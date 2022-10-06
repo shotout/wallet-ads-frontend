@@ -41,7 +41,9 @@ import initMamoto from './matomo';
 import ModalCookie from '../components/modal-cookie';
 import Axios from 'axios';
 import { getConsentCookie } from '../helpers/auth';
-const stripePromise = loadStripe(process.env.STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(
+  'pk_test_51LcRhPDKJFuPZhC477dIkviGDuKDS9vYyxGqH5RGH11LdnU9O1hl83bINQUOTxM9PjSfCA0jjiasDroLtyN4mEdo00LaTnnleG'
+);
 
 // ----------------------------------------------------------------------
 
