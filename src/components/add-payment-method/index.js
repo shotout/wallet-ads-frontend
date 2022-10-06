@@ -33,20 +33,24 @@ export default function AddPaymentMethod({
     isSubmit: false,
   });
 
+  const resetState = () => {
+    setValues({
+      promoCode: '',
+      isApplied: false,
+      isLoading: false,
+      promoVal: '',
+      isSubmit: false,
+    });
+  };
+
   const handlePaymentChoose = async (type) => {
-    console.log(values.isSubmit);
-    if (isPromoAvail && !values.isSubmit && !values.isApplied) {
-      console.log('NOT SUBMITED');
+    if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
-      if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
-        handleSubmit();
+      if (type === 'crypto') {
+        handleChooseCrypto();
       } else {
-        if (type === 'crypto') {
-          handleChooseCrypto();
-        } else {
-          directStripe(values.promoCode);
-        }
+        directStripe(values.promoCode);
       }
     }
   };
@@ -226,10 +230,10 @@ export default function AddPaymentMethod({
           ) : (
             <>
               <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                {`Promo code ${values.promoCode} successfully apllied!`}
+                {`Promo code ${values.promoCode} was successfully apllied!`}
               </Typography>
               <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                {`Your discount of ${values.promoCode} will be applied shown on the invoice`}
+                {`Your discount of USD ${values.promoCode} will be  shown on the invoice`}
               </Typography>
             </>
           )}
