@@ -458,13 +458,8 @@ export default function AddCampaign({ content, params }) {
       } else {
         res = await handleAddCampaign(formRes);
       }
-      // const session = await createSession({
-      //   campaign_id: res.data.id,
-      //   campaign_name: formValues.campaign_name,
-      //   total_budget: getTotalBudget(audienceForm) * 100,
-      // });
+
       setShowCreditCard({
-        // sessionId: session.id,
         ...showCreditCard,
         campaignId: res.data.id,
         isVisible: true,
