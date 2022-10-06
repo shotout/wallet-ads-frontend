@@ -33,12 +33,30 @@ export default function AddPaymentMethod({
     isSubmit: false,
   });
 
+  const resetState = () => {
+    setValues({
+      promoCode: '',
+      isApplied: false,
+      isLoading: false,
+      promoVal: '',
+      isSubmit: false,
+    });
+    setErrorMsg({
+      promoCodeErr: null,
+      errorValidation: null,
+    });
+    onClose();
+  };
+
+  const cancelPromo = () => {
+    setIsPromoAvail(!isPromoAvail);
+    setErrorMsg({
+      promoCodeErr: null,
+      errorValidation: null,
+    });
+  };
+
   const handlePaymentChoose = async (type) => {
-    // console.log(values.isSubmit);
-    // if (isPromoAvail && !values.isSubmit && !values.isApplied) {
-    //   console.log('NOT SUBMITED');
-    //   handleSubmit();
-    // } else {
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
@@ -80,7 +98,6 @@ export default function AddPaymentMethod({
       });
       setValues({ ...values, isLoading: false, isPromoAvail: false, isApplied: true });
     } catch (err) {
-      console.log(err);
       if (err.data) {
         if (err.data.errors) {
           console.log('err', err);
@@ -138,6 +155,11 @@ export default function AddPaymentMethod({
           onClick={handleSubmit}
           label={'Apply'}
         />
+        <Typography variant="body1" color="#000" textAlign={'center'}>
+          <span onClick={cancelPromo} className={styles.ctnCancel}>
+            Cancel
+          </span>
+        </Typography>
       </div>
       <div className={styles.ctnErrTextWrapper}>{renderRedBox()}</div>
     </>
@@ -198,7 +220,7 @@ export default function AddPaymentMethod({
               />
             </Grid>
           </Grid>
-          <div className={styles.ctnClose} onClick={onClose}>
+          <div className={styles.ctnClose} onClick={resetState}>
             <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
           </div>
         </div>
@@ -211,7 +233,7 @@ export default function AddPaymentMethod({
             isPromoAvail ? (
               renderFormPromoCode()
             ) : (
-              <Typography variant="body1" color="#000" textAlign={'center'}>
+              <Typography variant="body1" color="#000" textAlign={'center'} className={styles.ctnPromoText}>
                 Do you have a promo code?{' '}
                 <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
                   Click here.
@@ -220,11 +242,11 @@ export default function AddPaymentMethod({
             )
           ) : (
             <>
-              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                {`Promo code ${values.promoCode} successfully apllied!`}
+              <Typography variant="subtitle1" color="#fff" textAlign={'center'} className={styles.ctnBold}>
+                {`Promo code ${values.promoCode} was successfully apllied!`}
               </Typography>
               <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                {`Your discount of ${values.promoCode} will be applied shown on the invoice`}
+                Your discount of <span className={styles.ctnBold}>USD 500</span> will be shown on the invoice
               </Typography>
             </>
           )}
