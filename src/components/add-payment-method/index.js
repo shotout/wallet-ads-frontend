@@ -87,14 +87,17 @@ export default function AddPaymentMethod({
       });
       setValues({ ...values, isLoading: true, isSubmit: true });
       const body = {
-        code: values.promoCode,
-        campaign_id: showCreditCard.campaignId,
+        // code: values.promoCode,
+        // campaign_id: showCreditCard.campaignId,
+        code: 'COUPONMASTER22',
+        campaign_id: 54,
       };
       const res = await handleSubmitPromo(body);
       setErrorMsg({
         promoCodeErr: null,
         errorValidation: null,
       });
+      console.log(res);
       setValues({ ...values, isLoading: false, isPromoAvail: false, isApplied: true });
     } catch (err) {
       console.log(err);

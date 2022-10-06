@@ -22,7 +22,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: '20px 40px 40px 40px',
+    padding: '30px 40px 30px 40px',
   },
   ctnGroup: {
     display: 'flex',
@@ -104,7 +104,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     alignSelf: 'center',
     [theme.breakpoints.down('md')]: {
-      width: '60%',
+      width: '50%',
       margin: '0 auto',
     },
   },
