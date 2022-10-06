@@ -87,20 +87,16 @@ export default function AddPaymentMethod({
       });
       setValues({ ...values, isLoading: true, isSubmit: true });
       const body = {
-        // code: values.promoCode,
-        // campaign_id: showCreditCard.campaignId,
-        code: 'COUPONMASTER22',
-        campaign_id: 54,
+        code: values.promoCode,
+        campaign_id: showCreditCard.campaignId,
       };
       const res = await handleSubmitPromo(body);
       setErrorMsg({
         promoCodeErr: null,
         errorValidation: null,
       });
-      console.log(res);
       setValues({ ...values, isLoading: false, isPromoAvail: false, isApplied: true });
     } catch (err) {
-      console.log(err);
       if (err.data) {
         if (err.data.errors) {
           console.log('err', err);
@@ -245,11 +241,11 @@ export default function AddPaymentMethod({
             )
           ) : (
             <>
-              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
+              <Typography variant="subtitle1" color="#fff" textAlign={'center'} className={styles.ctnBold}>
                 {`Promo code ${values.promoCode} was successfully apllied!`}
               </Typography>
               <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                {`Your discount of USD ${values.promoCode} will be  shown on the invoice`}
+                Your discount of <span className={styles.ctnBold}>USD 500</span> will be shown on the invoice
               </Typography>
             </>
           )}

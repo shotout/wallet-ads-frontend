@@ -108,4 +108,7 @@ export default makeStyles((theme) => ({
       margin: '0 auto',
     },
   },
+  ctnBold: {
+    fontWeight: 'bolder',
+  },
 }));
