@@ -81,7 +81,8 @@ export default makeStyles((theme) => ({
     cursor: 'pointer',
     fontSize: 18,
     marginLeft: 13,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily: 'Public Sans, sans-serif',
   },
   ctnBackgroundBlue: {
     backgroundColor: '#CACCED',
