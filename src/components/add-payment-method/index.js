@@ -35,7 +35,7 @@ export default function AddPaymentMethod({
 
   const handlePaymentChoose = async (type) => {
     console.log(values.isSubmit);
-    if (isPromoAvail && !values.isSubmit) {
+    if (isPromoAvail && !values.isSubmit && !values.isApplied) {
       console.log('NOT SUBMITED');
       handleSubmit();
     } else {
