@@ -41,6 +41,11 @@ export default function AddPaymentMethod({
       promoVal: '',
       isSubmit: false,
     });
+    setErrorMsg({
+      promoCodeErr: null,
+      errorValidation: null,
+    });
+    onClose();
   };
 
   const handlePaymentChoose = async (type) => {
@@ -207,7 +212,7 @@ export default function AddPaymentMethod({
               />
             </Grid>
           </Grid>
-          <div className={styles.ctnClose} onClick={onClose}>
+          <div className={styles.ctnClose} onClick={resetState}>
             <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
           </div>
         </div>

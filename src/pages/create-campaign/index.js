@@ -144,7 +144,7 @@ export default function AddCampaign({ content, params }) {
     errorBoxAvailability: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
-    isVisible: true,
+    isVisible: false,
     sessionId: null,
     campaignId: null,
   });
