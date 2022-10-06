@@ -74,6 +74,14 @@ export default makeStyles((theme) => ({
     textDecoration: 'underline',
     cursor: 'pointer',
   },
+  ctnCancel: {
+    color: '#808080',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    fontSize: 18,
+    marginLeft: 13,
+    fontWeight: 'bold',
+  },
   ctnBackgroundBlue: {
     backgroundColor: '#CACCED',
   },

@@ -138,6 +138,11 @@ export default function AddPaymentMethod({
           onClick={handleSubmit}
           label={'Apply'}
         />
+        <Typography variant="body1" color="#000" textAlign={'center'}>
+          <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnCancel}>
+            Cancel
+          </span>
+        </Typography>
       </div>
       <div className={styles.ctnErrTextWrapper}>{renderRedBox()}</div>
     </>
