@@ -246,7 +246,7 @@ export default function AddPaymentMethod({
                 <span className={styles.ctnBold}> {`Promo code ${values.promoCode} was successfully applied!`}</span>
               </Typography>
               <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                Your discount of <span className={styles.ctnBold}>USD 500</span> will be shown on the invoice.
+                Your discount of <span className={styles.ctnBold}>USD500</span> will be shown on the invoice.
               </Typography>
             </>
           )}

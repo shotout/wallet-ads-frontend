@@ -110,6 +110,7 @@ export default makeStyles((theme) => ({
     },
   },
   ctnBold: {
-    fontWeight: 'bolder',
+    fontWeight: 'bold',
+    fontFamily: 'Public Sans, sans-serif',
   },
 }));
