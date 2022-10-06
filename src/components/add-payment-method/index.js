@@ -34,21 +34,21 @@ export default function AddPaymentMethod({
   });
 
   const handlePaymentChoose = async (type) => {
-    console.log(values.isSubmit);
-    if (isPromoAvail && !values.isSubmit && !values.isApplied) {
-      console.log('NOT SUBMITED');
+    // console.log(values.isSubmit);
+    // if (isPromoAvail && !values.isSubmit && !values.isApplied) {
+    //   console.log('NOT SUBMITED');
+    //   handleSubmit();
+    // } else {
+    if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
-      if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
-        handleSubmit();
+      if (type === 'crypto') {
+        handleChooseCrypto();
       } else {
-        if (type === 'crypto') {
-          handleChooseCrypto();
-        } else {
-          directStripe(values.promoCode);
-        }
+        directStripe(values.promoCode);
       }
     }
+    // }
   };
 
   const handleChooseCrypto = async () => {
