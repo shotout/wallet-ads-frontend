@@ -1,6 +1,6 @@
 import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { requestLogin } from '../../utils/requests';
@@ -11,6 +11,7 @@ import useStyles from './styles';
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 import nookies from 'nookies';
+import { eventTrack } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
@@ -96,7 +97,7 @@ export default function Login({ isVerifyValid, changePassword }) {
   function renderForgotPassword() {
     return (
       <div className={styles.ctnForgotPassword}>
-        <div>
+        <div onClick={() => eventTrack('Forgot Password')}>
           <Link href={routes.forgotPassword}>Forgot Password</Link>
         </div>
       </div>
@@ -107,7 +108,7 @@ export default function Login({ isVerifyValid, changePassword }) {
     return (
       <div className={styles.ctnDirectRegister}>
         <span>New here?</span>
-        <div>
+        <div onClick={() => eventTrack('Create New Account')}>
           <Link href={routes.register}>Create an account now</Link>
         </div>
       </div>
@@ -202,7 +203,12 @@ export default function Login({ isVerifyValid, changePassword }) {
           </form>
           {renderForgotPassword()}
         </div>
-        <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Login'} />
+        <DefaultButton
+          onClick={handleSubmit}
+          eventName={'Login Clicked'}
+          isLoading={values.isLoading}
+          label={'Login'}
+        />
 
         {renderDirectRegister()}
       </div>

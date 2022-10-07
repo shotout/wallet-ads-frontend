@@ -168,8 +168,10 @@ export default function AddCampaign({ content, params }) {
 
   function getAdsId(id) {
     const adsIdArr = [];
+    console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
+        console.log(index);
         adsIdArr.push(index);
       }
     });
@@ -226,6 +228,18 @@ export default function AddCampaign({ content, params }) {
         campaign_name: content.name,
         campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
         campaign_end_date_type: content.type.toString(),
+        campaign_end_day: content.type === 3 ? content.availability : '7',
+        ads_page_name: adsPage.name,
+        ads_page_description: adsPage.description,
+        ads_page_website: adsPage.website,
+        ads_page_discord: adsPage.discord,
+        ads_page_medium: adsPage.medium,
+        ads_page_telegram: adsPage.telegram,
+      });
+      setFormResp({
+        campaign_name: content.name,
+        campaign_start_date: content?.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
+        campaign_end_date_type: content?.type.toString(),
         campaign_end_day: content.type === 3 ? content.availability : '7',
         ads_page_name: adsPage.name,
         ads_page_description: adsPage.description,
@@ -307,12 +321,22 @@ export default function AddCampaign({ content, params }) {
   };
 
   const createCampaignId = async () => {
+    let datas;
+
+    if (content && params.status === 'fail') {
+      formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
+      datas = formValues;
+    } else {
+      datas = formResp;
+    }
+
     let res = null;
     if (params.id) {
-      res = await handleEditCampaign(formResp, params.id);
+      res = await handleEditCampaign(datas, params.id);
     } else {
-      res = await handleAddCampaign(formResp);
+      res = await handleAddCampaign(datas);
     }
+
     return res;
   };
 
@@ -1583,6 +1607,7 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
+
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
@@ -1707,6 +1732,7 @@ export default function AddCampaign({ content, params }) {
           isLoading={loadingSubmit}
           onClick={validateSubmit}
           ctnBtnStyle={styles.btnSetupAirdrop}
+          eventName={'Setup Airdrop'}
           // onClick={() => {
           //   setModalSuccess('cryptocurrency')
           // }}
@@ -1769,7 +1795,9 @@ export default function AddCampaign({ content, params }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log('campaig');
   try {
+    console.log('campaig');
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));

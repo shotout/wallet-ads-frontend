@@ -70,7 +70,7 @@ export default makeStyles((theme) => ({
     textAlign: 'right',
     '& > div': {
       cursor: 'pointer',
-      '& > a': {
+      '& > a > div': {
         fontFamily: 'Public Sans,sans-serif',
         color: '#000',
         textDecoration: ' underline',

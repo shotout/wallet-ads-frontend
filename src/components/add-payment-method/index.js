@@ -194,18 +194,20 @@ export default function AddPaymentMethod({
       }}
       onClose={resetState}
       className={styles.ctnPopover}
+      style={{ '&::-webkit-scrollbar': { display: 'none' } }}
     >
-      <div className={styles.ctnWrapper}>
+      <div className={styles.ctnWrapper} style={{ '&::-webkit-scrollbar': { display: 'none' } }}>
         <div className="content">
           <Typography variant="h4" sx={{ color: '#000' }} marginBottom={4} fontWeight="800" textAlign="center">
             Add payment method
           </Typography>
           <Grid container spacing={4} className={styles.gridAvailability}>
-            <Grid item md={4} xs={12}>
+            <Grid item sm={6} md={4} xs={12}>
               <img src={ccImage} className={styles.ccStyle} alt="Credit" />
             </Grid>
             <Grid
               item
+              sm={6}
               md={8}
               xs={12}
               justifyContent="center"
@@ -218,14 +220,14 @@ export default function AddPaymentMethod({
                 with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" below.
               </Typography>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} md={6} xs={12}>
               <DefaultButton
                 onClick={() => handlePaymentChoose('cc')}
                 ctnBtnStyle={styles.btnStyle}
                 label={'Add credit card'}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} md={6} xs={12}>
               <DefaultButton
                 isLoading={loading}
                 ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}

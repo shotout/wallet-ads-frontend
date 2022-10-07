@@ -7,11 +7,10 @@ export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onCl
   const handlePress = () => {
     if (!isLoading) {
       if (typeof onClick === 'function') {
+        if (window && window._paq) {
+          window._paq.push(['trackEvent', eventName]);
+        }
         onClick();
-        // if (window && window._paq) {
-        //   window._paq.push(['trackUsser', 'user']);
-        //   window._paq.push(['trackEvent', eventName]);
-        // }
       }
     }
   };

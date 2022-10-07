@@ -57,6 +57,13 @@ export default makeStyles((theme) => ({
     '& > span': {
       fontSize: 20,
     },
+    [theme.breakpoints.down('md')]: {
+      marginTop: 0,
+      height: 50,
+      '& > span': {
+        fontSize: 15,
+      },
+    },
   },
   btnBlack: {
     background: '#000 !important',
@@ -108,6 +115,10 @@ export default makeStyles((theme) => ({
       width: '50%',
       margin: '0 auto',
     },
+    // [theme.breakpoints.down('xl')]: {
+    //   width: '100%',
+    //   // margin: '0 auto',
+    // },
   },
   ctnBold: {
     fontWeight: 'bold',
