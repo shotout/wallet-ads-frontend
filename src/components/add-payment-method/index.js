@@ -20,6 +20,8 @@ export default function AddPaymentMethod({
   directStripe,
   onClose,
   showCreditCard,
+  createCampaignID,
+  totalBudget,
 }) {
   const styles = useStyles();
   const [loading, setLoading] = useState(false);
@@ -31,6 +33,7 @@ export default function AddPaymentMethod({
     isLoading: false,
     promoVal: '',
     isSubmit: false,
+    campaignId: null,
   });
 
   const resetState = () => {
@@ -51,6 +54,13 @@ export default function AddPaymentMethod({
 
   const cancelPromo = () => {
     setIsPromoAvail(!isPromoAvail);
+    setValues({
+      promoCode: '',
+      isApplied: false,
+      isLoading: false,
+      promoVal: '',
+      isSubmit: false,
+    });
     setErrorMsg({
       promoCodeErr: null,
       errorValidation: null,
@@ -71,12 +81,14 @@ export default function AddPaymentMethod({
   };
 
   const handleChooseCrypto = async () => {
-    handleHoverClose();
+    const campaign = await createCampaignID();
+
     setLoading(true);
     payCyrptoCurrency({
       promo: values.promoCode,
-      campaign_id: showCreditCard.campaignId,
+      campaign_id: values.campaignId ?? campaign.data.id,
     });
+    handleHoverClose();
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     setLoading(false);
   };
@@ -88,9 +100,10 @@ export default function AddPaymentMethod({
         errorValidation: null,
       });
       setValues({ ...values, isLoading: true, isSubmit: true });
+      console.log(totalBudget);
       const body = {
         code: values.promoCode,
-        campaign_id: showCreditCard.campaignId,
+        budget: totalBudget,
       };
       const res = await handleSubmitPromo(body);
       setErrorMsg({
