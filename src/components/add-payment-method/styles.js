@@ -23,6 +23,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'row',
     padding: '30px 40px 30px 40px',
+    [theme.breakpoints.down('md')]: {
+      padding: '10px 40px 0px 40px',
+      marginTop: -10,
+    },
   },
   ctnGroup: {
     display: 'flex',
@@ -59,9 +63,9 @@ export default makeStyles((theme) => ({
     },
     [theme.breakpoints.down('md')]: {
       marginTop: 0,
-      height: 50,
+      height: 40,
       '& > span': {
-        fontSize: 15,
+        fontSize: 12,
       },
     },
   },

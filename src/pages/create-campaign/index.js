@@ -183,6 +183,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      console.log(content);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
