@@ -103,6 +103,8 @@ export default function AddCampaign({ content, params }) {
   const [loadingSubmit, setLoadingSubmit] = useState(null);
   const [showModalSuccess, setModalSuccess] = useState(false);
 
+  const [formResp, setFormResp] = useState(null);
+
   const [audienceForm, setAudienceForm] = useState([
     {
       audienceId: makeId(),
@@ -304,18 +306,29 @@ export default function AddCampaign({ content, params }) {
     });
   };
 
+  const createCampaignId = async () => {
+    let res = null;
+    if (params.id) {
+      res = await handleEditCampaign(formResp, params.id);
+    } else {
+      res = await handleAddCampaign(formResp);
+    }
+    return res;
+  };
+
   const directStripe = async (params) => {
+    const campaign = await createCampaignId();
     const session = await createSession({
       promo: params,
-      campaign_id: showCreditCard.campaignId,
-      campaign_name: formValues.campaign_name,
+      campaign_id: campaign.data.id,
+      campaign_name: campaign.data.name,
       total_budget: getTotalBudget(audienceForm) * 100,
     });
     setShowCreditCard({
       ...showCreditCard,
       sessionId: session.id,
     });
-    window.open(`${session?.url}`, '_blank');
+    window.location.href = session?.url;
   };
 
   const getAudienceArr = () => {
@@ -452,16 +465,11 @@ export default function AddCampaign({ content, params }) {
           });
         }
       });
-
-      if (params.id) {
-        res = await handleEditCampaign(formRes, params.id);
-      } else {
-        res = await handleAddCampaign(formRes);
-      }
+      setFormResp(formRes);
 
       setShowCreditCard({
         ...showCreditCard,
-        campaignId: res.data.id,
+        // campaignId: res.data.id,
         isVisible: true,
       });
       setLoadingSubmit(false);
@@ -859,7 +867,7 @@ export default function AddCampaign({ content, params }) {
         </div>
       );
     }
-    if (item.selectedCategory === 'upload') {
+    if (item?.selectedCategory === 'upload') {
       return (
         <div className={styles.ctnAdAudience}>
           <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={'center'} marginTop={1}>
@@ -867,7 +875,7 @@ export default function AddCampaign({ content, params }) {
             Your own audience
           </Typography>
           <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={'center'}>
-            {item.audienceFile.name}
+            {item?.audienceFile?.name}
           </Typography>
         </div>
       );
@@ -1745,6 +1753,7 @@ export default function AddCampaign({ content, params }) {
               isVisible: false,
             });
           }}
+          createCampaignID={createCampaignId}
         />
         {/* <CreditCard
           callbackSuccess={(modalType) => {
