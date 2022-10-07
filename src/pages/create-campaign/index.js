@@ -1739,7 +1739,6 @@ export default function AddCampaign({ content, params }) {
             setShowCreditCard({ ...showCreditCard, isVisible: false });
           }}
           handleHoverClose={() => {
-            handleResetPage();
             setShowCreditCard({
               sessionId: null,
               campaignId: null,

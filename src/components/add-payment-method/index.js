@@ -46,6 +46,7 @@ export default function AddPaymentMethod({
       errorValidation: null,
     });
     onClose();
+    handleHoverClose();
   };
 
   const cancelPromo = () => {
@@ -178,7 +179,7 @@ export default function AddPaymentMethod({
         vertical: 'center',
         horizontal: 'center',
       }}
-      onClose={handleHoverClose}
+      onClose={resetState}
       className={styles.ctnPopover}
     >
       <div className={styles.ctnWrapper}>
