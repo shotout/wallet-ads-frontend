@@ -38,7 +38,7 @@ export default function Register() {
   const [contentType, setContentType] = useState('register');
 
   const handleChange = (prop) => (event) => {
-    if (errorMessage[prop].length > 0) {
+    if (errorMessage[prop]?.length > 0) {
       setErrorMessage({
         ...errorMessage,
         [prop]: '',
