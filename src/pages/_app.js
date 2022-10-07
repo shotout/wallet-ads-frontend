@@ -108,7 +108,6 @@ MyApp.getInitialProps = async (context) => {
     const initialCookie = getConsentCookie(context.ctx);
     let res = null;
     if (!initialCookie) {
-      console.log('Load ip api');
       res = await Axios.get('https://ipapi.co/json/');
     }
     return {
