@@ -1,12 +1,18 @@
 import { CircularProgress } from '@material-ui/core';
 import useStyles from './styles';
 
-export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onClick = () => {}, disabled }) {
+export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onClick = () => {}, eventName, disabled }) {
   const styles = useStyles();
 
   const handlePress = () => {
     if (!isLoading) {
-      if (typeof onClick === 'function') onClick();
+      if (typeof onClick === 'function') {
+        onClick();
+        // if (window && window._paq) {
+        //   window._paq.push(['trackUsser', 'user']);
+        //   window._paq.push(['trackEvent', eventName]);
+        // }
+      }
     }
   };
 

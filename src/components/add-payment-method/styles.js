@@ -5,6 +5,7 @@ export default makeStyles((theme) => ({
     position: 'relative',
     overflow: 'hidden',
     width: '100%',
+    justifyContent: 'center',
     '& > .content': {
       padding: 30,
     },
@@ -21,7 +22,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: '20px 40px 40px 40px',
+    padding: '30px 40px 30px 40px',
   },
   ctnGroup: {
     display: 'flex',
@@ -74,6 +75,15 @@ export default makeStyles((theme) => ({
     textDecoration: 'underline',
     cursor: 'pointer',
   },
+  ctnCancel: {
+    color: '#808080',
+    textDecoration: 'underline',
+    cursor: 'pointer',
+    fontSize: 18,
+    marginLeft: 13,
+    // fontWeight: 'bold',
+    fontFamily: 'Public Sans, sans-serif',
+  },
   ctnBackgroundBlue: {
     backgroundColor: '#CACCED',
   },
@@ -87,5 +97,20 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
     marginTop: 5,
     marginLeft: 5,
+  },
+  ctnPromoText: {
+    marginTop: -20,
+  },
+  ccStyle: {
+    width: '100%',
+    alignSelf: 'center',
+    [theme.breakpoints.down('md')]: {
+      width: '50%',
+      margin: '0 auto',
+    },
+  },
+  ctnBold: {
+    fontWeight: 'bold',
+    fontFamily: 'Public Sans, sans-serif',
   },
 }));
