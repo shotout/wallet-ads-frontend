@@ -18,3 +18,9 @@ export const setUserID = (payload) => {
     window._paq.push(['setUserId', payload.email]);
   }
 };
+
+export const trackGoal = (payload) => {
+  if (window && window._paq) {
+    window._paq.push(['trackGoal', 'Login']);
+  }
+};

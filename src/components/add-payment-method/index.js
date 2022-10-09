@@ -82,13 +82,15 @@ export default function AddPaymentMethod({
 
   const handleChooseCrypto = async () => {
     const campaign = await createCampaignID();
+    console.log(values.campaignId);
+    console.log(campaign.data.id);
     setLoading(true);
     payCyrptoCurrency({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
     });
-    handleHoverClose();
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
+    handleHoverClose();
     setLoading(false);
   };
 
@@ -193,9 +195,9 @@ export default function AddPaymentMethod({
       }}
       onClose={resetState}
       className={styles.ctnPopover}
-      style={{ '&::-webkit-scrollbar': { display: 'none' } }}
+      style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >
-      <div className={styles.ctnWrapper} style={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+      <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
         <div className="content">
           <Typography variant="h4" sx={{ color: '#000' }} marginBottom={4} fontWeight="800" textAlign="center">
             Add payment method
@@ -224,6 +226,7 @@ export default function AddPaymentMethod({
                 onClick={() => handlePaymentChoose('cc')}
                 ctnBtnStyle={styles.btnStyle}
                 label={'Add credit card'}
+                eventName={'Pay with stripe'}
               />
             </Grid>
             <Grid item sm={6} md={6} xs={12}>
@@ -232,6 +235,7 @@ export default function AddPaymentMethod({
                 ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
                 onClick={() => handlePaymentChoose('crypto')}
                 label={'I would like to pay using cryptocurrencies'}
+                eventName={'Pay with crypto'}
               />
             </Grid>
           </Grid>

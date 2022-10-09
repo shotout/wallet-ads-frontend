@@ -1,7 +1,11 @@
-export default function initMamoto() {
+import { getUserData } from '../helpers/auth';
+
+export default function initMamoto(props) {
   if (typeof window !== 'undefined') {
+    const userDatas = getUserData();
     var _paq = (window._paq = window._paq || []);
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['setUserId', userDatas ? userDatas.data?.email : null]);
     _paq.push(['trackPageView']);
     _paq.push(['enableLinkTracking']);
     (function () {

@@ -330,6 +330,8 @@ export default function AddCampaign({ content, params }) {
       datas = formResp;
     }
 
+    console.log('campaigan ');
+
     let res = null;
     if (params.id) {
       res = await handleEditCampaign(datas, params.id);
@@ -1741,6 +1743,14 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  const resetSession = () => {
+    setShowCreditCard({
+      sessionId: null,
+      campaignId: null,
+      isVisible: false,
+    });
+  };
+
   return (
     <Page title="Campaign Creation">
       <meta name="description" content="Create your campaign on WALLETADS now!" />
@@ -1771,13 +1781,7 @@ export default function AddCampaign({ content, params }) {
           onClose={() => {
             setShowCreditCard({ ...showCreditCard, isVisible: false });
           }}
-          handleHoverClose={() => {
-            setShowCreditCard({
-              sessionId: null,
-              campaignId: null,
-              isVisible: false,
-            });
-          }}
+          handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
         />
         {/* <CreditCard

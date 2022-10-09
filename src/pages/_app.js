@@ -70,7 +70,7 @@ function MyApp(props) {
       <Script
         id="load-mamoto"
         dangerouslySetInnerHTML={{
-          __html: `${initMamoto()}`,
+          __html: `${initMamoto(props)}`,
         }}
       />
       <ReduxProvider store={store}>

@@ -11,7 +11,7 @@ import useStyles from './styles';
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 import nookies from 'nookies';
-import { eventTrack, setUserID } from '../../utils/tracker';
+import { eventTrack, trackGoal } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
@@ -60,9 +60,9 @@ export default function Login({ isVerifyValid, changePassword }) {
       };
       const res = await requestLogin(body);
       setAuthorizationCookie(res);
-      setUserID(body);
+      trackGoal();
       window.location.href = '/';
-      // setValues({ ...values, isLoading: false })
+      setValues({ ...values, isLoading: false });
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
