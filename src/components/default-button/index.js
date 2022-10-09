@@ -8,7 +8,7 @@ export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onCl
     if (!isLoading) {
       if (typeof onClick === 'function') {
         if (window && window._paq) {
-          window._paq.push(['trackEvent', eventName]);
+          window._paq.push(['trackEvent', 'Button Clicked', 'click', eventName]);
         }
         onClick();
       }

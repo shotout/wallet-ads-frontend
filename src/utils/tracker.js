@@ -1,7 +1,6 @@
 export const eventTrack = (eventName) => {
   if (window && window._paq) {
-    console.log(eventName);
-    window._paq.push(['trackEvent', eventName]);
+    window._paq.push(['trackEvent', 'Link Clicked', 'click', eventName]);
   }
 };
 
@@ -10,5 +9,12 @@ export const loadPageTracker = (payload) => {
     console.log(payload);
     window._paq.push(['setDocumentTitle', payload.title]);
     window._paq.push(['trackPageView']);
+  }
+};
+
+export const setUserID = (payload) => {
+  if (window && window._paq) {
+    console.log(payload);
+    window._paq.push(['setUserId', payload.email]);
   }
 };

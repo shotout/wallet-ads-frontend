@@ -171,7 +171,6 @@ export default function AddCampaign({ content, params }) {
     console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
-        console.log(index);
         adsIdArr.push(index);
       }
     });
@@ -1607,8 +1606,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.fe_id.includes(item.audienceId);
-
+              const isActive = content.campaign_id ? true : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
@@ -1796,9 +1794,7 @@ export default function AddCampaign({ content, params }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log('campaig');
   try {
-    console.log('campaig');
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));

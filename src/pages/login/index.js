@@ -11,7 +11,7 @@ import useStyles from './styles';
 import AuthFooter from '../../components/auth-footer';
 import { routes } from '../../helpers/routes';
 import nookies from 'nookies';
-import { eventTrack } from '../../utils/tracker';
+import { eventTrack, setUserID } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 
@@ -48,7 +48,6 @@ export default function Login({ isVerifyValid, changePassword }) {
 
   const handleSubmit = async () => {
     try {
-      console.log(values);
       setErrorMessage({
         email: null,
         password: null,
@@ -61,6 +60,7 @@ export default function Login({ isVerifyValid, changePassword }) {
       };
       const res = await requestLogin(body);
       setAuthorizationCookie(res);
+      setUserID(body);
       window.location.href = '/';
       // setValues({ ...values, isLoading: false })
     } catch (err) {
