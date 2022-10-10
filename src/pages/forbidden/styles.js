@@ -53,8 +53,9 @@ export default makeStyles((theme) => ({
       },
       '& > .menu': {
         '& > img': {
-          width: '40%',
-          height: 50,
+          marginTop: 15,
+          width: '80%',
+          height: 'auto',
           objectFit: 'contain',
           float: 'right',
         },

@@ -46,7 +46,7 @@ const questionObj = {
     'On your collection page, you can link to your social media pages. If you do not have an account on one of the pages, just leave the field empty.',
   ad_name: 'This is the name of your advertisement.',
   media:
-    'Upload an ad image. This will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 50 MB',
+    'Upload an asset for your ad which will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 5 MB, max. 500x500 pixels.',
   ad_text: 'This will be the description that shows along with your wallet ad.',
   collection_page_name:
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
@@ -149,6 +149,7 @@ export default function AddCampaign({ content, params }) {
     isVisible: false,
     sessionId: null,
     campaignId: null,
+    isPaymentLoading: false,
   });
   const [errorInput, setErrorInput] = useState({
     campaignName: null,
@@ -330,8 +331,6 @@ export default function AddCampaign({ content, params }) {
       datas = formResp;
     }
 
-    console.log('campaigan ');
-
     let res = null;
     if (params.id) {
       res = await handleEditCampaign(datas, params.id);
@@ -344,6 +343,10 @@ export default function AddCampaign({ content, params }) {
 
   const directStripe = async (params) => {
     const campaign = await createCampaignId();
+    setShowCreditCard({
+      ...showCreditCard,
+      isPaymentLoading: true,
+    });
     const session = await createSession({
       promo: params,
       campaign_id: campaign.data.id,
@@ -352,6 +355,7 @@ export default function AddCampaign({ content, params }) {
     });
     setShowCreditCard({
       ...showCreditCard,
+      isPaymentLoading: false,
       sessionId: session.id,
     });
     window.location.href = session?.url;
@@ -1300,7 +1304,7 @@ export default function AddCampaign({ content, params }) {
             callbackError={() => {
               setErrorBox({
                 ...errorBox,
-                errorFileSize: 'The file exceeds the maximum filesize of 50 MB.',
+                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
               });
             }}
             onDelete={() => {
@@ -1608,7 +1612,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.campaign_id ? true : content.fe_id.includes(item.audienceId);
+              const isActive = content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
