@@ -39,7 +39,6 @@ import { getFutureDate } from '../../helpers/dateHelper';
 import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
 import SvgIconStyle from '../../components/SvgIconStyle';
-import { trackGoal } from '../../utils/tracker';
 
 const questionObj = {
   collection_page_text: 'Add a text for your collection page to describe what it is about.',
@@ -47,7 +46,7 @@ const questionObj = {
     'On your collection page, you can link to your social media pages. If you do not have an account on one of the pages, just leave the field empty.',
   ad_name: 'This is the name of your advertisement.',
   media:
-    'Upload an asset for your ad which will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 5 MB, max. 500x500 pixels.',
+    'Upload an ad image. This will become the NFT that will be sent to the users. File types supported: JPG, PNG, GIF, SVG, MP4, WEBM, MP3, WAV, OGG, GLB, GLTF. Max size: 50 MB',
   ad_text: 'This will be the description that shows along with your wallet ad.',
   collection_page_name:
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
@@ -147,10 +146,9 @@ export default function AddCampaign({ content, params }) {
     errorBoxAvailability: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
-    isVisible: false,
+    isVisible: true,
     sessionId: null,
     campaignId: null,
-    isPaymentLoading: false,
   });
   const [errorInput, setErrorInput] = useState({
     campaignName: null,
@@ -173,6 +171,7 @@ export default function AddCampaign({ content, params }) {
     console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
+        console.log(index);
         adsIdArr.push(index);
       }
     });
@@ -184,7 +183,6 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      console.log(content);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
@@ -344,10 +342,6 @@ export default function AddCampaign({ content, params }) {
 
   const directStripe = async (params) => {
     const campaign = await createCampaignId();
-    setShowCreditCard({
-      ...showCreditCard,
-      isPaymentLoading: true,
-    });
     const session = await createSession({
       promo: params,
       campaign_id: campaign.data.id,
@@ -356,7 +350,6 @@ export default function AddCampaign({ content, params }) {
     });
     setShowCreditCard({
       ...showCreditCard,
-      isPaymentLoading: false,
       sessionId: session.id,
     });
     window.location.href = session?.url;
@@ -1301,11 +1294,11 @@ export default function AddCampaign({ content, params }) {
             //   'audio/ogg': ['.oga'],
             //   'video/ogg': ['.ogv']
             // }}
-            maxFileSize={5 * 1000000}
+            maxFileSize={50 * 1000000}
             callbackError={() => {
               setErrorBox({
                 ...errorBox,
-                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
+                errorFileSize: 'The file exceeds the maximum filesize of 50 MB.',
               });
             }}
             onDelete={() => {
@@ -1614,6 +1607,7 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
+
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
@@ -1736,10 +1730,7 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.setupAirdropWrapper}>
         <DefaultButton
           isLoading={loadingSubmit}
-          onClick={() => {
-            validateSubmit();
-            trackGoal({ id: 6, amount: getTotalBudget(audienceForm) });
-          }}
+          onClick={validateSubmit}
           ctnBtnStyle={styles.btnSetupAirdrop}
           eventName={'Setup Airdrop'}
           // onClick={() => {
@@ -1750,14 +1741,6 @@ export default function AddCampaign({ content, params }) {
       </div>
     );
   }
-
-  const resetSession = () => {
-    setShowCreditCard({
-      sessionId: null,
-      campaignId: null,
-      isVisible: false,
-    });
-  };
 
   return (
     <Page title="Campaign Creation">
@@ -1789,7 +1772,13 @@ export default function AddCampaign({ content, params }) {
           onClose={() => {
             setShowCreditCard({ ...showCreditCard, isVisible: false });
           }}
-          handleHoverClose={resetSession}
+          handleHoverClose={() => {
+            setShowCreditCard({
+              sessionId: null,
+              campaignId: null,
+              isVisible: false,
+            });
+          }}
           createCampaignID={createCampaignId}
         />
         {/* <CreditCard
@@ -1806,7 +1795,9 @@ export default function AddCampaign({ content, params }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log('campaig');
   try {
+    console.log('campaig');
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));

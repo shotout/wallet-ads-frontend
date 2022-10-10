@@ -5,7 +5,6 @@ import Link from 'next/link';
 import AuthFooter from '../../components/auth-footer';
 import useStyles from './styles';
 import { routes } from './../../helpers/routes';
-import { Router } from 'next/router';
 
 const disableAsset = '/assets/disable.png';
 const appIcon = '/assets/svg/wallet_logo.svg';

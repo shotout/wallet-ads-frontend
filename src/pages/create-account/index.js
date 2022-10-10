@@ -9,6 +9,7 @@ import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Link from 'next/link';
 import { routes } from '../../helpers/routes';
 import AuthFooter from '../../components/auth-footer';
+import { eventTrack } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const emailBanner = '/assets/email_banner.png';
@@ -82,7 +83,7 @@ export default function Register() {
     return (
       <div className={styles.ctnDirectRegister}>
         <span>Already have an account?</span>
-        <div>
+        <div onClick={() => eventTrack('Login')}>
           <Link href={routes.login}>Login</Link>
         </div>
       </div>
@@ -307,6 +308,7 @@ export default function Register() {
           </div>
           <DefaultButton
             onClick={handleSubmit}
+            eventName={'Create New Account Clicked'}
             isLoading={isLoading}
             ctnBtnStyle={styles.btnStyle}
             label={'Create account'}

@@ -7,10 +7,12 @@ export default makeStyles((theme) => ({
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
     // justifyContent: 'center',
-    backgroundImage: 'url("/assets/auth_bg.png")',
-    backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'right',
+    // backgroundImage: 'url("/assets/auth_bg.png")',
+    // backgroundRepeat: 'no-repeat',
+    // backgroundPosition: 'right',
   },
   ctnHeader: {
     marginTop: 30,
@@ -24,21 +26,26 @@ export default makeStyles((theme) => ({
   },
   ctnInput: {
     marginLeft: 100,
-    maxWidth: 420,
+    maxWidth: 620,
     width: '100%',
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     borderRadius: 28,
     padding: 20,
     background: '#E4E6FA',
     marginBottom: 80,
+    overflow: 'hidden',
   },
   ctnTitle: {
-    marginBottom: 20,
+    // marginBottom: 40,
+    padding: '0px 100px 20px 100px',
   },
   ctnForm: {
-    '& $inputWrapper:first-child': {
-      marginBottom: 20,
-    },
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+    marginBottom: 30,
   },
   inputWrapper: {
     '& > .MuiFormControl-root': {
@@ -49,6 +56,9 @@ export default makeStyles((theme) => ({
           border: 'none',
         },
       },
+      '& > .MuiFormLabel-root': {
+        // fontSize: 14
+      },
       '& > .MuiInputLabel-root.Mui-focused': {
         color: '#7089FF !important',
       },
@@ -57,32 +67,19 @@ export default makeStyles((theme) => ({
   btnStyle: {
     height: 44,
     backgroundColor: '#7089FF',
+    maxWidth: 320,
+    margin: 'auto',
     width: '100%',
     color: '#fff',
     '& span': {
       backgroundColor: '#7089FF !important',
     },
   },
-  ctnForgotPassword: {
-    marginBottom: 30,
-    marginTop: 12,
-    width: '100%',
-    textAlign: 'right',
-    '& > div': {
-      cursor: 'pointer',
-      '& > a > div': {
-        fontFamily: 'Public Sans,sans-serif',
-        color: '#000',
-        textDecoration: ' underline',
-        fontSize: 14,
-      },
-    },
-  },
   ctnDirectRegister: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 30,
     marginBottom: 20,
     '& > span': {
       fontFamily: 'Public Sans,sans-serif',
@@ -97,16 +94,24 @@ export default makeStyles((theme) => ({
       },
     },
   },
-  ctnRedBox: {
-    marginBottom: 20,
-    background: '#AD4061',
-    padding: 12,
-    borderRadius: 12,
+  ctnSuccess: {
+    margin: 'auto',
+    padding: '40px 0px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 100,
+      height: 96,
+      objectFit: 'contain',
+    },
   },
-  ctnGreenBox: {
-    marginBottom: 20,
-    background: '#1FCB96',
-    padding: 12,
-    borderRadius: 12,
+  ctnGridBottom: {
+    paddingTop: 20,
+    marginTop: 20,
+    borderTop: '1px solid #fff',
+    paddingLeft: 20,
+    width: '100%',
   },
 }));

@@ -8,6 +8,7 @@ import DefaultButton from '../../components/default-button';
 import { routes } from '../../helpers/routes';
 import { requestResetPassword } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
+import { eventTrack } from './../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const mailSuccess = '/assets/svg/mail_success.svg';
@@ -161,7 +162,12 @@ export default function ForgotPassword() {
               />
             </div>
           </div>
-          <DefaultButton onClick={handleSubmit} isLoading={values.isLoading} label={'Reset Password'} />
+          <DefaultButton
+            onClick={handleSubmit}
+            eventName={'Reset Password Clicked'}
+            isLoading={values.isLoading}
+            label={'Reset Password'}
+          />
         </form>
         {renderDirectRegister()}
       </div>
@@ -172,7 +178,7 @@ export default function ForgotPassword() {
     return (
       <div className={styles.ctnDirectRegister}>
         <span>New here?</span>
-        <div>
+        <div onClick={() => eventTrack('Create New Account')}>
           <Link href={routes.register}>Create an account now</Link>
         </div>
       </div>

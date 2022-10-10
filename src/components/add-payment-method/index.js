@@ -81,14 +81,15 @@ export default function AddPaymentMethod({
 
   const handleChooseCrypto = async () => {
     const campaign = await createCampaignID();
-
+    console.log(values.campaignId);
+    console.log(campaign.data.id);
     setLoading(true);
     payCyrptoCurrency({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
     });
-    handleHoverClose();
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
+    handleHoverClose();
     setLoading(false);
   };
 
@@ -193,18 +194,20 @@ export default function AddPaymentMethod({
       }}
       onClose={resetState}
       className={styles.ctnPopover}
+      style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >
-      <div className={styles.ctnWrapper}>
+      <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
         <div className="content">
           <Typography variant="h4" sx={{ color: '#000' }} marginBottom={4} fontWeight="800" textAlign="center">
             Add payment method
           </Typography>
           <Grid container spacing={4} className={styles.gridAvailability}>
-            <Grid item md={4} xs={12}>
+            <Grid item sm={6} md={4} xs={12}>
               <img src={ccImage} className={styles.ccStyle} alt="Credit" />
             </Grid>
             <Grid
               item
+              sm={6}
               md={8}
               xs={12}
               justifyContent="center"
@@ -212,24 +215,26 @@ export default function AddPaymentMethod({
               flexDirection={'column'}
               display="flex"
             >
-              <Typography variant="body1">
+              <Typography variant="body1" align="justify">
                 Please add your payment details to set up and schedule campaigns on wallet ads. You can select paying
                 with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" below.
               </Typography>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} md={6} xs={12}>
               <DefaultButton
                 onClick={() => handlePaymentChoose('cc')}
                 ctnBtnStyle={styles.btnStyle}
                 label={'Add credit card'}
+                eventName={'Pay with stripe'}
               />
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item sm={6} md={6} xs={12}>
               <DefaultButton
                 isLoading={loading}
                 ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
                 onClick={() => handlePaymentChoose('crypto')}
                 label={'I would like to pay using cryptocurrencies'}
+                eventName={'Pay with crypto'}
               />
             </Grid>
           </Grid>

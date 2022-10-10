@@ -23,6 +23,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'row',
     padding: '30px 40px 30px 40px',
+    [theme.breakpoints.down('md')]: {
+      padding: '10px 40px 0px 40px',
+      marginTop: -10,
+    },
   },
   ctnGroup: {
     display: 'flex',
@@ -56,6 +60,13 @@ export default makeStyles((theme) => ({
     height: 80,
     '& > span': {
       fontSize: 20,
+    },
+    [theme.breakpoints.down('md')]: {
+      marginTop: 0,
+      height: 40,
+      '& > span': {
+        fontSize: 12,
+      },
     },
   },
   btnBlack: {
@@ -108,6 +119,10 @@ export default makeStyles((theme) => ({
       width: '50%',
       margin: '0 auto',
     },
+    // [theme.breakpoints.down('xl')]: {
+    //   width: '100%',
+    //   // margin: '0 auto',
+    // },
   },
   ctnBold: {
     fontWeight: 'bold',
