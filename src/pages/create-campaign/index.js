@@ -39,6 +39,7 @@ import { getFutureDate } from '../../helpers/dateHelper';
 import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
 import SvgIconStyle from '../../components/SvgIconStyle';
+import { trackGoal } from '../../utils/tracker';
 
 const questionObj = {
   collection_page_text: 'Add a text for your collection page to describe what it is about.',
@@ -1735,7 +1736,10 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.setupAirdropWrapper}>
         <DefaultButton
           isLoading={loadingSubmit}
-          onClick={validateSubmit}
+          onClick={() => {
+            validateSubmit();
+            trackGoal({ id: 6, amount: getTotalBudget(audienceForm) });
+          }}
           ctnBtnStyle={styles.btnSetupAirdrop}
           eventName={'Setup Airdrop'}
           // onClick={() => {

@@ -20,7 +20,8 @@ export const setUserID = (payload) => {
 };
 
 export const trackGoal = (payload) => {
+  console.log(payload);
   if (window && window._paq) {
-    window._paq.push(['trackGoal', 'Login']);
+    window._paq.push(['trackGoal', payload.id, payload.amount]);
   }
 };

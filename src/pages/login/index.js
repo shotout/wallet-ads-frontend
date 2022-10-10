@@ -60,7 +60,6 @@ export default function Login({ isVerifyValid, changePassword }) {
       };
       const res = await requestLogin(body);
       setAuthorizationCookie(res);
-      trackGoal();
       window.location.href = '/';
       setValues({ ...values, isLoading: false });
     } catch (err) {
