@@ -343,11 +343,11 @@ export default function AddCampaign({ content, params }) {
   };
 
   const directStripe = async (params) => {
-    const campaign = await createCampaignId();
     setShowCreditCard({
       ...showCreditCard,
       isPaymentLoading: true,
     });
+    const campaign = await createCampaignId();
     const session = await createSession({
       promo: params,
       campaign_id: campaign.data.id,
@@ -1790,6 +1790,7 @@ export default function AddCampaign({ content, params }) {
           onClose={() => {
             setShowCreditCard({ ...showCreditCard, isVisible: false });
           }}
+          isPaymentLoading={showCreditCard.isPaymentLoading}
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
         />
