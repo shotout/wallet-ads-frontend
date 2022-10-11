@@ -5,6 +5,7 @@ import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
 import responseValidatorObj from './../../helpers/responseValidatorObj';
+import { trackGoal } from '../../utils/tracker';
 
 const ccImage = '/assets/credit_card.png';
 
@@ -88,6 +89,7 @@ export default function AddPaymentMethod({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
     });
+    trackGoal({ id: 6, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
     setLoading(false);

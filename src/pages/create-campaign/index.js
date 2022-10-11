@@ -354,6 +354,7 @@ export default function AddCampaign({ content, params }) {
       campaign_name: campaign.data.name,
       total_budget: getTotalBudget(audienceForm) * 100,
     });
+    trackGoal({ id: 6, amount: getTotalBudget(audienceForm) });
     setShowCreditCard({
       ...showCreditCard,
       isPaymentLoading: false,
