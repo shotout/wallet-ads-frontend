@@ -89,7 +89,7 @@ export default function AddPaymentMethod({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
     });
-    trackGoal({ id: 6, amount: totalBudget });
+    trackGoal({ id: 5, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
     setLoading(false);
