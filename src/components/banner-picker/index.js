@@ -41,21 +41,25 @@ export default function BannerPicker({ label, file, typeScreen, callbackError, o
   const styles = useStyles();
 
   function isImage() {
-    if (file.name) {
-      const fileName = file.name;
+    console.log('file name', file);
+    if (!file.name) {
+      const fileName = file;
+
+      console.log(typeof fileName == 'string' && fileName.includes('png'));
       if (
-        fileName.includes('jpg') ||
-        fileName.includes('png') ||
-        fileName.includes('jpeg') ||
-        fileName.includes('gif')
+        (typeof fileName == 'string' && fileName.includes('jpg')) ||
+        (typeof fileName == 'string' && fileName.includes('png')) ||
+        (typeof fileName == 'string' && fileName.includes('jpeg')) ||
+        (typeof fileName == 'string' && fileName.includes('gif'))
       ) {
         return true;
       }
     }
-    return false;
+    return true;
   }
 
   function renderLeftContent() {
+    console.log('LOGO', file.preview);
     if (isImage()) {
       return (
         <div className={styles.leftRow}>
