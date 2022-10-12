@@ -147,7 +147,7 @@ export default function ForgotPassword() {
             Enter your email address and you will receive an email with instructions on how to reset your password.
           </Typography>
         </div>
-        <form onKeyDown={onKeyDownHandler}>
+        <form onKeyDown={onKeyDownHandler} onSubmit={() => handleSubmit()}>
           <div className={styles.ctnForm}>
             <div className={styles.inputWrapper}>
               <TextField
@@ -162,13 +162,13 @@ export default function ForgotPassword() {
               />
             </div>
           </div>
-          <DefaultButton
-            onClick={handleSubmit}
-            eventName={'Reset Password Clicked'}
-            isLoading={values.isLoading}
-            label={'Reset Password'}
-          />
         </form>
+        <DefaultButton
+          onClick={handleSubmit}
+          eventName={'Reset Password Clicked'}
+          isLoading={values.isLoading}
+          label={'Reset Password'}
+        />
         {renderDirectRegister()}
       </div>
     );
