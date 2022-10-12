@@ -127,7 +127,7 @@ export default function Register() {
         setValues({ ...values, [prop]: connectToWallet.walletAddr });
         const body = {
           _method: 'PATCH',
-          flag: prop,
+          flag: prop === 'snooze' ? 'snooze' : 'subscribe',
           wallet_address: connectToWallet.walletAddr,
           is_subscribe: propCode,
           snooze_ads: 30,
