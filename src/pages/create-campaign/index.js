@@ -336,8 +336,8 @@ export default function AddCampaign({ content, params }) {
     const campaign = await createCampaignId();
     const session = await createSession({
       promo: params,
-      campaign_id: 220,
-      campaign_name: 'asadas',
+      campaign_id: campaign.data.id,
+      campaign_name: campaign.data.name,
       total_budget: getTotalBudget(audienceForm) * 100,
     });
     setShowCreditCard({ ...showCreditCard });
