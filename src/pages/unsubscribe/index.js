@@ -68,7 +68,7 @@ export default function Register() {
   const [library, setLibrary] = useState();
   const [network, setNetwork] = useState();
   const [loading, setIsLoading] = useState(defaultLoading);
-  const [successSubmit, setSuccesSubmit] = useState(false);
+  const [successSubmit, setSuccesSubmit] = useState(true);
 
   const web3Modal = new Web3Modal({
     cacheProvider: true, // very important
@@ -141,7 +141,19 @@ export default function Register() {
     return (
       <div className={styles.ctnHeader}>
         <img src={appIcon} alt="wallet-ads" />
-        {successSubmit ? '' : <span>Update your preferences or unsubscribe.</span>}
+        {successSubmit ? (
+          ''
+        ) : (
+          <Typography
+            fontSize={35}
+            fontWeight={'700'}
+            fontFamily={'Public Sans,sans-serif'}
+            textAlign={'center'}
+            lineHeight={'42px'}
+          >
+            Update your preferences or unsubscribe.
+          </Typography>
+        )}
       </div>
     );
   }
@@ -149,12 +161,18 @@ export default function Register() {
   function renderSnoozeAds() {
     return (
       <div className={styles.ctnInput}>
-        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
+        <Typography fontSize={20} fontWeight={'700'} textAlign={'center'} fontFamily={'Public Sans,sans-serif'}>
           Snooze ads
         </Typography>
-        <div className={styles.ctnTitle}>
+        <Typography
+          fontSize={16}
+          fontWeight={'500'}
+          textAlign={'center'}
+          fontFamily={'Public Sans,sans-serif'}
+          marginY={2}
+        >
           Don’t like the ad that you’re currently seeing? You can snooze ads now, just enter your Wallet Address.
-        </div>
+        </Typography>
         <div className={styles.ctnForm}>
           <div className={styles.inputWrapper}>
             <TextField
@@ -172,10 +190,10 @@ export default function Register() {
           <div onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}>
             <CheckboxAds isActive={checkList.snooze} />
           </div>
-          <div className={styles.ctnSubTitle}>
+          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
             I confirm that I would like to snooze all advertisement activities and do not want to receive any special
             offers or information on exclusive projects.
-          </div>
+          </Typography>
         </div>
         <DefaultButton
           onClick={() => handleSubmit('snooze')}
@@ -202,13 +220,19 @@ export default function Register() {
   function renderUnsubscribe() {
     return (
       <div className={styles.ctnInput} style={{ marginBottom: 100 }}>
-        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
+        <Typography fontSize={20} fontWeight={'700'} textAlign={'center'} fontFamily={'Public Sans,sans-serif'}>
           Unsubscribe from this advertiser
         </Typography>
-        <div className={styles.ctnTitle2}>
+        <Typography
+          fontSize={16}
+          fontWeight={'500'}
+          textAlign={'center'}
+          fontFamily={'Public Sans,sans-serif'}
+          marginY={2}
+        >
           We're sad to see you go! You can enter your Wallet Address below if you really want to be excluded from all
           campaigns that are set up by this advertiser.
-        </div>
+        </Typography>
         <div className={styles.ctnForm}>
           <div className={styles.inputWrapper}>
             <TextField
@@ -240,12 +264,18 @@ export default function Register() {
   function renderSubscribe() {
     return (
       <>
-        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
+        <Typography fontSize={20} fontWeight={'700'} textAlign={'center'} fontFamily={'Public Sans,sans-serif'}>
           Subscribe to WALLETADS
         </Typography>
-        <div className={styles.ctnTitle2}>
+        <Typography
+          fontSize={16}
+          fontWeight={'500'}
+          textAlign={'center'}
+          fontFamily={'Public Sans,sans-serif'}
+          marginY={2}
+        >
           Enter your wallet address here to subscribe to WALLETADS and receive free airdrops, giveaways and much more!
-        </div>
+        </Typography>
         <div className={styles.ctnForm}>
           <div className={styles.inputWrapper}>
             <TextField
@@ -263,10 +293,10 @@ export default function Register() {
           <div onClick={() => setChecklist({ ...checkList, subscribe: !checkList.subscribe })}>
             <CheckboxAds isActive={checkList.subscribe} />
           </div>
-          <div>
+          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
             I confirm that I would like to subscribe to WALLETADS to receive special offers, information on exclusive
             projects and more.
-          </div>
+          </Typography>
         </div>
         <>{values.subscribe === '' && checkList.subscribe === true}</>
         <DefaultButton
@@ -295,7 +325,15 @@ export default function Register() {
     return (
       <div className={styles.ctnInput2}>
         <img src={successImg} alt="success" />
-        <span>Your preferences have successfully been updated.</span>
+        <Typography
+          fontSize={18}
+          fontWeight={'500'}
+          fontFamily={'Public Sans,sans-serif'}
+          textAlign={'center'}
+          marginY={4}
+        >
+          Your preferences have successfully been updated.
+        </Typography>
         <DefaultButton
           onClick={() => (window.location.href = '/')}
           eventName={'Subscribe / unsubscribe'}

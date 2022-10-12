@@ -67,7 +67,6 @@ export default makeStyles((theme) => ({
     fontSize: 16,
     padding: '0px 80px 20px 80px',
     marginTop: 10,
-    fontWeight: 500,
     fontFamily: 'Public Sans,sans-serif',
   },
   ctnTitle2: {
@@ -76,8 +75,8 @@ export default makeStyles((theme) => ({
     fontSize: 16,
     marginTop: 10,
     marginBottom: 20,
-    fontWeight: 500,
     fontFamily: 'Public Sans,sans-serif',
+    fontWeight: '700 !important',
   },
   line: {
     border: '1 solid black',
