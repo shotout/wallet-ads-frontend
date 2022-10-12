@@ -23,7 +23,11 @@ export default function DefaultButton({ label, ctnBtnStyle = '', isLoading, onCl
   }
 
   return (
-    <button onClick={handlePress} className={`${styles.ctnBtn} ${ctnBtnStyle}`} disabled={disabled}>
+    <button
+      onClick={handlePress}
+      className={`${styles.ctnBtn} ${ctnBtnStyle} ${disabled ? styles.ctnDisableButton : {}}`}
+      disabled={disabled}
+    >
       {renderContent()}
     </button>
   );
