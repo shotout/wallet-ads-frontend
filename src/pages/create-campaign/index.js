@@ -26,7 +26,6 @@ import {
   getCampaignDetail,
   handleEditCampaign,
   getProfilUser,
-  getCampaignItem,
 } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
@@ -81,7 +80,6 @@ const initialPicture = [{ image: null, fe_id: [], name: '', description: '', ads
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
-  const stripe = useStripe();
   // const { themeStretch } = useSettings();
   const [hover, setHover] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
