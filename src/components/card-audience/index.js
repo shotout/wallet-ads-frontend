@@ -39,13 +39,13 @@ export default function CardAudience({
   };
 
   useEffect(() => {
-    if (data.selectedCategory) {
-      setTimeout(() => {
-        if (inputEl.current && inputEl.current.focus) {
-          inputEl.current.focus();
-        }
-      }, 100);
-    }
+    // if (data.selectedCategory) {
+    //   setTimeout(() => {
+    //     if (inputEl.current && inputEl.current.focus) {
+    //       inputEl.current.focus();
+    //     }
+    //   }, 100);
+    // }
   }, [data]);
 
   function renderPopover() {

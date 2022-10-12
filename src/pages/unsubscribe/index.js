@@ -115,16 +115,25 @@ export default function Register() {
       }
       const connectToWallet = await connectWallet();
       if (connectToWallet.status) {
+        let propCode;
+        if (prop === 'snooze') {
+          propCode = 2;
+        } else if (prop === 'unsubscribe') {
+          propCode = 0;
+        } else {
+          propCode = 1;
+        }
         setIsLoading({ ...loading, [prop]: true });
         setValues({ ...values, [prop]: connectToWallet.walletAddr });
         const body = {
           _method: 'PATCH',
           flag: prop,
           wallet_address: connectToWallet.walletAddr,
-          is_subscribe: prop === 'subscribe' ? true : false,
+          is_subscribe: propCode,
           snooze_ads: 30,
         };
         const response = await handleSubscribe(body);
+        console.log(response);
         setSuccesSubmit(true);
       }
     } catch (err) {
