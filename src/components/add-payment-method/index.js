@@ -83,8 +83,6 @@ export default function AddPaymentMethod({
 
   const handleChooseCrypto = async () => {
     const campaign = await createCampaignID();
-    console.log(values.campaignId);
-    console.log(campaign.data.id);
     setLoading(true);
     payCyrptoCurrency({
       promo: values.promoCode,
@@ -103,7 +101,6 @@ export default function AddPaymentMethod({
         errorValidation: null,
       });
       setValues({ ...values, isLoading: true, isSubmit: true });
-      console.log(totalBudget);
       const body = {
         code: values.promoCode,
         budget: totalBudget,

@@ -105,7 +105,6 @@ export default function AddCampaign({ content, params }) {
   const [showModalSuccess, setModalSuccess] = useState(false);
 
   const [formResp, setFormResp] = useState(null);
-
   const [audienceForm, setAudienceForm] = useState([
     {
       audienceId: makeId(),
@@ -170,7 +169,6 @@ export default function AddCampaign({ content, params }) {
 
   function getAdsId(id) {
     const adsIdArr = [];
-    console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
         adsIdArr.push(index);
@@ -184,7 +182,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      console.log(content);
+      window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
@@ -230,18 +228,6 @@ export default function AddCampaign({ content, params }) {
         campaign_name: content.name,
         campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
         campaign_end_date_type: content.type.toString(),
-        campaign_end_day: content.type === 3 ? content.availability : '7',
-        ads_page_name: adsPage.name,
-        ads_page_description: adsPage.description,
-        ads_page_website: adsPage.website,
-        ads_page_discord: adsPage.discord,
-        ads_page_medium: adsPage.medium,
-        ads_page_telegram: adsPage.telegram,
-      });
-      setFormResp({
-        campaign_name: content.name,
-        campaign_start_date: content?.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
-        campaign_end_date_type: content?.type.toString(),
         campaign_end_day: content.type === 3 ? content.availability : '7',
         ads_page_name: adsPage.name,
         ads_page_description: adsPage.description,
@@ -316,6 +302,7 @@ export default function AddCampaign({ content, params }) {
       errorBoxAvailability: false,
     });
     setShowCreditCard({
+      ...showCreditCard,
       sessionId: null,
       campaignId: null,
       isVisible: false,
@@ -327,6 +314,7 @@ export default function AddCampaign({ content, params }) {
 
     if (content && params.status === 'fail') {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
+      // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
       datas = formValues;
     } else {
       datas = formResp;
@@ -350,16 +338,12 @@ export default function AddCampaign({ content, params }) {
     const campaign = await createCampaignId();
     const session = await createSession({
       promo: params,
-      campaign_id: campaign.data.id,
-      campaign_name: campaign.data.name,
+      campaign_id: 220,
+      campaign_name: 'asadas',
       total_budget: getTotalBudget(audienceForm) * 100,
     });
+    setShowCreditCard({ ...showCreditCard });
     trackGoal({ id: 4, amount: getTotalBudget(audienceForm) });
-    setShowCreditCard({
-      ...showCreditCard,
-      isPaymentLoading: false,
-      sessionId: session.id,
-    });
     window.location.href = session?.url;
   };
 
@@ -506,7 +490,6 @@ export default function AddCampaign({ content, params }) {
       });
       setLoadingSubmit(false);
     } catch (err) {
-      console.log('Check err:', err);
       setLoadingSubmit(false);
     }
   };
@@ -948,7 +931,11 @@ export default function AddCampaign({ content, params }) {
             <div className={styles.containerDate}>
               <DatePicker
                 minDate={new Date(getFutureDate(2))}
-                selected={formValues.campaign_start_date}
+                selected={
+                  content && params.status === 'fail'
+                    ? new Date(formValues.campaign_start_date)
+                    : formValues.campaign_start_date
+                }
                 onChange={(date) => setFormValues({ ...formValues, campaign_start_date: date })}
               />
             </div>
@@ -1754,6 +1741,7 @@ export default function AddCampaign({ content, params }) {
 
   const resetSession = () => {
     setShowCreditCard({
+      ...showCreditCard,
       sessionId: null,
       campaignId: null,
       isVisible: false,
