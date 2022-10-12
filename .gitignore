@@ -44,3 +44,4 @@ _static
 
 # Yarn Lock
 yarn.lock
+.env
