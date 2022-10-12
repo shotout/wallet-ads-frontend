@@ -68,7 +68,7 @@ export default function Register() {
   const [library, setLibrary] = useState();
   const [network, setNetwork] = useState();
   const [loading, setIsLoading] = useState(defaultLoading);
-  const [successSubmit, setSuccesSubmit] = useState(true);
+  const [successSubmit, setSuccesSubmit] = useState(false);
 
   const web3Modal = new Web3Modal({
     cacheProvider: true, // very important
