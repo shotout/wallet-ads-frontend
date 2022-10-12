@@ -127,3 +127,10 @@ export const handleSubmitPromo = (data) =>
     method: 'POST',
     data,
   });
+
+export const handleSubscribe = (data) =>
+  axios({
+    url: '/user/subscribe',
+    method: 'POST',
+    data,
+  });

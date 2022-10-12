@@ -1,43 +1,105 @@
-import { Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
-import Iconify from '../../components/Iconify';
+import { TextField, Typography } from '@mui/material';
+import { useState, useEffect } from 'react';
 import DefaultButton from '../../components/default-button';
 import Page from '../../components/Page';
 import useStyles from './styles';
-import { requestRegister } from '../../utils/requests';
+import { requestRegister, handleSubscribe } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import Link from 'next/link';
-import { routes } from '../../helpers/routes';
 import AuthFooter from '../../components/auth-footer';
 import { eventTrack } from '../../utils/tracker';
+import CheckboxAds from '../../components/checkbox';
+// Connect to web3 modal
+import Web3Modal from 'web3modal';
+import { ethers } from 'ethers';
+import CoinbaseWalletSDK from '@coinbase/wallet-sdk';
+import WalletConnect from '@walletconnect/web3-provider';
 
+const successImg = '/assets/unsubscribe.png';
 const appIcon = '/assets/svg/wallet_logo.svg';
-const emailBanner = '/assets/email_banner.png';
 
 const defaultState = {
-  company_name: '',
-  tax_id: '',
-  first_name: '',
-  last_name: '',
-  street: '',
-  post_code: '',
-  city: '',
-  phone: '',
-  email: '',
-  password: '',
-  password_confirmation: '',
-  country: '',
+  walletAddres: null,
+  snooze: '',
+  unsubscribe: '',
+  subscribe: '',
+};
+
+const defaultError = {
+  snooze: null,
+  unsubscribe: null,
+  subscribe: null,
+};
+
+const defaultLoading = {
+  snooze: false,
+  unsubscribe: false,
+  subscribe: false,
+};
+
+const INFURA_KEY = '480d26c0ec27437bbe760661545cbc31';
+
+export const providerOptions = {
+  coinbasewallet: {
+    package: CoinbaseWalletSDK,
+    options: {
+      appName: 'Web 3 Modal Demo',
+      infuraId: INFURA_KEY,
+    },
+  },
+  walletconnect: {
+    package: WalletConnect,
+    options: {
+      infuraId: INFURA_KEY,
+    },
+  },
 };
 
 export default function Register() {
   const styles = useStyles();
   const [values, setValues] = useState(defaultState);
-  const [errorMessage, setErrorMessage] = useState(defaultState);
-  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(defaultError);
   const [isLoading, setLoading] = useState(false);
   const [contentType, setContentType] = useState('register');
+  const [checkList, setChecklist] = useState({
+    snooze: true,
+    subscribe: true,
+  });
+  const [web3Modal, setWeb3Modal] = useState(null);
+  const [provider, setProvider] = useState();
+  const [library, setLibrary] = useState();
+  const [network, setNetwork] = useState();
+  const [loading, setIsLoading] = useState(defaultLoading);
+  const [successSubmit, setSuccesSubmit] = useState(false);
+
+  useEffect(() => {
+    const newWeb3Modal = new Web3Modal({
+      cacheProvider: true, // very important
+      network: 'mainnet',
+      providerOptions,
+    });
+
+    setWeb3Modal(newWeb3Modal);
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      const provider = await web3Modal.connect();
+      const library = new ethers.providers.Web3Provider(provider);
+      const accounts = await library.listAccounts();
+      const network = await library.getNetwork();
+      setProvider(provider);
+      setLibrary(library);
+      console.log(accounts[0]);
+      if (accounts) setValues({ ...values, walletAddres: accounts[0] });
+      setNetwork(network);
+      return { status: true, walletAddr: accounts[0] };
+    } catch (error) {
+      // user close modal
+    }
+  };
 
   const handleChange = (prop) => (event) => {
+    console.log(prop);
     if (errorMessage[prop]?.length > 0) {
       setErrorMessage({
         ...errorMessage,
@@ -47,20 +109,32 @@ export default function Register() {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (prop) => {
     try {
-      setLoading(true);
-      const res = await requestRegister(values);
-      setContentType('success');
-      setLoading(false);
+      if (values[prop] === '') {
+        setErrorMessage({
+          ...errorMessage,
+          [prop]: 'This field cannot be empty',
+        });
+        return;
+      }
+      const connectToWallet = await connectWallet();
+      if (connectToWallet.status) {
+        console.log('in');
+        setIsLoading({ ...loading, [prop]: true });
+        setValues({ ...values, [prop]: connectToWallet.walletAddr });
+        const body = {
+          _method: 'PATCH',
+          flag: prop,
+          wallet_address: connectToWallet.walletAddr,
+          is_subscribe: prop === 'subscribe' ? 1 : 0,
+          snooze_ads: 30,
+        };
+        console.log(body);
+        const response = await handleSubscribe(body);
+        console.log(response);
+        setSuccesSubmit(true);
+      }
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
@@ -75,91 +149,162 @@ export default function Register() {
     return (
       <div className={styles.ctnHeader}>
         <img src={appIcon} alt="wallet-ads" />
+        {successSubmit ? (
+          ''
+        ) : (
+          <Typography variant="h2" align="center" fontWeight="800">
+            Update your preferences or unsubscribe.
+          </Typography>
+        )}
       </div>
     );
   }
 
-  function renderDirect() {
+  function renderSnoozeAds() {
     return (
-      <div className={styles.ctnDirectRegister}>
-        <span>Already have an account?</span>
-        <div onClick={() => eventTrack('Login')}>
-          <Link href={routes.login}>Login</Link>
+      <div className={styles.ctnInput}>
+        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+          Snooze ads
+        </Typography>
+
+        <div className={styles.ctnTitle}>
+          Don’t like the ad that you’re currently seeing? You can snooze ads now, just enter your Wallet Address.
         </div>
+        <div className={styles.ctnForm}>
+          <div className={styles.inputWrapper}>
+            <TextField
+              value={values.snooze}
+              onChange={handleChange('snooze')}
+              error={errorMessage.snooze}
+              helperText={errorMessage.snooze}
+              size="small"
+              fullWidth
+              placeholder="Your Wallet Address"
+            />
+          </div>
+        </div>
+        <div className={styles.checkBoxRoot}>
+          <div onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}>
+            <CheckboxAds isActive={checkList.snooze} />
+          </div>
+          <div>
+            I confirm that I would like to snooze all advertisement activities and do not want to receive any special
+            offers or information on exclusive projects.
+          </div>
+        </div>
+        <DefaultButton
+          onClick={() => handleSubmit('snooze')}
+          eventName={'Snooze ads for 30 days'}
+          isLoading={loading.snooze}
+          ctnBtnStyle={styles.btnStyle}
+          label={'Snooze ads for 30 days'}
+        />
       </div>
     );
   }
 
-  function renderInput() {
-    if (contentType === 'register') {
-      return (
-        <div className={styles.ctnInput}>
-          <div className={styles.ctnTitle}>
-            <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
-              Snooze ads
-            </Typography>
-          </div>
-          <div className={styles.ctnTitle}>
-            <Typography variant={'subtitle2'} fontWeight={'800'} textAlign={'center'}>
-              Don’t like the ad that you’re currently seeing? You can snooze ads now for 30 or 90 days.
-            </Typography>
-          </div>
-          <div className={styles.ctnForm}>
-            <Grid container spacing={2}>
-              <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <TextField
-                    value={values.company_name}
-                    onChange={handleChange('company_name')}
-                    error={errorMessage.company_name}
-                    helperText={errorMessage.company_name}
-                    size="small"
-                    fullWidth
-                    placeholder="Company Name"
-                  />
-                </div>
-              </Grid>
-            </Grid>
-          </div>
-          <DefaultButton
-            onClick={handleSubmit}
-            eventName={'Create New Account Clicked'}
-            isLoading={isLoading}
-            ctnBtnStyle={styles.btnStyle}
-            label={'Create account'}
-          />
+  function renderUnsubscribe() {
+    return (
+      <div className={styles.ctnInput} style={{ marginBottom: 100 }}>
+        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+          Unsubscribe from this advertiser
+        </Typography>
+        <div className={styles.ctnTitle2}>
+          We're sad to see you go! You can enter your Wallet Address below if you really want to be excluded from all
+          campaigns that are set up by this advertiser.
         </div>
-      );
-    }
-    return null;
+        <div className={styles.ctnForm}>
+          <div className={styles.inputWrapper}>
+            <TextField
+              value={values.unsubscribe}
+              onChange={handleChange('unsubscribe')}
+              error={errorMessage.unsubscribe}
+              helperText={errorMessage.unsubscribe}
+              size="small"
+              fullWidth
+              placeholder="Your Wallet Address"
+            />
+          </div>
+        </div>
+
+        <DefaultButton
+          onClick={() => handleSubmit('unsubscribe')}
+          eventName={'Unsubscribe'}
+          isLoading={loading.unsubscribe}
+          ctnBtnStyle={styles.btnStyle}
+          label={'Unsubscribe'}
+        />
+        <div className={styles.line} />
+        {renderSubscribe()}
+      </div>
+    );
+  }
+
+  function renderSubscribe() {
+    return (
+      <>
+        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+          Subscribe to WALLETADS
+        </Typography>
+        <div className={styles.ctnTitle2}>
+          Enter your wallet address here to subscribe to WALLETADS and receive free airdrops, giveaways and much more!
+        </div>
+        <div className={styles.ctnForm}>
+          <div className={styles.inputWrapper}>
+            <TextField
+              value={values.subscribe}
+              onChange={handleChange('subscribe')}
+              error={errorMessage.subscribe}
+              helperText={errorMessage.subscribe}
+              size="small"
+              fullWidth
+              placeholder="Your Wallet Address"
+            />
+          </div>
+        </div>
+        <div className={styles.checkBoxRoot}>
+          <div onClick={() => setChecklist({ ...checkList, subscribe: !checkList.subscribe })}>
+            <CheckboxAds isActive={checkList.subscribe} />
+          </div>
+          <div>
+            I confirm that I would like to subscribe to WALLETADS to receive special offers, information on exclusive
+            projects and more.
+          </div>
+        </div>
+        <DefaultButton
+          onClick={() => handleSubmit('subscribe')}
+          eventName={'Subscribe'}
+          isLoading={loading.subscribe}
+          ctnBtnStyle={styles.btnStyle}
+          label={'Subscribe'}
+        />
+      </>
+    );
   }
 
   function renderSuccess() {
-    if (contentType === 'success') {
-      return (
-        <div className={styles.ctnInput}>
-          <div className={styles.ctnSuccess}>
-            <img src={emailBanner} alt="success" />
-            <Typography
-              variant="h5"
-              marginTop={3}
-              marginBottom={2}
-              fontWeight="800"
-              lineHeight={1.3}
-              textAlign={'center'}
-            >
-              We are currently validating your data and will send you a link to activate your account within the next 24
-              hours.
-            </Typography>
-            <Typography variant="body1" textAlign={'center'}>
-              Once you receive the activation email, please confirm your email address by clicking the button in the
-              email.
-            </Typography>
-          </div>
-        </div>
-      );
-    }
-    return null;
+    return (
+      <div className={styles.ctnInput2}>
+        <img src={successImg} alt="success" />
+        <Typography
+          variant="body"
+          marginTop={3}
+          marginBottom={5}
+          fontWeight="800"
+          lineHeight={1.3}
+          textAlign={'center'}
+        >
+          Your preferences have successfully been updated.
+        </Typography>
+
+        <DefaultButton
+          onClick={() => (window.location.href = '/')}
+          eventName={'Subscribe / unsubscribe'}
+          ctnBtnStyle={styles.btnStyle}
+          label={'Ok'}
+        />
+      </div>
+    );
   }
 
   return (
@@ -167,8 +312,15 @@ export default function Register() {
       <meta name="description" content="Create your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
-        {renderInput()}
-        {renderSuccess()}
+        {successSubmit ? (
+          renderSuccess()
+        ) : (
+          <>
+            {renderSnoozeAds()}
+            {renderUnsubscribe()}
+          </>
+        )}
+
         <AuthFooter />
       </div>
     </Page>

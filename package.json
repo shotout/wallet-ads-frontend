@@ -13,6 +13,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^3.5.3",
     "@emotion/cache": "^11.7.1",
     "@emotion/react": "^11.10.4",
     "@emotion/server": "^11.4.0",
@@ -30,12 +31,14 @@
     "@reduxjs/toolkit": "1.8.1",
     "@stripe/react-stripe-js": "^1.10.0",
     "@stripe/stripe-js": "^1.36.0",
+    "@walletconnect/web3-provider": "^1.8.0",
     "axios": "0.27.2",
     "change-case": "^4.1.2",
     "clsx": "^1.2.1",
     "cookie": "^0.4.1",
     "crypto-js": "^3.3.0",
     "date-fns": "^2.27.0",
+    "ethers": "^5.7.1",
     "framer-motion": "^5.5.5",
     "html-react-parser": "^3.0.1",
     "i18next": "^21.9.2",
@@ -74,7 +77,8 @@
     "stylis": "^4.0.13",
     "stylis-plugin-rtl": "^2.1.1",
     "underscore": "1.13.3",
-    "uuid": "8.3.2"
+    "uuid": "8.3.2",
+    "web3modal": "^1.9.9"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.0.7",
