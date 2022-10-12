@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import DefaultButton from '../../components/default-button';
 import Page from '../../components/Page';
 import useStyles from './styles';
-import { requestRegister, handleSubscribe } from '../../utils/requests';
+import { handleSubscribe } from '../../utils/requests';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import AuthFooter from '../../components/auth-footer';
 import { eventTrack } from '../../utils/tracker';
@@ -59,27 +59,22 @@ export default function Register() {
   const [values, setValues] = useState(defaultState);
   const [errorMessage, setErrorMessage] = useState(defaultError);
   const [isLoading, setLoading] = useState(false);
-  const [contentType, setContentType] = useState('register');
   const [checkList, setChecklist] = useState({
-    snooze: true,
-    subscribe: true,
+    snooze: false,
+    subscribe: false,
   });
-  const [web3Modal, setWeb3Modal] = useState(null);
+  // const [web3Modal, setWeb3Modal] = useState(null);
   const [provider, setProvider] = useState();
   const [library, setLibrary] = useState();
   const [network, setNetwork] = useState();
   const [loading, setIsLoading] = useState(defaultLoading);
   const [successSubmit, setSuccesSubmit] = useState(false);
 
-  useEffect(() => {
-    const newWeb3Modal = new Web3Modal({
-      cacheProvider: true, // very important
-      network: 'mainnet',
-      providerOptions,
-    });
-
-    setWeb3Modal(newWeb3Modal);
-  }, []);
+  const web3Modal = new Web3Modal({
+    cacheProvider: true, // very important
+    network: 'mainnet',
+    providerOptions,
+  });
 
   const connectWallet = async () => {
     try {
@@ -120,19 +115,16 @@ export default function Register() {
       }
       const connectToWallet = await connectWallet();
       if (connectToWallet.status) {
-        console.log('in');
         setIsLoading({ ...loading, [prop]: true });
         setValues({ ...values, [prop]: connectToWallet.walletAddr });
         const body = {
           _method: 'PATCH',
           flag: prop,
           wallet_address: connectToWallet.walletAddr,
-          is_subscribe: prop === 'subscribe' ? 1 : 0,
+          is_subscribe: prop === 'subscribe' ? true : false,
           snooze_ads: 30,
         };
-        console.log(body);
         const response = await handleSubscribe(body);
-        console.log(response);
         setSuccesSubmit(true);
       }
     } catch (err) {
@@ -149,13 +141,7 @@ export default function Register() {
     return (
       <div className={styles.ctnHeader}>
         <img src={appIcon} alt="wallet-ads" />
-        {successSubmit ? (
-          ''
-        ) : (
-          <Typography variant="h2" align="center" fontWeight="800">
-            Update your preferences or unsubscribe.
-          </Typography>
-        )}
+        {successSubmit ? '' : <span>Update your preferences or unsubscribe.</span>}
       </div>
     );
   }
@@ -163,10 +149,9 @@ export default function Register() {
   function renderSnoozeAds() {
     return (
       <div className={styles.ctnInput}>
-        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
           Snooze ads
         </Typography>
-
         <div className={styles.ctnTitle}>
           Don’t like the ad that you’re currently seeing? You can snooze ads now, just enter your Wallet Address.
         </div>
@@ -187,7 +172,7 @@ export default function Register() {
           <div onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}>
             <CheckboxAds isActive={checkList.snooze} />
           </div>
-          <div>
+          <div className={styles.ctnSubTitle}>
             I confirm that I would like to snooze all advertisement activities and do not want to receive any special
             offers or information on exclusive projects.
           </div>
@@ -198,6 +183,17 @@ export default function Register() {
           isLoading={loading.snooze}
           ctnBtnStyle={styles.btnStyle}
           label={'Snooze ads for 30 days'}
+          disabled={
+            values.snooze === ''
+              ? checkList.snooze === false
+                ? true
+                : false
+              : values.snooze !== ''
+              ? checkList.snooze === false
+                ? true
+                : false
+              : false
+          }
         />
       </div>
     );
@@ -206,7 +202,7 @@ export default function Register() {
   function renderUnsubscribe() {
     return (
       <div className={styles.ctnInput} style={{ marginBottom: 100 }}>
-        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
           Unsubscribe from this advertiser
         </Typography>
         <div className={styles.ctnTitle2}>
@@ -232,6 +228,7 @@ export default function Register() {
           eventName={'Unsubscribe'}
           isLoading={loading.unsubscribe}
           ctnBtnStyle={styles.btnStyle}
+          disabled={values.unsubscribe === ''}
           label={'Unsubscribe'}
         />
         <div className={styles.line} />
@@ -243,7 +240,7 @@ export default function Register() {
   function renderSubscribe() {
     return (
       <>
-        <Typography variant="h6" fontWeight={'800'} textAlign={'center'}>
+        <Typography variant="h6" fontWeight={'700'} textAlign={'center'}>
           Subscribe to WALLETADS
         </Typography>
         <div className={styles.ctnTitle2}>
@@ -271,12 +268,24 @@ export default function Register() {
             projects and more.
           </div>
         </div>
+        <>{values.subscribe === '' && checkList.subscribe === true}</>
         <DefaultButton
           onClick={() => handleSubmit('subscribe')}
           eventName={'Subscribe'}
           isLoading={loading.subscribe}
           ctnBtnStyle={styles.btnStyle}
           label={'Subscribe'}
+          disabled={
+            values.subscribe === ''
+              ? !checkList.subscribe
+                ? true
+                : false
+              : values.subscribe !== ''
+              ? !checkList.subscribe
+                ? true
+                : false
+              : false
+          }
         />
       </>
     );
@@ -286,17 +295,7 @@ export default function Register() {
     return (
       <div className={styles.ctnInput2}>
         <img src={successImg} alt="success" />
-        <Typography
-          variant="body"
-          marginTop={3}
-          marginBottom={5}
-          fontWeight="800"
-          lineHeight={1.3}
-          textAlign={'center'}
-        >
-          Your preferences have successfully been updated.
-        </Typography>
-
+        <span>Your preferences have successfully been updated.</span>
         <DefaultButton
           onClick={() => (window.location.href = '/')}
           eventName={'Subscribe / unsubscribe'}
@@ -308,7 +307,7 @@ export default function Register() {
   }
 
   return (
-    <Page title="Sign Up">
+    <Page title="Unsubcribe">
       <meta name="description" content="Create your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}

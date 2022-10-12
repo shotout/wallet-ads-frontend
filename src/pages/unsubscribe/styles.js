@@ -7,12 +7,7 @@ export default makeStyles((theme) => ({
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
     alignItems: 'center',
-    // justifyContent: 'center',
-    // backgroundImage: 'url("/assets/auth_bg.png")',
-    // backgroundRepeat: 'no-repeat',
-    // backgroundPosition: 'right',
   },
   ctnHeader: {
     marginTop: 30,
@@ -27,6 +22,12 @@ export default makeStyles((theme) => ({
       height: 50,
       objectFit: 'contain',
     },
+    '& > span': {
+      fontSize: 35,
+      fontWeight: 700,
+      fontFamily: 'Public Sans,sans-serif',
+      textAlign: 'center',
+    },
   },
   ctnInput: {
     maxWidth: 620,
@@ -37,6 +38,7 @@ export default makeStyles((theme) => ({
     background: '#E4E6FA',
     marginBottom: 40,
     overflow: 'hidden',
+    fontFamily: 'Public Sans,sans-serif',
   },
   ctnInput2: {
     display: 'flex',
@@ -51,22 +53,31 @@ export default makeStyles((theme) => ({
     background: '#E4E6FA',
     marginBottom: 40,
     overflow: 'hidden',
+    fontFamily: 'Public Sans,sans-serif',
+    '& > span': {
+      fontFamily: 'Public Sans,sans-serif',
+      fontSize: 18,
+      fontWeight: 500,
+      margin: '30px 0',
+    },
   },
   ctnTitle: {
     // marginBottom: 40,
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
     padding: '0px 80px 20px 80px',
     marginTop: 10,
+    fontWeight: 500,
+    fontFamily: 'Public Sans,sans-serif',
   },
   ctnTitle2: {
     // marginBottom: 40,
     textAlign: 'center',
     fontSize: 16,
-    fontWeight: 'bold',
     marginTop: 10,
     marginBottom: 20,
+    fontWeight: 500,
+    fontFamily: 'Public Sans,sans-serif',
   },
   line: {
     border: '1 solid black',
@@ -110,7 +121,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     color: '#fff',
     '& span': {
-      backgroundColor: '#7089FF !important',
+      backgroundColor: '#7089FF',
     },
   },
   checkBoxRoot: {
@@ -123,7 +134,8 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     '& > div': {
       fontSize: 13,
-      fontWeight: 'bold',
+      fontWeight: 500,
+      fontFamily: 'Public Sans,sans-serif',
     },
   },
   ctnDirectRegister: {
