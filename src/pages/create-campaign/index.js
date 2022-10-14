@@ -180,6 +180,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      console.log('asad', content);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -196,7 +197,7 @@ export default function AddCampaign({ content, params }) {
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         adsId: makeId(),
       }));
-      console.log(content);
+
       const audienceArr = content.audiences.map((item) => {
         const targeting = item.detail_target;
         return {
@@ -890,7 +891,7 @@ export default function AddCampaign({ content, params }) {
             Your own audience
           </Typography>
           <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={'center'}>
-            {item?.audienceFile?.name}
+            {`${item.audienceFile?.original_name}`}
           </Typography>
         </div>
       );

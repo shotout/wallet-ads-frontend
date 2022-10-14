@@ -201,13 +201,7 @@ export default function Unsubscribe({ content }) {
           <div onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}>
             <CheckboxAds isActive={checkList.snooze} />
           </div>
-          <Typography
-            fontSize={13}
-            fontWeight={'500'}
-            fontFamily={'Public Sans,sans-serif'}
-            onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}
-            style={{ cursor: 'pointer' }}
-          >
+          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
             I confirm that I would like to snooze all advertisement activities and do not want to receive any special
             offers or information on exclusive projects.
           </Typography>
@@ -271,17 +265,9 @@ export default function Unsubscribe({ content }) {
               if (content) setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe });
             }}
           >
-            <CheckboxAds isActive={checkList.unsubscribe} disabled={content ? false : true} />
+            <CheckboxAds isActive={checkList.unsubscribe} />
           </div>
-          <Typography
-            fontSize={13}
-            fontWeight={'500'}
-            fontFamily={'Public Sans,sans-serif'}
-            onClick={() => {
-              if (content) setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe });
-            }}
-            style={content ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
-          >
+          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
             I confirm that I would like to unsubscribe from all advertisement activities from this advertiser and do not
             want to receive any special offers or information on exclusive projects from this advertiser.
           </Typography>
