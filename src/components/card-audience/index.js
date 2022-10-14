@@ -39,6 +39,7 @@ export default function CardAudience({
   };
 
   useEffect(() => {
+    console.log(data);
     // if (data.selectedCategory) {
     //   setTimeout(() => {
     //     if (inputEl.current && inputEl.current.focus) {
@@ -266,7 +267,7 @@ export default function CardAudience({
             </Typography>
             {data.audienceFile && (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
-                {`${data.audienceFile.name}`}
+                {`${data.audienceFile?.name}`}
               </Typography>
             )}
           </div>

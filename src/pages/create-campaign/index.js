@@ -196,6 +196,7 @@ export default function AddCampaign({ content, params }) {
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         adsId: makeId(),
       }));
+      console.log(content);
       const audienceArr = content.audiences.map((item) => {
         const targeting = item.detail_target;
         return {
@@ -218,6 +219,7 @@ export default function AddCampaign({ content, params }) {
             day: normalizeInitialData(targeting.account_age_day),
             airdropReceived: normalizeInitialData(targeting.airdrops_received),
           },
+          audienceFile: item.file,
         };
       });
       setPicture(adCreation);

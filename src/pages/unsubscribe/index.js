@@ -54,7 +54,7 @@ export const providerOptions = {
   },
 };
 
-export default function Register() {
+export default function Unsubscribe({ content }) {
   const styles = useStyles();
   const [values, setValues] = useState(defaultState);
   const [errorMessage, setErrorMessage] = useState(defaultError);
@@ -62,6 +62,7 @@ export default function Register() {
   const [checkList, setChecklist] = useState({
     snooze: false,
     subscribe: false,
+    unsubscribe: false,
   });
   // const [web3Modal, setWeb3Modal] = useState(null);
   const [provider, setProvider] = useState();
@@ -131,6 +132,7 @@ export default function Register() {
           wallet_address: connectToWallet.walletAddr,
           is_subscribe: propCode,
           snooze_ads: 30,
+          id: prop === 'unsubscribe' ? content : null,
         };
         const response = await handleSubscribe(body);
         console.log(response);
@@ -252,17 +254,37 @@ export default function Register() {
               size="small"
               fullWidth
               placeholder="Your Wallet Address"
+              className={content ? {} : styles.btnDisabled}
+              disabled={content ? false : true}
             />
           </div>
         </div>
-
+        <div className={styles.checkBoxRoot}>
+          <div onClick={() => setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe })}>
+            <CheckboxAds isActive={checkList.unsubscribe} />
+          </div>
+          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
+            I confirm that I would like to unsubscribe from all advertisement activities from this advertiser and do not
+            want to receive any special offers or information on exclusive projects from this advertiser.
+          </Typography>
+        </div>
         <DefaultButton
           onClick={() => handleSubmit('unsubscribe')}
           eventName={'Unsubscribe'}
           isLoading={loading.unsubscribe}
           ctnBtnStyle={styles.btnStyle}
-          disabled={values.unsubscribe === ''}
           label={'Unsubscribe'}
+          disabled={
+            values.unsubscribe === ''
+              ? !checkList.unsubscribe
+                ? true
+                : false
+              : values.unsubscribe !== ''
+              ? !checkList.unsubscribe
+                ? true
+                : false
+              : false
+          }
         />
         <div className={styles.line} />
         {renderSubscribe()}
@@ -343,18 +365,12 @@ export default function Register() {
         >
           Your preferences have successfully been updated.
         </Typography>
-        <DefaultButton
-          onClick={() => (window.location.href = '/')}
-          eventName={'Subscribe / unsubscribe'}
-          ctnBtnStyle={styles.btnStyle}
-          label={'Ok'}
-        />
       </div>
     );
   }
 
   return (
-    <Page title="Unsubcribe">
+    <Page title="Unsubscribe">
       <meta name="description" content="Create your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
@@ -374,17 +390,29 @@ export default function Register() {
 }
 
 export async function getServerSideProps(context) {
-  const UA = context.req.headers['user-agent'];
-  const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  if (isMobile) {
+  try {
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
+    let content = null;
+    if (isMobile) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/forbidden`,
+        },
+      };
+    }
+    if (context.query) {
+      if (context.query.id) {
+        content = context.query.id;
+      }
+    }
     return {
-      redirect: {
-        permanent: false,
-        destination: `/forbidden`,
-      },
+      props: {
+        content,
+      }, // will be passed to the page component as props
     };
+  } catch (err) {
+    return {};
   }
-  return {
-    props: {}, // will be passed to the page component as props
-  };
 }
