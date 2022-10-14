@@ -201,7 +201,12 @@ export default function Unsubscribe({ content }) {
           <div onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}>
             <CheckboxAds isActive={checkList.snooze} />
           </div>
-          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
+          <Typography
+            fontSize={13}
+            fontWeight={'500'}
+            fontFamily={'Public Sans,sans-serif'}
+            onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}
+          >
             I confirm that I would like to snooze all advertisement activities and do not want to receive any special
             offers or information on exclusive projects.
           </Typography>
@@ -263,7 +268,12 @@ export default function Unsubscribe({ content }) {
           <div onClick={() => setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe })}>
             <CheckboxAds isActive={checkList.unsubscribe} />
           </div>
-          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
+          <Typography
+            fontSize={13}
+            fontWeight={'500'}
+            fontFamily={'Public Sans,sans-serif'}
+            onClick={() => setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe })}
+          >
             I confirm that I would like to unsubscribe from all advertisement activities from this advertiser and do not
             want to receive any special offers or information on exclusive projects from this advertiser.
           </Typography>
@@ -324,7 +334,12 @@ export default function Unsubscribe({ content }) {
           <div onClick={() => setChecklist({ ...checkList, subscribe: !checkList.subscribe })}>
             <CheckboxAds isActive={checkList.subscribe} />
           </div>
-          <Typography fontSize={13} fontWeight={'500'} fontFamily={'Public Sans,sans-serif'}>
+          <Typography
+            fontSize={13}
+            fontWeight={'500'}
+            fontFamily={'Public Sans,sans-serif'}
+            onClick={() => setChecklist({ ...checkList, subscribe: !checkList.subscribe })}
+          >
             I confirm that I would like to subscribe to WALLETADS to receive special offers, information on exclusive
             projects and more.
           </Typography>
