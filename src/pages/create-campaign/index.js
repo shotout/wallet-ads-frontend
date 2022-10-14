@@ -891,7 +891,7 @@ export default function AddCampaign({ content, params }) {
             Your own audience
           </Typography>
           <Typography variant="body2" className={styles.txtAudienceOptimized} textAlign={'center'}>
-            {`${item.audienceFile?.original_name}`}
+            {`${item.audienceFile?.original_name ? item.audienceFile?.original_name : item.audienceFile?.name}`}
           </Typography>
         </div>
       );
