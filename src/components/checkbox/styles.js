@@ -1,21 +1,26 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
-    ctnCheckbox: {
-        position: 'relative',
-        marginRight: 12,
-        width: 22,
-        height: 22,
-        '& > img': {
-            width: 22,
-            height: 22,
-            objectFit: 'contain',
-        }
+  ctnCheckbox: {
+    position: 'relative',
+    marginRight: 12,
+    width: 22,
+    height: 22,
+    '& > img': {
+      width: 22,
+      height: 22,
+      objectFit: 'contain',
     },
-    checboxUnselect: {
-        width: 22,
-        height: 22,
-        border: '1px solid #808080',
-        borderRadius: 22 
-    }
-}))
+  },
+  checboxUnselect: {
+    width: 22,
+    height: 22,
+    border: '1px solid #808080',
+    borderRadius: 22,
+  },
+  ctnDisableCheckBox: {
+    backgroundColor: '#bdc3c7 !important',
+    cursor: 'not-allowed !important',
+    borderRadius: 100,
+  },
+}));

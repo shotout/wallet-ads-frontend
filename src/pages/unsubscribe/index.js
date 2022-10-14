@@ -206,6 +206,7 @@ export default function Unsubscribe({ content }) {
             fontWeight={'500'}
             fontFamily={'Public Sans,sans-serif'}
             onClick={() => setChecklist({ ...checkList, snooze: !checkList.snooze })}
+            style={{ cursor: 'pointer' }}
           >
             I confirm that I would like to snooze all advertisement activities and do not want to receive any special
             offers or information on exclusive projects.
@@ -265,14 +266,21 @@ export default function Unsubscribe({ content }) {
           </div>
         </div>
         <div className={styles.checkBoxRoot}>
-          <div onClick={() => setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe })}>
-            <CheckboxAds isActive={checkList.unsubscribe} />
+          <div
+            onClick={() => {
+              if (content) setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe });
+            }}
+          >
+            <CheckboxAds isActive={checkList.unsubscribe} disabled={content ? false : true} />
           </div>
           <Typography
             fontSize={13}
             fontWeight={'500'}
             fontFamily={'Public Sans,sans-serif'}
-            onClick={() => setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe })}
+            onClick={() => {
+              if (content) setChecklist({ ...checkList, unsubscribe: !checkList.unsubscribe });
+            }}
+            style={content ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
           >
             I confirm that I would like to unsubscribe from all advertisement activities from this advertiser and do not
             want to receive any special offers or information on exclusive projects from this advertiser.
@@ -339,6 +347,7 @@ export default function Unsubscribe({ content }) {
             fontWeight={'500'}
             fontFamily={'Public Sans,sans-serif'}
             onClick={() => setChecklist({ ...checkList, subscribe: !checkList.subscribe })}
+            style={{ cursor: 'pointer' }}
           >
             I confirm that I would like to subscribe to WALLETADS to receive special offers, information on exclusive
             projects and more.
