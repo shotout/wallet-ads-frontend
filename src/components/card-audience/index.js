@@ -267,7 +267,11 @@ export default function CardAudience({
             </Typography>
             {data.audienceFile && (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
-                {`${data.audienceFile?.name}`}
+                {`${
+                  data.audienceFile?.original_name.length > 24
+                    ? data.audienceFile?.original_name.slice(0, 24) + ` ...`
+                    : data.audienceFile?.original_name
+                }`}
               </Typography>
             )}
           </div>
