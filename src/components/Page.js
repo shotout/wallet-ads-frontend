@@ -19,7 +19,7 @@ const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => {
   return (
     <>
       <Head>
-        <title>{`${title} | WALLETADS`}</title>
+        <title>{`WALLETADS | ${title}`}</title>
         {meta}
       </Head>
 

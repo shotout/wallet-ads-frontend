@@ -254,7 +254,8 @@ export default function Invoice({ content }) {
   }
 
   return (
-    <Page title="WALLETADS | Invoices" description="Find your WALLETADS invoices.">
+    <Page title="Invoices">
+      <meta name="description" content="Find your WALLETADS invoices." />
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
           <HeaderUser />

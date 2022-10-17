@@ -1753,7 +1753,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   return (
-    <Page title="WALLETADS | Campaign Creation">
+    <Page title="Campaign Creation">
       <meta name="description" content="Create your campaign on WALLETADS now!" />
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>

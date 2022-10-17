@@ -352,7 +352,7 @@ export default function Register() {
   }
 
   return (
-    <Page title="WALLETADS | Sign up">
+    <Page title="Sign up">
       <meta name="description" content="Create your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
