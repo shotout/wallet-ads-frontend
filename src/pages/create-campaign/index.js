@@ -178,7 +178,7 @@ export default function AddCampaign({ content, params }) {
   useEffect(() => {
     if (params && params.status === 'success') {
       GTMTracker({
-        event: 'signup-successful',
+        event: 'campaign-creation-success',
       });
       setModalSuccess('credit-card');
     }
@@ -1753,7 +1753,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   return (
-    <Page title="Campaign Creation">
+    <Page title="WALLETADS | Campaign Creation">
       <meta name="description" content="Create your campaign on WALLETADS now!" />
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
@@ -1774,7 +1774,7 @@ export default function AddCampaign({ content, params }) {
         <AddPaymentMethod
           callbackSuccess={(modalType) => {
             GTMTracker({
-              event: 'signup-successful',
+              event: 'campaign-creation-success',
             });
             setModalSuccess(modalType);
           }}

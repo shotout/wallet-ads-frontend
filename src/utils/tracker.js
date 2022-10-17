@@ -28,7 +28,6 @@ export const trackGoal = (payload) => {
 
 export const GTMTracker = (payload) => {
   window.dataLayer = window.dataLayer || [];
-  console.log(window.dataLayer);
   window.dataLayer.push({
     event: payload.event,
   });

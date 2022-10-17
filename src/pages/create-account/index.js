@@ -9,7 +9,7 @@ import responseValidatorObj from '../../helpers/responseValidatorObj';
 import Link from 'next/link';
 import { routes } from '../../helpers/routes';
 import AuthFooter from '../../components/auth-footer';
-import { eventTrack } from '../../utils/tracker';
+import { eventTrack, GTMTracker } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const emailBanner = '/assets/email_banner.png';
@@ -60,6 +60,9 @@ export default function Register() {
       setLoading(true);
       const res = await requestRegister(values);
       setContentType('success');
+      GTMTracker({
+        event: 'signup-succesful',
+      });
       setLoading(false);
     } catch (err) {
       if (err.data) {
@@ -349,7 +352,7 @@ export default function Register() {
   }
 
   return (
-    <Page title="Sign Up">
+    <Page title="WALLETADS | Sign up">
       <meta name="description" content="Create your WALLETADS account now!" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
