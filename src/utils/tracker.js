@@ -25,3 +25,11 @@ export const trackGoal = (payload) => {
     window._paq.push(['trackGoal', payload.id, payload.amount]);
   }
 };
+
+export const GTMTracker = (payload) => {
+  window.dataLayer = window.dataLayer || [];
+  console.log(window.dataLayer);
+  window.dataLayer.push({
+    event: payload.event,
+  });
+};

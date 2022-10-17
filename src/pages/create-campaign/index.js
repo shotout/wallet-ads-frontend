@@ -38,7 +38,7 @@ import { getFutureDate } from '../../helpers/dateHelper';
 import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
 import SvgIconStyle from '../../components/SvgIconStyle';
-import { trackGoal } from '../../utils/tracker';
+import { trackGoal, GTMTracker } from '../../utils/tracker';
 
 const questionObj = {
   collection_page_text: 'Add a text for your collection page to describe what it is about.',
@@ -177,6 +177,9 @@ export default function AddCampaign({ content, params }) {
 
   useEffect(() => {
     if (params && params.status === 'success') {
+      GTMTracker({
+        event: 'signup-successful',
+      });
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
@@ -1770,6 +1773,9 @@ export default function AddCampaign({ content, params }) {
         />
         <AddPaymentMethod
           callbackSuccess={(modalType) => {
+            GTMTracker({
+              event: 'signup-successful',
+            });
             setModalSuccess(modalType);
           }}
           totalBudget={getTotalBudget(audienceForm)}
