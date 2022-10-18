@@ -352,8 +352,8 @@ export default function Register() {
   }
 
   return (
-    <Page title="Sign up">
-      <meta name="description" content="Create your WALLETADS account now!" />
+    <Page title="Sign up" description="Create your WALLETADS account now!">
+      <meta name="description" />
       <div className={styles.ctnRoot}>
         {renderHeader()}
         {renderInput()}

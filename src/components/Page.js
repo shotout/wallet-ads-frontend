@@ -9,7 +9,7 @@ import { loadPageTracker } from '../utils/tracker';
 
 // ----------------------------------------------------------------------
 
-const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => {
+const Page = forwardRef(({ children, title = '', description = '', meta, ...other }, ref) => {
   useEffect(() => {
     loadPageTracker({
       title,
@@ -20,7 +20,8 @@ const Page = forwardRef(({ children, title = '', meta, ...other }, ref) => {
     <>
       <Head>
         <title>{`WALLETADS | ${title}`}</title>
-        {meta}
+        <meta name="description" content={description} />
+        {/* {meta} */}
       </Head>
 
       <Box ref={ref} {...other}>

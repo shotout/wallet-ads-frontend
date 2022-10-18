@@ -215,8 +215,7 @@ export default function Login({ isVerifyValid, changePassword }) {
   }
 
   return (
-    <Page title="Login">
-      <meta name="description" content="Login to your WALLETADS account now!" />
+    <Page title="Login" description="Login to your WALLETADS account now!">
       <div className={styles.ctnRoot}>
         {renderHeader()}
         {renderInput()}
