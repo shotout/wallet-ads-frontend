@@ -747,7 +747,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                 <div className={`${styles.ctnInputTarget} ${styles.borderRed}`}>
                     <FilePicker btnStyle={checkIsCategoryActive('upload', true)} onDelete={removeFile} typeScreen={'logo'} file={formValues.audienceFile} label="Upload File" onDrop={(value) => {handleInputFile(value)}} />
                     
-                <div className={styles.ctnRightAudience}>
+                {/* <div className={styles.ctnRightAudience}>
                     <div className={styles.ctnTitleInput}>
                         <Typography variant="body2">
                             +Add lookalike wallets
@@ -774,7 +774,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
                         </TextField>
                     </div>
                     {renderComingSoon()}
-                </div>
+                </div> */}
                 </div>
             </div>
         )
