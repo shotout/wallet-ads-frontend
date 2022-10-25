@@ -198,6 +198,8 @@ export default function AddCampaign({ content, params }) {
         ...item,
         fe_id: getAdsId(item.id),
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
+        preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
+        imageProps: item.image,
         adsId: makeId(),
       }));
 
@@ -1278,7 +1280,7 @@ export default function AddCampaign({ content, params }) {
           <BannerPicker
             typeScreen="logo"
             label={'Add media'}
-            file={content.image}
+            file={content}
             acceptAllFile={true}
             // accept={{
             //   'image/png': ['.png'],

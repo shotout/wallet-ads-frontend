@@ -59,7 +59,7 @@ export default function BannerPicker({ label, file, typeScreen, callbackError, o
   }
 
   function renderLeftContent() {
-    console.log('LOGO', file.preview);
+    console.log('LOGO', file);
     if (isImage()) {
       return (
         <div className={styles.leftRow}>
@@ -68,7 +68,7 @@ export default function BannerPicker({ label, file, typeScreen, callbackError, o
             src={file === null ? null : typeof file === 'string' ? file : file.preview || null}
             alt="logo"
           />
-          <div className={styles.ctnDesc}>{file.name && <Typography variant="body1">Logo</Typography>}</div>
+          <div className={styles.ctnDesc}>{file.imageProps?.name && <Typography variant="body1" fontSize={18} fontWeight={600}>{file.imageProps?.name}</Typography>}</div>
         </div>
       );
     }
