@@ -1294,11 +1294,11 @@ export default function AddCampaign({ content, params }) {
             //   'audio/ogg': ['.oga'],
             //   'video/ogg': ['.ogv']
             // }}
-            maxFileSize={50 * 1000000}
+            maxFileSize={5 * 1000000}
             callbackError={() => {
               setErrorBox({
                 ...errorBox,
-                errorFileSize: 'The file exceeds the maximum filesize of 50 MB.',
+                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
               });
             }}
             onDelete={() => {

@@ -12,6 +12,7 @@ const pricetagIcon = '/assets/pricetag_icon.png';
 const headerCard = '/assets/svg/header_card.svg';
 const editIcon = '/assets/svg/pencil.svg';
 const deleteIcon = '/assets/svg/delete.svg';
+const pencilIcon = '/assets/pencil.png';
 
 export default function CardAudience({
   isError,
@@ -181,6 +182,11 @@ export default function CardAudience({
             groupSeparator=","
             decimalSeparator="."
             maxLength={5}
+          />
+          <img
+            src={pencilIcon}
+            className={styles.ctnPencilIcon}
+            onClick={() => inputEl.current.focus()}
           />
         </div>
       </div>

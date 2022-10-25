@@ -226,4 +226,10 @@ export default makeStyles((theme) => ({
     padding: 7,
     cursor: 'pointer',
   },
+  ctnPencilIcon: {
+    width: 16,
+    cursor: 'pointer',
+    position: 'absolute',
+    right: 20
+  }
 }));

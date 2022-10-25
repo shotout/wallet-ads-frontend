@@ -1280,7 +1280,8 @@ export default function AddCampaign({ content, params }) {
           <BannerPicker
             typeScreen="logo"
             label={'Add media'}
-            file={content}
+            file={content.image}
+            imageProps={content.imageProps}
             acceptAllFile={true}
             // accept={{
             //   'image/png': ['.png'],
