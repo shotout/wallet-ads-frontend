@@ -18,11 +18,16 @@ const ICONS = {
 const sidebarConfig = [
   {
     items: [
-      { title: 'Overview (Coming Soon)', path: '/overview', icon: ICONS.dashboard, disabled: true },
+      { title: 'Overview', path: '/overview', icon: ICONS.dashboard },
       { title: 'Create a campaign', path: routes.createCampaign, icon: ICONS.campaign },
       { title: 'Invoices', path: routes.invoices, icon: ICONS.invoices },
-      { title: 'Integrations (Coming Soon)', path: '/integrations', icon: ICONS.integration,disabled: true },
-      { title: 'Audience Manager (Coming Soon)', path: '/dashboard/audience-manager', icon: ICONS.audience,disabled: true },
+      { title: 'Integrations (Coming Soon)', path: '/integrations', icon: ICONS.integration, disabled: true },
+      {
+        title: 'Audience Manager (Coming Soon)',
+        path: '/dashboard/audience-manager',
+        icon: ICONS.audience,
+        disabled: true,
+      },
       { title: 'Settings', path: routes.settings, icon: ICONS.settings },
     ],
   },

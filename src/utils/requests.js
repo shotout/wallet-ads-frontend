@@ -134,3 +134,11 @@ export const handleSubscribe = (data) =>
     method: 'POST',
     data,
   });
+
+export const getListCampaignDashboard = (ctx) => {
+  axios({
+    url: `/dashboard/list-campaign`,
+    method: 'GET',
+    ctx,
+  });
+};
