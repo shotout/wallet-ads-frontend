@@ -349,7 +349,7 @@ export default function AddCampaign({ content, params }) {
       total_budget: getTotalBudget(audienceForm) * 100,
     });
     setShowCreditCard({ ...showCreditCard });
-    trackGoal({ id: 4, amount: getTotalBudget(audienceForm) });
+    trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
     window.location.href = session?.url;
   };
 
@@ -1615,7 +1615,9 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        item.optimized === false || checkIsAudienceAdsSelected(!item.audienceId) ? styles.ctnDisable : {}
+                        item.optimized === false || checkIsAudienceAdsSelected(!item.audienceId)
+                          ? styles.ctnDisable
+                          : {}
                       }`}
                       onClick={() => {
                         if (

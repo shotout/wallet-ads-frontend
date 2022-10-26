@@ -240,7 +240,7 @@ export async function getServerSideProps(context) {
   }
 
   const res = await getCampaignItem(context);
-  console.log(res);
+
   if (!userData) {
     return {
       redirect: {
