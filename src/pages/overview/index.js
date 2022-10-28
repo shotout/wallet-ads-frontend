@@ -11,6 +11,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DefaultButton from '../../components/default-button';
 import FormControl from '@mui/material/FormControl';
+import ChartBar from '../../components/chart-bar';
 
 Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -33,16 +34,36 @@ export default function Overview({ content, listCampaign }) {
     content: listCampaign || [],
   });
   const [campaignID, setCapmapaignID] = useState();
+  const [campaignName, setCapmapaignName] = useState();
   const [listAudience, setListAudience] = useState();
+  const [chartDatas, setChartDatas] = useState({
+    labels: [],
+    airdrops: [],
+    linkClicks: [],
+  });
 
   useEffect(() => {
     initFunction(listCampaign);
   }, []);
 
   const initFunction = async (val) => {
-    const res = await getAudienceByCampaignID(val[0].id);
-    setCapmapaignID(val[0].id);
+    handleGetAudience(val[0].id, val[0].name);
+  };
+
+  const handleGetAudience = async (id, name) => {
+    const labels = [];
+    const airdrops = [];
+    const linkClicks = [];
+    const res = await getAudienceByCampaignID(id);
+    setCapmapaignID(id);
+    setCapmapaignName(name);
     setListAudience(res.data);
+    res.data.audiences.forEach((element) => {
+      labels.push(element.name);
+      airdrops.push(element.ads.count_airdrop);
+      linkClicks.push(element.ads.count_click);
+    });
+    setChartDatas({ labels: labels, airdrops: airdrops, linkClicks: linkClicks });
   };
 
   const handleSort = () => {
@@ -61,9 +82,8 @@ export default function Overview({ content, listCampaign }) {
   };
 
   const handleChangeSelect = async (e) => {
-    const res = await getAudienceByCampaignID(e.target.value);
-    setCapmapaignID(e.target.value);
-    setListAudience(res.data);
+    const campName = listCampaigns.content.filter((val) => val.id === e.target.value);
+    handleGetAudience(e.target.value, campName[0].name);
   };
 
   function renderTitleCampaignOverview() {
@@ -321,6 +341,29 @@ export default function Overview({ content, listCampaign }) {
     );
   }
 
+  function renderChartBar() {
+    return (
+      <Grid container spacing={3} marginTop={2}>
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Airdrops</Typography>
+            </div>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
+          </div>
+        </Grid>
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Link Clicks</Typography>
+            </div>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
+          </div>
+        </Grid>
+      </Grid>
+    );
+  }
+
   function renderContentAucienceOverview() {
     return (
       <div className={styles.ctnContent}>
@@ -329,6 +372,7 @@ export default function Overview({ content, listCampaign }) {
           {renderListTitleAudienceOverview()}
           {renderListItemAudienceOverview()}
         </div>
+        <div>{renderChartBar()}</div>
       </div>
     );
   }
