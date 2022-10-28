@@ -348,8 +348,8 @@ export default function AddCampaign({ content, params }) {
       campaign_name: campaign.data.name,
       total_budget: getTotalBudget(audienceForm) * 100,
     });
-    setShowCreditCard({ ...showCreditCard });
     trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+    setShowCreditCard({ ...showCreditCard });
     window.location.href = session?.url;
   };
 
@@ -1735,7 +1735,7 @@ export default function AddCampaign({ content, params }) {
           isLoading={loadingSubmit}
           onClick={() => {
             validateSubmit();
-            trackGoal({ id: 6, amount: getTotalBudget(audienceForm) });
+            trackGoal({ id: 5, amount: getTotalBudget(audienceForm) });
           }}
           ctnBtnStyle={styles.btnSetupAirdrop}
           eventName={'Setup Airdrop'}
