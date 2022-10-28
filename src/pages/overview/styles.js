@@ -131,4 +131,19 @@ export default makeStyles((theme) => ({
       borderRadius: 8,
     },
   },
+  leftTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
 }));

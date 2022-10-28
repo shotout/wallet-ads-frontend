@@ -13,7 +13,14 @@ import { Bar } from 'react-chartjs-2';
 ChartJS?.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export default function Index({ labels, datas }) {
-  //   const labels = ['January', 'February', 'Maret', 'April', 'Mei', 'Juni', 'Juli'];
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
   const data = {
     labels: labels,
     datasets: [
@@ -37,5 +44,5 @@ export default function Index({ labels, datas }) {
 
   // } = props
 
-  return <Bar data={data} />;
+  return <Bar data={data} options={options} />;
 }

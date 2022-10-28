@@ -3,7 +3,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Grid, Popover, Typography } from '@mui/material';
+import { Grid, Popover, Typography, Box } from '@mui/material';
 import { getCampaignItem, getAudienceByCampaignID, getListCampaign } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
 import { dateToUnix } from '../../helpers/dateHelper';
@@ -22,10 +22,16 @@ const url = process.env.BACKEND_URL;
 const downloadIcon = '/assets/svg/download.svg';
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.png';
+const askIcon = '/assets/ask_icon.png';
+
+const impressionText =
+  'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
 
 export default function Overview({ content, listCampaign }) {
   const styles = useStyles();
 
+  const [hover, setHover] = useState(null);
+  const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: 'a-z',
     content: content.data || [],
@@ -66,6 +72,36 @@ export default function Overview({ content, listCampaign }) {
     setChartDatas({ labels: labels, airdrops: airdrops, linkClicks: linkClicks });
   };
 
+  function renderPopover(type, content) {
+    return (
+      <Popover
+        id={type}
+        open={Boolean(hover) && activePopover === type}
+        anchorEl={hover}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleHoverClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={styles.ctnPopover}
+      >
+        <Box sx={{ p: 2, maxWidth: 260 }}>
+          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
+
   const handleSort = () => {
     if (listContent.sortItem === 'a-z') {
       setContent({
@@ -79,6 +115,15 @@ export default function Overview({ content, listCampaign }) {
         content: listContent.content.sort((a, b) => dateToUnix(a.invoice_date) - dateToUnix(b.invoice_date)),
       });
     }
+  };
+
+  const handleHoverOpen = (event, popoverName) => {
+    setHover(event.currentTarget);
+    setActivePopover(popoverName);
+  };
+
+  const handleHoverClose = () => {
+    setHover(null);
   };
 
   const handleChangeSelect = async (e) => {
@@ -127,9 +172,20 @@ export default function Overview({ content, listCampaign }) {
           </Typography>
         </Grid>
         <Grid item md={2} sm={12}>
-          <Typography variant="body1" fontWeight={'bold'}>
-            Impressions
-          </Typography>
+          <div className={styles.leftTitle}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Impressions
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'logo_text_banner');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('logo_text_banner', impressionText)}
+          </div>
         </Grid>
         <Grid item md={2} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
@@ -306,9 +362,20 @@ export default function Overview({ content, listCampaign }) {
           </Typography>
         </Grid>
         <Grid item md={1.5} sm={12}>
-          <Typography variant="body1" fontWeight={'bold'}>
-            Impressions
-          </Typography>
+          <div className={styles.leftTitle}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Impressions
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'logo_text_banner');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('logo_text_banner', impressionText)}
+          </div>
         </Grid>
         <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
