@@ -3,7 +3,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Box, Grid, Popover, Typography } from '@mui/material';
+import { Grid, Popover, Typography } from '@mui/material';
 import { getCampaignItem, getAudienceByCampaignID, getListCampaign } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
 import { dateToUnix } from '../../helpers/dateHelper';
@@ -16,21 +16,34 @@ Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
+const url = process.env.BACKEND_URL;
+
 const downloadIcon = '/assets/svg/download.svg';
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.png';
 
-export default function Overview({ content, listCampaign, ctx }) {
+export default function Overview({ content, listCampaign }) {
   const styles = useStyles();
 
   const [listContent, setContent] = useState({
     sortItem: 'a-z',
     content: content.data || [],
   });
+  const [listCampaigns, setListCampaigns] = useState({
+    content: listCampaign || [],
+  });
+  const [campaignID, setCapmapaignID] = useState();
+  const [listAudience, setListAudience] = useState();
 
   useEffect(() => {
-    console.log(content);
+    initFunction(listCampaign);
   }, []);
+
+  const initFunction = async (val) => {
+    const res = await getAudienceByCampaignID(val[0].id);
+    setCapmapaignID(val[0].id);
+    setListAudience(res.data);
+  };
 
   const handleSort = () => {
     if (listContent.sortItem === 'a-z') {
@@ -49,8 +62,8 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const handleChangeSelect = async (e) => {
     const res = await getAudienceByCampaignID(e.target.value);
-    const listCampaign = await getListCampaign();
-    console.log(listCampaign);
+    setCapmapaignID(e.target.value);
+    setListAudience(res.data);
   };
 
   function renderTitleCampaignOverview() {
@@ -171,12 +184,15 @@ export default function Overview({ content, listCampaign, ctx }) {
             <Grid item md={6} sm={12} display="flex">
               <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
                 <Select
+                  defaultValue={campaignID}
+                  defaultChecked={campaignID}
+                  value={campaignID}
                   displayEmpty
                   onChange={handleChangeSelect}
                   className={styles.ctnSelect}
                   inputProps={{ 'aria-label': 'Without label' }}
                 >
-                  {listContent.content.map((v, i) => (
+                  {listCampaigns.content.map((v, i) => (
                     <MenuItem key={`list+${i}`} value={v.id}>
                       {v.name}
                     </MenuItem>
@@ -199,6 +215,52 @@ export default function Overview({ content, listCampaign, ctx }) {
           </Grid>
         </div>
       </>
+    );
+  }
+
+  function renderListItemAudienceOverview() {
+    if (listCampaigns.content.length === 0) {
+      return (
+        <div className={styles.ctnItem}>
+          <Typography variant="h4" color="#B3B3B3" marginY={4} textAlign={'center'}>
+            No Audience available
+          </Typography>
+        </div>
+      );
+    }
+    return (
+      <div className={styles.ctnItem}>
+        <Grid container spacing={3}>
+          {listAudience?.audiences.map((item) => (
+            <Fragment key={item.id.toString()}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.name}</Typography>
+              </Grid>
+              <Grid item md={2.5} sm={12} alignItems={'center'}>
+                <div className={styles.statusContainer}>
+                  <img src={`${url + item.ads.image.url}`} />
+                  <Typography variant="body1">{item.ads.name}</Typography>
+                </div>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_airdrop ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_impression ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_view ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_click ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_mint ?? '-'}</Typography>
+              </Grid>
+            </Fragment>
+          ))}
+        </Grid>
+      </div>
     );
   }
 
@@ -265,6 +327,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         <div className={styles.ctnCard}>
           {renderTitleAudienceOverview()}
           {renderListTitleAudienceOverview()}
+          {renderListItemAudienceOverview()}
         </div>
       </div>
     );
@@ -279,7 +342,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   }
 
   return (
-    <Page title="Campaign Creation" description="Create your campaign on WALLETADS now!">
+    <Page title="Overview" description="Overview">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
           <div className={styles.p20}>
@@ -310,9 +373,7 @@ export async function getServerSideProps(context) {
   }
 
   const res = await getCampaignItem(context);
-  // const listCampaign = await getListCampaign();
-
-  // console.log(listCampaign);
+  const listCampaign = await getListCampaign(context);
 
   if (!userData) {
     return {
@@ -326,7 +387,7 @@ export async function getServerSideProps(context) {
     props: {
       userData,
       content: res.data || [],
-      // listCampaign: listCampaign,
+      listCampaign: listCampaign.data || [],
     }, // will be passed to the page component as props
   };
 }

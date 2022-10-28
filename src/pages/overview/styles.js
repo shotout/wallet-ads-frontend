@@ -123,5 +123,12 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    '& > img': {
+      width: 40,
+      height: 40,
+      marginRight: 20,
+      backgroundColor: '#F1F1F1',
+      borderRadius: 8,
+    },
   },
 }));
