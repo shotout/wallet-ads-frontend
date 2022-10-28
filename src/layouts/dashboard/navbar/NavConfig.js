@@ -18,7 +18,7 @@ const ICONS = {
 const sidebarConfig = [
   {
     items: [
-      { title: 'Overview', path: '/overview', icon: ICONS.dashboard, disabled: true },
+      { title: 'Overview', path: '/overview', icon: ICONS.dashboard },
       { title: 'Create a campaign', path: routes.createCampaign, icon: ICONS.campaign },
       { title: 'Invoices', path: routes.invoices, icon: ICONS.invoices },
       { title: 'Integrations (Coming Soon)', path: '/integrations', icon: ICONS.integration, disabled: true },

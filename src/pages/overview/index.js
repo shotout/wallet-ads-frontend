@@ -3,28 +3,104 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Box, Grid, Popover, Typography } from '@mui/material';
-import AuthFooter from '../../components/auth-footer';
-import { getCampaignItem, getListCampaignDashboard } from '../../utils/requests';
+import { Grid, Popover, Typography, Box } from '@mui/material';
+import { getCampaignItem, getAudienceByCampaignID, getListCampaign } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
 import { dateToUnix } from '../../helpers/dateHelper';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import DefaultButton from '../../components/default-button';
+import FormControl from '@mui/material/FormControl';
+import ChartBar from '../../components/chart-bar';
 
 Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
+const url = process.env.BACKEND_URL;
+
 const downloadIcon = '/assets/svg/download.svg';
 const iconShort = '/assets/short_icon.png';
+const banner = '/assets/Banner.png';
+const askIcon = '/assets/ask_icon.png';
 
-export default function Overview({ content }) {
+const impressionText =
+  'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
+
+export default function Overview({ content, listCampaign }) {
   const styles = useStyles();
 
+  const [hover, setHover] = useState(null);
+  const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: 'a-z',
     content: content.data || [],
   });
+  const [listCampaigns, setListCampaigns] = useState({
+    content: listCampaign || [],
+  });
+  const [campaignID, setCapmapaignID] = useState();
+  const [campaignName, setCapmapaignName] = useState();
+  const [listAudience, setListAudience] = useState();
+  const [chartDatas, setChartDatas] = useState({
+    labels: [],
+    airdrops: [],
+    linkClicks: [],
+  });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    initFunction(listCampaign);
+  }, []);
+
+  const initFunction = async (val) => {
+    handleGetAudience(val[0].id, val[0].name);
+  };
+
+  const handleGetAudience = async (id, name) => {
+    const labels = [];
+    const airdrops = [];
+    const linkClicks = [];
+    const res = await getAudienceByCampaignID(id);
+    setCapmapaignID(id);
+    setCapmapaignName(name);
+    setListAudience(res.data);
+    res.data.audiences.forEach((element) => {
+      labels.push(element.name);
+      airdrops.push(element.ads.count_airdrop);
+      linkClicks.push(element.ads.count_click);
+    });
+    setChartDatas({ labels: labels, airdrops: airdrops, linkClicks: linkClicks });
+  };
+
+  function renderPopover(type, content) {
+    return (
+      <Popover
+        id={type}
+        open={Boolean(hover) && activePopover === type}
+        anchorEl={hover}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleHoverClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={styles.ctnPopover}
+      >
+        <Box sx={{ p: 2, maxWidth: 260 }}>
+          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
 
   const handleSort = () => {
     if (listContent.sortItem === 'a-z') {
@@ -41,6 +117,20 @@ export default function Overview({ content }) {
     }
   };
 
+  const handleHoverOpen = (event, popoverName) => {
+    setHover(event.currentTarget);
+    setActivePopover(popoverName);
+  };
+
+  const handleHoverClose = () => {
+    setHover(null);
+  };
+
+  const handleChangeSelect = async (e) => {
+    const campName = listCampaigns.content.filter((val) => val.id === e.target.value);
+    handleGetAudience(e.target.value, campName[0].name);
+  };
+
   function renderTitleCampaignOverview() {
     return (
       <div className={styles.ctnTitle}>
@@ -48,6 +138,17 @@ export default function Overview({ content }) {
       </div>
     );
   }
+
+  const renderStatus = (status) => {
+    if (status === 1) {
+      return (
+        <div className={styles.statusContainer}>
+          <div style={{ width: 6, height: 6, backgroundColor: '#FFAC00', borderRadius: 10, marginRight: 10 }} />
+          <Typography>In review</Typography>
+        </div>
+      );
+    }
+  };
 
   function renderListTitleCampaignOverview() {
     return (
@@ -61,7 +162,7 @@ export default function Overview({ content }) {
           </div>
         </Grid>
         <Grid item md={1.5} sm={12}>
-          <Typography variant="body1" fontWeight={'bold'}>
+          <Typography variant="body1" fontWeight={'bold'} alignItems={'center'}>
             Status
           </Typography>
         </Grid>
@@ -71,9 +172,20 @@ export default function Overview({ content }) {
           </Typography>
         </Grid>
         <Grid item md={2} sm={12}>
-          <Typography variant="body1" fontWeight={'bold'}>
-            Impressions
-          </Typography>
+          <div className={styles.leftTitle}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Impressions
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'logo_text_banner');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('logo_text_banner', impressionText)}
+          </div>
         </Grid>
         <Grid item md={2} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
@@ -112,17 +224,17 @@ export default function Overview({ content }) {
               <Grid item md={2} sm={12} display="flex">
                 <Typography variant="body1">{item.name}</Typography>
               </Grid>
-              <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{item.status}</Typography>
+              <Grid item md={1.5} sm={12} alignItems={'center'}>
+                <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{item.count_airdrop ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12}>
-                <Typography variant="body1">{item.count_airdrop ?? '-'}</Typography>
+                <Typography variant="body1">{item.count_impression ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12}>
-                <Typography variant="body1">{item.count_airdrop ?? '-'}</Typography>
+                <Typography variant="body1">{item.count_view ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12}>
                 <Typography variant="body1">{item.count_click ?? '-'}</Typography>
@@ -139,8 +251,91 @@ export default function Overview({ content }) {
 
   function renderTitleAudienceOverview() {
     return (
-      <div className={styles.ctnTitle}>
-        <Typography variant="h6">Audience Overview</Typography>
+      <>
+        <div className={styles.ctnTitle}>
+          <Typography variant="h6">Audience Overview</Typography>
+        </div>
+        <div className={styles.ctnTitle}>
+          <Grid container>
+            <Grid item md={6} sm={12} display="flex">
+              <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
+                <Select
+                  defaultValue={campaignID}
+                  defaultChecked={campaignID}
+                  value={campaignID}
+                  displayEmpty
+                  onChange={handleChangeSelect}
+                  className={styles.ctnSelect}
+                  inputProps={{ 'aria-label': 'Without label' }}
+                >
+                  {listCampaigns.content.map((v, i) => (
+                    <MenuItem key={`list+${i}`} value={v.id}>
+                      {v.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item md={6} sm={12}>
+              <DefaultButton
+                // isLoading={loadingSubmit}
+                // onClick={validateSubmit}
+                ctnBtnStyle={styles.btnExportToExcel}
+                eventName={'Setup Airdrop'}
+                // onClick={() => {
+                //   setModalSuccess('cryptocurrency')
+                // }}
+                label={'Export to excel'}
+              />
+            </Grid>
+          </Grid>
+        </div>
+      </>
+    );
+  }
+
+  function renderListItemAudienceOverview() {
+    if (listCampaigns.content.length === 0) {
+      return (
+        <div className={styles.ctnItem}>
+          <Typography variant="h4" color="#B3B3B3" marginY={4} textAlign={'center'}>
+            No Audience available
+          </Typography>
+        </div>
+      );
+    }
+    return (
+      <div className={styles.ctnItem}>
+        <Grid container spacing={3}>
+          {listAudience?.audiences.map((item) => (
+            <Fragment key={item.id.toString()}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.name}</Typography>
+              </Grid>
+              <Grid item md={2.5} sm={12} alignItems={'center'}>
+                <div className={styles.statusContainer}>
+                  <img src={`${url + item.ads.image.url}`} />
+                  <Typography variant="body1">{item.ads.name}</Typography>
+                </div>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_airdrop ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_impression ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_view ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_click ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item.ads.count_mint ?? '-'}</Typography>
+              </Grid>
+            </Fragment>
+          ))}
+        </Grid>
       </div>
     );
   }
@@ -148,7 +343,7 @@ export default function Overview({ content }) {
   function renderListTitleAudienceOverview() {
     return (
       <Grid container spacing={3}>
-        <Grid item md={1.8} sm={12} display="flex">
+        <Grid item md={2} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'} onClick={handleSort} sx={{ cursor: 'pointer' }}>
             Audience
           </Typography>
@@ -156,32 +351,43 @@ export default function Overview({ content }) {
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>
-        <Grid item md={2.4} sm={12}>
+        <Grid item md={2.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Ad creative
           </Typography>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Airdrops
           </Typography>
         </Grid>
-        <Grid item md={1.8} sm={12}>
-          <Typography variant="body1" fontWeight={'bold'}>
-            Impressions
-          </Typography>
+        <Grid item md={1.5} sm={12}>
+          <div className={styles.leftTitle}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Impressions
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'logo_text_banner');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('logo_text_banner', impressionText)}
+          </div>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Views
           </Typography>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Link clicks
           </Typography>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Mints
           </Typography>
@@ -202,24 +408,62 @@ export default function Overview({ content }) {
     );
   }
 
+  function renderChartBar() {
+    return (
+      <Grid container spacing={3} marginTop={2}>
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Airdrops</Typography>
+            </div>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
+          </div>
+        </Grid>
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Link Clicks</Typography>
+            </div>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
+          </div>
+        </Grid>
+      </Grid>
+    );
+  }
+
   function renderContentAucienceOverview() {
     return (
       <div className={styles.ctnContent}>
         <div className={styles.ctnCard}>
           {renderTitleAudienceOverview()}
           {renderListTitleAudienceOverview()}
+          {renderListItemAudienceOverview()}
         </div>
+        <div>{renderChartBar()}</div>
+      </div>
+    );
+  }
+
+  function renderBanner() {
+    return (
+      <div className={styles.bannerContainer}>
+        <img src={banner} alt="banner" />
       </div>
     );
   }
 
   return (
-    <Page title="Campaign Creation" description="Create your campaign on WALLETADS now!">
+    <Page title="Overview" description="Overview">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
-          <HeaderUser />
-          {renderContentCampaignOverview()}
-          {renderContentAucienceOverview()}
+          <div className={styles.p20}>
+            <HeaderUser />
+          </div>
+          {renderBanner()}
+          <div className={styles.p20}>
+            {renderContentCampaignOverview()}
+            {renderContentAucienceOverview()}
+          </div>
         </div>
       </div>
     </Page>
@@ -240,6 +484,7 @@ export async function getServerSideProps(context) {
   }
 
   const res = await getCampaignItem(context);
+  const listCampaign = await getListCampaign(context);
 
   if (!userData) {
     return {
@@ -253,6 +498,7 @@ export async function getServerSideProps(context) {
     props: {
       userData,
       content: res.data || [],
+      listCampaign: listCampaign.data || [],
     }, // will be passed to the page component as props
   };
 }

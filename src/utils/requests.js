@@ -135,10 +135,15 @@ export const handleSubscribe = (data) =>
     data,
   });
 
-export const getListCampaignDashboard = (ctx) => {
+export const getListCampaign = (ctx) =>
   axios({
     url: `/dashboard/list-campaign`,
     method: 'GET',
     ctx,
   });
-};
+
+export const getAudienceByCampaignID = (id) =>
+  axios({
+    url: `/dashboard/audiences/${id}`,
+    method: 'GET',
+  });

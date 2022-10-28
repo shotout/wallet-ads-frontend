@@ -1795,9 +1795,7 @@ export default function AddCampaign({ content, params }) {
 }
 
 export async function getServerSideProps(context) {
-  console.log('campaig');
   try {
-    console.log('campaig');
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));

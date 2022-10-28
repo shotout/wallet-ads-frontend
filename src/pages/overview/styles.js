@@ -20,7 +20,7 @@ export default makeStyles((theme) => ({
     maxWidth: '1366px',
     margin: 'auto',
     backgroundColor: '#E4E6FA',
-    padding: 20,
+    // padding: 20,
     marginTop: 20,
     marginBottom: 20,
     borderRadius: 20,
@@ -98,6 +98,52 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
+    },
+  },
+  ctnSelect: {
+    width: '50%',
+    backgroundColor: '#F1F1F1',
+  },
+  btnExportToExcel: {
+    width: `40% !important`,
+    float: 'right',
+  },
+  bannerContainer: {
+    width: '100%',
+    marginTop: -40,
+    marginBottom: -60,
+    '& > img': {
+      width: '100%',
+    },
+  },
+  p20: {
+    padding: 20,
+  },
+  statusContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    '& > img': {
+      width: 40,
+      height: 40,
+      marginRight: 20,
+      backgroundColor: '#F1F1F1',
+      borderRadius: 8,
+    },
+  },
+  leftTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
     },
   },
 }));
