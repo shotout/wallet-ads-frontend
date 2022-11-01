@@ -41,7 +41,10 @@ export default function Overview({ content, listCampaign }) {
   });
   const [campaignID, setCapmapaignID] = useState();
   const [campaignName, setCapmapaignName] = useState();
-  const [listAudience, setListAudience] = useState();
+  const [listAudience, setListAudience] = useState({
+    sortItem: 'a-z',
+    content: [],
+  });
   const [chartDatas, setChartDatas] = useState({
     labels: [],
     airdrops: [],
@@ -63,7 +66,7 @@ export default function Overview({ content, listCampaign }) {
     const res = await getAudienceByCampaignID(id);
     setCapmapaignID(id);
     setCapmapaignName(name);
-    setListAudience(res.data);
+    setListAudience({ ...listAudience, content: res.data });
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.ads.count_airdrop);
@@ -102,18 +105,34 @@ export default function Overview({ content, listCampaign }) {
     );
   }
 
-  const handleSort = () => {
-    if (listContent.sortItem === 'a-z') {
-      setContent({
-        sortItem: 'z-a',
-        content: listContent.content.sort((a, b) => dateToUnix(b.invoice_date) - dateToUnix(a.invoice_date)),
-      });
-    }
-    if (listContent.sortItem === 'z-a') {
-      setContent({
-        sortItem: 'a-z',
-        content: listContent.content.sort((a, b) => dateToUnix(a.invoice_date) - dateToUnix(b.invoice_date)),
-      });
+  const handleSort = (parent, type, child) => {
+    if (parent === 'campaign') {
+      if (listContent.sortItem === 'a-z') {
+        setContent({
+          sortItem: 'z-a',
+          content: listContent.content.sort((a, b) => a.toString().localeCompare(b.name)),
+        });
+      }
+      if (listContent.sortItem === 'z-a') {
+        setContent({
+          sortItem: 'a-z',
+          content: listContent.content.sort((a, b) => b.toString().localeCompare(a.name)),
+        });
+      }
+    } else {
+      console.log('here');
+      if (listAudience.sortItem === 'a-z') {
+        setListAudience({
+          sortItem: 'z-a',
+          content: listAudience.content?.audiences.sort((a, b) => b.name - a.name),
+        });
+      }
+      if (listAudience.sortItem === 'z-a') {
+        setListAudience({
+          sortItem: 'a-z',
+          content: listAudience.content?.audiences.sort((a, b) => a.name - b.name),
+        });
+      }
     }
   };
 
@@ -154,10 +173,15 @@ export default function Overview({ content, listCampaign }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={2} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'} onClick={handleSort} sx={{ cursor: 'pointer' }}>
+          <Typography
+            variant="body1"
+            fontWeight={'bold'}
+            onClick={() => handleSort('campaign', 'name')}
+            sx={{ cursor: 'pointer' }}
+          >
             Campaign
           </Typography>
-          <div className={styles.ctnIconShort} onClick={handleSort}>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', 'name')}>
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>
@@ -307,7 +331,7 @@ export default function Overview({ content, listCampaign }) {
     return (
       <div className={styles.ctnItem}>
         <Grid container spacing={3}>
-          {listAudience?.audiences.map((item) => (
+          {listAudience.content.audiences?.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.name}</Typography>
@@ -344,10 +368,15 @@ export default function Overview({ content, listCampaign }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={2} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'} onClick={handleSort} sx={{ cursor: 'pointer' }}>
+          <Typography
+            variant="body1"
+            fontWeight={'bold'}
+            onClick={() => handleSort('audience', 'name')}
+            sx={{ cursor: 'pointer' }}
+          >
             Audience
           </Typography>
-          <div className={styles.ctnIconShort} onClick={handleSort}>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', 'name')}>
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>

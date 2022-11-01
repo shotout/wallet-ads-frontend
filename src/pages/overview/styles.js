@@ -111,7 +111,7 @@ export default makeStyles((theme) => ({
   bannerContainer: {
     width: '100%',
     marginTop: -40,
-    marginBottom: -60,
+    marginBottom: -100,
     '& > img': {
       width: '100%',
     },
