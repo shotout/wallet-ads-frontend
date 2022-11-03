@@ -125,7 +125,7 @@ export default function CardAudience({
   }
 
   function renderDetailTargeting() {
-    const detail = data.detailTargeting;
+    const detail = data.detailTargeting || data.detail_target;
     if (detail && (detail.transactionAmount || detail.tradingVolume || detail.availableCredit || detail.creatorName)) {
       return (
         <div className={styles.descFilledWrapper}>
@@ -183,11 +183,7 @@ export default function CardAudience({
             decimalSeparator="."
             maxLength={5}
           />
-          <img
-            src={pencilIcon}
-            className={styles.ctnPencilIcon}
-            onClick={() => inputEl.current.focus()}
-          />
+          <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
         </div>
       </div>
     );

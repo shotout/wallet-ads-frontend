@@ -4,22 +4,20 @@ import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
 import { Grid, Popover, Typography, Box } from '@mui/material';
-import { getCampaignItem, getAudienceByCampaignID, getListCampaign } from '../../utils/requests';
+import { getCampaignItem, getAudienceByCampaignID, getListCampaign, getCampaignDetail } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
-import { dateToUnix } from '../../helpers/dateHelper';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import DefaultButton from '../../components/default-button';
 import FormControl from '@mui/material/FormControl';
 import ChartBar from '../../components/chart-bar';
+import CampaignModal from './../../../src/components/campaign-modal';
 
 Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
 
 const url = process.env.BACKEND_URL;
-
-const downloadIcon = '/assets/svg/download.svg';
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.png';
 const askIcon = '/assets/ask_icon.png';
@@ -27,10 +25,11 @@ const askIcon = '/assets/ask_icon.png';
 const impressionText =
   'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
 
-export default function Overview({ content, listCampaign }) {
+export default function Overview({ content, listCampaign, ctx }) {
   const styles = useStyles();
 
   const [hover, setHover] = useState(null);
+  const [campaignModal, setCampaignModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: 'a-z',
@@ -50,6 +49,7 @@ export default function Overview({ content, listCampaign }) {
     airdrops: [],
     linkClicks: [],
   });
+  const [campaignDetails, setCampaignDetails] = useState(null);
 
   useEffect(() => {
     initFunction(listCampaign);
@@ -67,6 +67,7 @@ export default function Overview({ content, listCampaign }) {
     setCapmapaignID(id);
     setCapmapaignName(name);
     setListAudience({ ...listAudience, content: res.data });
+    console.log(res);
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.ads.count_airdrop);
@@ -121,18 +122,18 @@ export default function Overview({ content, listCampaign }) {
       }
     } else {
       console.log('here');
-      if (listAudience.sortItem === 'a-z') {
-        setListAudience({
-          sortItem: 'z-a',
-          content: listAudience.content?.audiences.sort((a, b) => b.name - a.name),
-        });
-      }
-      if (listAudience.sortItem === 'z-a') {
-        setListAudience({
-          sortItem: 'a-z',
-          content: listAudience.content?.audiences.sort((a, b) => a.name - b.name),
-        });
-      }
+      // if (listAudience.sortItem === 'a-z') {
+      //   setListAudience({
+      //     sortItem: 'z-a',
+      //     content: listAudience.content?.audiences.sort((a, b) => b.name - a.name),
+      //   });
+      // }
+      // if (listAudience.sortItem === 'z-a') {
+      //   setListAudience({
+      //     sortItem: 'a-z',
+      //     content: listAudience.content?.audiences.sort((a, b) => a.name - b.name),
+      //   });
+      // }
     }
   };
 
@@ -230,12 +231,18 @@ export default function Overview({ content, listCampaign }) {
     );
   }
 
+  const openCampaignModal = async (id) => {
+    const res = await getCampaignDetail(ctx, id);
+    setCampaignDetails(res.data);
+    setCampaignModal(!campaignModal);
+  };
+
   function renderListItemCampaignOverview() {
     if (content.data.length === 0) {
       return (
         <div className={styles.ctnItem}>
           <Typography variant="h4" color="#B3B3B3" marginY={4} textAlign={'center'}>
-            No invoices available
+            No Campaign available
           </Typography>
         </div>
       );
@@ -246,7 +253,9 @@ export default function Overview({ content, listCampaign }) {
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex">
-                <Typography variant="body1">{item.name}</Typography>
+                <Typography variant="body1" onClick={() => openCampaignModal(item.id)}>
+                  {item.name}
+                </Typography>
               </Grid>
               <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
@@ -495,6 +504,7 @@ export default function Overview({ content, listCampaign }) {
           </div>
         </div>
       </div>
+      <CampaignModal isVisible={campaignModal} data={campaignDetails} />
     </Page>
   );
 }
@@ -528,6 +538,7 @@ export async function getServerSideProps(context) {
       userData,
       content: res.data || [],
       listCampaign: listCampaign.data || [],
+      // ctx: context,
     }, // will be passed to the page component as props
   };
 }

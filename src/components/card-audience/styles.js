@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   ctnAudience: {
     position: 'relative',
-    height: '97%',
+    // height: '97%',
   },
   cardAudience: {
     backgroundColor: '#fff',
@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: '100%',
     marginLeft: 20,
+    marginRight: 20,
     padding: 20,
     borderRadius: 20,
     marginBottom: 40,
@@ -230,6 +231,6 @@ export default makeStyles((theme) => ({
     width: 16,
     cursor: 'pointer',
     position: 'absolute',
-    right: 20
-  }
+    right: 20,
+  },
 }));
