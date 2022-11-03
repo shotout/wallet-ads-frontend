@@ -1,4 +1,5 @@
 export const routes = {
+  dashboard: '/overview',
   login: '/login',
   register: '/create-account',
   createCampaign: '/create-campaign',

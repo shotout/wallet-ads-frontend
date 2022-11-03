@@ -147,3 +147,17 @@ export const getAudienceByCampaignID = (id) =>
     url: `/dashboard/audiences/${id}`,
     method: 'GET',
   });
+
+export const exportAudienceByCampaignID = (id) =>
+  axios({
+    url: `/dashboard/export-audiences/${id}`,
+    method: 'GET',
+    responseType: 'blob',
+  }).then((res) => {
+    const url = URL.createObjectURL(new Blob([res]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'campaign.xls');
+    document.body.appendChild(link);
+    link.click();
+  });

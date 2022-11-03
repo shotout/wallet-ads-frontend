@@ -4,7 +4,13 @@ import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
 import { Grid, Popover, Typography, Box } from '@mui/material';
-import { getCampaignItem, getAudienceByCampaignID, getListCampaign, getCampaignDetail } from '../../utils/requests';
+import {
+  getCampaignItem,
+  getAudienceByCampaignID,
+  getListCampaign,
+  getCampaignDetail,
+  exportAudienceByCampaignID,
+} from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -12,6 +18,8 @@ import DefaultButton from '../../components/default-button';
 import FormControl from '@mui/material/FormControl';
 import ChartBar from '../../components/chart-bar';
 import CampaignModal from './../../../src/components/campaign-modal';
+import { routes } from '../../helpers/routes';
+import { useRouter } from 'next/router';
 
 Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -27,7 +35,7 @@ const impressionText =
 
 export default function Overview({ content, listCampaign, ctx }) {
   const styles = useStyles();
-
+  const router = useRouter();
   const [hover, setHover] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
@@ -41,7 +49,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   const [campaignID, setCapmapaignID] = useState();
   const [campaignName, setCapmapaignName] = useState();
   const [listAudience, setListAudience] = useState({
-    sortItem: 'a-z',
+    sortItem: true,
     content: [],
   });
   const [chartDatas, setChartDatas] = useState({
@@ -174,38 +182,31 @@ export default function Overview({ content, listCampaign, ctx }) {
             : b.toString().localeCompare(a.name)
         ),
       });
-      // if (listContent.sortItem === 'a-z') {
-      //   console.log(identifier);
-      //   setContent({
-      //     sortItem: 'z-a',
-      //     content: listContent.content.sort((a, b) =>
-      //       number ? a[identifier] - b[identifier] : a.toString().localeCompare(b.name)
-      //     ),
-      //   });
-      // }
-      // if (listContent.sortItem === 'z-a') {
-      //   console.log(identifier);
-      //   setContent({
-      //     sortItem: 'a-z',
-      //     content: listContent.content.sort((a, b) =>
-      //       number ? b[identifier] - a[identifier] : b.toString().localeCompare(a.name)
-      //     ),
-      //   });
-      // }
     } else {
       console.log('here');
-      // if (listAudience.sortItem === 'a-z') {
-      //   setListAudience({
-      //     sortItem: 'z-a',
-      //     content: listAudience.content?.audiences.sort((a, b) => b.name - a.name),
-      //   });
-      // }
-      // if (listAudience.sortItem === 'z-a') {
-      //   setListAudience({
-      //     sortItem: 'a-z',
-      //     content: listAudience.content?.audiences.sort((a, b) => a.name - b.name),
-      //   });
-      // }
+      // const contentAud = listAudience.content?.audiences?.sort((a, b) =>
+      //   listAudience.sortItem
+      //     ? number
+      //       ? a.ads[identifier] - b.ads[identifier]
+      //       : a.toString().localeCompare(b.name)
+      //     : number
+      //     ? b[identifier] - a[identifier]
+      //     : b.toString().localeCompare(a.name)
+      // );
+      // console.log(listAudience.content);
+      // console.log(contentAud);
+      // setListAudience({
+      //   sortItem: !listAudience.sortItem,
+      //   content: listAudience.content?.audiences?.sort((a, b) =>
+      //     listAudience.sortItem
+      //       ? number
+      //         ? a.ads[identifier] - b.ads[identifier]
+      //         : a.toString().localeCompare(b.name)
+      //       : number
+      //       ? b[identifier] - a[identifier]
+      //       : b.toString().localeCompare(a.name)
+      //   ),
+      // });
     }
   };
 
@@ -246,12 +247,7 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={2} sm={12} display="flex">
-          <Typography
-            variant="body1"
-            fontWeight={'bold'}
-            onClick={() => handleSort('campaign', false, '', 'name')}
-            sx={{ cursor: 'pointer' }}
-          >
+          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
             Campaign
           </Typography>
           <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', false, '', 'name')}>
@@ -434,10 +430,10 @@ export default function Overview({ content, listCampaign, ctx }) {
                 // isLoading={loadingSubmit}
                 // onClick={validateSubmit}
                 ctnBtnStyle={styles.btnExportToExcel}
-                eventName={'Setup Airdrop'}
-                // onClick={() => {
-                //   setModalSuccess('cryptocurrency')
-                // }}
+                eventName={'Export to excel'}
+                onClick={() => {
+                  exportAudienceByCampaignID(listAudience.content?.campaign?.id);
+                }}
                 label={'Export to excel'}
               />
             </Grid>
@@ -460,7 +456,7 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <div className={styles.ctnItem}>
         <Grid container spacing={3}>
-          {listAudience.content.audiences?.map((item) => (
+          {listAudience.content?.audiences?.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.name}</Typography>
@@ -497,15 +493,10 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={2} sm={12} display="flex">
-          <Typography
-            variant="body1"
-            fontWeight={'bold'}
-            onClick={() => handleSort('audience', 'name')}
-            sx={{ cursor: 'pointer' }}
-          >
+          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
             Audience
           </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', 'name')}>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', false, '', 'name')}>
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>
@@ -514,12 +505,15 @@ export default function Overview({ content, listCampaign, ctx }) {
             Ad creative
           </Typography>
         </Grid>
-        <Grid item md={1.5} sm={12}>
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Airdrops
           </Typography>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_airdrop')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={2} sm={12} display="flex">
           <div className={styles.leftTitle}>
             <Typography variant="body1" fontWeight={'bold'}>
               Impressions
@@ -534,21 +528,33 @@ export default function Overview({ content, listCampaign, ctx }) {
             />
             {renderPopover('logo_text_banner', impressionText)}
           </div>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_impression')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
         </Grid>
-        <Grid item md={1.5} sm={12}>
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Views
           </Typography>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_view')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
         </Grid>
-        <Grid item md={1.5} sm={12}>
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Link clicks
           </Typography>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_click')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
         </Grid>
-        <Grid item md={1} sm={12}>
+        <Grid item md={1} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Mints
           </Typography>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_mint')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
         </Grid>
       </Grid>
     );
@@ -700,7 +706,12 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderBanner() {
     return (
       <div className={styles.bannerContainer}>
-        <img src={banner} alt="banner" />
+        <img
+          src={banner}
+          style={{ cursor: 'pointer' }}
+          alt="banner"
+          onClick={() => router.push(routes.createCampaign)}
+        />
       </div>
     );
   }
