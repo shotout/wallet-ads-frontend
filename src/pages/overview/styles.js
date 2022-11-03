@@ -146,4 +146,17 @@ export default makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  paginationContainer: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    '& > span': {
+      marginLeft: 20,
+      cursor: 'pointer',
+    },
+  },
+  isPaginateActive: {
+    fontWeight: 'bolder',
+    color: '#8C65CC',
+  },
 }));

@@ -7,13 +7,14 @@ import { parsePriceToCategory } from '../../helpers/calculator';
 import { BACKEND_URL } from '../../helpers/constants';
 import CollectionPreview from '../../components/collection-preview';
 import AdsCard from '../ads-card';
+import Iconify from '../Iconify';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
 const mediumIcon = '/assets/medium.png';
 const websiteIcon = '/assets/website.png';
 
-export default function CampaignModal({ isVisible, data }) {
+export default function CampaignModal({ isVisible, data, close }) {
   const styles = useStyles();
   const [audienceForm, setAudienceForm] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
@@ -91,6 +92,9 @@ export default function CampaignModal({ isVisible, data }) {
         <Typography textAlign={'center'} fontSize={20} fontWeight={700}>
           {data?.name}
         </Typography>
+        <div className={styles.ctnClose}>
+          <Iconify icon={'ant-design:close-outlined'} width={24} height={24} onClick={close} />
+        </div>
       </div>
     );
   }
@@ -146,10 +150,10 @@ export default function CampaignModal({ isVisible, data }) {
           {audienceForm?.map((item, index) => (
             <Grid
               item
-              md={3}
+              md={4}
               lg={3}
-              sm={12}
-              xs={12}
+              sm={6}
+              xs={6}
               className={styles.ctnSectionAd}
               key={item.audienceId}
               id={`card-audience-${index}`}

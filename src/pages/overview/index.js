@@ -49,6 +49,24 @@ export default function Overview({ content, listCampaign, ctx }) {
     airdrops: [],
     linkClicks: [],
   });
+  const [totalAudienceOverview, setTotalAudienceOverview] = useState({
+    airdrops: 0,
+    linkClicks: 0,
+    impressions: 0,
+    views: 0,
+    mints: 0,
+  });
+  const [totalCampainOverview, setTotalCampaignOverview] = useState({
+    airdrops: 0,
+    linkClicks: 0,
+    impressions: 0,
+    views: 0,
+    mints: 0,
+  });
+  const [pagination, setPagination] = useState({
+    data: content.links,
+    currentPage: content.current_page,
+  });
   const [campaignDetails, setCampaignDetails] = useState(null);
 
   useEffect(() => {
@@ -57,6 +75,7 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const initFunction = async (val) => {
     handleGetAudience(val[0].id, val[0].name);
+    sumCampainOverview(content.data);
   };
 
   const handleGetAudience = async (id, name) => {
@@ -73,7 +92,42 @@ export default function Overview({ content, listCampaign, ctx }) {
       airdrops.push(element.ads.count_airdrop);
       linkClicks.push(element.ads.count_click);
     });
+    const totalAirDrop = sumArr(res.data.audiences, 'count_airdrop', true);
+    const totalClick = sumArr(res.data.audiences, 'count_click', true);
+    const totalImpression = sumArr(res.data.audiences, 'count_impression', true);
+    const totalMint = sumArr(res.data.audiences, 'count_mint', true);
+    const totalView = sumArr(res.data.audiences, 'count_view', true);
+    setTotalAudienceOverview({
+      airdrops: totalAirDrop,
+      linkClicks: totalClick,
+      impressions: totalImpression,
+      views: totalView,
+      mints: totalMint,
+    });
     setChartDatas({ labels: labels, airdrops: airdrops, linkClicks: linkClicks });
+  };
+
+  const sumCampainOverview = (val) => {
+    const totalAirDrop = sumArr(val, 'count_airdrop', false);
+    const totalClick = sumArr(val, 'count_click', false);
+    const totalImpression = sumArr(val, 'count_impression', false);
+    const totalMint = sumArr(val, 'count_mint', false);
+    const totalView = sumArr(val, 'count_view', false);
+    setTotalCampaignOverview({
+      airdrops: totalAirDrop,
+      linkClicks: totalClick,
+      impressions: totalImpression,
+      views: totalView,
+      mints: totalMint,
+    });
+  };
+
+  const sumArr = (arr, val, nested) => {
+    return arr
+      .map((item) => (nested ? item.ads[val] : item[val]))
+      .reduce((a, b) => {
+        return a + b;
+      });
   };
 
   function renderPopover(type, content) {
@@ -253,7 +307,7 @@ export default function Overview({ content, listCampaign, ctx }) {
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex">
-                <Typography variant="body1" onClick={() => openCampaignModal(item.id)}>
+                <Typography variant="body1" style={{ cursor: 'pointer' }} onClick={() => openCampaignModal(item.id)}>
                   {item.name}
                 </Typography>
               </Grid>
@@ -281,6 +335,39 @@ export default function Overview({ content, listCampaign, ctx }) {
       </div>
     );
   }
+
+  function renderPagination() {
+    return (
+      <div className={styles.paginationContainer}>
+        {pagination.data?.map((v, i) => (
+          <span
+            key={`paginate-${i}`}
+            className={v.active ? styles.isPaginateActive : null}
+            onClick={() => getAnotherPage(v)}
+          >
+            {v.label.replace('&laquo;', '').replace('&raquo;', '')}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  const getAnotherPage = async (page) => {
+    if (!page.url) return;
+    const pageIdentity = page.label.replace('&laquo;', '').replace('&raquo;', '');
+    const pageParams = {
+      ' Previous': pagination.currentPage - 1,
+      'Next ': pagination.currentPage + 1,
+    };
+    const pages = await getCampaignItem(null, pageParams[pageIdentity] ?? page.label);
+
+    setContent({
+      ...content,
+      content: pages.data.data,
+    });
+    await sumCampainOverview(pages.data.data);
+    setPagination({ data: pages.data.links, currentPage: pages.data.current_page });
+  };
 
   function renderTitleAudienceOverview() {
     return (
@@ -354,7 +441,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.ads.count_airdrop ?? '-'}</Typography>
               </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.ads.count_impression ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
@@ -363,7 +450,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.ads.count_click ?? '-'}</Typography>
               </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+              <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{item.ads.count_mint ?? '-'}</Typography>
               </Grid>
             </Fragment>
@@ -399,7 +486,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             Airdrops
           </Typography>
         </Grid>
-        <Grid item md={1.5} sm={12}>
+        <Grid item md={2} sm={12}>
           <div className={styles.leftTitle}>
             <Typography variant="body1" fontWeight={'bold'}>
               Impressions
@@ -425,12 +512,104 @@ export default function Overview({ content, listCampaign, ctx }) {
             Link clicks
           </Typography>
         </Grid>
-        <Grid item md={1.5} sm={12}>
+        <Grid item md={1} sm={12}>
           <Typography variant="body1" fontWeight={'bold'}>
             Mints
           </Typography>
         </Grid>
       </Grid>
+    );
+  }
+
+  function renderTotalAudienceOverview() {
+    return (
+      <>
+        <div className={styles.ctnTitle} />
+        <Grid container spacing={3}>
+          <Grid item md={2} sm={12} display="flex">
+            <Typography variant="body1" fontWeight={'bold'}>
+              Total
+            </Typography>
+          </Grid>
+          <Grid item md={2.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {''}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalAudienceOverview.airdrops ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalAudienceOverview.impressions ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalAudienceOverview.views ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalAudienceOverview.linkClicks ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalAudienceOverview.mints ?? 0}
+            </Typography>
+          </Grid>
+        </Grid>
+        <div className={styles.ctnTitle} />
+      </>
+    );
+  }
+
+  function renderTotalCampaignOverview() {
+    return (
+      <>
+        <div className={styles.ctnTitle} />
+        <Grid container spacing={3}>
+          <Grid item md={2} sm={12} display="flex">
+            <Typography variant="body1" fontWeight={'bold'}>
+              Total
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {''}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.airdrops ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.impressions ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.views ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.linkClicks ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.mints ?? 0}
+            </Typography>
+          </Grid>
+        </Grid>
+        <div className={styles.ctnTitle} />
+      </>
     );
   }
 
@@ -441,6 +620,8 @@ export default function Overview({ content, listCampaign, ctx }) {
           {renderTitleCampaignOverview()}
           {renderListTitleCampaignOverview()}
           {renderListItemCampaignOverview()}
+          {renderTotalCampaignOverview()}
+          {renderPagination()}
         </div>
       </div>
     );
@@ -476,6 +657,7 @@ export default function Overview({ content, listCampaign, ctx }) {
           {renderTitleAudienceOverview()}
           {renderListTitleAudienceOverview()}
           {renderListItemAudienceOverview()}
+          {renderTotalAudienceOverview()}
         </div>
         <div>{renderChartBar()}</div>
       </div>
@@ -504,7 +686,7 @@ export default function Overview({ content, listCampaign, ctx }) {
           </div>
         </div>
       </div>
-      <CampaignModal isVisible={campaignModal} data={campaignDetails} />
+      <CampaignModal isVisible={campaignModal} data={campaignDetails} close={() => setCampaignModal(false)} />
     </Page>
   );
 }
@@ -522,7 +704,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const res = await getCampaignItem(context);
+  const res = await getCampaignItem(context, 1);
   const listCampaign = await getListCampaign(context);
 
   if (!userData) {

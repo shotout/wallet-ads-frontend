@@ -34,6 +34,7 @@ export default makeStyles((theme) => ({
   },
   audienceContainer: {
     display: 'flex',
+    marginBottom: 5,
   },
   adtextContainer: {
     minHeight: 120,

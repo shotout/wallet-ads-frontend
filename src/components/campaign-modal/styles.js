@@ -13,6 +13,7 @@ export default makeStyles((theme) => ({
   modalWrapper: {
     paddingLeft: 10,
     paddingRight: 10,
+    paddingTop: 50,
   },
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
@@ -85,7 +86,7 @@ export default makeStyles((theme) => ({
   },
   ctnClose: {
     position: 'absolute',
-    top: 30,
+    top: 15,
     right: 20,
     cursor: 'pointer',
   },
@@ -140,6 +141,11 @@ export default makeStyles((theme) => ({
     padding: 10,
     backgroundColor: '#7089FF',
     color: '#fff',
+    width: 1100,
+    position: 'fixed',
+    zIndex: 999,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
   },
   ctnTextLayout1: {
     display: 'flex',

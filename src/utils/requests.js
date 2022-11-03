@@ -72,9 +72,9 @@ export const handleEditCampaign = (data, id) =>
     },
   });
 
-export const getCampaignItem = (ctx) =>
+export const getCampaignItem = (ctx, page) =>
   axios({
-    url: '/campaigns',
+    url: `/campaigns?page=${page}`,
     method: 'GET',
     ctx,
   });
