@@ -81,11 +81,14 @@ export default makeStyles((theme) => ({
   },
   ctnIconShort: {
     '& > img': {
-      width: 20,
-      height: 20,
+      width: 15,
+      height: 15,
       objectFit: 'contain',
       marginLeft: 4,
     },
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     cursor: 'pointer',
   },
   txtCampaignName: {
