@@ -20,9 +20,10 @@ export default function CampaignModal({ isVisible, data, close }) {
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
   const [formValues, setFormValues] = useState(null);
+  const [totalBudget, setTotalBudget] = useState(0);
 
   useEffect(() => {
-    console.log(data);
+    console.log('data', data);
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
@@ -67,7 +68,17 @@ export default function CampaignModal({ isVisible, data, close }) {
       ads_page_medium: adsPage?.medium,
       ads_page_telegram: adsPage?.telegram,
     });
+    const getTotalBudgetAds = sumArr(data?.audiences, 'price');
+    setTotalBudget(getTotalBudgetAds);
   }, [data]);
+
+  const sumArr = (arr, val) => {
+    return data?.audiences
+      .map((item) => item[val])
+      .reduce((a, b) => {
+        return a + b;
+      });
+  };
 
   function normalizeInitialData(value) {
     if (value === '0' || value === 0) {
@@ -107,7 +118,7 @@ export default function CampaignModal({ isVisible, data, close }) {
             <Typography fontSize={18} fontWeight={400}>
               Campaign Name:
             </Typography>
-            <Typography fontSize={18} fontWeight={600}>
+            <Typography fontSize={18} fontWeight={800}>
               {data?.name}
             </Typography>
           </div>
@@ -115,26 +126,26 @@ export default function CampaignModal({ isVisible, data, close }) {
             <Typography fontSize={18} fontWeight={400}>
               Start Date:
             </Typography>
-            <Typography fontSize={18} fontWeight={600}>
+            <Typography fontSize={18} fontWeight={800}>
               {data?.start_date}
             </Typography>
           </div>
         </Grid>
         <Grid style={{ width: '45%', padding: 10 }}>
           <div className={styles.ctnTextLayout1}>
-            <Typography fontSize={18} fontWeight={400}>
-              Campaign Name:
-            </Typography>
             <Typography fontSize={18} fontWeight={600}>
-              {data?.name}
+              Total Budget:
+            </Typography>
+            <Typography fontSize={18} fontWeight={800}>
+              USD{totalBudget}
             </Typography>
           </div>
           <div className={styles.ctnTextLayout1}>
             <Typography fontSize={18} fontWeight={400}>
               Availability:
             </Typography>
-            <Typography fontSize={18} fontWeight={600}>
-              {data?.availability}
+            <Typography fontSize={18} fontWeight={800}>
+              {data?.availability} days
             </Typography>
           </div>
         </Grid>
