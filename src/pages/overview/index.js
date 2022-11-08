@@ -78,6 +78,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
 
   useEffect(() => {
+    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -97,8 +98,8 @@ export default function Overview({ content, listCampaign, ctx }) {
     console.log(res);
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
-      airdrops.push(element.ads.count_airdrop);
-      linkClicks.push(element.ads.count_click);
+      airdrops.push(element.count_airdrop);
+      linkClicks.push(element.count_click);
     });
     const totalAirDrop = sumArr(res.data.audiences, 'count_airdrop', true);
     const totalClick = sumArr(res.data.audiences, 'count_click', true);
@@ -132,7 +133,7 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const sumArr = (arr, val, nested) => {
     return arr
-      .map((item) => (nested ? item.ads[val] : item[val]))
+      .map((item) => item[val])
       .reduce((a, b) => {
         return a + b;
       });
@@ -184,23 +185,13 @@ export default function Overview({ content, listCampaign, ctx }) {
       });
     } else {
       console.log('here');
-      // const contentAud = listAudience.content?.audiences?.sort((a, b) =>
-      //   listAudience.sortItem
-      //     ? number
-      //       ? a.ads[identifier] - b.ads[identifier]
-      //       : a.toString().localeCompare(b.name)
-      //     : number
-      //     ? b[identifier] - a[identifier]
-      //     : b.toString().localeCompare(a.name)
-      // );
-      // console.log(listAudience.content);
-      // console.log(contentAud);
+
       // setListAudience({
       //   sortItem: !listAudience.sortItem,
       //   content: listAudience.content?.audiences?.sort((a, b) =>
       //     listAudience.sortItem
       //       ? number
-      //         ? a.ads[identifier] - b.ads[identifier]
+      //         ? a[identifier] - b[identifier]
       //         : a.toString().localeCompare(b.name)
       //       : number
       //       ? b[identifier] - a[identifier]
@@ -463,24 +454,24 @@ export default function Overview({ content, listCampaign, ctx }) {
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
                 <div className={styles.statusContainer}>
-                  <img src={`${url + item.ads.image.url}`} />
-                  <Typography variant="body1">{item.ads.name}</Typography>
+                  <img src={`${url + item?.ads?.image.url}`} />
+                  <Typography variant="body1">{item.name}</Typography>
                 </div>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.ads.count_airdrop ?? '-'}</Typography>
+                <Typography variant="body1">{item?.count_airdrop ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.ads.count_impression ?? '-'}</Typography>
+                <Typography variant="body1">{item?.count_impression ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.ads.count_view ?? '-'}</Typography>
+                <Typography variant="body1">{item?.count_view ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.ads.count_click ?? '-'}</Typography>
+                <Typography variant="body1">{item?.count_click ?? '-'}</Typography>
               </Grid>
               <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.ads.count_mint ?? '-'}</Typography>
+                <Typography variant="body1">{item?.count_mint ?? '-'}</Typography>
               </Grid>
             </Fragment>
           ))}

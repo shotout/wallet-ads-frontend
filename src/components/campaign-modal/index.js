@@ -68,7 +68,9 @@ export default function CampaignModal({ isVisible, data, close }) {
       ads_page_medium: adsPage?.medium,
       ads_page_telegram: adsPage?.telegram,
     });
+
     const getTotalBudgetAds = sumArr(data?.audiences, 'price');
+
     setTotalBudget(getTotalBudgetAds);
   }, [data]);
 
@@ -259,24 +261,38 @@ export default function CampaignModal({ isVisible, data, close }) {
             <Typography fontSize={20} fontWeight={700} marginBottom={3}>
               Your social media links
             </Typography>
-            <div className={styles.ctnSocial}>
-              <img src={websiteIcon} alt="discord" />
-              <Typography fontSize={15} fontWeight={400} marginBottom={3}>
-                {formValues?.ads_page_website}
-              </Typography>
-            </div>
-            <div className={styles.ctnSocial}>
-              <img src={discordIcon} alt="discord" />
-              <Typography fontSize={15} fontWeight={400} marginBottom={3}>
-                {formValues?.ads_page_discord}
-              </Typography>
-            </div>
-            <div className={styles.ctnSocial}>
-              <img src={mediumIcon} alt="discord" />
-              <Typography fontSize={15} fontWeight={400} marginBottom={3}>
-                {formValues?.ads_page_medium}
-              </Typography>
-            </div>
+            {formValues?.ads_page_website && (
+              <div className={styles.ctnSocial}>
+                <img src={websiteIcon} alt="discord" />
+                <Typography fontSize={15} fontWeight={400}>
+                  {formValues?.ads_page_website}
+                </Typography>
+              </div>
+            )}
+            {formValues?.ads_page_discord && (
+              <div className={styles.ctnSocial}>
+                <img src={discordIcon} alt="discord" />
+                <Typography fontSize={15} fontWeight={400}>
+                  {formValues?.ads_page_discord}
+                </Typography>
+              </div>
+            )}
+            {formValues?.ads_page_medium && (
+              <div className={styles.ctnSocial}>
+                <img src={mediumIcon} alt="discord" />
+                <Typography fontSize={15} fontWeight={400}>
+                  {formValues?.ads_page_medium}
+                </Typography>
+              </div>
+            )}
+            {formValues?.ads_page_telegram && (
+              <div className={styles.ctnSocial}>
+                <img src={telegramIcon} alt="discord" />
+                <Typography fontSize={15} fontWeight={400}>
+                  {formValues?.ads_page_telegram}
+                </Typography>
+              </div>
+            )}
           </Grid>
         </Grid>
       </div>
