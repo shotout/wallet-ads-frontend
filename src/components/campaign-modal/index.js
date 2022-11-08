@@ -9,10 +9,10 @@ import CollectionPreview from '../../components/collection-preview';
 import AdsCard from '../ads-card';
 import Iconify from '../Iconify';
 
-const discordIcon = '/assets/discord.png';
+const discordIcon = '/assets/svg/discord.svg';
 const telegramIcon = '/assets/telegram.png';
-const mediumIcon = '/assets/medium.png';
-const websiteIcon = '/assets/website.png';
+const mediumIcon = '/assets/svg/medium.svg';
+const websiteIcon = '/assets/svg/world.svg';
 
 export default function CampaignModal({ isVisible, data, close }) {
   const styles = useStyles();

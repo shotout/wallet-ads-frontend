@@ -172,6 +172,9 @@ export default makeStyles((theme) => ({
   },
   ctnSocial: {
     display: 'flex',
-    marginBottom: 20,
+    marginBottom: 30,
+    '& > img': {
+      width: 30,
+    },
   },
 }));
