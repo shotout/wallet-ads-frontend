@@ -259,7 +259,7 @@ export default function CampaignModal({ isVisible, data, close }) {
           </Grid>
           <Grid style={{ width: '40%', paddingLeft: 50 }}>
             <Typography fontSize={20} fontWeight={700} marginBottom={3}>
-              Your social media links
+              Your social media links:
             </Typography>
             {formValues?.ads_page_website && (
               <div className={styles.ctnSocial}>

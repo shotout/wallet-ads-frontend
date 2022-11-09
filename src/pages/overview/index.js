@@ -454,7 +454,16 @@ export default function Overview({ content, listCampaign, ctx }) {
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
                 <div className={styles.statusContainer}>
-                  <img src={`${url + item?.ads?.image.url}`} />
+                  <div>
+                    <img
+                      src={`${url + item?.ads?.image.url}`}
+                      onMouseEnter={(event) => {
+                        handleHoverOpen(event, 'logo_text_banner');
+                      }}
+                      onMouseLeave={handleHoverClose}
+                    />
+                    {renderPopover('logo_text_banner', impressionText)}
+                  </div>
                   <Typography variant="body1">{item?.ads?.name}</Typography>
                 </div>
               </Grid>

@@ -52,6 +52,10 @@ export default function AdsCard({ item, audienceData }) {
           Ad text:
         </Typography>
         {renderAdText()}
+        <div className={styles.ctnDivider}>{''}</div>
+        <Typography fontSize={18} fontWeight={600} marginBottom={2}>
+          Audiences seeing this ad:
+        </Typography>
         {renderAudience()}
       </div>
     );

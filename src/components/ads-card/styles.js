@@ -41,4 +41,9 @@ export default makeStyles((theme) => ({
     minHeight: 120,
     overflowY: 'auto',
   },
+  ctnDivider: {
+    height: 1,
+    backgroundColor: '#b2bec3',
+    marginBottom: 10,
+  },
 }));

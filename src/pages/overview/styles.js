@@ -126,7 +126,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    '& > img': {
+    '& > div > img': {
       width: 40,
       height: 40,
       marginRight: 20,
