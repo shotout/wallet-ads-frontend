@@ -98,9 +98,14 @@ export default makeStyles((theme) => ({
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 1,
   },
-  ctnPopover: {
+  ctnPopoverBlack: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
+    },
+  },
+  ctnPopoverWhite: {
+    '& > .MuiPaper-root': {
+      background: '#fff',
     },
   },
   ctnSelect: {
@@ -161,5 +166,12 @@ export default makeStyles((theme) => ({
   isPaginateActive: {
     fontWeight: 'bolder',
     color: '#8C65CC',
+  },
+  imageProver: {
+    padding: 5,
+    '& > img': {
+      width: 150,
+      borderRadius: 10,
+    },
   },
 }));

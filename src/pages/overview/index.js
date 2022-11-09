@@ -139,7 +139,7 @@ export default function Overview({ content, listCampaign, ctx }) {
       });
   };
 
-  function renderPopover(type, content) {
+  function renderPopover(type, contentType, content) {
     return (
       <Popover
         id={type}
@@ -158,11 +158,44 @@ export default function Overview({ content, listCampaign, ctx }) {
         sx={{
           pointerEvents: 'none',
         }}
-        className={styles.ctnPopover}
+        className={contentType === 'image_audience' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
         <Box sx={{ p: 2, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
             {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function renderPopoverImage(type, contentType, content) {
+    return (
+      <Popover
+        id={type}
+        open={Boolean(hover) && activePopover === type}
+        anchorEl={hover}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleHoverClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={contentType === 'image_audience' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
+      >
+        <Box sx={{ p: 2, maxWidth: 260 }}>
+          <div className={styles.imageProver}>
+            <img src={content.img} />
+          </div>
+          <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={5}>
+            {content?.desc}
           </Typography>
         </Box>
       </Popover>
@@ -271,7 +304,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('logo_text_banner', impressionText)}
+            {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
           </div>
           <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
             <img src={iconShort} alt="ic-short" />
@@ -458,11 +491,14 @@ export default function Overview({ content, listCampaign, ctx }) {
                     <img
                       src={`${url + item?.ads?.image.url}`}
                       onMouseEnter={(event) => {
-                        handleHoverOpen(event, 'logo_text_banner');
+                        handleHoverOpen(event, 'bannerimage');
                       }}
                       onMouseLeave={handleHoverClose}
                     />
-                    {renderPopover('logo_text_banner', impressionText)}
+                    {renderPopoverImage('bannerimage', 'image_audience', {
+                      img: url + item?.ads?.image.url,
+                      desc: item?.ads?.description,
+                    })}
                   </div>
                   <Typography variant="body1">{item?.ads?.name}</Typography>
                 </div>
@@ -526,7 +562,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('logo_text_banner', impressionText)}
+            {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
           </div>
           <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_impression')}>
             <img src={iconShort} alt="ic-short" />
