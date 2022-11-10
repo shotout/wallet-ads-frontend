@@ -103,6 +103,7 @@ export default function AddCampaign({ content, params }) {
   const [showModalSuccess, setModalSuccess] = useState(false);
   const [showErrorAd, setShowErrorAd] = useState(false);
   const [formResp, setFormResp] = useState(null);
+  const [emptyAudience, setEmptyAudience] = useState(true);
   const [audienceForm, setAudienceForm] = useState([
     {
       audienceId: makeId(),
@@ -681,6 +682,7 @@ export default function AddCampaign({ content, params }) {
     });
     setAudienceForm(restructureData);
     setSelectedAudience(null);
+    setEmptyAudience(false);
   };
 
   const handleAddAudience = () => {
@@ -1654,7 +1656,7 @@ export default function AddCampaign({ content, params }) {
                           deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
                         } else {
-                          item.audienceId && setShowErrorAd(true);
+                          !emptyAudience && setShowErrorAd(true);
                         }
                       }}
                     >
