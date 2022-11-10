@@ -74,13 +74,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     marginTop: 20,
   },
-  ctnBorder: {
-    border: '1px solid #122D46',
-    borderRadius: 12,
-  },
+  ctnBorder: {},
   ctnPriceInput: {
     // width: '100%',
-
+    border: '1px solid #122D46',
     height: 60,
     borderRadius: 12,
     display: 'flex',
@@ -176,6 +173,24 @@ export default makeStyles((theme) => ({
   inputPriceWrapper: {
     marginBottom: 6,
     width: '100%',
+  },
+  readOnlyInputPriceWrapper: {
+    border: '1px solid #808080',
+    marginBottom: 6,
+    borderRadius: 12,
+  },
+  readOnlyPriceInput: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    '& > span': {
+      textAlign: 'left',
+      fontSize: '1.25rem',
+      fontWeight: '700',
+      // paddingLeft: 30,
+      fontFamily: 'Public Sans,sans-serif',
+    },
   },
   ctnAudienceWrapper: {
     overflow: 'scroll',

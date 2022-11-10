@@ -5,7 +5,7 @@ import CardAudience from '../card-audience';
 import { makeId } from '../../utils/general';
 import { parsePriceToCategory } from '../../helpers/calculator';
 import { BACKEND_URL } from '../../helpers/constants';
-import CollectionPreview from '../../components/collection-preview';
+import CollectionPreview from '../../components/collection-preview-modal';
 import AdsCard from '../ads-card';
 import Iconify from '../Iconify';
 
@@ -23,7 +23,6 @@ export default function CampaignModal({ isVisible, data, close }) {
   const [totalBudget, setTotalBudget] = useState(0);
 
   useEffect(() => {
-    console.log('data', data);
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
@@ -135,7 +134,7 @@ export default function CampaignModal({ isVisible, data, close }) {
         </Grid>
         <Grid style={{ width: '45%', padding: 10 }}>
           <div className={styles.ctnTextLayout1}>
-            <Typography fontSize={18} fontWeight={600}>
+            <Typography fontSize={18} fontWeight={400}>
               Total Budget:
             </Typography>
             <Typography fontSize={18} fontWeight={800}>
@@ -171,59 +170,7 @@ export default function CampaignModal({ isVisible, data, close }) {
               key={item.audienceId}
               id={`card-audience-${index}`}
             >
-              <CardAudience
-                // isError={errorBox.errorAudience}
-                // onChangeBudget={(event) => {
-                //   handleChangeBudget(event, 'budgetAds', index);
-                // }}
-                // showArrow={
-                //   data?.audiences > 4
-                //     ? selectedAudience === index && selectedAudience > 3
-                //     : selectedAudience === index
-                // }
-                // isSomeAudienceActive={selectedAudience !== null}
-                key={index.toString()}
-                data={item}
-                readOnly={true}
-                // onPressCard={() => {
-                //   if (errorBox.errorAudience) {
-                //     setErrorBox({
-                //       ...errorBox,
-                //       errorAudience: false,
-                //     });
-                //   }
-                //   setSelectedAudience(index);
-                //   setTimeout(() => {
-                //     window.location.href = '#create-audience';
-                //   }, 100);
-                // }}
-                // onRemove={() => {
-                //   const fixingData = audienceForm.filter((aud) => aud.audienceId !== item.audienceId);
-                //   fixingData.push({
-                //     audienceId: makeId(),
-                //     optimized: false,
-                //     selectedCategory: null,
-                //     budgetAds: '',
-                //     detailTargeting: { amountDays: '' },
-                //     balancedTargeting: {
-                //       cryptoCurrency: null,
-                //       year: null,
-                //       months: null,
-                //       day: null,
-                //       airdropReceived: null,
-                //     },
-                //   });
-                //   const fixingAds = pictureData.map((ads) => ({
-                //     ...ads,
-                //     fe_id: ads.fe_id.filter((adsId) => adsId !== item.audienceId),
-                //   }));
-                //   setPicture(fixingAds);
-                //   setAudienceForm(fixingData);
-                // }}
-                // selectedAudience={selectedAudience}
-                // selectedPage={selectedAudience === index}
-                label={item.name}
-              />
+              <CardAudience key={index.toString()} data={item} readOnly={true} label={item.name} />
             </Grid>
           ))}
         </Grid>
@@ -240,6 +187,7 @@ export default function CampaignModal({ isVisible, data, close }) {
               Collection Page:
             </Typography>
             <CollectionPreview
+              fromModal={true}
               formValues={formValues}
               logoSource={
                 logoCollection === null
@@ -327,11 +275,11 @@ export default function CampaignModal({ isVisible, data, close }) {
     return (
       <div className={styles.modalWrapper}>
         {renderCampainNameSection()}
-        <Divider variant="middle" style={{ marginBottom: 25 }} />
+        <Divider variant="middle" style={{ marginBottom: 10 }} />
         {renderCardAudience()}
         <Divider variant="middle" />
         {renderCollection()}
-        <Divider variant="middle" style={{ marginBottom: 25, marginTop: 25 }} />
+        <Divider variant="middle" style={{ marginBottom: 10, marginTop: 20 }} />
         {renderAdsCard()}
       </div>
     );

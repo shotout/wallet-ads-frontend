@@ -153,12 +153,12 @@ export default makeStyles((theme) => ({
   },
   section1: {
     display: 'flex',
-    padding: 20,
+    padding: '5px 20px 5px 20px',
     justifyContent: 'space-between',
   },
   section2: {
     display: 'flex',
-    padding: 20,
+    padding: '5px 20px 5px 20px',
   },
   ctnSectionAd: {
     paddingRight: 0,
@@ -166,13 +166,12 @@ export default makeStyles((theme) => ({
   ctnRowAudience: {
     display: 'flex',
     alignItems: 'stretch',
-    marginBottom: 30,
     flexWrap: 'wrap',
-    paddingRight: 20,
+    padding: '-50px 0px 5px 0px',
   },
   ctnSocial: {
     display: 'flex',
-    marginBottom: 30,
+    marginBottom: 20,
     alignItems: 'center',
     '& > img': {
       width: 30,

@@ -161,45 +161,49 @@ export default function CardAudience({
   }
 
   function renderPrice() {
-    return (
-      <div className={`${styles.inputPriceWrapper} ${readOnly ? styles.ctnBorder : {}}`}>
-        <Typography variant="body1" textAlign={'center'} fontWeight="bold">
-          Budget:
-        </Typography>
-        <div
-          className={`${styles.ctnPriceInput} ${!readOnly ? styles.ctnBorder : {}}  ${
-            data.budgetAds === '' ? styles.redBorder : ''
-          }`}
-        >
-          <span>USD</span>
-          {!readOnly ? (
-            <>
-              <CurrencyInput
-                name="currencyInput"
-                id="currencyInput"
-                value={data.budgetAds}
-                placeholder=""
-                ref={inputEl}
-                onChange={onChangeBudget}
-                // onBlur={handleOnBlur}
-                allowDecimals={false}
-                allowNegativeValue={false}
-                disableAbbreviations
-                fixedDecimalLength={0}
-                groupSeparator=","
-                decimalSeparator="."
-                maxLength={5}
-              />
-              <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
-            </>
-          ) : (
-            <Typography textAlign={'center'} fontWeight={800} fontSize={'1.25rem'}>
-              {data.budgetAds}
+    if (readOnly) {
+      return (
+        <div className={`${styles.readOnlyInputPriceWrapper}`}>
+          <Typography variant="body1" textAlign={'center'} fontWeight="bold">
+            Budget:
+          </Typography>
+          <div className={`${styles.readOnlyPriceInput}`}>
+            <Typography textAlign={'center'} fontWeight={800} fontSize={'1.5rem'} color={'#7089FF'}>
+              USD{data.budgetAds}
             </Typography>
-          )}
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={`${styles.inputPriceWrapper}`}>
+          <Typography variant="body1" textAlign={'center'} fontWeight="bold">
+            Budget:
+          </Typography>
+          <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
+            <span>USD</span>
+
+            <CurrencyInput
+              name="currencyInput"
+              id="currencyInput"
+              value={data.budgetAds}
+              placeholder=""
+              ref={inputEl}
+              onChange={onChangeBudget}
+              // onBlur={handleOnBlur}
+              allowDecimals={false}
+              allowNegativeValue={false}
+              disableAbbreviations
+              fixedDecimalLength={0}
+              groupSeparator=","
+              decimalSeparator="."
+              maxLength={5}
+            />
+            <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
+          </div>
+        </div>
+      );
+    }
   }
 
   function renderContent() {
