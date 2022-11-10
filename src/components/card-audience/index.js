@@ -162,11 +162,15 @@ export default function CardAudience({
 
   function renderPrice() {
     return (
-      <div className={styles.inputPriceWrapper}>
+      <div className={`${styles.inputPriceWrapper} ${readOnly ? styles.ctnBorder : {}}`}>
         <Typography variant="body1" textAlign={'center'} fontWeight="bold">
           Budget:
         </Typography>
-        <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
+        <div
+          className={`${styles.ctnPriceInput} ${!readOnly ? styles.ctnBorder : {}}  ${
+            data.budgetAds === '' ? styles.redBorder : ''
+          }`}
+        >
           <span>USD</span>
           {!readOnly ? (
             <>

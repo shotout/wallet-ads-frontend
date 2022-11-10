@@ -74,9 +74,13 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     marginTop: 20,
   },
+  ctnBorder: {
+    border: '1px solid #122D46',
+    borderRadius: 12,
+  },
   ctnPriceInput: {
     // width: '100%',
-    border: '1px solid #122D46',
+
     height: 60,
     borderRadius: 12,
     display: 'flex',

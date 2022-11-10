@@ -29,6 +29,7 @@ const url = process.env.BACKEND_URL;
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.png';
 const askIcon = '/assets/ask_icon.png';
+const timerIcon = '/icons/ic_timer.svg';
 
 const impressionText =
   'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
@@ -309,6 +310,40 @@ export default function Overview({ content, listCampaign, ctx }) {
     }
   };
 
+  function renderEmptyData(text) {
+    return (
+      <div className={styles.ctnEmptyData}>
+        <Typography fontSize={25} fontWeight={600} color={'#808080'} fontFamily={'Public Sans, sans-serif'} mb={3}>
+          {text}
+        </Typography>
+        <div style={{ display: 'flex' }}>
+          <img src={timerIcon} style={{ marginRight: 20, opacity: 0.5 }} />
+          <div>
+            <Typography
+              fontSize={16}
+              fontWeight={500}
+              color={'#808080'}
+              fontFamily={'Public Sans, sans-serif'}
+              textAlign={'center'}
+            >
+              Data might take 24h to show after your scheduled campaign start.
+            </Typography>
+            <Typography
+              onClick={() => router.push(routes.createCampaign)}
+              fontSize={16}
+              fontWeight={500}
+              color={'#9EB5F2'}
+              fontFamily={'Public Sans, sans-serif'}
+              textAlign={'center'}
+            >
+              Create a new campaign
+            </Typography>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function renderListTitleCampaignOverview() {
     return (
       <Grid container spacing={3}>
@@ -440,15 +475,6 @@ export default function Overview({ content, listCampaign, ctx }) {
   }
 
   function renderListItemCampaignOverview() {
-    if (content.data.length === 0) {
-      return (
-        <div className={styles.ctnItem}>
-          <Typography variant="h4" color="#B3B3B3" marginY={4} textAlign={'center'}>
-            No Campaign available
-          </Typography>
-        </div>
-      );
-    }
     return (
       <div className={styles.ctnItem}>
         <Grid container spacing={3}>
@@ -519,6 +545,26 @@ export default function Overview({ content, listCampaign, ctx }) {
     setPagination({ data: pages.data.links, currentPage: pages.data.current_page });
   };
 
+  function renderContentCampaignOverview() {
+    return (
+      <div className={styles.ctnContent2}>
+        <div className={styles.ctnCard}>
+          {renderTitleCampaignOverview()}
+          {renderListTitleCampaignOverview()}
+          {content.data.length === 0 ? (
+            renderEmptyData('No campaigns available')
+          ) : (
+            <>
+              {renderListItemCampaignOverview()}
+              {renderTotalCampaignOverview()}
+              {renderPagination()}
+            </>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   function renderTitleAudienceOverview() {
     return (
       <>
@@ -537,6 +583,8 @@ export default function Overview({ content, listCampaign, ctx }) {
                   onChange={handleChangeSelect}
                   className={styles.ctnSelect}
                   inputProps={{ 'aria-label': 'Without label' }}
+                  placeholder={listAudience?.data?.length === 0 ? 'No campaign available' : ''}
+                  disabled={listAudience?.data?.length === 0}
                 >
                   {listCampaigns.content.map((v, i) => (
                     <MenuItem key={`list+${i}`} value={v.id}>
@@ -556,78 +604,12 @@ export default function Overview({ content, listCampaign, ctx }) {
                   exportAudienceByCampaignID(listAudience.content?.campaign?.id);
                 }}
                 label={'Export to excel'}
+                disabled={listAudience?.data?.length === 0}
               />
             </Grid>
           </Grid>
         </div>
       </>
-    );
-  }
-
-  function renderListItemAudienceOverview() {
-    if (listCampaigns.content.length === 0) {
-      return (
-        <div className={styles.ctnItem}>
-          <Typography variant="h4" color="#B3B3B3" marginY={4} textAlign={'center'}>
-            No Audience available
-          </Typography>
-        </div>
-      );
-    }
-    return (
-      <div className={styles.ctnItem}>
-        <Grid container spacing={3}>
-          {listAudience.content?.audiences?.map((item) => (
-            <Fragment key={item.id.toString()}>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography
-                  variant="body1"
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'renderPopoverContent');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                >
-                  {item.name}
-                </Typography>
-                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
-              </Grid>
-              <Grid item md={2.5} sm={12} alignItems={'center'}>
-                <div
-                  className={styles.statusContainer}
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'bannerimage');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                >
-                  <div>
-                    <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
-                    {renderPopoverImage('bannerimage', 'image_audience', {
-                      img: url + item?.ads?.image.url,
-                      desc: item?.ads?.description,
-                    })}
-                  </div>
-                  <Typography variant="body1">{item?.ads?.name}</Typography>
-                </div>
-              </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_airdrop ?? '-'}</Typography>
-              </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_impression ?? '-'}</Typography>
-              </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_view ?? '-'}</Typography>
-              </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_click ?? '-'}</Typography>
-              </Grid>
-              <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_mint ?? '-'}</Typography>
-              </Grid>
-            </Fragment>
-          ))}
-        </Grid>
-      </div>
     );
   }
 
@@ -702,6 +684,64 @@ export default function Overview({ content, listCampaign, ctx }) {
     );
   }
 
+  function renderListItemAudienceOverview() {
+    return (
+      <div className={styles.ctnItem}>
+        <Grid container spacing={3}>
+          {listAudience.content?.audiences?.map((item) => (
+            <Fragment key={item.id.toString()}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
+                <Typography
+                  variant="body1"
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'renderPopoverContent');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                >
+                  {item.name}
+                </Typography>
+                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
+              </Grid>
+              <Grid item md={2.5} sm={12} alignItems={'center'}>
+                <div
+                  className={styles.statusContainer}
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'bannerimage');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                >
+                  <div>
+                    <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
+                    {renderPopoverImage('bannerimage', 'image_audience', {
+                      img: url + item?.ads?.image.url,
+                      desc: item?.ads?.description,
+                    })}
+                  </div>
+                  <Typography variant="body1">{item?.ads?.name}</Typography>
+                </div>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item?.ads?.count_airdrop ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item?.ads?.count_impression ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item?.ads?.count_view ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item?.ads?.count_click ?? '-'}</Typography>
+              </Grid>
+              <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
+                <Typography variant="body1">{item?.ads?.count_mint ?? '-'}</Typography>
+              </Grid>
+            </Fragment>
+          ))}
+        </Grid>
+      </div>
+    );
+  }
+
   function renderTotalAudienceOverview() {
     return (
       <>
@@ -748,40 +788,29 @@ export default function Overview({ content, listCampaign, ctx }) {
     );
   }
 
-  function renderContentCampaignOverview() {
-    return (
-      <div className={styles.ctnContent2}>
-        <div className={styles.ctnCard}>
-          {renderTitleCampaignOverview()}
-          {renderListTitleCampaignOverview()}
-          {renderListItemCampaignOverview()}
-          {renderTotalCampaignOverview()}
-          {renderPagination()}
-        </div>
-      </div>
-    );
-  }
-
   function renderChartBar() {
     return (
-      <Grid container spacing={3} marginTop={2}>
-        <Grid item md={6} sm={12}>
-          <div className={styles.ctnCard}>
-            <div className={styles.ctnTitle}>
-              <Typography variant="h6">{campaignName} - Airdrops</Typography>
+      <>
+        <Grid container spacing={3} marginTop={2}>
+          {/* <div style={{ width: '100%', height: '100%', backgroundColor: 'red' }}>aa</div> */}
+          <Grid item md={6} sm={12}>
+            <div className={styles.ctnCard}>
+              <div className={styles.ctnTitle}>
+                <Typography variant="h6">{campaignName} - Airdrops</Typography>
+              </div>
+              <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
-          </div>
-        </Grid>
-        <Grid item md={6} sm={12}>
-          <div className={styles.ctnCard}>
-            <div className={styles.ctnTitle}>
-              <Typography variant="h6">{campaignName} - Link Clicks</Typography>
+          </Grid>
+          <Grid item md={6} sm={12}>
+            <div className={styles.ctnCard}>
+              <div className={styles.ctnTitle}>
+                <Typography variant="h6">{campaignName} - Link Clicks</Typography>
+              </div>
+              <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
+      </>
     );
   }
 
@@ -791,8 +820,14 @@ export default function Overview({ content, listCampaign, ctx }) {
         <div className={styles.ctnCard}>
           {renderTitleAudienceOverview()}
           {renderListTitleAudienceOverview()}
-          {renderListItemAudienceOverview()}
-          {renderTotalAudienceOverview()}
+          {listAudience?.data?.length === 0 ? (
+            renderEmptyData('No audiences available')
+          ) : (
+            <>
+              {renderListItemAudienceOverview()}
+              {renderTotalAudienceOverview()}
+            </>
+          )}
         </div>
         <div>{renderChartBar()}</div>
       </div>

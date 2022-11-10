@@ -174,4 +174,13 @@ export default makeStyles((theme) => ({
       borderRadius: 10,
     },
   },
+  ctnEmptyData: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    padding: 25,
+    borderTop: '1px solid #BDBDBD',
+    marginTop: 20,
+  },
 }));
