@@ -184,6 +184,7 @@ export default function CampaignModal({ isVisible, data, close }) {
                 // isSomeAudienceActive={selectedAudience !== null}
                 key={index.toString()}
                 data={item}
+                readOnly={true}
                 // onPressCard={() => {
                 //   if (errorBox.errorAudience) {
                 //     setErrorBox({
@@ -222,7 +223,6 @@ export default function CampaignModal({ isVisible, data, close }) {
                 // selectedAudience={selectedAudience}
                 // selectedPage={selectedAudience === index}
                 label={item.name}
-                readOnly
               />
             </Grid>
           ))}

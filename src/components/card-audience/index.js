@@ -26,6 +26,7 @@ export default function CardAudience({
   onAdd,
   onChangeBudget = () => {},
   onRemove,
+  readOnly,
 }) {
   const styles = useStyles();
   const inputEl = useRef(null);
@@ -167,23 +168,31 @@ export default function CardAudience({
         </Typography>
         <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
           <span>USD</span>
-          <CurrencyInput
-            name="currencyInput"
-            id="currencyInput"
-            value={data.budgetAds}
-            placeholder=""
-            ref={inputEl}
-            onChange={onChangeBudget}
-            // onBlur={handleOnBlur}
-            allowDecimals={false}
-            allowNegativeValue={false}
-            disableAbbreviations
-            fixedDecimalLength={0}
-            groupSeparator=","
-            decimalSeparator="."
-            maxLength={5}
-          />
-          <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
+          {!readOnly ? (
+            <>
+              <CurrencyInput
+                name="currencyInput"
+                id="currencyInput"
+                value={data.budgetAds}
+                placeholder=""
+                ref={inputEl}
+                onChange={onChangeBudget}
+                // onBlur={handleOnBlur}
+                allowDecimals={false}
+                allowNegativeValue={false}
+                disableAbbreviations
+                fixedDecimalLength={0}
+                groupSeparator=","
+                decimalSeparator="."
+                maxLength={5}
+              />
+              <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
+            </>
+          ) : (
+            <Typography textAlign={'center'} fontWeight={800} fontSize={'1.25rem'}>
+              {data.budgetAds}
+            </Typography>
+          )}
         </div>
       </div>
     );
@@ -355,11 +364,13 @@ export default function CardAudience({
             <img src={triangleIcon} alt="arrow" />
           </div>
         )}
-        {data.selectedCategory && (
-          <div className={styles.ctnEdit} onClick={handleClick}>
-            <Iconify icon={'bi:three-dots-vertical'} color="#000" width={'100%'} height={'100%'} />
-          </div>
-        )}
+        {readOnly
+          ? ''
+          : data.selectedCategory && (
+              <div className={styles.ctnEdit} onClick={handleClick}>
+                <Iconify icon={'bi:three-dots-vertical'} color="#000" width={'100%'} height={'100%'} />
+              </div>
+            )}
         {renderPopover()}
       </div>
     </div>

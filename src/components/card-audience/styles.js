@@ -88,7 +88,7 @@ export default makeStyles((theme) => ({
       textAlign: 'left',
       fontSize: '1.25rem',
       fontWeight: '700',
-      paddingLeft: 30,
+      // paddingLeft: 30,
       fontFamily: 'Public Sans,sans-serif',
     },
     '& > input': {
