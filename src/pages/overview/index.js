@@ -586,8 +586,8 @@ export default function Overview({ content, listCampaign, ctx }) {
                   onChange={handleChangeSelect}
                   className={styles.ctnSelect}
                   inputProps={{ 'aria-label': 'Without label' }}
-                  placeholder={listAudience?.data?.length === 0 ? 'No campaign available' : ''}
-                  disabled={listAudience?.data?.length === 0}
+                  placeholder={content.data.length === 0 ? 'No campaign available' : ''}
+                  disabled={content.data.length === 0}
                 >
                   {listCampaigns.content.map((v, i) => (
                     <MenuItem key={`list+${i}`} value={v.id}>
@@ -607,7 +607,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                   exportAudienceByCampaignID(listAudience.content?.campaign?.id);
                 }}
                 label={'Export to excel'}
-                disabled={listAudience?.data?.length === 0}
+                disabled={content.data.length === 0}
               />
             </Grid>
           </Grid>
@@ -794,7 +794,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderChartBar() {
     return (
       <Grid container spacing={3} marginTop={2} style={{ position: 'relative' }}>
-        {listAudience?.data?.length === 0 ? (
+        {content.data.length === 0 ? (
           <Grid item md={12} sm={12} style={{ position: 'absolute', width: '100%', height: '100%' }}>
             <div
               className={styles.ctnCard}
@@ -832,7 +832,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         <div className={styles.ctnCard}>
           {renderTitleAudienceOverview()}
           {renderListTitleAudienceOverview()}
-          {listAudience?.data?.length === 0 ? (
+          {content.data.length === 0 ? (
             renderEmptyData('No audiences available')
           ) : (
             <>
