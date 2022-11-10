@@ -592,16 +592,15 @@ export default function Overview({ content, listCampaign, ctx }) {
                 {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
-                <div className={styles.statusContainer}>
+                <div
+                  className={styles.statusContainer}
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'bannerimage');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                >
                   <div>
-                    <img
-                      src={`${url + item?.ads?.image.url}`}
-                      onMouseEnter={(event) => {
-                        handleHoverOpen(event, 'bannerimage');
-                      }}
-                      onMouseLeave={handleHoverClose}
-                      loading="lazy"
-                    />
+                    <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                     {renderPopoverImage('bannerimage', 'image_audience', {
                       img: url + item?.ads?.image.url,
                       desc: item?.ads?.description,

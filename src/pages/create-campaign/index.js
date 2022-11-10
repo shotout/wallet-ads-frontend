@@ -856,8 +856,9 @@ export default function AddCampaign({ content, params }) {
           horizontal: 'center',
         }}
         disableRestoreFocus
-
-        // className={styles.ctnPopover}
+        sx={{
+          pointerEvents: 'none',
+        }}
       >
         <Box sx={{ p: 2, maxWidth: 260, backgroundColor: '#FFD8DF' }}>
           <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="center">
@@ -1662,6 +1663,7 @@ export default function AddCampaign({ content, params }) {
                     >
                       {renderPopoverError('Another ad is already selected to be shown to this audience.')}
                       <CheckboxAds isActive={isActive} />
+                      {renderPopoverError('Another ad is already selected to be shown to this audience.')}
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
