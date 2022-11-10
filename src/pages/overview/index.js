@@ -312,7 +312,10 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   function renderEmptyData(text) {
     return (
-      <div className={styles.ctnEmptyData}>
+      <div
+        className={styles.ctnEmptyData}
+        style={text === 'No data available' ? {} : { borderTop: '1px solid #BDBDBD' }}
+      >
         <Typography fontSize={25} fontWeight={600} color={'#808080'} fontFamily={'Public Sans, sans-serif'} mb={3}>
           {text}
         </Typography>
@@ -790,27 +793,36 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   function renderChartBar() {
     return (
-      <>
-        <Grid container spacing={3} marginTop={2}>
-          {/* <div style={{ width: '100%', height: '100%', backgroundColor: 'red' }}>aa</div> */}
-          <Grid item md={6} sm={12}>
-            <div className={styles.ctnCard}>
-              <div className={styles.ctnTitle}>
-                <Typography variant="h6">{campaignName} - Airdrops</Typography>
-              </div>
-              <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
+      <Grid container spacing={3} marginTop={2} style={{ position: 'relative' }}>
+        {listAudience?.data?.length === 0 ? (
+          <Grid item md={12} sm={12} style={{ position: 'absolute', width: '100%', height: '100%' }}>
+            <div
+              className={styles.ctnCard}
+              style={{ opacity: 0.9, height: '100%', display: 'flex', justifyContent: 'center' }}
+            >
+              {renderEmptyData('No data available')}
             </div>
           </Grid>
-          <Grid item md={6} sm={12}>
-            <div className={styles.ctnCard}>
-              <div className={styles.ctnTitle}>
-                <Typography variant="h6">{campaignName} - Link Clicks</Typography>
-              </div>
-              <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
+        ) : (
+          ''
+        )}
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Airdrops</Typography>
             </div>
-          </Grid>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
+          </div>
         </Grid>
-      </>
+        <Grid item md={6} sm={12}>
+          <div className={styles.ctnCard}>
+            <div className={styles.ctnTitle}>
+              <Typography variant="h6">{campaignName} - Link Clicks</Typography>
+            </div>
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
+          </div>
+        </Grid>
+      </Grid>
     );
   }
 

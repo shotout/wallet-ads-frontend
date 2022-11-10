@@ -44,6 +44,7 @@ export default makeStyles((theme) => ({
     background: '#fff',
     padding: 20,
     borderRadius: 20,
+
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
   },
   ctnTitle: {
@@ -180,7 +181,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     padding: 25,
-    borderTop: '1px solid #BDBDBD',
+    // borderTop: '1px solid #BDBDBD',
     marginTop: 20,
   },
 }));
