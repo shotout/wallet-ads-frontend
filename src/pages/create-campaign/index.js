@@ -844,28 +844,21 @@ export default function AddCampaign({ content, params }) {
       setShowErrorAd(false);
     }, 3000);
     return (
-      <Popover
-        open={showErrorAd}
-        anchorEl={showErrorAd}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        disableRestoreFocus
+      <Box
         sx={{
-          pointerEvents: 'none',
+          display: showErrorAd ? 'block' : 'none',
+          position: 'absolute',
+          borderRadius: 1,
+          padding: 1,
+          bottom: 150,
+          maxWidth: 250,
+          backgroundColor: '#FFD8DF',
         }}
       >
-        <Box sx={{ p: 2, maxWidth: 260, backgroundColor: '#FFD8DF' }}>
-          <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="center">
-            {content || ''}
-          </Typography>
-        </Box>
-      </Popover>
+        <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="justify">
+          {content || ''}
+        </Typography>
+      </Box>
     );
   }
 
@@ -1663,7 +1656,7 @@ export default function AddCampaign({ content, params }) {
                     >
                       {renderPopoverError('Another ad is already selected to be shown to this audience.')}
                       <CheckboxAds isActive={isActive} />
-                      {renderPopoverError('Another ad is already selected to be shown to this audience.')}
+
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>

@@ -19,6 +19,7 @@ import FormControl from '@mui/material/FormControl';
 import ChartBar from '../../components/chart-bar';
 import CampaignModal from './../../../src/components/campaign-modal';
 import { routes } from '../../helpers/routes';
+import { shortString } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
 
 Overview.getLayout = function getLayout(page) {
@@ -485,7 +486,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             <Fragment key={item.id.toString()}>
               <Grid item md={1.5} sm={12} display="flex">
                 <Typography variant="body1" style={{ cursor: 'pointer' }} onClick={() => openCampaignModal(item.id)}>
-                  {item.name}
+                  {shortString(item.name, 10)}
                 </Typography>
               </Grid>
               <Grid item md={1.5} sm={12} alignItems={'center'} />
@@ -701,7 +702,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                   }}
                   onMouseLeave={handleHoverClose}
                 >
-                  {item.name}
+                  {shortString(item.name, 20)}
                 </Typography>
                 {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
               </Grid>
