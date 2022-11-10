@@ -248,6 +248,12 @@ export default function Overview({ content, listCampaign, ctx }) {
     handleGetAudience(e.target.value, campName[0].name);
   };
 
+  const openCampaignModal = async (id) => {
+    const res = await getCampaignDetail(ctx, id);
+    setCampaignDetails(res.data);
+    setCampaignModal(!campaignModal);
+  };
+
   function renderTitleCampaignOverview() {
     return (
       <div className={styles.ctnTitle}>
@@ -270,9 +276,17 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderListTitleCampaignOverview() {
     return (
       <Grid container spacing={3}>
-        <Grid item md={2} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
             Campaign
+          </Typography>
+          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', false, '', 'name')}>
+            <img src={iconShort} alt="ic-short" />
+          </div>
+        </Grid>
+        <Grid item md={1.5} sm={12} display="flex">
+          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+            Scheduled
           </Typography>
           <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', false, '', 'name')}>
             <img src={iconShort} alt="ic-short" />
@@ -310,7 +324,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Views
           </Typography>
@@ -318,7 +332,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             <img src={iconShort} alt="ic-short" />
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex">
           <Typography variant="body1" fontWeight={'bold'}>
             Link clicks
           </Typography>
@@ -338,11 +352,56 @@ export default function Overview({ content, listCampaign, ctx }) {
     );
   }
 
-  const openCampaignModal = async (id) => {
-    const res = await getCampaignDetail(ctx, id);
-    setCampaignDetails(res.data);
-    setCampaignModal(!campaignModal);
-  };
+  function renderTotalCampaignOverview() {
+    return (
+      <>
+        <div className={styles.ctnTitle} />
+        <Grid container spacing={3}>
+          <Grid item md={1.5} sm={12} display="flex">
+            <Typography variant="body1" fontWeight={'bold'}>
+              Total
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {''}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {''}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.airdrops ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.impressions ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.views ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.linkClicks ?? 0}
+            </Typography>
+          </Grid>
+          <Grid item md={1} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              {totalCampainOverview.mints ?? 0}
+            </Typography>
+          </Grid>
+        </Grid>
+        <div className={styles.ctnTitle} />
+      </>
+    );
+  }
 
   function renderListItemCampaignOverview() {
     if (content.data.length === 0) {
@@ -359,11 +418,13 @@ export default function Overview({ content, listCampaign, ctx }) {
         <Grid container spacing={3}>
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
-              <Grid item md={2} sm={12} display="flex">
+              <Grid item md={1.5} sm={12} display="flex">
                 <Typography variant="body1" style={{ cursor: 'pointer' }} onClick={() => openCampaignModal(item.id)}>
                   {item.name}
                 </Typography>
               </Grid>
+              <Grid item md={1.5} sm={12} alignItems={'center'} />
+
               <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
@@ -373,10 +434,10 @@ export default function Overview({ content, listCampaign, ctx }) {
               <Grid item md={2} sm={12}>
                 <Typography variant="body1">{item.count_impression ?? '-'}</Typography>
               </Grid>
-              <Grid item md={2} sm={12}>
+              <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{item.count_view ?? '-'}</Typography>
               </Grid>
-              <Grid item md={2} sm={12}>
+              <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{item.count_click ?? '-'}</Typography>
               </Grid>
               <Grid item md={1} sm={12}>
@@ -634,52 +695,6 @@ export default function Overview({ content, listCampaign, ctx }) {
           <Grid item md={1} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {totalAudienceOverview.mints ?? 0}
-            </Typography>
-          </Grid>
-        </Grid>
-        <div className={styles.ctnTitle} />
-      </>
-    );
-  }
-
-  function renderTotalCampaignOverview() {
-    return (
-      <>
-        <div className={styles.ctnTitle} />
-        <Grid container spacing={3}>
-          <Grid item md={2} sm={12} display="flex">
-            <Typography variant="body1" fontWeight={'bold'}>
-              Total
-            </Typography>
-          </Grid>
-          <Grid item md={1.5} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {''}
-            </Typography>
-          </Grid>
-          <Grid item md={1.5} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.airdrops ?? 0}
-            </Typography>
-          </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.impressions ?? 0}
-            </Typography>
-          </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.views ?? 0}
-            </Typography>
-          </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.linkClicks ?? 0}
-            </Typography>
-          </Grid>
-          <Grid item md={1} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.mints ?? 0}
             </Typography>
           </Grid>
         </Grid>
