@@ -101,7 +101,7 @@ export default function AddCampaign({ content, params }) {
   const [selectedAudience, setSelectedAudience] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(null);
   const [showModalSuccess, setModalSuccess] = useState(false);
-
+  const [showErrorAd, setShowErrorAd] = useState(false);
   const [formResp, setFormResp] = useState(null);
   const [audienceForm, setAudienceForm] = useState([
     {
@@ -830,6 +830,35 @@ export default function AddCampaign({ content, params }) {
       >
         <Box sx={{ p: 2, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function renderPopoverError(content) {
+    setTimeout(() => {
+      setShowErrorAd(false);
+    }, 3000);
+    return (
+      <Popover
+        open={showErrorAd}
+        anchorEl={showErrorAd}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        disableRestoreFocus
+
+        // className={styles.ctnPopover}
+      >
+        <Box sx={{ p: 2, maxWidth: 260, backgroundColor: '#FFD8DF' }}>
+          <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="center">
             {content || ''}
           </Typography>
         </Box>
@@ -1615,9 +1644,7 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        item.optimized === false || checkIsAudienceAdsSelected(!item.audienceId)
-                          ? styles.ctnDisable
-                          : {}
+                        item.optimized === false || checkIsAudienceAdsSelected(item.audienceId) ? styles.ctnDisable : {}
                       }`}
                       onClick={() => {
                         if (
@@ -1626,9 +1653,12 @@ export default function AddCampaign({ content, params }) {
                         ) {
                           deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
+                        } else {
+                          item.audienceId && setShowErrorAd(true);
                         }
                       }}
                     >
+                      {renderPopoverError('Another ad is already selected to be shown to this audience.')}
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}

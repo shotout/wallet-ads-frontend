@@ -169,6 +169,42 @@ export default function Overview({ content, listCampaign, ctx }) {
     );
   }
 
+  function renderPopoverContent(type, contentType, content) {
+    return (
+      <Popover
+        id={type}
+        open={Boolean(hover) && activePopover === type}
+        anchorEl={hover}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleHoverClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={styles.ctnPopoverBlack}
+      >
+        <Box sx={{ p: 2, maxWidth: 260 }}>
+          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            + Wallet-type: Coinbase
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            + Account age: 1 Year
+          </Typography>
+          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            + Airdrops received: 5 - 10
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
+
   function renderPopoverImage(type, contentType, content) {
     return (
       <Popover
@@ -544,7 +580,16 @@ export default function Overview({ content, listCampaign, ctx }) {
           {listAudience.content?.audiences?.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item.name}</Typography>
+                <Typography
+                  variant="body1"
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'renderPopoverContent');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                >
+                  {item.name}
+                </Typography>
+                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
                 <div className={styles.statusContainer}>
@@ -555,6 +600,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                         handleHoverOpen(event, 'bannerimage');
                       }}
                       onMouseLeave={handleHoverClose}
+                      loading="lazy"
                     />
                     {renderPopoverImage('bannerimage', 'image_audience', {
                       img: url + item?.ads?.image.url,

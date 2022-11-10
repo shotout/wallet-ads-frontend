@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,15 +9,19 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js/auto';
-import { Bar } from 'react-chartjs-2';
+import { Bar, getElementsAtEvent } from 'react-chartjs-2';
 
 ChartJS?.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export default function Index({ labels, datas }) {
+  const chartRef = React.useRef();
   const options = {
     plugins: {
       legend: {
         display: false,
+      },
+      tooltip: {
+        enabled: false,
       },
     },
   };
@@ -39,10 +44,14 @@ export default function Index({ labels, datas }) {
       },
     ],
   };
+
+  const onClick = (event) => {
+    console.log(getElementsAtEvent(chartRef.current, event));
+  };
   // const {
   //     data,
 
   // } = props
 
-  return <Bar data={data} options={options} />;
+  return <Bar ref={chartRef} data={data} options={options} onClick={onClick} />;
 }
