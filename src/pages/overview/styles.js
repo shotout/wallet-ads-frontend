@@ -169,7 +169,7 @@ export default makeStyles((theme) => ({
     color: '#8C65CC',
   },
   imageProver: {
-    padding: 5,
+    padding: 1,
     '& > img': {
       width: 150,
       borderRadius: 10,

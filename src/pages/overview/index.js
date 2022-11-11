@@ -208,6 +208,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   }
 
   function renderPopoverImage(type, contentType, content) {
+    console.log(content.img);
     return (
       <Popover
         id={type}
@@ -228,11 +229,11 @@ export default function Overview({ content, listCampaign, ctx }) {
         }}
         className={contentType === 'image_audience' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
-        <Box sx={{ p: 2, maxWidth: 260 }}>
+        <Box sx={{ p: 1, maxWidth: 260 }}>
           <div className={styles.imageProver}>
             <img src={content.img} />
           </div>
-          <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={5}>
+          <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
             {content?.desc}
           </Typography>
         </Box>
@@ -339,6 +340,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               color={'#9EB5F2'}
               fontFamily={'Public Sans, sans-serif'}
               textAlign={'center'}
+              style={{ cursor: 'pointer', marginTop: 10, textDecoration: 'underline' }}
             >
               Create a new campaign
             </Typography>
