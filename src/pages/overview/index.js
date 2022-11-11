@@ -39,6 +39,8 @@ export default function Overview({ content, listCampaign, ctx }) {
   const styles = useStyles();
   const router = useRouter();
   const [hover, setHover] = useState(null);
+  const [hoverImage, setHoverImage] = useState(null);
+  const [activePopoverImage, setActivePopoverImage] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
@@ -141,6 +143,24 @@ export default function Overview({ content, listCampaign, ctx }) {
       });
   };
 
+  const handleHoverOpen = (event, popoverName) => {
+    setHover(event.currentTarget);
+    setActivePopover(popoverName);
+  };
+
+  const handleHoverClose = () => {
+    setHover(null);
+  };
+
+  const handleHoverImageOpen = (event, popoverName) => {
+    setHoverImage(event.currentTarget);
+    setActivePopoverImage(popoverName);
+  };
+
+  const handleHoverImageClose = () => {
+    setHoverImage(null);
+  };
+
   function renderPopover(type, contentType, content) {
     return (
       <Popover
@@ -207,13 +227,13 @@ export default function Overview({ content, listCampaign, ctx }) {
     );
   }
 
-  function renderPopoverImage(type, contentType, content) {
-    console.log(content.img);
+  function renderPopoverImage(type, content) {
+    console.log(content);
     return (
       <Popover
         id={type}
-        open={Boolean(hover) && activePopover === type}
-        anchorEl={hover}
+        open={Boolean(hoverImage) && activePopoverImage === type}
+        anchorEl={hoverImage}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
@@ -222,12 +242,12 @@ export default function Overview({ content, listCampaign, ctx }) {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        onClose={handleHoverClose}
+        onClose={handleHoverImageClose}
         disableRestoreFocus
         sx={{
           pointerEvents: 'none',
         }}
-        className={contentType === 'image_audience' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
+        className={styles.ctnPopoverWhite}
       >
         <Box sx={{ p: 1, maxWidth: 260 }}>
           <div className={styles.imageProver}>
@@ -271,15 +291,6 @@ export default function Overview({ content, listCampaign, ctx }) {
       //   ),
       // });
     }
-  };
-
-  const handleHoverOpen = (event, popoverName) => {
-    setHover(event.currentTarget);
-    setActivePopover(popoverName);
-  };
-
-  const handleHoverClose = () => {
-    setHover(null);
   };
 
   const handleChangeSelect = async (e) => {
@@ -706,22 +717,18 @@ export default function Overview({ content, listCampaign, ctx }) {
                 >
                   {shortString(item.name, 20)}
                 </Typography>
-                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
+                {/* {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')} */}
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
-                <div
-                  className={styles.statusContainer}
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'bannerimage');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                >
-                  <div>
+                {renderPopoverImage('bannerimage', item)}
+                <div className={styles.statusContainer}>
+                  <div
+                    onMouseEnter={(event) => {
+                      handleHoverImageOpen(event, 'bannerimage');
+                    }}
+                    onMouseLeave={handleHoverImageClose}
+                  >
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
-                    {renderPopoverImage('bannerimage', 'image_audience', {
-                      img: url + item?.ads?.image.url,
-                      desc: item?.ads?.description,
-                    })}
                   </div>
                   <Typography variant="body1">{item?.ads?.name}</Typography>
                 </div>

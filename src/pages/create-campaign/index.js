@@ -1669,7 +1669,9 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        item.optimized === false || checkIsAudienceAdsSelected(item.audienceId) ? styles.ctnDisable : {}
+                        !isActive && item.optimized && checkIsAudienceAdsSelected(item.audienceId)
+                          ? styles.ctnDisable
+                          : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
                         if (
