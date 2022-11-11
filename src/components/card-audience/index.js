@@ -198,7 +198,14 @@ export default function CardAudience({
               decimalSeparator="."
               maxLength={5}
             />
-            <img src={pencilIcon} className={styles.ctnPencilIcon} onClick={() => inputEl.current.focus()} />
+            <img
+              src={pencilIcon}
+              className={styles.ctnPencilIcon}
+              onClick={() => {
+                inputEl.current.focus();
+                inputEl.current.setSelectionRange(0, 0);
+              }}
+            />
           </div>
         </div>
       );

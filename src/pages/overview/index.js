@@ -49,7 +49,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: true,
-    content: content.data || [],
+    content: content.data.filter((v) => v.is_show === 1) || [],
   });
   const [listCampaigns, setListCampaigns] = useState({
     content: listCampaign || [],
@@ -86,7 +86,8 @@ export default function Overview({ content, listCampaign, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
-    console.log(content);
+    console.log(listCampaign);
+    console.log(content.data);
     initFunction(listCampaign);
   }, []);
 
@@ -950,7 +951,7 @@ export async function getServerSideProps(context) {
     props: {
       userData,
       content: res.data || [],
-      listCampaign: listCampaign.data || [],
+      listCampaign: res.data.data.filter((v) => v.is_show === 1) || [],
       // ctx: context,
     }, // will be passed to the page component as props
   };
