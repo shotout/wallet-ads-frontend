@@ -85,6 +85,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     position: 'relative',
     marginTop: 4,
+    paddingLeft: 30,
     '& > span': {
       textAlign: 'left',
       fontSize: '1.25rem',

@@ -177,12 +177,11 @@ export default function CardAudience({
     } else {
       return (
         <div className={`${styles.inputPriceWrapper}`}>
-          <Typography variant="body1" textAlign={'center'} fontWeight="bold">
+          <Typography variant="body1" textAlign={'center'} fontWeight="bold" color={'#7089FF'}>
             Budget:
           </Typography>
           <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
             <span>USD</span>
-
             <CurrencyInput
               name="currencyInput"
               id="currencyInput"
