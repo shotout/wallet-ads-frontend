@@ -102,7 +102,7 @@ export default function Overview({ content, listCampaign, ctx }) {
     const res = await getAudienceByCampaignID(id);
     setCapmapaignID(id);
     setCapmapaignName(name);
-    setListAudience({ ...listAudience, content: res.data });
+    setListAudience({ ...listAudience, content: res.data.audiences });
     console.log(res);
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
@@ -261,20 +261,18 @@ export default function Overview({ content, listCampaign, ctx }) {
         ),
       });
     } else {
-      console.log('here');
-
-      // setListAudience({
-      //   sortItem: !listAudience.sortItem,
-      //   content: listAudience.content?.audiences?.sort((a, b) =>
-      //     listAudience.sortItem
-      //       ? number
-      //         ? a[identifier] - b[identifier]
-      //         : a.toString().localeCompare(b.name)
-      //       : number
-      //       ? b[identifier] - a[identifier]
-      //       : b.toString().localeCompare(a.name)
-      //   ),
-      // });
+      setListAudience({
+        sortItem: !listAudience.sortItem,
+        content: listAudience.content.sort((a, b) =>
+          listAudience.sortItem
+            ? number
+              ? a[identifier] - b[identifier]
+              : a.toString().localeCompare(b.name)
+            : number
+            ? b[identifier] - a[identifier]
+            : b.toString().localeCompare(a.name)
+        ),
+      });
     }
   };
 
@@ -378,7 +376,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_airdrop')}>
-            <Typography variant="body1" fontWeight={'bold'}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Airdrops
             </Typography>
             <div className={styles.ctnIconShort}>
@@ -389,7 +387,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         <Grid item md={2} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
             <div className={styles.leftTitle}>
-              <Typography variant="body1" fontWeight={'bold'}>
+              <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
                 Impressions
               </Typography>
               <img
@@ -409,7 +407,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_view')}>
-            <Typography variant="body1" fontWeight={'bold'}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Views
             </Typography>
             <div className={styles.ctnIconShort}>
@@ -419,7 +417,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_click')}>
-            <Typography variant="body1" fontWeight={'bold'}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Link clicks
             </Typography>
             <div className={styles.ctnIconShort}>
@@ -429,7 +427,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         </Grid>
         <Grid item md={1} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
-            <Typography variant="body1" fontWeight={'bold'}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Mints
             </Typography>
             <div className={styles.ctnIconShort}>
@@ -601,8 +599,8 @@ export default function Overview({ content, listCampaign, ctx }) {
             <Grid item md={6} sm={12} display="flex">
               <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
                 <Select
-                  defaultValue={campaignID}
-                  defaultChecked={campaignID}
+                  defaultValue={listCampaigns.content[listCampaign.length - 1].id}
+                  defaultChecked={listCampaigns.content[listCampaign.length - 1].id}
                   value={campaignID}
                   displayEmpty
                   onChange={handleChangeSelect}
@@ -610,13 +608,14 @@ export default function Overview({ content, listCampaign, ctx }) {
                   inputProps={{ 'aria-label': 'Without label' }}
                   placeholder={content.data.length === 0 ? 'No campaign available' : ''}
                   disabled={content.data.length === 0}
-                  label={'tes'}
                 >
-                  {listCampaigns.content.map((v, i) => (
-                    <MenuItem key={`list+${i}`} value={v.id}>
-                      {v.name}
-                    </MenuItem>
-                  ))}
+                  {listCampaigns.content
+                    .map((v, i) => (
+                      <MenuItem key={`list+${i}`} value={v.id}>
+                        {v.name}
+                      </MenuItem>
+                    ))
+                    .reverse()}
                 </Select>
               </FormControl>
             </Grid>
@@ -643,11 +642,13 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={2} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
-            Audience
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', false, '', 'name')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audience', false, '', 'name')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Audience
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={2.5} sm={12}>
@@ -656,54 +657,64 @@ export default function Overview({ content, listCampaign, ctx }) {
           </Typography>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Airdrops
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_airdrop')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audince', true, '', 'count_airdrop')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Airdrops
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={2} sm={12} display="flex">
-          <div className={styles.leftTitle}>
-            <Typography variant="body1" fontWeight={'bold'}>
-              Impressions
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_impression')}>
+            <div className={styles.leftTitle}>
+              <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+                Impressions
+              </Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'logo_text_banner', impressionText);
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
+              {renderPopover('logo_text_banner', '')}
+            </div>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
+          </div>
+        </Grid>
+        <Grid item md={1.5} sm={12} display="flex">
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_view')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Views
             </Typography>
-            <img
-              onMouseEnter={(event) => {
-                handleHoverOpen(event, 'logo_text_banner', impressionText);
-              }}
-              onMouseLeave={handleHoverClose}
-              src={askIcon}
-              alt="ask"
-            />
-            {renderPopover('logo_text_banner', '')}
-          </div>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_impression')}>
-            <img src={iconShort} alt="ic-short" />
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Views
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_view')}>
-            <img src={iconShort} alt="ic-short" />
-          </div>
-        </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Link clicks
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_click')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_click')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Link clicks
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Mints
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_mint')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Mints
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -714,7 +725,7 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <div className={styles.ctnItem}>
         <Grid container spacing={3}>
-          {listAudience.content?.audiences?.map((item) => (
+          {listAudience.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
                 <Typography
