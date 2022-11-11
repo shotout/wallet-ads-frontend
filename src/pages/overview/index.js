@@ -21,6 +21,7 @@ import CampaignModal from './../../../src/components/campaign-modal';
 import { routes } from '../../helpers/routes';
 import { shortString } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
+import moment from 'moment';
 
 Overview.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -507,7 +508,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                 </Typography>
               </Grid>
               <Grid item md={1.5} sm={12} alignItems={'center'}>
-                <Typography variant="body1">{item.start_date}</Typography>
+                <Typography variant="body1">{moment(new Date(item.start_date)).format('DD.MM.YYYY')}</Typography>
               </Grid>
 
               <Grid item md={1.5} sm={12} alignItems={'center'}>
@@ -853,7 +854,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             <div className={styles.ctnTitle}>
               <Typography variant="h6">{campaignName} - Airdrops</Typography>
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} />
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} title={'Airdrops'} />
           </div>
         </Grid>
         <Grid item md={6} sm={12}>
@@ -861,7 +862,7 @@ export default function Overview({ content, listCampaign, ctx }) {
             <div className={styles.ctnTitle}>
               <Typography variant="h6">{campaignName} - Link Clicks</Typography>
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} />
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.linkClicks} title={'Link Clicks'} />
           </div>
         </Grid>
       </Grid>

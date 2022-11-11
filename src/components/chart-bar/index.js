@@ -13,7 +13,7 @@ import { Bar, getElementsAtEvent, getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS?.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-export default function Index({ labels, datas }) {
+export default function Index({ labels, datas, title }) {
   const [hover, setHover] = React.useState(null);
   const chartRef = React.useRef();
 
@@ -25,14 +25,6 @@ export default function Index({ labels, datas }) {
   ];
 
   const options = {
-    onHover: function (event, element) {
-      changeColor();
-      // var item = getElementAtEvent(event);
-      // if (item.length) {
-      //   console.log('onHover', item, event.type);
-      //   console.log('>data', item[0]._index, data.datasets[0].data[item[0]._index]);
-      // }
-    },
     plugins: {
       legend: {
         display: false,
@@ -40,7 +32,7 @@ export default function Index({ labels, datas }) {
       tooltip: {
         callbacks: {
           title: function (tooltipItem, data) {
-            return `Airdrop `;
+            return `${title}`;
           },
           //   label: function(tooltipItem, data) {
           //     return data['datasets'][0]['data'][tooltipItem['index']];
