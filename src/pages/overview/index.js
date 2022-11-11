@@ -92,7 +92,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   }, []);
 
   const initFunction = async (val) => {
-    const index = listCampaign.length - 1;
+    const index = 0;
     handleGetAudience(val[index].id, val[index].name);
     sumCampainOverview(content.data);
   };
@@ -182,7 +182,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         }}
         className={type === 'banner_image' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
-        <Box sx={{ p: 2, maxWidth: 260 }}>
+        <Box sx={{ p: 1, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
             {type === 'banner_image' && (
               <>
@@ -601,8 +601,8 @@ export default function Overview({ content, listCampaign, ctx }) {
             <Grid item md={6} sm={12} display="flex">
               <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
                 <Select
-                  defaultValue={listCampaigns.content[listCampaign.length - 1].id}
-                  defaultChecked={listCampaigns.content[listCampaign.length - 1].id}
+                  defaultValue={listCampaigns.content[0].id}
+                  defaultChecked={listCampaigns.content[0].id}
                   value={campaignID}
                   displayEmpty
                   onChange={handleChangeSelect}
@@ -611,13 +611,11 @@ export default function Overview({ content, listCampaign, ctx }) {
                   placeholder={content.data.length === 0 ? 'No campaign available' : ''}
                   disabled={content.data.length === 0}
                 >
-                  {listCampaigns.content
-                    .map((v, i) => (
-                      <MenuItem key={`list+${i}`} value={v.id}>
-                        {v.name}
-                      </MenuItem>
-                    ))
-                    .reverse()}
+                  {listCampaigns.content.map((v, i) => (
+                    <MenuItem key={`list+${i}`} value={v.id}>
+                      {v.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -760,7 +758,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                   <div>
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
-                  {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
+                  <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} />
                   <Typography variant="body1" marginRight={1}>
                     {item?.ads?.name}
                   </Typography>
