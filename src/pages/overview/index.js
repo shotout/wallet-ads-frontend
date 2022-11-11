@@ -3,7 +3,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Grid, Popover, Typography, Box } from '@mui/material';
+import { Grid, Popover, Typography, Box, Tooltip } from '@mui/material';
 import {
   getCampaignItem,
   getAudienceByCampaignID,
@@ -83,14 +83,15 @@ export default function Overview({ content, listCampaign, ctx }) {
     currentPage: content.current_page,
   });
   const [campaignDetails, setCampaignDetails] = useState(null);
-
+  const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
     console.log(content);
     initFunction(listCampaign);
   }, []);
 
   const initFunction = async (val) => {
-    handleGetAudience(val[0].id, val[0].name);
+    const index = listCampaign.length - 1;
+    handleGetAudience(val[index].id, val[index].name);
     sumCampainOverview(content.data);
   };
 
@@ -146,25 +147,19 @@ export default function Overview({ content, listCampaign, ctx }) {
       });
   };
 
-  const handleHoverOpen = (event, popoverName) => {
+  const handleHoverOpen = (event, popoverName, data) => {
+    console.log(data);
+    event.preventDefault();
     setHover(event.currentTarget);
     setActivePopover(popoverName);
+    setDataPopover(data);
   };
 
   const handleHoverClose = () => {
     setHover(null);
   };
 
-  const handleHoverImageOpen = (event, popoverName) => {
-    setHoverImage(event.currentTarget);
-    setActivePopoverImage(popoverName);
-  };
-
-  const handleHoverImageClose = () => {
-    setHoverImage(null);
-  };
-
-  function renderPopover(type, contentType, content) {
+  function renderPopover(type, content) {
     return (
       <Popover
         id={type}
@@ -183,82 +178,68 @@ export default function Overview({ content, listCampaign, ctx }) {
         sx={{
           pointerEvents: 'none',
         }}
-        className={contentType === 'image_audience' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
+        className={type === 'banner_image' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
         <Box sx={{ p: 2, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            {content || ''}
-          </Typography>
-        </Box>
-      </Popover>
-    );
-  }
-
-  function renderPopoverContent(type, contentType, content) {
-    // console.log(type);
-    return (
-      <Popover
-        id={type}
-        open={Boolean(hover) && activePopover === type}
-        anchorEl={hover}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        onClose={handleHoverClose}
-        disableRestoreFocus
-        sx={{
-          pointerEvents: 'none',
-        }}
-        className={styles.ctnPopoverBlack}
-      >
-        <Box sx={{ p: 2, maxWidth: 260 }}>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            + Wallet-type: Coinbase
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            + Account age: 1 Year
-          </Typography>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            + Airdrops received: 5 - 10
-          </Typography>
-        </Box>
-      </Popover>
-    );
-  }
-
-  function renderPopoverImage(type, content) {
-    // console.log(content);
-    return (
-      <Popover
-        id={type}
-        open={Boolean(hoverImage) && activePopoverImage === type}
-        anchorEl={hoverImage}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        onClose={handleHoverImageClose}
-        disableRestoreFocus
-        sx={{
-          pointerEvents: 'none',
-        }}
-        className={styles.ctnPopoverWhite}
-      >
-        <Box sx={{ p: 1, maxWidth: 260 }}>
-          <div className={styles.imageProver}>
-            <img src={content.img} />
-          </div>
-          <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
-            {content?.desc}
+            {type === 'banner_image' && (
+              <>
+                <div className={styles.imageProver}>
+                  <img src={dataPopover?.img} />
+                </div>
+                <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
+                  {dataPopover?.desc}
+                </Typography>
+              </>
+            )}
+            {type === 'logo_text_banner' && (
+              <>
+                <Typography variant="body1" color={'#fff'} textAlign={'center'}>
+                  {typeof dataPopover === 'object' ? '' : dataPopover}
+                </Typography>
+              </>
+            )}
+            {type === 'audience' && (
+              <>
+                <Typography variant="body1" color={'#fff'} textAlign={'center'}>
+                  {dataPopover === '0.039' && (
+                    <>
+                      <Typography
+                        variant="body1"
+                        className={styles.desctTitle}
+                        fontWeight="800"
+                        color="#fff"
+                        textAlign={'center'}
+                      >
+                        <b>+</b>
+                        Optimized Targeting:
+                      </Typography>
+                      <Typography variant="span" textAlign={'center'}>
+                        The audience consists of a broad mix of users, optimized by our algorithm.
+                      </Typography>
+                    </>
+                  )}
+                  {dataPopover === '0.019' && (
+                    <>
+                      <Typography
+                        variant="body1"
+                        className={styles.desctTitle}
+                        fontWeight="800"
+                        color="#fff"
+                        textAlign={'center'}
+                        marginBottom={2}
+                      >
+                        <b>+</b>
+                        Your own audience:
+                      </Typography>
+                      <Typography ariant="span" textAlign={'center'}>
+                        Your audience:
+                      </Typography>
+                    </>
+                  )}
+                </Typography>
+              </>
+            )}
           </Typography>
         </Box>
       </Popover>
@@ -304,7 +285,6 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const openCampaignModal = async (id) => {
     const res = await getCampaignDetail(ctx, id);
-    console.log(res.data);
     setCampaignDetails(res.data);
     setCampaignModal(!campaignModal);
   };
@@ -414,13 +394,13 @@ export default function Overview({ content, listCampaign, ctx }) {
               </Typography>
               <img
                 onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'logo_text_banner');
+                  handleHoverOpen(event, 'logo_text_banner', impressionText);
                 }}
                 onMouseLeave={handleHoverClose}
                 src={askIcon}
                 alt="ask"
               />
-              {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
+              {renderPopover('logo_text_banner', '')}
             </div>
             <div className={styles.ctnIconShort}>
               <img src={iconShort} alt="ic-short" />
@@ -690,13 +670,13 @@ export default function Overview({ content, listCampaign, ctx }) {
             </Typography>
             <img
               onMouseEnter={(event) => {
-                handleHoverOpen(event, 'logo_text_banner');
+                handleHoverOpen(event, 'logo_text_banner', impressionText);
               }}
               onMouseLeave={handleHoverClose}
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
+            {renderPopover('logo_text_banner', '')}
           </div>
           <div className={styles.ctnIconShort} onClick={() => handleSort('audience', true, '', 'count_impression')}>
             <img src={iconShort} alt="ic-short" />
@@ -740,31 +720,34 @@ export default function Overview({ content, listCampaign, ctx }) {
                 <Typography
                   variant="body1"
                   onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'renderPopoverContent');
+                    handleHoverOpen(event, 'audience', item?.price_airdrop);
                   }}
                   onMouseLeave={handleHoverClose}
                   marginRight={1}
                 >
-                  {shortString(item.name, 20, 'ihiiu')}
+                  {shortString(item.name, 20)}
                 </Typography>
                 <img src={expandIcon} />
-                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
+                {renderPopover('audience', '')}
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
-                {/* {renderPopoverImage('banner_image', {
-                  img: `${url + item?.ads?.image.url}`,
-                  desc: item?.description,
-                })} */}
-                <div className={styles.statusContainer}>
-                  <div
-                    onMouseEnter={(event) => {
-                      handleHoverImageOpen(event, 'banner_image');
-                    }}
-                    onMouseLeave={handleHoverImageClose}
-                  >
+                {renderPopover('banner_image', '')}
+                <div
+                  className={styles.statusContainer}
+                  onMouseEnter={(event) => {
+                    const data = {
+                      img: `${url + item?.ads?.image.url}`,
+                      desc: item.ads?.description,
+                    };
+                    // console.log(`${url + item?.ads?.image.url}`);
+                    handleHoverOpen(event, 'banner_image', data);
+                  }}
+                  onMouseLeave={handleHoverClose}
+                >
+                  <div>
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
-                  <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} />
+                  {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
                   <Typography variant="body1" marginRight={1}>
                     {item?.ads?.name}
                   </Typography>
@@ -897,10 +880,10 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderBanner() {
     return (
       <div className={styles.bannerContainer}>
-        <img src={banner} style={{ cursor: 'pointer' }} alt="banner" />
+        <img src={banner} style={{ width: '100%', zIndex: 2 }} alt="banner" />
         <img
           src={button}
-          style={{ cursor: 'pointer', width: '80%' }}
+          style={{ cursor: 'pointer', width: '50%', zIndex: 1, marginTop: -10, marginBottom: 80 }}
           alt="banner"
           onClick={() => router.push(routes.createCampaign)}
         />
