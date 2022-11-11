@@ -52,6 +52,7 @@ const questionObj = {
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
+  errorAd: 'Another ad is already selected to be shown to this audience.',
 };
 
 // ----------------------------------------------------------------------
@@ -82,7 +83,9 @@ export default function AddCampaign({ content, params }) {
   const styles = useStyles();
   // const { themeStretch } = useSettings();
   const [hover, setHover] = useState(null);
+  const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
+  const [activeErrorAlert, setActiveErrorAlert] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
@@ -101,7 +104,6 @@ export default function AddCampaign({ content, params }) {
   const [selectedAudience, setSelectedAudience] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(null);
   const [showModalSuccess, setModalSuccess] = useState(false);
-  const [showErrorAd, setShowErrorAd] = useState(false);
   const [formResp, setFormResp] = useState(null);
   const [emptyAudience, setEmptyAudience] = useState(true);
   const [audienceForm, setAudienceForm] = useState([
@@ -613,8 +615,17 @@ export default function AddCampaign({ content, params }) {
     setActivePopover(popoverName);
   };
 
+  const handleAlertErrorOpen = (event, popoverName) => {
+    setErrorAlert(event.currentTarget);
+    setActiveErrorAlert(popoverName);
+  };
+
   const handleHoverClose = () => {
     setHover(null);
+  };
+
+  const handleAlertErrorClose = () => {
+    setErrorAlert(null);
   };
 
   const checkIsAudienceAdsSelected = (index) => {
@@ -839,26 +850,44 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderPopoverError(content) {
+  function renderPopoverError(type, content) {
     setTimeout(() => {
-      setShowErrorAd(false);
+      handleAlertErrorClose();
     }, 3000);
     return (
-      <Box
-        sx={{
-          display: showErrorAd ? 'block' : 'none',
-          position: 'absolute',
-          borderRadius: 1,
-          padding: 1,
-          bottom: 150,
-          maxWidth: 250,
-          backgroundColor: '#FFD8DF',
+      <Popover
+        id={type}
+        open={Boolean(errAlert) && activeErrorAlert === type}
+        anchorEl={errAlert}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
         }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleAlertErrorClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={styles.ctnPopoverError}
       >
-        <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="justify">
-          {content || ''}
-        </Typography>
-      </Box>
+        <Box
+          sx={{
+            borderRadius: 1,
+            padding: 1,
+            bottom: 150,
+            maxWidth: 250,
+            backgroundColor: '#FFD8DF',
+          }}
+        >
+          <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="justify">
+            {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
     );
   }
 
@@ -1642,7 +1671,7 @@ export default function AddCampaign({ content, params }) {
                       className={`${styles.ctnAudienceItem} ${
                         item.optimized === false || checkIsAudienceAdsSelected(item.audienceId) ? styles.ctnDisable : {}
                       }`}
-                      onClick={() => {
+                      onClick={(event) => {
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
@@ -1650,13 +1679,12 @@ export default function AddCampaign({ content, params }) {
                           deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
                         } else {
-                          !emptyAudience && setShowErrorAd(true);
+                          !emptyAudience && handleAlertErrorOpen(event, 'Audience');
                         }
                       }}
                     >
-                      {renderPopoverError('Another ad is already selected to be shown to this audience.')}
+                      {renderPopoverError('Audience', questionObj.errorAd)}
                       <CheckboxAds isActive={isActive} />
-
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>

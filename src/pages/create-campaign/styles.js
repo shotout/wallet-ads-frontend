@@ -499,6 +499,11 @@ const useStyles = makeStyles((theme) => ({
       background: 'rgba(0, 0, 0,0.9)',
     },
   },
+  ctnPopoverError: {
+    '& > .MuiPaper-root': {
+      background: '#FFD8DF',
+    },
+  },
   ctnInputColumn: {
     position: 'relative',
     display: 'flex',
