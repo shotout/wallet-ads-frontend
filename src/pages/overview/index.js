@@ -28,9 +28,12 @@ Overview.getLayout = function getLayout(page) {
 
 const url = process.env.BACKEND_URL;
 const iconShort = '/assets/short_icon.png';
-const banner = '/assets/Banner.png';
+const banner = '/assets/Banner.svg';
+const button = '/assets/Button.svg';
 const askIcon = '/assets/ask_icon.png';
 const timerIcon = '/icons/ic_timer.svg';
+const expandIcon = '/icons/ic_expand.svg';
+const expandIconWhite = '/icons/ic_expand_white.svg';
 
 const impressionText =
   'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
@@ -192,6 +195,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   }
 
   function renderPopoverContent(type, contentType, content) {
+    // console.log(type);
     return (
       <Popover
         id={type}
@@ -228,7 +232,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   }
 
   function renderPopoverImage(type, content) {
-    console.log(content);
+    // console.log(content);
     return (
       <Popover
         id={type}
@@ -300,6 +304,7 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const openCampaignModal = async (id) => {
     const res = await getCampaignDetail(ctx, id);
+    console.log(res.data);
     setCampaignDetails(res.data);
     setCampaignModal(!campaignModal);
   };
@@ -333,17 +338,19 @@ export default function Overview({ content, listCampaign, ctx }) {
           {text}
         </Typography>
         <div style={{ display: 'flex' }}>
-          <img src={timerIcon} style={{ marginRight: 20, opacity: 0.5 }} />
           <div>
-            <Typography
-              fontSize={16}
-              fontWeight={500}
-              color={'#808080'}
-              fontFamily={'Public Sans, sans-serif'}
-              textAlign={'center'}
-            >
-              Data might take 24h to show after your scheduled campaign start.
-            </Typography>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <img src={timerIcon} style={{ marginRight: 10, opacity: 0.5, width: 15 }} />
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                color={'#808080'}
+                fontFamily={'Public Sans, sans-serif'}
+                textAlign={'center'}
+              >
+                Data might take 24h to show after your scheduled campaign start.
+              </Typography>
+            </div>
             <Typography
               onClick={() => router.push(routes.createCampaign)}
               fontSize={16}
@@ -365,19 +372,23 @@ export default function Overview({ content, listCampaign, ctx }) {
     return (
       <Grid container spacing={3}>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
-            Campaign
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', false, '', 'name')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', false, '', 'name')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Campaign
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
-            Scheduled
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', false, '', 'name')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', false, '', 'name')}>
+            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+              Scheduled
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1.5} sm={12}>
@@ -386,54 +397,64 @@ export default function Overview({ content, listCampaign, ctx }) {
           </Typography>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Airdrops
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_airdrop')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_airdrop')}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Airdrops
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={2} sm={12} display="flex">
-          <div className={styles.leftTitle}>
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
+            <div className={styles.leftTitle}>
+              <Typography variant="body1" fontWeight={'bold'}>
+                Impressions
+              </Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'logo_text_banner');
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
+              {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
+            </div>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
+          </div>
+        </Grid>
+        <Grid item md={1.5} sm={12} display="flex">
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_view')}>
             <Typography variant="body1" fontWeight={'bold'}>
-              Impressions
+              Views
             </Typography>
-            <img
-              onMouseEnter={(event) => {
-                handleHoverOpen(event, 'logo_text_banner');
-              }}
-              onMouseLeave={handleHoverClose}
-              src={askIcon}
-              alt="ask"
-            />
-            {renderPopover('logo_text_banner', 'logo_text_banner', impressionText)}
-          </div>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
-            <img src={iconShort} alt="ic-short" />
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Views
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_view')}>
-            <img src={iconShort} alt="ic-short" />
-          </div>
-        </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Link clicks
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_click')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_click')}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Link clicks
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
         <Grid item md={1} sm={12} display="flex">
-          <Typography variant="body1" fontWeight={'bold'}>
-            Mints
-          </Typography>
-          <div className={styles.ctnIconShort} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
-            <img src={iconShort} alt="ic-short" />
+          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
+            <Typography variant="body1" fontWeight={'bold'}>
+              Mints
+            </Typography>
+            <div className={styles.ctnIconShort}>
+              <img src={iconShort} alt="ic-short" />
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -498,11 +519,18 @@ export default function Overview({ content, listCampaign, ctx }) {
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={1.5} sm={12} display="flex">
-                <Typography variant="body1" style={{ cursor: 'pointer' }} onClick={() => openCampaignModal(item.id)}>
+                <Typography
+                  variant="body1"
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={() => openCampaignModal(item.id)}
+                  color={'#7089FF'}
+                >
                   {shortString(item.name, 10)}
                 </Typography>
               </Grid>
-              <Grid item md={1.5} sm={12} alignItems={'center'} />
+              <Grid item md={1.5} sm={12} alignItems={'center'}>
+                <Typography variant="body1">{item.start_date}</Typography>
+              </Grid>
 
               <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
@@ -602,6 +630,7 @@ export default function Overview({ content, listCampaign, ctx }) {
                   inputProps={{ 'aria-label': 'Without label' }}
                   placeholder={content.data.length === 0 ? 'No campaign available' : ''}
                   disabled={content.data.length === 0}
+                  label={'tes'}
                 >
                   {listCampaigns.content.map((v, i) => (
                     <MenuItem key={`list+${i}`} value={v.id}>
@@ -616,11 +645,11 @@ export default function Overview({ content, listCampaign, ctx }) {
                 // isLoading={loadingSubmit}
                 // onClick={validateSubmit}
                 ctnBtnStyle={styles.btnExportToExcel}
-                eventName={'Export to excel'}
+                eventName={'Export to Excel'}
                 onClick={() => {
                   exportAudienceByCampaignID(listAudience.content?.campaign?.id);
                 }}
-                label={'Export to excel'}
+                label={'Export to Excel'}
                 disabled={content.data.length === 0}
               />
             </Grid>
@@ -714,23 +743,32 @@ export default function Overview({ content, listCampaign, ctx }) {
                     handleHoverOpen(event, 'renderPopoverContent');
                   }}
                   onMouseLeave={handleHoverClose}
+                  marginRight={1}
                 >
-                  {shortString(item.name, 20)}
+                  {shortString(item.name, 20, 'ihiiu')}
                 </Typography>
-                {/* {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')} */}
+                <img src={expandIcon} />
+                {renderPopoverContent('renderPopoverContent', 'logo_text_banner', 'aa')}
               </Grid>
               <Grid item md={2.5} sm={12} alignItems={'center'}>
-                {renderPopoverImage('bannerimage', item)}
+                {/* {renderPopoverImage('banner_image', {
+                  img: `${url + item?.ads?.image.url}`,
+                  desc: item?.description,
+                })} */}
                 <div className={styles.statusContainer}>
                   <div
                     onMouseEnter={(event) => {
-                      handleHoverImageOpen(event, 'bannerimage');
+                      handleHoverImageOpen(event, 'banner_image');
                     }}
                     onMouseLeave={handleHoverImageClose}
                   >
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
-                  <Typography variant="body1">{item?.ads?.name}</Typography>
+                  <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} />
+                  <Typography variant="body1" marginRight={1}>
+                    {item?.ads?.name}
+                  </Typography>
+                  <img src={expandIcon} />
                 </div>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
@@ -859,9 +897,10 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderBanner() {
     return (
       <div className={styles.bannerContainer}>
+        <img src={banner} style={{ cursor: 'pointer' }} alt="banner" />
         <img
-          src={banner}
-          style={{ cursor: 'pointer' }}
+          src={button}
+          style={{ cursor: 'pointer', width: '80%' }}
           alt="banner"
           onClick={() => router.push(routes.createCampaign)}
         />

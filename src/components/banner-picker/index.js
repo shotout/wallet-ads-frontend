@@ -87,8 +87,9 @@ export default function BannerPicker({
           <div className={styles.ctnDesc}>
             {
               <Typography variant="body1" fontSize={18} fontWeight={600}>
-                {file.name ? shortString(file.name, 15) : shortString(imageProps?.name, 15)}{' '}
-                {imgFormat[file?.type] ?? ''}
+                {file.name
+                  ? shortString(file.name, 15, imgFormat[file?.type] ?? '')
+                  : shortString(imageProps?.name, 15, imgFormat[file?.type] ?? '')}
               </Typography>
             }
           </div>

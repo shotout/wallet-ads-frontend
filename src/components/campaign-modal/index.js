@@ -8,6 +8,7 @@ import { BACKEND_URL } from '../../helpers/constants';
 import CollectionPreview from '../../components/collection-preview-modal';
 import AdsCard from '../ads-card';
 import Iconify from '../Iconify';
+import { normalizeCurrency } from '../../../src/helpers/currency';
 
 const discordIcon = '/assets/svg/discord.svg';
 const telegramIcon = '/assets/telegram.png';
@@ -138,7 +139,7 @@ export default function CampaignModal({ isVisible, data, close }) {
               Total Budget:
             </Typography>
             <Typography fontSize={18} fontWeight={800}>
-              USD{totalBudget}
+              USD{normalizeCurrency(totalBudget)}
             </Typography>
           </div>
           <div className={styles.ctnTextLayout1}>
@@ -298,7 +299,7 @@ export default function CampaignModal({ isVisible, data, close }) {
         vertical: 'center',
         horizontal: 'center',
       }}
-      //   onClose={resetState}
+      onClose={close}
       className={styles.ctnPopover}
       style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >

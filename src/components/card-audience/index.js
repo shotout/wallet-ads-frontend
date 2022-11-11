@@ -169,7 +169,7 @@ export default function CardAudience({
           </Typography>
           <div className={`${styles.readOnlyPriceInput}`}>
             <Typography textAlign={'center'} fontWeight={800} fontSize={'1.5rem'} color={'#7089FF'}>
-              USD{data.budgetAds}
+              USD{normalizeCurrency(Number(data.budgetAds))}
             </Typography>
           </div>
         </div>
