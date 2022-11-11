@@ -279,17 +279,21 @@ export default function CardAudience({
               fontWeight="800"
               color="#000"
               textAlign={'center'}
+              marginBottom={2}
             >
               <b>+</b>
               Your own audience:
             </Typography>
+            <Typography ariant="span" textAlign={'center'}>
+              Your audience:
+            </Typography>
             {data.audienceFile && (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
                 {`${
-                  data.audienceFile?.original_name
-                    ? data.audienceFile?.original_name.length > 24
-                      ? data.audienceFile?.original_name.slice(0, 24) + ` ...`
-                      : data.audienceFile?.original_name
+                  data.audienceFile?.name
+                    ? data.audienceFile?.name.length > 12
+                      ? data.audienceFile?.name.slice(0, 12) + ` ...`
+                      : data.audienceFile?.name
                     : data.audienceFile?.name
                 }`}
               </Typography>
