@@ -158,7 +158,7 @@ export default makeStyles((theme) => ({
   },
   paginationContainer: {
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'flex-end',
     '& > span': {
       marginLeft: 20,

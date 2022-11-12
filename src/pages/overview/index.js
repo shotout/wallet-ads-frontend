@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState, Fragment } from 'react';
 import Page from '../../components/Page';
 import Layout from '../../layouts';
@@ -31,6 +32,10 @@ const url = process.env.BACKEND_URL;
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.svg';
 const button = '/assets/Button.svg';
+const nextIcon = '/icons/ic_next.svg';
+const prevIcon = '/icons/ic_prev.svg';
+const nextActiveIcon = '/icons/ic_next_active.svg';
+const prevActiveIcon = '/icons/ic_prev_active.svg';
 const askIcon = '/assets/ask_icon.png';
 const timerIcon = '/icons/ic_timer.svg';
 const expandIcon = '/icons/ic_expand.svg';
@@ -39,7 +44,7 @@ const expandIconWhite = '/icons/ic_expand_white.svg';
 const impressionText =
   'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
 
-export default function Overview({ content, listCampaign, ctx }) {
+export default function Overview({ content, listCampaign, paginations, ctx }) {
   const styles = useStyles();
   const router = useRouter();
   const [hover, setHover] = useState(null);
@@ -49,7 +54,7 @@ export default function Overview({ content, listCampaign, ctx }) {
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: true,
-    content: content.data.filter((v) => v.is_show === 1) || [],
+    content: content.data || [],
   });
   const [listCampaigns, setListCampaigns] = useState({
     content: listCampaign || [],
@@ -80,14 +85,14 @@ export default function Overview({ content, listCampaign, ctx }) {
     mints: 0,
   });
   const [pagination, setPagination] = useState({
-    data: content.links,
+    data: paginations,
     currentPage: content.current_page,
   });
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
     console.log(listCampaign);
-    console.log(content.data);
+    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -308,6 +313,20 @@ export default function Overview({ content, listCampaign, ctx }) {
           <Typography>In review</Typography>
         </div>
       );
+    } else if (status === 2) {
+      return (
+        <div className={styles.statusContainer}>
+          <div style={{ width: 6, height: 6, backgroundColor: '#FFAC00', borderRadius: 10, marginRight: 10 }} />
+          <Typography>Running</Typography>
+        </div>
+      );
+    } else {
+      return (
+        <div className={styles.statusContainer}>
+          <div style={{ width: 6, height: 6, backgroundColor: '#FFAC00', borderRadius: 10, marginRight: 10 }} />
+          <Typography>Finished</Typography>
+        </div>
+      );
     }
   };
 
@@ -504,7 +523,7 @@ export default function Overview({ content, listCampaign, ctx }) {
               <Grid item md={1.5} sm={12} display="flex">
                 <Typography
                   variant="body1"
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  style={{ cursor: 'pointer', textDecoration: 'underline', whiteSpace: 'nowrap' }}
                   onClick={() => openCampaignModal(item.id)}
                   color={'#7089FF'}
                 >
@@ -543,15 +562,33 @@ export default function Overview({ content, listCampaign, ctx }) {
   function renderPagination() {
     return (
       <div className={styles.paginationContainer}>
+        <img
+          src={pagination.currentPage > 1 ? prevActiveIcon : prevIcon}
+          style={pagination.currentPage > 1 ? { cursor: 'pointer' } : { cursor: 'not-allowed' }}
+          onClick={() => {
+            pagination.currentPage > 1 ? getAnotherPage({ label: 'Previous', url: 'http' }) : null;
+          }}
+        />
         {pagination.data?.map((v, i) => (
           <span
             key={`paginate-${i}`}
             className={v.active ? styles.isPaginateActive : null}
             onClick={() => getAnotherPage(v)}
           >
-            {v.label.replace('&laquo;', '').replace('&raquo;', '')}
+            {i + 1}
           </span>
         ))}
+        <img
+          src={pagination.currentPage < pagination.data.length ? nextActiveIcon : nextIcon}
+          style={
+            pagination.currentPage < pagination.data.length
+              ? { cursor: 'pointer', marginLeft: 20 }
+              : { cursor: 'not-allowed', marginLeft: 20 }
+          }
+          onClick={() => {
+            pagination.currentPage < pagination.data.length ? getAnotherPage({ label: 'Next', url: 'http' }) : null;
+          }}
+        />
       </div>
     );
   }
@@ -559,16 +596,21 @@ export default function Overview({ content, listCampaign, ctx }) {
   const getAnotherPage = async (page) => {
     if (!page.url) return;
     const pageIdentity = page.label.replace('&laquo;', '').replace('&raquo;', '');
+
     const pageParams = {
-      ' Previous': pagination.currentPage - 1,
-      'Next ': pagination.currentPage + 1,
+      Previous: Number(pagination?.currentPage) - 1,
+      Next: pagination?.currentPage + 1,
     };
     const pages = await getCampaignItem(null, pageParams[pageIdentity] ?? page.label);
-
     setContent({
       ...content,
       content: pages.data.data,
     });
+    const paginationa = pages.data.links.shift();
+    const pagination2 = pages.data.links.pop();
+
+    console.log(pages.data.current_page);
+
     await sumCampainOverview(pages.data.data);
     setPagination({ data: pages.data.links, currentPage: pages.data.current_page });
   };
@@ -897,7 +939,7 @@ export default function Overview({ content, listCampaign, ctx }) {
         <img src={banner} style={{ width: '100%', zIndex: 2 }} alt="banner" />
         <img
           src={button}
-          style={{ cursor: 'pointer', width: '50%', zIndex: 1, marginTop: -10, marginBottom: 80 }}
+          style={{ cursor: 'pointer', width: '40%', zIndex: 1, marginTop: -10, marginBottom: 80 }}
           alt="banner"
           onClick={() => router.push(routes.createCampaign)}
         />
@@ -940,6 +982,9 @@ export async function getServerSideProps(context) {
   const res = await getCampaignItem(context, 1);
   const listCampaign = await getListCampaign(context);
 
+  const pagination = res.data.links.shift();
+  const pagination2 = res.data.links.pop();
+
   if (!userData) {
     return {
       redirect: {
@@ -952,7 +997,9 @@ export async function getServerSideProps(context) {
     props: {
       userData,
       content: res.data || [],
-      listCampaign: res.data.data.filter((v) => v.is_show === 1) || [],
+      // listCampaign: res.data.data.filter((v) => v.is_show === 1) || [],
+      listCampaign: listCampaign.data || [],
+      paginations: res.data.links,
       // ctx: context,
     }, // will be passed to the page component as props
   };

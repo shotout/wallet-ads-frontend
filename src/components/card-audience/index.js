@@ -6,6 +6,7 @@ import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calcula
 import SvgIconStyle from '../SvgIconStyle';
 import CurrencyInput from 'react-currency-input-field';
 import { normalizeCurrency } from '../../helpers/currency';
+import { shortString } from '../../helpers/shortString';
 
 const triangleIcon = '/assets/triangle.png';
 const pricetagIcon = '/assets/pricetag_icon.png';
@@ -277,6 +278,14 @@ export default function CardAudience({
       );
     }
     if (data.selectedCategory === 'upload') {
+      const fileTypeData = {
+        'text/csv': 'csv',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'file/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.ms-excel': '.xls',
+        'file/vnd.ms-excel': '.xls',
+      };
+      console.log(shortString(data.audienceFile.name, 12, fileTypeData[data.audienceFile?.type] ?? ''));
       return (
         <div className={styles.ctnDescAudience}>
           <div className={styles.ctnDefaultContentWrapper}>
@@ -296,13 +305,7 @@ export default function CardAudience({
             </Typography>
             {data.audienceFile && (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
-                {`${
-                  data.audienceFile?.name
-                    ? data.audienceFile?.name.length > 12
-                      ? data.audienceFile?.name.slice(0, 12) + ` ...`
-                      : data.audienceFile?.name
-                    : data.audienceFile?.name
-                }`}
+                {shortString(data.audienceFile.name, 12, fileTypeData[data.audienceFile?.type] ?? '')}
               </Typography>
             )}
           </div>
