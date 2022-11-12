@@ -657,11 +657,13 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   placeholder={content.data.length === 0 ? 'No campaign available' : ''}
                   disabled={content.data.length === 0}
                 >
-                  {listCampaigns.content.map((v, i) => (
-                    <MenuItem key={`list+${i}`} value={v.id}>
-                      {v.name}
-                    </MenuItem>
-                  ))}
+                  {listCampaigns.content
+                    .map((v, i) => (
+                      <MenuItem key={`list+${i}`} value={v.id}>
+                        {v.name}
+                      </MenuItem>
+                    ))
+                    .reverse()}
                 </Select>
               </FormControl>
             </Grid>
