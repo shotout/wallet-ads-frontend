@@ -92,6 +92,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
+    // console.log(content);
     initFunction(listCampaign);
   }, []);
 

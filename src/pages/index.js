@@ -9,7 +9,7 @@ export default function Index() {
   useEffect(() => {
     if (router.pathname == '/') {
       if (getAuthorizationHeader() && getAuthorizationHeader().Authorization) {
-        router.push(routes.createCampaign);
+        router.push(routes.dashboard);
       } else {
         router.push(routes.login);
       }
