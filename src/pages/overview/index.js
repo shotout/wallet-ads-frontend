@@ -22,6 +22,7 @@ import CampaignModal from './../../../src/components/campaign-modal';
 import { routes } from '../../helpers/routes';
 import { shortString } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
+import { normalizeCurrency } from '../../helpers/currency';
 import moment from 'moment';
 
 Overview.getLayout = function getLayout(page) {
@@ -91,8 +92,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
-    console.log(listCampaign);
-    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -107,10 +106,12 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     const airdrops = [];
     const linkClicks = [];
     const res = await getAudienceByCampaignID(id);
+    const res2 = await getCampaignDetail(ctx, id);
     setCapmapaignID(id);
     setCapmapaignName(name);
     setListAudience({ ...listAudience, content: res.data.audiences });
     console.log(res);
+    console.log(res2);
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.ads.count_airdrop);
@@ -485,27 +486,27 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.airdrops ?? 0}
+              {normalizeCurrency(totalCampainOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={2} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.impressions ?? 0}
+              {normalizeCurrency(totalCampainOverview.impressions) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.views ?? 0}
+              {normalizeCurrency(totalCampainOverview.views) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.linkClicks ?? 0}
+              {normalizeCurrency(totalCampainOverview.linkClicks) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalCampainOverview.mints ?? 0}
+              {normalizeCurrency(totalCampainOverview.mints) ?? 0}
             </Typography>
           </Grid>
         </Grid>
@@ -538,19 +539,19 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{item.count_airdrop ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item.count_airdrop) ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12}>
-                <Typography variant="body1">{item.count_impression ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item.count_impression) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{item.count_view ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item.count_view) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{item.count_click ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item.count_click) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1} sm={12}>
-                <Typography variant="body1">{item.count_mint ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item.count_mint) ?? '-'}</Typography>
               </Grid>
             </Fragment>
           ))}
@@ -811,19 +812,19 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 </div>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_airdrop ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_airdrop) ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_impression ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_impression) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_view ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_view) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_click ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_click) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{item?.ads?.count_mint ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_mint) ?? '-'}</Typography>
               </Grid>
             </Fragment>
           ))}
@@ -849,27 +850,27 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalAudienceOverview.airdrops ?? 0}
+              {normalizeCurrency(totalAudienceOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={2} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalAudienceOverview.impressions ?? 0}
+              {normalizeCurrency(totalAudienceOverview.impressions) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalAudienceOverview.views ?? 0}
+              {normalizeCurrency(totalAudienceOverview.views) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalAudienceOverview.linkClicks ?? 0}
+              {normalizeCurrency(totalAudienceOverview.linkClicks) ?? 0}
             </Typography>
           </Grid>
           <Grid item md={1} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
-              {totalAudienceOverview.mints ?? 0}
+              {normalizeCurrency(totalAudienceOverview.mints) ?? 0}
             </Typography>
           </Grid>
         </Grid>
