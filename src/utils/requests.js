@@ -79,6 +79,13 @@ export const getCampaignItem = (ctx, page) =>
     ctx,
   });
 
+export const getListCampaignItem = (ctx, page) =>
+  axios({
+    url: `/dashboard/campaigns?page=${page}`,
+    method: 'GET',
+    ctx,
+  });
+
 export const getProfilUser = (ctx) =>
   axios({
     url: '/user',

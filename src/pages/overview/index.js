@@ -10,6 +10,7 @@ import {
   getAudienceByCampaignID,
   getListCampaign,
   getCampaignDetail,
+  getListCampaignItem,
   exportAudienceByCampaignID,
 } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
@@ -575,9 +576,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           <span
             key={`paginate-${i}`}
             className={v.active ? styles.isPaginateActive : null}
-            onClick={() => getAnotherPage(v)}
+            onClick={() => (v.label === '...' ? null : getAnotherPage(v))}
           >
-            {i + 1}
+            {v.label}
           </span>
         ))}
         <img
@@ -603,7 +604,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
       Previous: Number(pagination?.currentPage) - 1,
       Next: pagination?.currentPage + 1,
     };
-    const pages = await getCampaignItem(null, pageParams[pageIdentity] ?? page.label);
+    const pages = await getListCampaignItem(null, pageParams[pageIdentity] ?? page.label);
     setContent({
       ...content,
       content: pages.data.data,
@@ -983,7 +984,7 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const res = await getCampaignItem(context, 1);
+  const res = await getListCampaignItem(context, 1);
   const listCampaign = await getListCampaign(context);
 
   const pagination = res.data.links.shift();
