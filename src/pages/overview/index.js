@@ -93,7 +93,7 @@ export default function Overview({ content, listCampaign, ctx }) {
 
   const initFunction = async (val) => {
     const index = 0;
-    handleGetAudience(val[index].id, val[index].name);
+    handleGetAudience(val[index]?.id, val[index]?.name);
     sumCampainOverview(content.data);
   };
 
@@ -142,11 +142,14 @@ export default function Overview({ content, listCampaign, ctx }) {
   };
 
   const sumArr = (arr, val, nested) => {
-    return arr
-      .map((item) => (nested ? item.ads[val] : item[val]))
-      .reduce((a, b) => {
-        return a + b;
-      });
+    return (
+      arr.length !== 0 &&
+      arr
+        .map((item) => (nested ? item?.ads[val] : item[val]))
+        .reduce((a, b) => {
+          return a + b;
+        })
+    );
   };
 
   const handleHoverOpen = (event, popoverName, data) => {
@@ -601,8 +604,8 @@ export default function Overview({ content, listCampaign, ctx }) {
             <Grid item md={6} sm={12} display="flex">
               <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
                 <Select
-                  defaultValue={listCampaigns.content[0].id}
-                  defaultChecked={listCampaigns.content[0].id}
+                  defaultValue={listCampaigns?.content[0]?.id}
+                  defaultChecked={listCampaigns?.content[0]?.id}
                   value={campaignID}
                   displayEmpty
                   onChange={handleChangeSelect}
