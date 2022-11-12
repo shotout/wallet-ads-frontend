@@ -96,8 +96,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   }, []);
 
   const initFunction = async (val) => {
-    const index = 0;
-    handleGetAudience(val[index]?.id, val[index]?.name);
+    const index = listCampaign.length;
+    handleGetAudience(val[listCampaign.length - 1]?.id, val[listCampaign.length - 1]?.name);
     sumCampainOverview(content.data);
   };
 
@@ -647,8 +647,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             <Grid item md={6} sm={12} display="flex">
               <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
                 <Select
-                  defaultValue={listCampaigns?.content[0]?.id}
-                  defaultChecked={listCampaigns?.content[0]?.id}
+                  defaultValue={listCampaigns?.content[listCampaign.length - 1]?.id}
+                  defaultChecked={listCampaigns?.content[listCampaign.length - 1]?.id}
                   value={campaignID}
                   displayEmpty
                   onChange={handleChangeSelect}
