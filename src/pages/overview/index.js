@@ -783,20 +783,20 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           {listAudience.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography
-                  variant="body1"
+                <div
+                  className={styles.statusContainer}
                   onMouseEnter={(event) => {
                     handleHoverOpen(event, 'audience', item?.file);
                   }}
                   onMouseLeave={handleHoverClose}
-                  marginRight={1}
                 >
-                  {shortString(item.name, 20)}
-                </Typography>
-                <img src={expandIcon} />
-                {renderPopover('audience', '')}
+                  <Typography variant="body1" marginRight={1}>
+                    {shortString(item.name, 20)}
+                  </Typography>
+                  <img src={expandIcon} />
+                  {renderPopover('audience', '')}
+                </div>
               </Grid>
-
               <Grid item md={2.5} sm={12} alignItems={'center'}>
                 {renderPopover('banner_image', '')}
                 <div
