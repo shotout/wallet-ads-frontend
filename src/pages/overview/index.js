@@ -186,6 +186,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           vertical: 'bottom',
           horizontal: 'center',
         }}
+        style={{ overflowY: 'auto' }}
         onClose={handleHoverClose}
         disableRestoreFocus
         sx={{
@@ -196,16 +197,16 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         <Box sx={{ p: 1, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
             {type === 'banner_image' && (
-              <>
+              <div>
                 <div className={styles.imageProver}>
-                  <img src={dataPopover?.img} style={{ width: 180 }} />
+                  <img src={dataPopover?.img} style={{ width: 250 }} />
                 </div>
                 <div className={styles.adtextContainer}>
-                  <Typography variant="body1" color={'black'} textAlign={'justify'}>
-                    {dataPopover?.desc}
+                  <Typography variant="body2" color={'black'} textAlign={'justify'}>
+                    {shortString(dataPopover?.desc, 180, '')}
                   </Typography>
                 </div>
-              </>
+              </div>
             )}
             {type === 'logo_text_banner' && (
               <>
@@ -796,6 +797,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={expandIcon} />
                 {renderPopover('audience', '')}
               </Grid>
+
               <Grid item md={2.5} sm={12} alignItems={'center'}>
                 {renderPopover('banner_image', '')}
                 <div

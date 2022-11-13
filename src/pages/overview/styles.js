@@ -188,24 +188,22 @@ export default makeStyles((theme) => ({
     marginTop: 20,
   },
   adtextContainer: {
-    maxWidth: 180,
-    maxHeight: 120,
-    overflowY: 'auto',
+    overflowY: 'hidden',
     paddingLeft: 2,
-    paddingRight: 10,
+    paddingRight: 2,
     marginBottom: 15,
-    '&::-webkit-scrollbar': {
-      width: '0.9em',
-      backgroundColor: 'rgba(217, 217, 217, 0.5)',
-      borderRadius: 10,
-    },
-    '&::-webkit-scrollbar-track': {
-      boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-      webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-    },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'rgba(128, 128, 128, 0.7)',
-      borderRadius: 10,
-    },
+    // '&::-webkit-scrollbar': {
+    //   width: '0.9em',
+    //   backgroundColor: 'rgba(217, 217, 217, 0.5)',
+    //   borderRadius: 10,
+    // },
+    // '&::-webkit-scrollbar-track': {
+    //   boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+    //   webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+    // },
+    // '&::-webkit-scrollbar-thumb': {
+    //   backgroundColor: 'rgba(128, 128, 128, 0.7)',
+    //   borderRadius: 10,
+    // },
   },
 }));
