@@ -194,7 +194,6 @@ export default makeStyles((theme) => ({
     paddingLeft: 2,
     paddingRight: 10,
     marginBottom: 15,
-
     '&::-webkit-scrollbar': {
       width: '0.9em',
       backgroundColor: 'rgba(217, 217, 217, 0.5)',

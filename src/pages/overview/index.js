@@ -112,8 +112,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     setCapmapaignID(id);
     setCapmapaignName(name);
     setListAudience({ ...listAudience, content: res.data.audiences });
-    console.log(res);
     console.log(res2);
+
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.ads.count_airdrop);
@@ -217,7 +217,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             {type === 'audience' && (
               <>
                 <Typography variant="body1" color={'#fff'} textAlign={'center'}>
-                  {dataPopover === '0.039' && (
+                  {!dataPopover && (
                     <>
                       <Typography
                         variant="body1"
@@ -234,7 +234,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                       </Typography>
                     </>
                   )}
-                  {dataPopover === '0.019' && (
+                  {dataPopover && (
                     <>
                       <Typography
                         variant="body1"
@@ -249,6 +249,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                       </Typography>
                       <Typography ariant="span" textAlign={'center'}>
                         Your audience:
+                      </Typography>
+                      <Typography ariant="span" textAlign={'center'}>
+                        {shortString(dataPopover.original_name, 18, '')}
                       </Typography>
                     </>
                   )}
@@ -783,7 +786,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <Typography
                   variant="body1"
                   onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'audience', item?.price_airdrop);
+                    handleHoverOpen(event, 'audience', item?.file);
                   }}
                   onMouseLeave={handleHoverClose}
                   marginRight={1}

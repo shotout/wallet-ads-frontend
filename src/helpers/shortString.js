@@ -1,4 +1,5 @@
 export const shortString = (str, leng, extra) => {
   const a = extra ?? '';
-  return str ? (str.length >= leng ? str.slice(0, leng) + `...${a}` : str) : str;
+  const extension = /[.]/.exec(str) ? /[^.]+$/.exec(str) : '';
+  return str ? (str.length >= leng ? str.slice(0, leng) + `...${extension}` : str) : str;
 };
