@@ -81,7 +81,7 @@ export default function DefineAudience({ selectedAudience, initialData, onAdd = 
 
   const handleInputFile = (value) => {
     const file = value[0];
-    if (file.name.includes('xlsx') || file.name.includes('csv')) {
+    if (file.name.includes('xlsx') || file.name.includes('csv') || file.name.includes('xls')) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target.result.split('/')[0];
