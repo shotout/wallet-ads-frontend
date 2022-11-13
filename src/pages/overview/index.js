@@ -108,11 +108,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     const airdrops = [];
     const linkClicks = [];
     const res = await getAudienceByCampaignID(id);
-    const res2 = await getCampaignDetail(ctx, id);
+
     setCapmapaignID(id);
     setCapmapaignName(name);
     setListAudience({ ...listAudience, content: res.data.audiences });
-    console.log(res2);
 
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
@@ -682,7 +681,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 ctnBtnStyle={styles.btnExportToExcel}
                 eventName={'Export to Excel'}
                 onClick={() => {
-                  exportAudienceByCampaignID(listAudience.content?.campaign?.id);
+                  exportAudienceByCampaignID(campaignID);
                 }}
                 label={'Export to Excel'}
                 disabled={content.data.length === 0}
