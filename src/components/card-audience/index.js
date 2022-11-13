@@ -285,7 +285,7 @@ export default function CardAudience({
         'application/vnd.ms-excel': '.xls',
         'file/vnd.ms-excel': '.xls',
       };
-      console.log(shortString(data.audienceFile.name, 12, fileTypeData[data.audienceFile?.type] ?? ''));
+      console.log(data.audienceFile);
       return (
         <div className={styles.ctnDescAudience}>
           <div className={styles.ctnDefaultContentWrapper}>
@@ -303,9 +303,10 @@ export default function CardAudience({
             <Typography ariant="span" textAlign={'center'}>
               Your audience:
             </Typography>
+            {/* {data.audienceFile.originalName} */}
             {data.audienceFile && (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
-                {shortString(data.audienceFile.name, 12, fileTypeData[data.audienceFile?.type] ?? '')}
+                {shortString(data.audienceFile.original_name, 18, fileTypeData[data.audienceFile?.type] ?? '')}
               </Typography>
             )}
           </div>

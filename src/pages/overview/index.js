@@ -200,8 +200,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <div className={styles.imageProver}>
                   <img src={dataPopover?.img} style={{ width: 180 }} />
                 </div>
-                <div style={{ maxWidth: 180 }}>
-                  <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
+                <div className={styles.adtextContainer}>
+                  <Typography variant="body1" color={'black'} textAlign={'justify'}>
                     {dataPopover?.desc}
                   </Typography>
                 </div>
