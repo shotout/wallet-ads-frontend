@@ -198,11 +198,13 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             {type === 'banner_image' && (
               <>
                 <div className={styles.imageProver}>
-                  <img src={dataPopover?.img} />
+                  <img src={dataPopover?.img} style={{ width: 160 }} />
                 </div>
-                <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
-                  {dataPopover?.desc}
-                </Typography>
+                <div style={{ maxWidth: 160 }}>
+                  <Typography variant="body1" color={'black'} textAlign={'justify'} marginTop={1.5}>
+                    {dataPopover?.desc}
+                  </Typography>
+                </div>
               </>
             )}
             {type === 'logo_text_banner' && (

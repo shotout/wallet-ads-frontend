@@ -29,8 +29,8 @@ export default makeStyles((theme) => ({
       width: '100%',
       height: '100%',
       borderRadius: 10,
-      //   objectFit: 'contain',
-      //   objectPosition: 'center',
+      objectFit: 'cover',
+      objectPosition: 'center',
     },
   },
   audienceContainer: {
