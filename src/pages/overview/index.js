@@ -325,14 +325,14 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     } else if (status === 2) {
       return (
         <div className={styles.statusContainer}>
-          <div style={{ width: 6, height: 6, backgroundColor: '#FFAC00', borderRadius: 10, marginRight: 10 }} />
+          <div style={{ width: 6, height: 6, backgroundColor: '#90B272', borderRadius: 10, marginRight: 10 }} />
           <Typography>Running</Typography>
         </div>
       );
     } else {
       return (
         <div className={styles.statusContainer}>
-          <div style={{ width: 6, height: 6, backgroundColor: '#FFAC00', borderRadius: 10, marginRight: 10 }} />
+          <div style={{ width: 6, height: 6, backgroundColor: '#7089FF', borderRadius: 10, marginRight: 10 }} />
           <Typography>Finished</Typography>
         </div>
       );
@@ -994,8 +994,8 @@ export async function getServerSideProps(context) {
   const res = await getListCampaignItem(context, 1);
   const listCampaign = await getListCampaign(context);
 
-  const pagination = res.data.links.shift();
-  const pagination2 = res.data.links.pop();
+  const pagination = res.data?.links.shift();
+  const pagination2 = res.data?.links.pop();
 
   if (!userData) {
     return {
