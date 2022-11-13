@@ -165,7 +165,7 @@ export default makeStyles((theme) => ({
   },
   ctnRowAudience: {
     display: 'flex',
-    alignItems: 'stretch',
+    width: '96%',
     flexWrap: 'wrap',
     padding: '-50px 0px 5px 0px',
   },

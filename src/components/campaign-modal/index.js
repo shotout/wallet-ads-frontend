@@ -157,24 +157,26 @@ export default function CampaignModal({ isVisible, data, close }) {
 
   function renderCardAudience() {
     return (
-      <div className={styles.ctnRowAudience}>
+      <div>
         {sectionTitle('Audiences:')}
-        <Grid container spacing={2}>
-          {audienceForm?.map((item, index) => (
-            <Grid
-              item
-              md={4}
-              lg={3}
-              sm={6}
-              xs={6}
-              className={styles.ctnSectionAd}
-              key={item.audienceId}
-              id={`card-audience-${index}`}
-            >
-              <CardAudience key={index.toString()} data={item} readOnly={true} label={item.name} />
-            </Grid>
-          ))}
-        </Grid>
+        <div className={styles.ctnRowAudience}>
+          <Grid container spacing={2}>
+            {audienceForm?.map((item, index) => (
+              <Grid
+                item
+                md={4}
+                lg={3}
+                sm={6}
+                xs={6}
+                className={styles.ctnSectionAd}
+                key={item.audienceId}
+                id={`card-audience-${index}`}
+              >
+                <CardAudience key={index.toString()} data={item} readOnly={true} label={item.name} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       </div>
     );
   }
