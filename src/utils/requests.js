@@ -1,3 +1,4 @@
+import moment from 'moment';
 import axios from './axios';
 
 export const verifyAccount = (token, ctx) =>
@@ -155,16 +156,16 @@ export const getAudienceByCampaignID = (id) =>
     method: 'GET',
   });
 
-export const exportAudienceByCampaignID = (id) =>
+export const exportAudienceByCampaignID = (data) =>
   axios({
-    url: `/dashboard/export-audiences/${id}`,
+    url: `/dashboard/export-audiences/${data.campaignID}`,
     method: 'GET',
     responseType: 'blob',
   }).then((res) => {
     const url = URL.createObjectURL(new Blob([res]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'campaign.xls');
+    link.setAttribute('download', `${moment(new Date()).format('YYYYMMDD')}_WALLETADS_${data.campaignName}.xls`);
     document.body.appendChild(link);
     link.click();
   });

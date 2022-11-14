@@ -31,6 +31,7 @@ Overview.getLayout = function getLayout(page) {
 };
 
 const url = process.env.BACKEND_URL;
+const API = process.env.API_URL;
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.svg';
 const button = '/assets/Button.svg';
@@ -115,8 +116,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
-      airdrops.push(element.ads.count_airdrop);
-      linkClicks.push(element.ads.count_click);
+      airdrops.push(element.count_airdrop);
+      linkClicks.push(element.count_click);
     });
     const totalAirDrop = sumArr(res.data.audiences, 'count_airdrop', true);
     const totalClick = sumArr(res.data.audiences, 'count_click', true);
@@ -152,7 +153,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       arr.length !== 0 &&
       arr
-        .map((item) => (nested ? item?.ads[val] : item[val]))
+        .map((item) => (nested ? item?.[val] : item[val]))
         .reduce((a, b) => {
           return a + b;
         })
@@ -681,7 +682,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 ctnBtnStyle={styles.btnExportToExcel}
                 eventName={'Export to Excel'}
                 onClick={() => {
-                  exportAudienceByCampaignID(campaignID);
+                  exportAudienceByCampaignID({ campaignID, campaignName });
                 }}
                 label={'Export to Excel'}
                 disabled={content.data.length === 0}
@@ -822,19 +823,19 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 </div>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_airdrop) ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
               </Grid>
               <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_impression) ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.count_impression) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_view) ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.count_view) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_click) ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.count_click) ?? '-'}</Typography>
               </Grid>
               <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.ads?.count_mint) ?? '-'}</Typography>
+                <Typography variant="body1">{normalizeCurrency(item?.count_mint) ?? '-'}</Typography>
               </Grid>
             </Fragment>
           ))}
@@ -990,8 +991,8 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const res = await getListCampaignItem(context, 1);
-  const listCampaign = await getListCampaign(context);
+  const res = await getListCampaignItem(context, 1); //content.data => filter  content.link // diabtasin 5
+  const listCampaign = await getListCampaign(context); // ishow id campaign name
 
   const pagination = res.data?.links.shift();
   const pagination2 = res.data?.links.pop();
