@@ -530,6 +530,19 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={1.5} sm={12} display="flex">
+                <div 
+                  onMouseEnter={(event) => {
+                    console.log(item.name.length > 10)
+                    if(Number(item.name.length) >= 10){
+                      handleHoverOpen(event, 'logo_text_banner', item.name) 
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if(Number(item.name.length) >= 10){
+                    handleHoverClose()
+                    }}
+                  }
+                >
                 <Typography
                   variant="body1"
                   style={{ cursor: 'pointer', textDecoration: 'underline', whiteSpace: 'nowrap' }}
@@ -538,6 +551,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 >
                   {shortString(item.name, 10)}
                 </Typography>
+                {renderPopover('logo_text_banner', '')}
+                </div>
               </Grid>
               <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{moment(new Date(item.start_date)).format('DD.MM.YYYY')}</Typography>
