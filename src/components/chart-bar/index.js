@@ -46,6 +46,9 @@ export default function Index({ labels, datas, title }) {
           // footer: hover,
         },
       },
+      options: {
+        //locale: 'en-EN' // Uncomment this line for "wrong" options
+      }
     },
   };
 

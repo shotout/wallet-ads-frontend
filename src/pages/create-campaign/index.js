@@ -55,6 +55,11 @@ const questionObj = {
   errorAd: 'Another ad is already selected to be shown to this audience.',
 };
 
+// const titleObj = {
+//   profile: '',
+//   adCreation: '',
+// }
+
 // ----------------------------------------------------------------------
 
 AddCampaign.getLayout = function getLayout(page) {
@@ -1643,6 +1648,16 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderInputInformation(text) {
+    return (
+      <div className={styles.inputCollectionCard}>
+      <div className={styles.ctnInputCollectionPageWrapper}>
+        {text}
+      </div>
+      </div>
+    );
+  }
+
   function renderCardAdCreation(content, index) {
     return (
       <div
@@ -1691,8 +1706,6 @@ export default function AddCampaign({ content, params }) {
                       }}
                     >
                       {renderPopoverError('Audience', questionObj.errorAd)}
-                    
-
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
@@ -1781,10 +1794,11 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
-            Collection page creation
+            Profile & Collection page creation
           </Typography>
           <div className={styles.rowTitle} />
         </div>
+        {/* {renderInputInformation("test")} */}
         <div className={styles.inputCollectionCard}>{renderInputCollection()}</div>
         {renderAdCreation()}
         {renderCreateAnotherAd()}
@@ -1827,9 +1841,9 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnWrapper}>
           <HeaderUser />
           {renderCampaignName()}
-          {renderAvailability()}
           {renderDefineAudience()}
           {renderCollectionPage()}
+          {renderAvailability()}
           {renderSetupAirdrop()}
         </div>
         {/* <AuthFooter /> */}

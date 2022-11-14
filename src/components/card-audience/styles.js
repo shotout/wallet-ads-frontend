@@ -126,7 +126,8 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: -50,
+    bottom: -70,
+    zIndex:99,
     '& > img': {
       width: 60,
       height: 30,
