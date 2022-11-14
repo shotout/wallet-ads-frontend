@@ -754,7 +754,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           </div>
         </Grid>
         <Grid item md={1.5} sm={12} display="flex">
-          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_click')}>
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_click')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Link clicks
             </Typography>
@@ -764,7 +764,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           </div>
         </Grid>
         <Grid item md={1} sm={12} display="flex">
-          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
+          <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_mint')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Mints
             </Typography>
@@ -816,8 +816,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
                   {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
-                  <Typography variant="body1" marginRight={1}>
-                    {item?.ads?.name}
+                  <Typography variant="body1" marginRight={1} style={{whiteSpace: 'nowrap'}}>
+                    {shortString(item?.ads?.name, 10, '')}
                   </Typography>
                   <img src={expandIcon} />
                 </div>
