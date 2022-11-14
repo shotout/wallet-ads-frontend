@@ -502,6 +502,7 @@ const useStyles = makeStyles((theme) => ({
   ctnPopoverError: {
     '& > .MuiPaper-root': {
       background: '#FFD8DF',
+      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
     },
   },
   ctnInputColumn: {

@@ -857,6 +857,7 @@ export default function AddCampaign({ content, params }) {
     setTimeout(() => {
       handleAlertErrorClose();
     }, 3000);
+  
     return (
       <Popover
         id={type}
