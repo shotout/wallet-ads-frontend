@@ -1673,11 +1673,12 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        !isActive && item.optimized && checkIsAudienceAdsSelected(item.audienceId)
+                        !isActive &&  checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
-                          : styles.ctnAudienceItem
+                          : !item.optimized ? styles.ctnDisable : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
+                        if (!item.optimized) return
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
@@ -1690,6 +1691,8 @@ export default function AddCampaign({ content, params }) {
                       }}
                     >
                       {renderPopoverError('Audience', questionObj.errorAd)}
+                    
+
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
