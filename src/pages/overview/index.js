@@ -815,7 +815,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   <div>
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
-                  <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} />
+                  {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
                   <Typography variant="body1" marginRight={1}>
                     {item?.ads?.name}
                   </Typography>
