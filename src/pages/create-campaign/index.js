@@ -601,16 +601,12 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAvailability = () => {
-    // if (errorBox.errorAds) {
-    setErrorBox({
-      ...errorBox,
-      errorBoxAvailability: false,
-    });
-    // }
-    // setFormValues({
-    //   ...formValues,
-    //   campaign_end_day: 7,
-    // });
+    if (errorBox.errorAds) {
+      setErrorBox({
+        ...errorBox,
+        errorBoxAvailability: false,
+      });
+    }
   };
 
   const deactivateErrorBoxAds = () => {
@@ -667,9 +663,11 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangeDefaultValue = (value, stateName) => {
+    console.log(stateName, value)
     setFormValues({
       ...formValues,
       [stateName]: value,
+      campaign_end_day: 7
     });
   };
 
@@ -1104,9 +1102,7 @@ export default function AddCampaign({ content, params }) {
                       <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
                     </div>
                     <div
-                      className={`${styles.midWrapper} ${
-                        formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}
-                      }`}
+                      className={`${styles.midWrapper}`}
                     >
                       <span>After:</span>
                       <input
