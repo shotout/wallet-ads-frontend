@@ -8,7 +8,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Grid, Popover, Typography, Box } from '@mui/material';
+import { Grid, Popover, Typography, Box, Divider } from '@mui/material';
 import {
   getAudienceByCampaignID,
   getListCampaign,
@@ -194,71 +194,85 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         className={type === 'banner_image' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
         <Box sx={{ p: 1, maxWidth: 260 }}>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            {type === 'banner_image' && (
-              <div>
-                <div className={styles.imageProver}>
-                  <img src={dataPopover?.img} style={{ width: 250 }} />
-                </div>
-                <div className={styles.adtextContainer}>
-                  <Typography variant="body2" color={'black'} textAlign={'justify'}>
-                    {shortString(dataPopover?.desc, 180, '')}
-                  </Typography>
-                </div>
+          {type === 'banner_image' && (
+            <div>
+              <div className={styles.adtextContainer}>
+                <Typography
+                  className={styles.titleOnModal}
+                  variant="body2"
+                  color={'black'}
+                  textAlign={'justify'}
+                  fontWeight={800}
+                  fontSize={14}
+                >
+                  {/* {dataPopover?.title} */}
+                  There are many variations of passages of Lorem Ipsum available, but the majority have suffered
+                  alteration in some form, by injected humour, or randomised words which don't look even slightly
+                  believable. If you are going to use a passage of Lorem Ipsum,
+                </Typography>
               </div>
-            )}
-            {type === 'logo_text_banner' && (
-              <>
-                <Typography variant="body1" color={'#fff'} textAlign={'center'}>
-                  {typeof dataPopover === 'object' ? '' : dataPopover}
+              <Divider />
+              <div className={styles.imageProver}>
+                <img src={dataPopover?.img} style={{ width: 250 }} />
+              </div>
+              <div className={styles.adtextContainer}>
+                <Typography variant="body2" color={'black'} textAlign={'justify'}>
+                  {shortString(dataPopover?.desc, 180, '')}
                 </Typography>
-              </>
-            )}
-            {type === 'audience' && (
-              <>
-                <Typography variant="body1" color={'#fff'} textAlign={'center'}>
-                  {!dataPopover && (
-                    <>
-                      <Typography
-                        variant="body1"
-                        className={styles.desctTitle}
-                        fontWeight="800"
-                        color="#fff"
-                        textAlign={'center'}
-                      >
-                        <b>+</b>
-                        Optimized Targeting:
-                      </Typography>
-                      <Typography variant="span" textAlign={'center'}>
-                        The audience consists of a broad mix of users, optimized by our algorithm.
-                      </Typography>
-                    </>
-                  )}
-                  {dataPopover && (
-                    <>
-                      <Typography
-                        variant="body1"
-                        className={styles.desctTitle}
-                        fontWeight="800"
-                        color="#fff"
-                        textAlign={'center'}
-                        marginBottom={2}
-                      >
-                        <b>+</b>
-                        Your own audience:
-                      </Typography>
-                      <Typography ariant="span" textAlign={'center'}>
-                        Your audience:
-                      </Typography>
-                      <Typography ariant="span" textAlign={'center'}>
-                        {shortString(dataPopover.original_name, 18, '')}
-                      </Typography>
-                    </>
-                  )}
-                </Typography>
-              </>
-            )}
-          </Typography>
+              </div>
+            </div>
+          )}
+          {type === 'logo_text_banner' && (
+            <>
+              <Typography variant="body1" color={'#fff'} textAlign={'center'}>
+                {typeof dataPopover === 'object' ? '' : dataPopover}
+              </Typography>
+            </>
+          )}
+          {type === 'audience' && (
+            <>
+              <Typography variant="body1" color={'#fff'} textAlign={'center'}>
+                {!dataPopover && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      className={styles.desctTitle}
+                      fontWeight="800"
+                      color="#fff"
+                      textAlign={'center'}
+                    >
+                      <b>+</b>
+                      Optimized Targeting:
+                    </Typography>
+                    <Typography variant="span" textAlign={'center'}>
+                      The audience consists of a broad mix of users, optimized by our algorithm.
+                    </Typography>
+                  </>
+                )}
+                {dataPopover && (
+                  <>
+                    <Typography
+                      variant="body1"
+                      className={styles.desctTitle}
+                      fontWeight="800"
+                      color="#fff"
+                      textAlign={'center'}
+                      marginBottom={2}
+                    >
+                      <b>+</b>
+                      Your own audience:
+                    </Typography>
+                    <Typography ariant="span" textAlign={'center'}>
+                      Your audience:
+                    </Typography>
+                    <Typography ariant="span" textAlign={'center'}>
+                      {shortString(dataPopover.original_name, 18, '')}
+                    </Typography>
+                  </>
+                )}
+              </Typography>
+            </>
+          )}
         </Box>
       </Popover>
     );
@@ -820,6 +834,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     const data = {
                       img: `${url + item?.ads?.image.url}`,
                       desc: item.ads?.description,
+                      title: item?.ads?.name,
                     };
                     // console.log(`${url + item?.ads?.image.url}`);
                     handleHoverOpen(event, 'banner_image', data);

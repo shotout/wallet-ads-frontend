@@ -102,13 +102,14 @@ export default makeStyles((theme) => ({
   ctnPopoverBlack: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnPopoverWhite: {
     '& > .MuiPaper-root': {
+      borderRadius: 0,
       background: '#fff',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnSelect: {
@@ -174,6 +175,7 @@ export default makeStyles((theme) => ({
   imageProver: {
     padding: 0,
     marginBottom: 10,
+    marginTop: 10,
     '& > img': {
       width: 150,
       aspectRatio: 1,
@@ -193,19 +195,19 @@ export default makeStyles((theme) => ({
     overflowY: 'hidden',
     paddingLeft: 2,
     paddingRight: 2,
-    marginBottom: 15,
-    // '&::-webkit-scrollbar': {
-    //   width: '0.9em',
-    //   backgroundColor: 'rgba(217, 217, 217, 0.5)',
-    //   borderRadius: 10,
-    // },
-    // '&::-webkit-scrollbar-track': {
-    //   boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-    //   webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
-    // },
-    // '&::-webkit-scrollbar-thumb': {
-    //   backgroundColor: 'rgba(128, 128, 128, 0.7)',
-    //   borderRadius: 10,
-    // },
+    marginBottom: 3,
+  },
+  titleOnModal: {
+    marginTop: 5,
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+    // Addition lines for 2 line or multiline ellipsis
+    display: '-webkit-box !important',
+    whiteSpace: 'normal',
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: 'vertical',
+
+    // &::-webkit-line-clamp: vertical;
+    // white-space: normal;
   },
 }));

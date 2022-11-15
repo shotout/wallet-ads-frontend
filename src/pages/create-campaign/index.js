@@ -601,12 +601,16 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAvailability = () => {
-    if (errorBox.errorAds) {
-      setErrorBox({
-        ...errorBox,
-        errorBoxAvailability: false,
-      });
-    }
+    // if (errorBox.errorAds) {
+    setErrorBox({
+      ...errorBox,
+      errorBoxAvailability: false,
+    });
+    // }
+    // setFormValues({
+    //   ...formValues,
+    //   campaign_end_day: 7,
+    // });
   };
 
   const deactivateErrorBoxAds = () => {
@@ -862,7 +866,7 @@ export default function AddCampaign({ content, params }) {
     setTimeout(() => {
       handleAlertErrorClose();
     }, 3000);
-  
+
     return (
       <Popover
         id={type}
@@ -1651,9 +1655,7 @@ export default function AddCampaign({ content, params }) {
   function renderInputInformation(text) {
     return (
       <div className={styles.inputCollectionCard}>
-      <div className={styles.ctnInputCollectionPageWrapper}>
-        {text}
-      </div>
+        <div className={styles.ctnInputCollectionPageWrapper}>{text}</div>
       </div>
     );
   }
@@ -1688,12 +1690,14 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        !isActive &&  checkIsAudienceAdsSelected(item.audienceId)
+                        !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
-                          : !item.optimized ? styles.ctnDisable : styles.ctnAudienceItem
+                          : !item.optimized
+                          ? styles.ctnDisable
+                          : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
-                        if (!item.optimized) return
+                        if (!item.optimized) return;
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
