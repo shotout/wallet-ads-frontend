@@ -1,12 +1,15 @@
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-useless-path-segments */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState, Fragment } from 'react';
 import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import useStyles from './styles';
-import { Grid, Popover, Typography, Box, Tooltip } from '@mui/material';
+import { Grid, Popover, Typography, Box } from '@mui/material';
 import {
-  getCampaignItem,
   getAudienceByCampaignID,
   getListCampaign,
   getCampaignDetail,
@@ -31,7 +34,6 @@ Overview.getLayout = function getLayout(page) {
 };
 
 const url = process.env.BACKEND_URL;
-const API = process.env.API_URL;
 const iconShort = '/assets/short_icon.png';
 const banner = '/assets/Banner.svg';
 const button = '/assets/Button.svg';
@@ -42,7 +44,6 @@ const prevActiveIcon = '/icons/ic_prev_active.svg';
 const askIcon = '/assets/ask_icon.png';
 const timerIcon = '/icons/ic_timer.svg';
 const expandIcon = '/icons/ic_expand.svg';
-const expandIconWhite = '/icons/ic_expand_white.svg';
 
 const impressionText =
   'These results may not include all Impression data. Statistical modeling may be used to provide more complete measurement when Impression data may be missing or partial.';
@@ -51,8 +52,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const styles = useStyles();
   const router = useRouter();
   const [hover, setHover] = useState(null);
-  const [hoverImage, setHoverImage] = useState(null);
-  const [activePopoverImage, setActivePopoverImage] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
