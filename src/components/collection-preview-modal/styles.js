@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '28%',
     position: 'relative',
     width: '100%',
+    height: 50,
   },
   bannerItem: {
     position: 'absolute',
@@ -61,7 +62,18 @@ const useStyles = makeStyles((theme) => ({
   ctnDesc: {
     paddingTop: 40,
     marginLeft: 20,
-    marginBottom: 60,
+    marginBottom: 20,
+  },
+  titleWithSocial: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  ctnSocial: {
+    marginRight: 15,
+    alignItems: 'center',
+    '& > img': {
+      width: 20,
+    },
   },
 }));
 

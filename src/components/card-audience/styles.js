@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   ctnAudience: {
     position: 'relative',
-    height: '97%',
+    // height: '97%',
   },
   cardAudience: {
     backgroundColor: '#fff',
@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     height: '100%',
     marginLeft: 20,
+    marginRight: 20,
     padding: 20,
     borderRadius: 20,
     marginBottom: 40,
@@ -73,6 +74,7 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     marginTop: 20,
   },
+  ctnBorder: {},
   ctnPriceInput: {
     // width: '100%',
     border: '1px solid #122D46',
@@ -83,11 +85,12 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     position: 'relative',
     marginTop: 4,
+    paddingLeft: 30,
     '& > span': {
       textAlign: 'left',
       fontSize: '1.25rem',
       fontWeight: '700',
-      paddingLeft: 30,
+      // paddingLeft: 30,
       fontFamily: 'Public Sans,sans-serif',
     },
     '& > input': {
@@ -123,7 +126,8 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    bottom: -50,
+    bottom: -70,
+    zIndex:99,
     '& > img': {
       width: 60,
       height: 30,
@@ -171,6 +175,24 @@ export default makeStyles((theme) => ({
   inputPriceWrapper: {
     marginBottom: 6,
     width: '100%',
+  },
+  readOnlyInputPriceWrapper: {
+    border: '1px solid #808080',
+    marginBottom: 6,
+    borderRadius: 12,
+  },
+  readOnlyPriceInput: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    '& > span': {
+      textAlign: 'left',
+      fontSize: '1.25rem',
+      fontWeight: '700',
+      // paddingLeft: 30,
+      fontFamily: 'Public Sans,sans-serif',
+    },
   },
   ctnAudienceWrapper: {
     overflow: 'scroll',
@@ -230,6 +252,6 @@ export default makeStyles((theme) => ({
     width: 16,
     cursor: 'pointer',
     position: 'absolute',
-    right: 20
-  }
+    right: 20,
+  },
 }));

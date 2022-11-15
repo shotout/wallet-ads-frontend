@@ -1,3 +1,4 @@
+import moment from 'moment';
 import axios from './axios';
 
 export const verifyAccount = (token, ctx) =>
@@ -72,9 +73,16 @@ export const handleEditCampaign = (data, id) =>
     },
   });
 
-export const getCampaignItem = (ctx) =>
+export const getCampaignItem = (ctx, page) =>
   axios({
-    url: '/campaigns',
+    url: `/campaigns?page=${page}`,
+    method: 'GET',
+    ctx,
+  });
+
+export const getListCampaignItem = (ctx, page) =>
+  axios({
+    url: `/dashboard/campaigns?page=${page}`,
     method: 'GET',
     ctx,
   });
@@ -146,4 +154,18 @@ export const getAudienceByCampaignID = (id) =>
   axios({
     url: `/dashboard/audiences/${id}`,
     method: 'GET',
+  });
+
+export const exportAudienceByCampaignID = (data) =>
+  axios({
+    url: `/dashboard/export-audiences/${data.campaignID}`,
+    method: 'GET',
+    responseType: 'blob',
+  }).then((res) => {
+    const url = URL.createObjectURL(new Blob([res]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${moment(new Date()).format('YYYYMMDD')}_WALLETADS_${data.campaignName}.xls`);
+    document.body.appendChild(link);
+    link.click();
   });

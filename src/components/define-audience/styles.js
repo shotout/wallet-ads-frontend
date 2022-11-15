@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
     padding: 20,
     borderRadius: 20,
     position: 'relative',
+    marginTop: -20,
   },
   ctnMainContent: {
     display: 'flex',

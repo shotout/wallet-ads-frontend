@@ -52,7 +52,13 @@ const questionObj = {
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
+  errorAd: 'Another ad is already selected to be shown to this audience.',
 };
+
+// const titleObj = {
+//   profile: '',
+//   adCreation: '',
+// }
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +88,9 @@ export default function AddCampaign({ content, params }) {
   const styles = useStyles();
   // const { themeStretch } = useSettings();
   const [hover, setHover] = useState(null);
+  const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
+  const [activeErrorAlert, setActiveErrorAlert] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
@@ -101,8 +109,8 @@ export default function AddCampaign({ content, params }) {
   const [selectedAudience, setSelectedAudience] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(null);
   const [showModalSuccess, setModalSuccess] = useState(false);
-
   const [formResp, setFormResp] = useState(null);
+  const [emptyAudience, setEmptyAudience] = useState(true);
   const [audienceForm, setAudienceForm] = useState([
     {
       audienceId: makeId(),
@@ -326,6 +334,8 @@ export default function AddCampaign({ content, params }) {
       datas = formResp;
     }
 
+    let i = 0;
+
     let res = null;
     if (params.id) {
       res = await handleEditCampaign(datas, params.id);
@@ -341,16 +351,17 @@ export default function AddCampaign({ content, params }) {
       ...showCreditCard,
       isPaymentLoading: true,
     });
-    const campaign = await createCampaignId();
-    const session = await createSession({
-      promo: params,
-      campaign_id: campaign.data.id,
-      campaign_name: campaign.data.name,
-      total_budget: getTotalBudget(audienceForm) * 100,
-    });
-    trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
-    setShowCreditCard({ ...showCreditCard });
-    window.location.href = session?.url;
+
+    // const campaign = await createCampaignId();
+    // const session = await createSession({
+    //   promo: params,
+    //   campaign_id: campaign.data.id,
+    //   campaign_name: campaign.data.name,
+    //   total_budget: getTotalBudget(audienceForm) * 100,
+    // });
+    // trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+    // setShowCreditCard({ ...showCreditCard });
+    // window.location.href = session?.url;
   };
 
   const getAudienceArr = () => {
@@ -612,8 +623,17 @@ export default function AddCampaign({ content, params }) {
     setActivePopover(popoverName);
   };
 
+  const handleAlertErrorOpen = (event, popoverName) => {
+    setErrorAlert(event.currentTarget);
+    setActiveErrorAlert(popoverName);
+  };
+
   const handleHoverClose = () => {
     setHover(null);
+  };
+
+  const handleAlertErrorClose = () => {
+    setErrorAlert(null);
   };
 
   const checkIsAudienceAdsSelected = (index) => {
@@ -681,6 +701,7 @@ export default function AddCampaign({ content, params }) {
     });
     setAudienceForm(restructureData);
     setSelectedAudience(null);
+    setEmptyAudience(false);
   };
 
   const handleAddAudience = () => {
@@ -830,6 +851,48 @@ export default function AddCampaign({ content, params }) {
       >
         <Box sx={{ p: 2, maxWidth: 260 }}>
           <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+            {content || ''}
+          </Typography>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function renderPopoverError(type, content) {
+    setTimeout(() => {
+      handleAlertErrorClose();
+    }, 3000);
+  
+    return (
+      <Popover
+        id={type}
+        open={Boolean(errAlert) && activeErrorAlert === type}
+        anchorEl={errAlert}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        onClose={handleAlertErrorClose}
+        disableRestoreFocus
+        sx={{
+          pointerEvents: 'none',
+        }}
+        className={styles.ctnPopoverError}
+      >
+        <Box
+          sx={{
+            borderRadius: 1,
+            padding: 1,
+            bottom: 150,
+            maxWidth: 250,
+            backgroundColor: '#FFD8DF',
+          }}
+        >
+          <Typography variant="body2" sx={{ color: '#ad4061' }} textAlign="justify">
             {content || ''}
           </Typography>
         </Box>
@@ -1585,6 +1648,16 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderInputInformation(text) {
+    return (
+      <div className={styles.inputCollectionCard}>
+      <div className={styles.ctnInputCollectionPageWrapper}>
+        {text}
+      </div>
+      </div>
+    );
+  }
+
   function renderCardAdCreation(content, index) {
     return (
       <div
@@ -1615,20 +1688,24 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        item.optimized === false || checkIsAudienceAdsSelected(!item.audienceId)
+                        !isActive &&  checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
-                          : {}
+                          : !item.optimized ? styles.ctnDisable : styles.ctnAudienceItem
                       }`}
-                      onClick={() => {
+                      onClick={(event) => {
+                        if (!item.optimized) return
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
                           deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
+                        } else {
+                          !emptyAudience && handleAlertErrorOpen(event, 'Audience');
                         }
                       }}
                     >
+                      {renderPopoverError('Audience', questionObj.errorAd)}
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
@@ -1717,10 +1794,11 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
-            Collection page creation
+            Profile & Collection page creation
           </Typography>
           <div className={styles.rowTitle} />
         </div>
+        {/* {renderInputInformation("test")} */}
         <div className={styles.inputCollectionCard}>{renderInputCollection()}</div>
         {renderAdCreation()}
         {renderCreateAnotherAd()}
@@ -1763,9 +1841,9 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnWrapper}>
           <HeaderUser />
           {renderCampaignName()}
-          {renderAvailability()}
           {renderDefineAudience()}
           {renderCollectionPage()}
+          {renderAvailability()}
           {renderSetupAirdrop()}
         </div>
         {/* <AuthFooter /> */}

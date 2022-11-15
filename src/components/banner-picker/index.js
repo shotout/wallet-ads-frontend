@@ -2,13 +2,29 @@ import { Typography } from '@mui/material';
 import React from 'react';
 import useStyles from './styles';
 import { useDropzone } from 'react-dropzone';
+import { shortString } from '../../helpers/shortString';
 
 const whiteCameraIcon = '/assets/camera_icon.png';
 const deleteIcon = '/assets/delete_icon.png';
 const editIcon = '/assets/edit_icon.png';
 const fileIcon = '/assets/file_red.png';
 
-export default function BannerPicker({ label, file, typeScreen, callbackError, onDelete, acceptAllFile, imageProps, ...other }) {
+export default function BannerPicker({
+  label,
+  file,
+  typeScreen,
+  callbackError,
+  onDelete,
+  acceptAllFile,
+  imageProps,
+  ...other
+}) {
+  const imgFormat = {
+    'image/png': 'png',
+    'image/jpeg': 'jpeg',
+    'image/jpg': 'jpg',
+  };
+
   const handleReject = (params) => {
     if (typeof other.onDrop === 'function') {
       if (other.maxFileSize) {
@@ -68,14 +84,24 @@ export default function BannerPicker({ label, file, typeScreen, callbackError, o
             src={file === null ? null : typeof file === 'string' ? file : file.preview || null}
             alt="logo"
           />
-          <div className={styles.ctnDesc}>{<Typography variant="body1" fontSize={18} fontWeight={600}>{file.name ? file.name : imageProps?.name}</Typography>}</div>
+          <div className={styles.ctnDesc}>
+            {
+              <Typography variant="body1" fontSize={18} fontWeight={600}>
+                {file.name
+                  ? shortString(file.name, 15, imgFormat[file?.type] ?? '')
+                  : shortString(imageProps?.name, 15, imgFormat[file?.type] ?? '')}
+              </Typography>
+            }
+          </div>
         </div>
       );
     }
     return (
       <div className={styles.leftRow}>
         <img className={styles.logoFile} src={fileIcon} alt="logo" />
-        <div className={styles.ctnDesc}>{file.name && <Typography variant="body1">{file.name}</Typography>}</div>
+        <div className={styles.ctnDesc}>
+          {file.name && <Typography variant="body1">{shortString(file.name, 15)}</Typography>}
+        </div>
       </div>
     );
   }

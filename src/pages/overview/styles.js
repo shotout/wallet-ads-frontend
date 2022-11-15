@@ -44,6 +44,7 @@ export default makeStyles((theme) => ({
     background: '#fff',
     padding: 20,
     borderRadius: 20,
+
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
   },
   ctnTitle: {
@@ -81,11 +82,14 @@ export default makeStyles((theme) => ({
   },
   ctnIconShort: {
     '& > img': {
-      width: 20,
-      height: 20,
+      width: 15,
+      height: 15,
       objectFit: 'contain',
       marginLeft: 4,
     },
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     cursor: 'pointer',
   },
   txtCampaignName: {
@@ -95,9 +99,16 @@ export default makeStyles((theme) => ({
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 1,
   },
-  ctnPopover: {
+  ctnPopoverBlack: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
+      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+    },
+  },
+  ctnPopoverWhite: {
+    '& > .MuiPaper-root': {
+      background: '#fff',
+      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
     },
   },
   ctnSelect: {
@@ -111,10 +122,11 @@ export default makeStyles((theme) => ({
   bannerContainer: {
     width: '100%',
     marginTop: -40,
-    marginBottom: -60,
-    '& > img': {
-      width: '100%',
-    },
+    marginBottom: -100,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
   },
   p20: {
     padding: 20,
@@ -123,7 +135,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    '& > img': {
+    '& > div > img': {
       width: 40,
       height: 40,
       marginRight: 20,
@@ -145,5 +157,55 @@ export default makeStyles((theme) => ({
     '& > div': {
       position: 'relative',
     },
+  },
+  paginationContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    '& > span': {
+      marginLeft: 20,
+      cursor: 'pointer',
+    },
+  },
+  isPaginateActive: {
+    fontWeight: 'bolder',
+    color: '#8C65CC',
+  },
+  imageProver: {
+    padding: 0,
+    marginBottom: 10,
+    '& > img': {
+      width: 150,
+      aspectRatio: 1,
+      borderRadius: 10,
+    },
+  },
+  ctnEmptyData: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    padding: 25,
+    // borderTop: '1px solid #BDBDBD',
+    marginTop: 20,
+  },
+  adtextContainer: {
+    overflowY: 'hidden',
+    paddingLeft: 2,
+    paddingRight: 2,
+    marginBottom: 15,
+    // '&::-webkit-scrollbar': {
+    //   width: '0.9em',
+    //   backgroundColor: 'rgba(217, 217, 217, 0.5)',
+    //   borderRadius: 10,
+    // },
+    // '&::-webkit-scrollbar-track': {
+    //   boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+    //   webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+    // },
+    // '&::-webkit-scrollbar-thumb': {
+    //   backgroundColor: 'rgba(128, 128, 128, 0.7)',
+    //   borderRadius: 10,
+    // },
   },
 }));

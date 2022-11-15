@@ -6,6 +6,7 @@ import { calculateAirdropPerUser, getAudiencePrice } from '../../helpers/calcula
 import SvgIconStyle from '../SvgIconStyle';
 import CurrencyInput from 'react-currency-input-field';
 import { normalizeCurrency } from '../../helpers/currency';
+import { shortString } from '../../helpers/shortString';
 
 const triangleIcon = '/assets/triangle.png';
 const pricetagIcon = '/assets/pricetag_icon.png';
@@ -26,6 +27,7 @@ export default function CardAudience({
   onAdd,
   onChangeBudget = () => {},
   onRemove,
+  readOnly,
 }) {
   const styles = useStyles();
   const inputEl = useRef(null);
@@ -125,7 +127,7 @@ export default function CardAudience({
   }
 
   function renderDetailTargeting() {
-    const detail = data.detailTargeting;
+    const detail = data.detailTargeting || data.detail_target;
     if (detail && (detail.transactionAmount || detail.tradingVolume || detail.availableCredit || detail.creatorName)) {
       return (
         <div className={styles.descFilledWrapper}>
@@ -160,37 +162,55 @@ export default function CardAudience({
   }
 
   function renderPrice() {
-    return (
-      <div className={styles.inputPriceWrapper}>
-        <Typography variant="body1" textAlign={'center'} fontWeight="bold">
-          Budget:
-        </Typography>
-        <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
-          <span>USD</span>
-          <CurrencyInput
-            name="currencyInput"
-            id="currencyInput"
-            value={data.budgetAds}
-            placeholder=""
-            ref={inputEl}
-            onChange={onChangeBudget}
-            // onBlur={handleOnBlur}
-            allowDecimals={false}
-            allowNegativeValue={false}
-            disableAbbreviations
-            fixedDecimalLength={0}
-            groupSeparator=","
-            decimalSeparator="."
-            maxLength={5}
-          />
-          <img
-            src={pencilIcon}
-            className={styles.ctnPencilIcon}
-            onClick={() => inputEl.current.focus()}
-          />
+    if (readOnly) {
+      return (
+        <div className={`${styles.readOnlyInputPriceWrapper}`}>
+          <Typography variant="body1" textAlign={'center'} fontWeight="bold">
+            Budget:
+          </Typography>
+          <div className={`${styles.readOnlyPriceInput}`}>
+            <Typography textAlign={'center'} fontWeight={800} fontSize={'1.5rem'} color={'#7089FF'}>
+              USD{normalizeCurrency(Number(data.budgetAds))}
+            </Typography>
+          </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={`${styles.inputPriceWrapper}`}>
+          <Typography variant="body1" textAlign={'center'} fontWeight="bold" color={'#7089FF'}>
+            Budget:
+          </Typography>
+          <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
+            <span>USD</span>
+            <CurrencyInput
+              name="currencyInput"
+              id="currencyInput"
+              value={data.budgetAds}
+              placeholder=""
+              ref={inputEl}
+              onChange={onChangeBudget}
+              // onBlur={handleOnBlur}
+              allowDecimals={false}
+              allowNegativeValue={false}
+              disableAbbreviations
+              fixedDecimalLength={0}
+              groupSeparator=","
+              decimalSeparator="."
+              maxLength={5}
+            />
+            <img
+              src={pencilIcon}
+              className={styles.ctnPencilIcon}
+              onClick={() => {
+                inputEl.current.focus();
+                inputEl.current.setSelectionRange(0, 0);
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
   }
 
   function renderContent() {
@@ -258,6 +278,14 @@ export default function CardAudience({
       );
     }
     if (data.selectedCategory === 'upload') {
+      const fileTypeData = {
+        'text/csv': 'csv',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'file/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.ms-excel': '.xls',
+        'file/vnd.ms-excel': '.xls',
+      };
+      console.log(data);
       return (
         <div className={styles.ctnDescAudience}>
           <div className={styles.ctnDefaultContentWrapper}>
@@ -267,19 +295,22 @@ export default function CardAudience({
               fontWeight="800"
               color="#000"
               textAlign={'center'}
+              marginBottom={2}
             >
               <b>+</b>
               Your own audience:
             </Typography>
-            {data.audienceFile && (
+            <Typography ariant="span" textAlign={'center'}>
+              Your audience:
+            </Typography>
+            {/* {data.audienceFile.originalName} */}
+            {data.audienceFile.original_name ? (
               <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
-                {`${
-                  data.audienceFile?.original_name
-                    ? data.audienceFile?.original_name.length > 24
-                      ? data.audienceFile?.original_name.slice(0, 24) + ` ...`
-                      : data.audienceFile?.original_name
-                    : data.audienceFile?.name
-                }`}
+                {shortString(data.audienceFile.original_name, 18, fileTypeData[data.audienceFile?.type] ?? '')}
+              </Typography>
+            ) : (
+              <Typography variant="span" textAlign={'center'} marginBottom={1.4}>
+                {shortString(data.audienceFile.name, 18, fileTypeData[data.audienceFile?.type] ?? '')}
               </Typography>
             )}
           </div>
@@ -359,11 +390,13 @@ export default function CardAudience({
             <img src={triangleIcon} alt="arrow" />
           </div>
         )}
-        {data.selectedCategory && (
-          <div className={styles.ctnEdit} onClick={handleClick}>
-            <Iconify icon={'bi:three-dots-vertical'} color="#000" width={'100%'} height={'100%'} />
-          </div>
-        )}
+        {readOnly
+          ? ''
+          : data.selectedCategory && (
+              <div className={styles.ctnEdit} onClick={handleClick}>
+                <Iconify icon={'bi:three-dots-vertical'} color="#000" width={'100%'} height={'100%'} />
+              </div>
+            )}
         {renderPopover()}
       </div>
     </div>
