@@ -1,11 +1,11 @@
-import nookies, { parseCookies, setCookie, destroyCookie } from "nookies";
+import nookies, { parseCookies, setCookie, destroyCookie } from 'nookies';
 
 export const setConsentCookie = (consentObj) => {
-    const options = {
-      maxAge: 200 * 24 * 60 * 60,
-      path: '/',
-    };
-    setCookie(null, 'siteSetting', JSON.stringify(consentObj), options);
+  const options = {
+    maxAge: 200 * 24 * 60 * 60,
+    path: '/',
+  };
+  setCookie(null, 'siteSetting', JSON.stringify(consentObj), options);
 };
 
 export const getConsentCookie = (ctx) => {
@@ -15,35 +15,34 @@ export const getConsentCookie = (ctx) => {
   } else {
     siteCookie = parseCookies({}).siteSetting;
   }
-  if(siteCookie){
+  if (siteCookie) {
     return JSON.parse(siteCookie);
   }
-  return null
+  return null;
 };
 
 export const setAuthorizationCookie = (authorizationObj) => {
-    const options = {
-      maxAge: 200 * 24 * 60 * 60,
-      path: '/',
-    };
-    setCookie(null, 'authorization', JSON.stringify(authorizationObj), options);
+  const options = {
+    maxAge: 200 * 24 * 60 * 60,
+    path: '/',
+  };
+  setCookie(null, 'authorization', JSON.stringify(authorizationObj), options);
 };
 
-
 export const getAuthorizationHeader = (ctx = null) => {
-    let authCookie = null;
-    if (ctx) {
-      authCookie = nookies.get(ctx).authorization;
-    } else {
-      authCookie = parseCookies({}).authorization;
-    }
-    if (authCookie) {
-      const final = JSON.parse(authCookie);
-      return {
-        Authorization: `Bearer ${final.token}`
-      };
-    }
-    return null
+  let authCookie = null;
+  if (ctx) {
+    authCookie = nookies.get(ctx).authorization;
+  } else {
+    authCookie = parseCookies({}).authorization;
+  }
+  if (authCookie) {
+    const final = JSON.parse(authCookie);
+    return {
+      Authorization: `Bearer ${final.token}`,
+    };
+  }
+  return null;
 };
 
 export const getUserData = (ctx) => {
@@ -53,13 +52,13 @@ export const getUserData = (ctx) => {
   } else {
     authCookie = parseCookies({}).authorization;
   }
-  if(authCookie){
+  if (authCookie) {
     return JSON.parse(authCookie);
   }
-  return null
+  return null;
 };
 
 export const handleLogout = () => {
   destroyCookie(null, 'authorization', { path: '/' });
-  window.location.href = '/'
-}
+  window.location.href = '/';
+};
