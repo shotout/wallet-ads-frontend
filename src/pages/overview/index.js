@@ -273,10 +273,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           listContent.sortItem
             ? number
               ? a[identifier] - b[identifier]
-              : a.toString().localeCompare(b.name)
+              : a.name.toString().localeCompare(b.name)
             : number
             ? b[identifier] - a[identifier]
-            : b.toString().localeCompare(a.name)
+            : b.name.toString().localeCompare(a.name)
         ),
       });
     } else {
@@ -286,10 +286,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           listAudience.sortItem
             ? number
               ? a[identifier] - b[identifier]
-              : a.toString().localeCompare(b.name)
+              : a.name.toString().localeCompare(b.name)
             : number
             ? b[identifier] - a[identifier]
-            : b.toString().localeCompare(a.name)
+            : b.name.toString().localeCompare(a.name)
         ),
       });
     }
@@ -530,28 +530,28 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={1.5} sm={12} display="flex">
-                <div 
+                <div
                   onMouseEnter={(event) => {
-                    console.log(item.name.length > 10)
-                    if(Number(item.name.length) >= 10){
-                      handleHoverOpen(event, 'logo_text_banner', item.name) 
+                    console.log(item.name.length > 10);
+                    if (Number(item.name.length) >= 10) {
+                      handleHoverOpen(event, 'logo_text_banner', item.name);
                     }
                   }}
                   onMouseLeave={() => {
-                    if(Number(item.name.length) >= 10){
-                    handleHoverClose()
-                    }}
-                  }
+                    if (Number(item.name.length) >= 10) {
+                      handleHoverClose();
+                    }
+                  }}
                 >
-                <Typography
-                  variant="body1"
-                  style={{ cursor: 'pointer', textDecoration: 'underline', whiteSpace: 'nowrap' }}
-                  onClick={() => openCampaignModal(item.id)}
-                  color={'#7089FF'}
-                >
-                  {shortString(item.name, 10)}
-                </Typography>
-                {renderPopover('logo_text_banner', '')}
+                  <Typography
+                    variant="body1"
+                    style={{ cursor: 'pointer', textDecoration: 'underline', whiteSpace: 'nowrap' }}
+                    onClick={() => openCampaignModal(item.id)}
+                    color={'#7089FF'}
+                  >
+                    {shortString(item.name, 10)}
+                  </Typography>
+                  {renderPopover('logo_text_banner', '')}
                 </div>
               </Grid>
               <Grid item md={1.5} sm={12} alignItems={'center'}>
@@ -831,7 +831,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
                   </div>
                   {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
-                  <Typography variant="body1" marginRight={1} style={{whiteSpace: 'nowrap'}}>
+                  <Typography variant="body1" marginRight={1} style={{ whiteSpace: 'nowrap' }}>
                     {shortString(item?.ads?.name, 10, '')}
                   </Typography>
                   <img src={expandIcon} />
