@@ -55,10 +55,10 @@ const questionObj = {
   errorAd: 'Another ad is already selected to be shown to this audience.',
 };
 
-// const titleObj = {
-//   profile: '',
-//   adCreation: '',
-// }
+const informationObj = {
+  profile: 'The Profile & Collection page is similar to the profile page of your social media accounts - but for WALLETADS it is campaign specific. To guarantee the best deliverability, each of your WALLETADS campaigns will get a unique Profile and Collection page name.',
+  adCreation: 'Create the ad that you would like the users to see. Our system will convert your assets into an NFT and distribute it into the the users’ wallets - optimized by our advanced targeting system.',
+}
 
 // ----------------------------------------------------------------------
 
@@ -81,6 +81,8 @@ const telegramIcon = '/assets/telegram.png';
 const mediumIcon = '/assets/medium.png';
 const websiteIcon = '/assets/website.png';
 const deleteIcon = '/assets/svg/delete.svg';
+const informationIcon = '/icons/ic_information.svg';
+
 
 const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
@@ -601,16 +603,12 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAvailability = () => {
-    // if (errorBox.errorAds) {
-    setErrorBox({
-      ...errorBox,
-      errorBoxAvailability: false,
-    });
-    // }
-    // setFormValues({
-    //   ...formValues,
-    //   campaign_end_day: 7,
-    // });
+    if (errorBox.errorAds) {
+      setErrorBox({
+        ...errorBox,
+        errorBoxAvailability: false,
+      });
+    }
   };
 
   const deactivateErrorBoxAds = () => {
@@ -667,9 +665,11 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangeDefaultValue = (value, stateName) => {
+    console.log(stateName, value)
     setFormValues({
       ...formValues,
       [stateName]: value,
+      campaign_end_day: 7
     });
   };
 
@@ -1104,9 +1104,7 @@ export default function AddCampaign({ content, params }) {
                       <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
                     </div>
                     <div
-                      className={`${styles.midWrapper} ${
-                        formValues.campaign_end_date_type !== '3' ? styles.unactiveInput : {}
-                      }`}
+                      className={`${styles.midWrapper}`}
                     >
                       <span>After:</span>
                       <input
@@ -1652,11 +1650,18 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderInputInformation(text) {
+  function renderSectionInformation(text) {
     return (
-      <div className={styles.inputCollectionCard}>
-        <div className={styles.ctnInputCollectionPageWrapper}>{text}</div>
-      </div>
+      <div className={styles.ctnSectionTarget}>
+        <div className={styles.ctnMidInput}>
+          <Typography variant="span" textAlign={'justify'}>
+              {text}
+          </Typography>
+        </div>
+        <div className={styles.ctnIconInformation}>
+          <img src={informationIcon} alt="campaign" />
+        </div>
+    </div>
     );
   }
 
@@ -1752,6 +1757,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
           <div className={styles.rowTitle} />
         </div>
+        {renderSectionInformation(informationObj.adCreation)}
         {pictureData.map((content, index) => renderCardAdCreation(content, index))}
       </div>
     );
@@ -1802,7 +1808,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
           <div className={styles.rowTitle} />
         </div>
-        {/* {renderInputInformation("test")} */}
+        {renderSectionInformation(informationObj.profile)}
         <div className={styles.inputCollectionCard}>{renderInputCollection()}</div>
         {renderAdCreation()}
         {renderCreateAnotherAd()}

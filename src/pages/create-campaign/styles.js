@@ -193,6 +193,7 @@ const useStyles = makeStyles((theme) => ({
   ctnSectionTarget: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     backgroundColor: '#fff',
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     marginLeft: 20,
@@ -210,8 +211,16 @@ const useStyles = makeStyles((theme) => ({
       objectFit: 'contain',
     },
   },
+  
   ctnIconTargetAlt: {
     marginRight: 40,
+    '& > img': {
+      width: 190,
+      height: 80,
+      objectFit: 'contain',
+    },
+  },
+  ctnIconInformation: {
     '& > img': {
       width: 190,
       height: 80,
