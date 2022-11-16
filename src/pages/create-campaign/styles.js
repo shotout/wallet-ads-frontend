@@ -581,6 +581,52 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  ctnAdCollection: {
+    width: '100%',
+    paddingRight: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      paddingRight: 0,
+    },
+  },
+  adtextTitleContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 20,
+    '& > img': {
+      cursor: 'pointer',
+      marginLeft: 10,
+    },
+  },
+  adTextTitle: {
+    fontSize: 12,
+    fontWeight: 400,
+    fontFamily: 'Public Sans, sans-serif',
+    color: '#808080',
+  },
+  addAdButton: {
+    border: 0,
+    height: 160,
+    width: '100%',
+    background: '#F1F1F1',
+    borderRadius: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontFamily: 'Public Sans,sans-serif',
+    paddingTop: 20,
+    paddingBottom: 20,
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 25,
+      marginRight: 10,
+    },
+  },
 }));
 
 export default useStyles;

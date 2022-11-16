@@ -86,6 +86,8 @@ const deleteIcon = '/assets/svg/delete.svg';
 const informationIcon = '/icons/ic_information.svg';
 const expandOpenIcon = '/icons/ic_expandopen.svg';
 const expandCloseIcon = '/icons/ic_expandclose.svg';
+const rubishIcon = '/icons/ic_rubish.svg';
+const addAdIcon = '/icons/ic_add.svg';
 
 const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
@@ -171,6 +173,13 @@ export default function AddCampaign({ content, params }) {
     collectionDesc: null,
     collectionSocialMedia: null,
   });
+  const [adText, setAdText] = useState([
+    {
+      id: makeId(),
+      title: 'Ad 1',
+      body: '',
+    },
+  ]);
 
   function normalizeInitialData(value) {
     if (value === '0' || value === 0) {
@@ -515,6 +524,25 @@ export default function AddCampaign({ content, params }) {
     } catch (err) {
       setLoadingSubmit(false);
     }
+  };
+
+  const addAdText = (id) => {
+    const body = {
+      id: makeId(),
+      title: '',
+      body: '',
+    };
+
+    const newArr = [...adText, body];
+    setAdText(newArr);
+  };
+
+  const removeAdText = (id) => {
+    setAdText((current) =>
+      current.filter((adtext) => {
+        return adtext.id !== id;
+      })
+    );
   };
 
   const isAdsArrValid = (ads) => {
@@ -1296,10 +1324,10 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderLeftAdCreation(content, index) {
+  function renderTopAdCreation(content, index) {
     return (
-      <div className={styles.ctnLeftCollection}>
-        <div className={styles.ctnInputCollection}>
+      <Grid container>
+        <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
               <Typography variant="h6">Ad name</Typography>
@@ -1325,8 +1353,8 @@ export default function AddCampaign({ content, params }) {
             />
             {renderErrorText(errorBox.errorAds && !content.name)}
           </div>
-        </div>
-        <div className={styles.ctnInputCollection}>
+        </Grid>
+        <Grid md={6} sm={6} xl={6} addingLeft={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
               <Typography variant="h6">Media</Typography>
@@ -1382,8 +1410,8 @@ export default function AddCampaign({ content, params }) {
             }}
           />
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 
@@ -1518,33 +1546,58 @@ export default function AddCampaign({ content, params }) {
 
   function renderRightAdCreation(content, index) {
     return (
-      <div className={styles.ctnRightCollection}>
-        <div className={styles.ctnInputCollection}>
-          <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Ad text</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'ad_text');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('ad_text', questionObj.ad_text)}
-            </div>
-          </div>
-          <div className={styles.textAreaCollection}>
-            <textarea
-              value={content.description}
-              onChange={(event) => {
-                handleChangePicture(event, 'description', index);
+      <div className={styles.ctnInputCollection}>
+        <div className={styles.rowTitleWrapper}>
+          <div className={styles.leftTitle}>
+            <Typography variant="h6">Ad text</Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'ad_text');
               }}
-              placeholder="Add your ad text here"
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
             />
-            {renderErrorText(errorBox.errorAds && !content.description)}
+            {renderPopover('ad_text', questionObj.ad_text)}
           </div>
         </div>
+        <Grid container>
+          {adText.map((v, i) => (
+            <Grid
+              key={`adtext-${i}`}
+              md={6}
+              sm={6}
+              xl={6}
+              style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+              marginBottom={1}
+            >
+              <div className={styles.adtextTitleContainer}>
+                <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id)} />}
+              </div>
+
+              <div className={styles.textAreaCollection}>
+                <textarea
+                  // value={content.description}
+                  onChange={(event) => {
+                    handleChangePicture(event, 'description', index);
+                  }}
+                  placeholder="Add your ad text here"
+                />
+                {renderErrorText(errorBox.errorAds && !content.description)}
+              </div>
+            </Grid>
+          ))}
+          <Grid md={6} sm={6} xl={6} style={adText.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+            <div className={styles.adtextTitleContainer}>{''}</div>
+            <div className={styles.addAdButton} onClick={addAdText}>
+              <img src={addAdIcon} />
+              <Typography fontSize={16} fontWeight={600} color={'#808080'}>
+                Add ad text
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -1777,10 +1830,10 @@ export default function AddCampaign({ content, params }) {
         }`}
         key={content.adsId}
       >
-        <div className={styles.ctnInputCollectionPageWrapper}>
-          {renderLeftAdCreation(content, index)}
-          {renderRightAdCreation(content, index)}
-        </div>
+        {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
+        {renderTopAdCreation(content, index)}
+        {renderRightAdCreation(content, index)}
+        {/* </div> */}
         <div className={styles.ctnSelectAudience}>
           <div className={styles.ctnInputCollection}>
             <div className={styles.rowTitleWrapper}>
