@@ -227,6 +227,7 @@ export default function AddPaymentMethod({
                 label={'Add credit card'}
                 eventName={'Pay with stripe'}
                 isLoading={isPaymentLoading}
+                disabled={isPaymentLoading}
               />
             </Grid>
             <Grid item sm={6} md={6} xs={12}>
