@@ -211,7 +211,7 @@ const useStyles = makeStyles((theme) => ({
       objectFit: 'contain',
     },
   },
-  
+
   ctnIconTargetAlt: {
     marginRight: 40,
     '& > img': {
@@ -506,13 +506,13 @@ const useStyles = makeStyles((theme) => ({
   ctnPopover: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnPopoverError: {
     '& > .MuiPaper-root': {
       background: '#FFD8DF',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnInputColumn: {
@@ -553,6 +553,33 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 10,
+  },
+  ctnCollectionBottomHeaderContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    '& > div': {
+      display: 'flex',
+      width: '100%',
+      marginTop: 10,
+    },
+  },
+  leftTitleBottom: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 5,
+    '& > img': {
+      width: 12,
+      height: 12,
+      objectFit: 'contain',
+      marginLeft: 4,
+      cursor: 'pointer',
+      marginBottom: 3,
+    },
+    '& > div': {
+      position: 'relative',
+    },
   },
 }));
 

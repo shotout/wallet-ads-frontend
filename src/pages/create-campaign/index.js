@@ -1,4 +1,4 @@
-import { Box, Grid, Popover, Typography } from '@mui/material';
+import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -56,9 +56,11 @@ const questionObj = {
 };
 
 const informationObj = {
-  profile: 'The Profile & Collection page is similar to the profile page of your social media accounts - but for WALLETADS it is campaign specific. To guarantee the best deliverability, each of your WALLETADS campaigns will get a unique Profile and Collection page name.',
-  adCreation: 'Create the ad that you would like the users to see. Our system will convert your assets into an NFT and distribute it into the the users’ wallets - optimized by our advanced targeting system.',
-}
+  profile:
+    'The Profile & Collection page is similar to the profile page of your social media accounts - but for WALLETADS it is campaign specific. To guarantee the best deliverability, each of your WALLETADS campaigns will get a unique Profile and Collection page name.',
+  adCreation:
+    'Create the ad that you would like the users to see. Our system will convert your assets into an NFT and distribute it into the the users’ wallets - optimized by our advanced targeting system.',
+};
 
 // ----------------------------------------------------------------------
 
@@ -82,7 +84,8 @@ const mediumIcon = '/assets/medium.png';
 const websiteIcon = '/assets/website.png';
 const deleteIcon = '/assets/svg/delete.svg';
 const informationIcon = '/icons/ic_information.svg';
-
+const expandOpenIcon = '/icons/ic_expandopen.svg';
+const expandCloseIcon = '/icons/ic_expandclose.svg';
 
 const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
@@ -96,6 +99,7 @@ export default function AddCampaign({ content, params }) {
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
+  const [expandAdvanced, setExpandAdvanced] = useState(false);
   const [formValues, setFormValues] = useState({
     campaign_name: '',
     campaign_start_date: new Date(getFutureDate(2)),
@@ -665,11 +669,11 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangeDefaultValue = (value, stateName) => {
-    console.log(stateName, value)
+    console.log(stateName, value);
     setFormValues({
       ...formValues,
       [stateName]: value,
-      campaign_end_day: 7
+      campaign_end_day: 7,
     });
   };
 
@@ -1103,9 +1107,7 @@ export default function AddCampaign({ content, params }) {
                     <div className={styles.leftWrapper}>
                       <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
                     </div>
-                    <div
-                      className={`${styles.midWrapper}`}
-                    >
+                    <div className={`${styles.midWrapper}`}>
                       <span>After:</span>
                       <input
                         value={formValues.campaign_end_day}
@@ -1641,11 +1643,113 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderBottomCollection() {
+    return (
+      <div>
+        <div className={styles.ctnCollectionBottomHeaderContainer}>
+          <div className={styles.leftTitle}>
+            <img
+              src={expandAdvanced ? expandOpenIcon : expandCloseIcon}
+              onClick={() => setExpandAdvanced(!expandAdvanced)}
+              alt="expand"
+            />
+            <Typography fontSize={18} fontWeight={600} color={'#808080'} style={{ marginLeft: 10 }}>
+              Advanced settings
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'add_social_media_link');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('add_social_media_link', questionObj.add_social_media_link)}
+          </div>
+          <div style={{ justifyContent: 'flex-end' }}>
+            <Typography fontSize={14} fontWeight={400} color={'#808080'}>
+              Optional
+            </Typography>
+          </div>
+        </div>
+        {/* <Box sx={{ display: 'flex', backgroundColor: 'red', paddingTop: 10 }}> */}
+        <Collapse in={expandAdvanced}>
+          <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
+            Token tracker:
+          </Typography>
+          <Grid container>
+            <Grid md={6} sm={6} xl={6} padding={1}>
+              <div className={styles.leftTitleBottom}>
+                <Typography fontSize={14} fontWeight={700}>
+                  Name
+                </Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_text');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_text', questionObj.ad_text)}
+              </div>
+              <div className={styles.inputCollectionWrapper}>
+                <input
+                  // onChange={(value) => {
+                  //   handleResetErrorValue('collectionPageName');
+                  //   handleChangeValues(value, 'ads_page_name');
+                  // }}
+                  // value={formValues.ads_page_name}
+                  placeholder="Name"
+                  type="text"
+                />
+                {/* {renderErrorText(errorInput.collectionPageName)} */}
+              </div>
+            </Grid>
+            <Grid md={6} sm={6} xl={6} padding={1}>
+              <div className={styles.inputCollectionWrapper}>
+                <div className={styles.leftTitleBottom}>
+                  <Typography fontSize={14} fontWeight={700}>
+                    Symbol
+                  </Typography>
+                  <img
+                    onMouseEnter={(event) => {
+                      handleHoverOpen(event, 'ad_text');
+                    }}
+                    onMouseLeave={handleHoverClose}
+                    src={askIcon}
+                    alt="ask"
+                  />
+                  {renderPopover('ad_text', questionObj.ad_text)}
+                </div>
+                <input
+                  // onChange={(value) => {
+                  //   handleResetErrorValue('collectionPageName');
+                  //   handleChangeValues(value, 'ads_page_name');
+                  // }}
+                  // value={formValues.ads_page_name}
+                  placeholder="Symbol"
+                  type="text"
+                />
+                {/* {renderErrorText(errorInput.collectionPageName)} */}
+              </div>
+            </Grid>
+          </Grid>
+        </Collapse>
+        {/* </Box> */}
+      </div>
+    );
+  }
+
   function renderInputCollection() {
     return (
-      <div className={styles.ctnInputCollectionPageWrapper}>
-        {renderLeftCollection()}
-        {renderRightCollection()}
+      <div className={styles.ctnInputCollectionPageWrapper} style={{ flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {renderLeftCollection()}
+          {renderRightCollection()}
+        </div>
+        <Divider />
+        {renderBottomCollection()}
       </div>
     );
   }
@@ -1655,13 +1759,13 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.ctnSectionTarget}>
         <div className={styles.ctnMidInput}>
           <Typography variant="span" textAlign={'justify'}>
-              {text}
+            {text}
           </Typography>
         </div>
         <div className={styles.ctnIconInformation}>
           <img src={informationIcon} alt="campaign" />
         </div>
-    </div>
+      </div>
     );
   }
 
