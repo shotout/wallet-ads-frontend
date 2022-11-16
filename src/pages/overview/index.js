@@ -15,6 +15,7 @@ import {
   getCampaignDetail,
   getListCampaignItem,
   exportAudienceByCampaignID,
+  getProfilUser,
 } from '../../utils/requests';
 import { getUserData } from '../../helpers/auth';
 import Select from '@mui/material/Select';
@@ -986,7 +987,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   }
 
   return (
-    <Page title="Overview" description="Overview">
+    <Page title="Login" description="Login to your WALLETADS account mow!">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
           <div className={styles.p20}>
@@ -1005,25 +1006,34 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 }
 
 export async function getServerSideProps(context) {
-  const userData = getUserData(context);
-  const UA = context.req.headers['user-agent'];
-  const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  if (isMobile) {
+  try {
+    await getProfilUser(context);
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
+    if (isMobile) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/forbidden`,
+        },
+      };
+    }
+  
+    const res = await getListCampaignItem(context, 1); //content.data => filter  content.link // diabtasin 5
+    const listCampaign = await getListCampaign(context); // ishow id campaign name
+  
+    const pagination = res.data?.links.shift();
+    const pagination2 = res.data?.links.pop();
     return {
-      redirect: {
-        permanent: false,
-        destination: `/forbidden`,
-      },
+      props: {
+        content: res.data || [],
+        listCampaign: listCampaign.data || [],
+        paginations: res.data.links,
+        // ctx: context,
+      }, 
     };
-  }
-
-  const res = await getListCampaignItem(context, 1); //content.data => filter  content.link // diabtasin 5
-  const listCampaign = await getListCampaign(context); // ishow id campaign name
-
-  const pagination = res.data?.links.shift();
-  const pagination2 = res.data?.links.pop();
-
-  if (!userData) {
+  
+  } catch (error) {
     return {
       redirect: {
         permanent: false,
@@ -1031,14 +1041,6 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  return {
-    props: {
-      userData,
-      content: res.data || [],
-      // listCampaign: res.data.data.filter((v) => v.is_show === 1) || [],
-      listCampaign: listCampaign.data || [],
-      paginations: res.data.links,
-      // ctx: context,
-    }, // will be passed to the page component as props
-  };
+  
+ 
 }
