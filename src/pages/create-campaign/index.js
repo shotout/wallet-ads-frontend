@@ -354,16 +354,16 @@ export default function AddCampaign({ content, params }) {
       isPaymentLoading: true,
     });
 
-    // const campaign = await createCampaignId();
-    // const session = await createSession({
-    //   promo: params,
-    //   campaign_id: campaign.data.id,
-    //   campaign_name: campaign.data.name,
-    //   total_budget: getTotalBudget(audienceForm) * 100,
-    // });
-    // trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
-    // setShowCreditCard({ ...showCreditCard });
-    // window.location.href = session?.url;
+    const campaign = await createCampaignId();
+    const session = await createSession({
+      promo: params,
+      campaign_id: campaign.data.id,
+      campaign_name: campaign.data.name,
+      total_budget: getTotalBudget(audienceForm) * 100,
+    });
+    trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+    setShowCreditCard({ ...showCreditCard });
+    window.location.href = session?.url;
   };
 
   const getAudienceArr = () => {

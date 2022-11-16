@@ -5,7 +5,7 @@ import Page from '../../components/Page';
 import useStyles from './styles';
 import { Fragment, useState } from 'react';
 import Layout from '../../layouts';
-import { getUserData } from '../../helpers/auth';
+import {  getProfilUser } from '../../helpers/auth';
 import { getInvoicesList } from '../../utils/requests';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -274,20 +274,28 @@ Invoice.defaultProps = {
 };
 
 export async function getServerSideProps(context) {
-  const userData = getUserData(context);
-  const UA = context.req.headers['user-agent'];
-  const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  if (isMobile) {
+  try {
+    const userData = await getProfilUser(context);
+    const UA = context.req.headers['user-agent'];
+    const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
+    if (isMobile) {
+      return {
+        redirect: {
+          permanent: false,
+          destination: `/forbidden`,
+        },
+      };
+    }
+    
+    const res = await getInvoicesList(context);
     return {
-      redirect: {
-        permanent: false,
-        destination: `/forbidden`,
-      },
+      props: {
+        userData,
+        content: res.data || [],
+      }, 
     };
-  }
-
-  const res = await getInvoicesList(context);
-  if (!userData) {
+    
+  } catch (error) {
     return {
       redirect: {
         permanent: false,
@@ -295,10 +303,4 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  return {
-    props: {
-      userData,
-      content: res.data || [],
-    }, // will be passed to the page component as props
-  };
 }
