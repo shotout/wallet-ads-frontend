@@ -18,7 +18,7 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
-        <Head>
+        <Head />
           <meta charSet="utf-8" />
           <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
           <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
@@ -33,13 +33,13 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <meta
+          {/* <meta
             name="description"
             content="The starting point for your next project with Minimal UI Kit, built on the newest version of Material-UI ©, ready to be customized to your style"
           />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Minimal UI Kit" />
-        </Head>
+          <meta name="author" content="Minimal UI Kit" /> */}
+        {/* </Head> */}
 
         <body>
           <noscript
