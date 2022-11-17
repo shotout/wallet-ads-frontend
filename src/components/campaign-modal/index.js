@@ -24,6 +24,7 @@ export default function CampaignModal({ isVisible, data, close }) {
   const [totalBudget, setTotalBudget] = useState(0);
 
   useEffect(() => {
+    console.log(data);
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');

@@ -214,9 +214,23 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div className={styles.adtextContainer}>
-                <Typography variant="body2" color={'black'} textAlign={'justify'}>
-                  {shortString(dataPopover?.desc, 180, '')}
-                </Typography>
+                {typeof dataPopover?.desc === 'string' &&
+                  JSON.parse(dataPopover?.desc).map((v, i) => (
+                    <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+                      <Typography fontSize={18} fontWeight={600}>
+                        Ad text {i + 1}:
+                      </Typography>
+                      <Typography
+                        fontWeight={400}
+                        color={'#000000'}
+                        textAlign={'justify'}
+                        className={styles.txtDescription}
+                      >
+                        {v.adtext}
+                      </Typography>
+                      <Divider />
+                    </div>
+                  ))}
               </div>
             </div>
           )}
@@ -413,7 +427,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={2} sm={12}>
+        <Grid item md={1.5} sm={12}>
           <Typography variant="body1" fontWeight={'bold'} alignItems={'center'}>
             Status
           </Typography>
@@ -469,7 +483,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid> */}
-        <Grid item md={1} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Mints
@@ -518,7 +532,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <Typography variant="body1">{moment(new Date(item.start_date)).format('DD.MM.YYYY')}</Typography>
               </Grid>
 
-              <Grid item md={2} sm={12} alignItems={'center'}>
+              <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
               <Grid item md={1.5} sm={12}>
@@ -533,7 +547,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {/* <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{normalizeCurrency(item.count_click) ?? '-'}</Typography>
               </Grid> */}
-              <Grid item md={1} sm={12}>
+              <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{normalizeCurrency(item.count_mint) ?? '-'}</Typography>
               </Grid>
             </Fragment>

@@ -89,7 +89,15 @@ const expandCloseIcon = '/icons/ic_expandclose.svg';
 const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
 
-const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+const initDecription = [
+  {
+    id: makeId(),
+    title: 'Ad 1',
+    adtext: '',
+  },
+];
+
+const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -113,6 +121,8 @@ export default function AddCampaign({ content, params }) {
     ads_page_discord: '',
     ads_page_medium: '',
     ads_page_telegram: '',
+    ads_page_token_name: '',
+    ads_page_token_symbol: '',
   });
   const [selectedAudience, setSelectedAudience] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(null);
@@ -173,13 +183,6 @@ export default function AddCampaign({ content, params }) {
     collectionDesc: null,
     collectionSocialMedia: null,
   });
-  const [adText, setAdText] = useState([
-    {
-      id: makeId(),
-      title: 'Ad 1',
-      body: '',
-    },
-  ]);
 
   function normalizeInitialData(value) {
     if (value === '0' || value === 0) {
@@ -264,6 +267,8 @@ export default function AddCampaign({ content, params }) {
         ads_page_discord: adsPage.discord,
         ads_page_medium: adsPage.medium,
         ads_page_telegram: adsPage.telegram,
+        ads_page_token_name: adsPage.token_name,
+        ads_page_token_symbol: adsPage.token_symbol,
       });
     }
   }, []);
@@ -274,7 +279,7 @@ export default function AddCampaign({ content, params }) {
     setActivePopover(null);
     setBannerCollection(null);
     setLogoCollection(null);
-    setPicture([{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }]);
+    setPicture([{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }]);
     setFormValues({
       campaign_name: '',
       campaign_start_date: new Date(getFutureDate(2)),
@@ -286,6 +291,8 @@ export default function AddCampaign({ content, params }) {
       ads_page_discord: '',
       ads_page_medium: '',
       ads_page_telegram: '',
+      ads_page_token_name: '',
+      ads_page_token_symbol: '',
     });
     setSelectedAudience(null);
     setLoadingSubmit(null);
@@ -437,7 +444,7 @@ export default function AddCampaign({ content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
         if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
-        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         if (ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
             formRes.append(
@@ -526,24 +533,35 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
-  const addAdText = (id) => {
+  const addAdText = (index) => {
+    console.log(index);
+    console.log(pictureData);
     const body = {
       id: makeId(),
-      title: '',
-      body: '',
+      title: `Ad text`,
+      adtext: '',
     };
 
-    const newArr = [...adText, body];
-    setAdText(newArr);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
+        return {
+          ...v,
+          description: [...v.description, body],
+        };
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
   };
 
-  const removeAdText = (id) => {
-    setAdText((current) =>
-      current.filter((adtext) => {
-        return adtext.id !== id;
-      })
-    );
-  };
+  // const removeAdText = (id) => {
+  //   setAdText((current) =>
+  //     current.filter((adtext) => {
+  //       return adtext.id !== id;
+  //     })
+  //   );
+  // };
 
   const isAdsArrValid = (ads) => {
     if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
@@ -554,6 +572,7 @@ export default function AddCampaign({ content, params }) {
 
   const validateSubmit = () => {
     try {
+      // convertDescriptionDataToString();
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
@@ -779,7 +798,14 @@ export default function AddCampaign({ content, params }) {
     setAudienceForm(listData.concat(addData));
   };
 
-  const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture) => {
+  const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture, descId) => {
+    const a = {
+      acceptedFiles,
+      stateName,
+      indexContent,
+      isPicture,
+    };
+    console.log(a);
     let file = null;
     deactivateErrorBoxAds();
     if (isPicture) {
@@ -815,7 +841,25 @@ export default function AddCampaign({ content, params }) {
               ...pict,
               [stateName]: listAudience,
             };
+          } else if (stateName === 'description') {
+            // const arrDesc = adText.map((v, i) => {
+            //   if (i === descId) {
+            //     return { ...v, adtext: acceptedFiles.target.value };
+            //   } else {
+            //     return adText;
+            //   }
+            // });
+            // console.log(adText);
+            // console.log(arrDesc);
+            let newArrDesc = [...pict.description];
+            newArrDesc[descId].adtext = acceptedFiles.target.value;
+
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
           }
+
           return {
             ...pict,
             [stateName]: acceptedFiles.target.value,
@@ -1562,35 +1606,39 @@ export default function AddCampaign({ content, params }) {
           </div>
         </div>
         <Grid container>
-          {adText.map((v, i) => (
-            <Grid
-              key={`adtext-${i}`}
-              md={6}
-              sm={6}
-              xl={6}
-              style={i % 2 === 0 ? { paddingRight: 40 } : {}}
-              marginBottom={1}
-            >
-              <div className={styles.adtextTitleContainer}>
-                <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
-                {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id)} />}
-              </div>
+          {typeof content.description === 'string'
+            ? ''
+            : content.description?.map((v, i) => (
+                <Grid
+                  key={`adtext-${i}`}
+                  md={6}
+                  sm={6}
+                  xl={6}
+                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+                  marginBottom={1}
+                >
+                  <div className={styles.adtextTitleContainer}>
+                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                    {i !== 0 && <img src={rubishIcon} />}
+                    {/* {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id)} />} */}
+                  </div>
 
-              <div className={styles.textAreaCollection}>
-                <textarea
-                  // value={content.description}
-                  onChange={(event) => {
-                    handleChangePicture(event, 'description', index);
-                  }}
-                  placeholder="Add your ad text here"
-                />
-                {renderErrorText(errorBox.errorAds && !content.description)}
-              </div>
-            </Grid>
-          ))}
-          <Grid md={6} sm={6} xl={6} style={adText.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+                  <div className={styles.textAreaCollection}>
+                    <textarea
+                      // value={content.description}
+                      onChange={(event) => {
+                        handleChangePicture(event, 'description', index, false, i);
+                      }}
+                      placeholder="Add your ad text here"
+                    />
+                    {renderErrorText(errorBox.errorAds && !content.description)}
+                  </div>
+                </Grid>
+              ))}
+          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
-            <div className={styles.addAdButton} onClick={addAdText}>
+
+            <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
               <Typography fontSize={16} fontWeight={600} color={'#808080'}>
                 Add ad text
@@ -1748,11 +1796,11 @@ export default function AddCampaign({ content, params }) {
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
-                  // onChange={(value) => {
-                  //   handleResetErrorValue('collectionPageName');
-                  //   handleChangeValues(value, 'ads_page_name');
-                  // }}
-                  // value={formValues.ads_page_name}
+                  onChange={(value) => {
+                    handleResetErrorValue('collectionPageName');
+                    handleChangeValues(value, 'ads_page_token_name');
+                  }}
+                  value={formValues.ads_page_token_name}
                   placeholder="Name"
                   type="text"
                 />
@@ -1776,11 +1824,10 @@ export default function AddCampaign({ content, params }) {
                   {renderPopover('ad_text', questionObj.ad_text)}
                 </div>
                 <input
-                  // onChange={(value) => {
-                  //   handleResetErrorValue('collectionPageName');
-                  //   handleChangeValues(value, 'ads_page_name');
-                  // }}
-                  // value={formValues.ads_page_name}
+                  onChange={(value) => {
+                    handleChangeValues(value, 'ads_page_token_symbol');
+                  }}
+                  value={formValues.ads_page_token_symbol}
                   placeholder="Symbol"
                   type="text"
                 />
@@ -1927,7 +1974,7 @@ export default function AddCampaign({ content, params }) {
           className={styles.btnCreateAd}
           onClick={() => {
             const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: '', adsId: makeId() });
+            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
             setPicture(currentArr);
           }}
         >
