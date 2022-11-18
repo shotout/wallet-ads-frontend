@@ -21,10 +21,17 @@ export default function AdsCard({ item, audienceData }) {
   }
 
   function renderAdText() {
+    let contents = null;
+    try {
+      contents = JSON.parse(item.description);
+    } catch (error) {
+      contents = item.description;
+    }
+
     return (
       <div className={styles.adtextContainer}>
-        {typeof item.description === 'string' &&
-          JSON.parse(item.description).map((v, i) => (
+        {typeof contents === 'object' &&
+          contents.map((v, i) => (
             <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
               <Typography fontSize={18} fontWeight={600}>
                 Ad text {i + 1}:

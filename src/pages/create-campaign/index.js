@@ -91,8 +91,6 @@ const addAdIcon = '/icons/ic_add.svg';
 
 const initDecription = [
   {
-    id: makeId(),
-    title: 'Ad 1',
     adtext: '',
   },
 ];
@@ -537,8 +535,6 @@ export default function AddCampaign({ content, params }) {
     console.log(index);
     console.log(pictureData);
     const body = {
-      id: makeId(),
-      title: `Ad text`,
       adtext: '',
     };
 

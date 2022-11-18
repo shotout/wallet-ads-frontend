@@ -173,6 +173,15 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   };
 
   function renderPopover(type, content) {
+    let contents = null;
+    if (type === 'banner_image') {
+      try {
+        contents = JSON.parse(dataPopover?.desc);
+      } catch (error) {
+        contents = dataPopover?.desc;
+      }
+    }
+
     return (
       <Popover
         id={type}
@@ -214,8 +223,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div className={styles.adtextContainer}>
-                {typeof dataPopover?.desc === 'string' &&
-                  JSON.parse(dataPopover?.desc).map((v, i) => (
+                {typeof contents === 'object' &&
+                  contents.map((v, i) => (
                     <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
                       <Typography fontSize={18} fontWeight={600}>
                         Ad text {i + 1}:
