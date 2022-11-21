@@ -91,6 +91,7 @@ const addAdIcon = '/icons/ic_add.svg';
 
 const initDecription = [
   {
+    id: makeId(),
     adtext: '',
   },
 ];
@@ -537,6 +538,7 @@ export default function AddCampaign({ content, params }) {
     console.log(index);
     console.log(pictureData);
     const body = {
+      id: makeId(),
       adtext: '',
     };
 
@@ -553,13 +555,20 @@ export default function AddCampaign({ content, params }) {
     setPicture(newData);
   };
 
-  // const removeAdText = (id) => {
-  //   setAdText((current) =>
-  //     current.filter((adtext) => {
-  //       return adtext.id !== id;
-  //     })
-  //   );
-  // };
+  const removeAdText = (id, index) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
+        return {
+          ...v,
+          description: filterDesc,
+        };
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
 
   const isAdsArrValid = (ads) => {
     if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
@@ -1617,7 +1626,7 @@ export default function AddCampaign({ content, params }) {
                 >
                   <div className={styles.adtextTitleContainer}>
                     <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
-                    {i !== 0 && <img src={rubishIcon} />}
+                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                     {/* {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id)} />} */}
                   </div>
 
@@ -1635,7 +1644,6 @@ export default function AddCampaign({ content, params }) {
               ))}
           <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
-
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
               <Typography fontSize={16} fontWeight={600} color={'#808080'}>
