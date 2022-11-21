@@ -436,6 +436,8 @@ export default function AddCampaign({ content, params }) {
       formRes.append('ads_page_discord', formValues.ads_page_discord);
       formRes.append('ads_page_medium', formValues.ads_page_medium);
       formRes.append('ads_page_telegram', formValues.ads_page_telegram);
+      formRes.append('ads_page_token_name', formValues.ads_page_token_name);
+      formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
       formRes.append('ads_page_logo', logoCollection);
       formRes.append('ads_page_banner', bannerCollection);
 
