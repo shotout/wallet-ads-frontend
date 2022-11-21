@@ -226,11 +226,12 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 {typeof contents === 'object' &&
                   contents.map((v, i) => (
                     <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                      <Typography fontSize={18} fontWeight={600}>
+                      <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
                       </Typography>
                       <Typography
                         fontWeight={400}
+                        fontSize={14}
                         color={'#000000'}
                         textAlign={'justify'}
                         className={styles.txtDescription}
@@ -581,7 +582,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {''}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12}>
+          <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {''}
             </Typography>

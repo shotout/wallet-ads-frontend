@@ -33,10 +33,10 @@ export default function AdsCard({ item, audienceData }) {
         {typeof contents === 'object' &&
           contents.map((v, i) => (
             <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-              <Typography fontSize={18} fontWeight={600}>
+              <Typography fontSize={16} fontWeight={600}>
                 Ad text {i + 1}:
               </Typography>
-              <Typography fontWeight={400} color={'#000000'} textAlign={'justify'}>
+              <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
                 {v.adtext}
               </Typography>
               {contents.length > 1 && <Divider />}
