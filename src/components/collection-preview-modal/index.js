@@ -3,7 +3,7 @@ import React from 'react';
 import useStyles from './styles';
 
 const discordIcon = '/assets/svg/discord.svg';
-const telegramIcon = '/assets/telegram.png';
+const telegramIcon = '/assets/svg/telegram.svg';
 const mediumIcon = '/assets/svg/medium.svg';
 const websiteIcon = '/assets/svg/world.svg';
 
@@ -23,7 +23,6 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
         <div className={styles.bannerItem}>
           <img src={bannerSource} alt="banner-source" loading="lazy" />
         </div>
-
         {renderProfile()}
       </div>
     );
@@ -59,7 +58,7 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
           </div>
         </div>
         <div style={{ paddingRight: 20 }}>
-          <Typography variant="body1" textAlign={'justify'}>
+          <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
             {formValues.ads_page_description || 'Your collection page text here'}
           </Typography>
         </div>

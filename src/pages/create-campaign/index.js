@@ -1379,17 +1379,24 @@ export default function AddCampaign({ content, params }) {
       <Grid container marginBottom={2}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Ad name</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'ad_name');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('ad_name', questionObj.ad_name)}
+            <div className={styles.leftTitleBetween}>
+              <div className={styles.leftTitle}>
+                <Typography variant="h6">Ad name</Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_name');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_name', questionObj.ad_name)}
+              </div>
+              <div>
+                <Typography fontSize={12} color={'#808080'} marginBottom={-2}>
+                  (Not visible for your audiences)
+                </Typography>
+              </div>
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>

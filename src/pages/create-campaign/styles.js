@@ -305,6 +305,23 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  leftTitleBetween: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    fontFamily: 'Public Sans,sans-serif',
+    justifyContent: 'space-between',
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
   leftTitleAdText: {
     display: 'flex',
     alignItems: 'center',

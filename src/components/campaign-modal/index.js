@@ -11,7 +11,7 @@ import Iconify from '../Iconify';
 import { normalizeCurrency } from '../../../src/helpers/currency';
 
 const discordIcon = '/assets/svg/discord.svg';
-const telegramIcon = '/assets/telegram.png';
+const telegramIcon = '/assets/svg/telegram.svg';
 const mediumIcon = '/assets/svg/medium.svg';
 const websiteIcon = '/assets/svg/world.svg';
 const tokenIcon = '/assets/svg/ic_token.svg';
