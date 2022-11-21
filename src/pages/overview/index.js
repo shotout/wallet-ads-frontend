@@ -237,7 +237,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                       >
                         {v.adtext}
                       </Typography>
-                      <Divider />
+                      {contents.length > 1 && <Divider />}
                     </div>
                   ))}
               </div>

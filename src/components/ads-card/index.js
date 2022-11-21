@@ -39,7 +39,7 @@ export default function AdsCard({ item, audienceData }) {
               <Typography fontWeight={400} color={'#000000'} textAlign={'justify'}>
                 {v.adtext}
               </Typography>
-              <Divider />
+              {contents.length > 1 && <Divider />}
             </div>
           ))}
       </div>
