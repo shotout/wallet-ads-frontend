@@ -31,7 +31,6 @@ import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
-import { useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../helpers/constants';
 import { normalizeCurrency } from '../../helpers/currency';
 import { getFutureDate } from '../../helpers/dateHelper';
