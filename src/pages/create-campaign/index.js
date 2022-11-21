@@ -1750,7 +1750,13 @@ export default function AddCampaign({ content, params }) {
               onClick={() => setExpandAdvanced(!expandAdvanced)}
               alt="expand"
             />
-            <Typography fontSize={18} fontWeight={600} color={'#808080'} style={{ marginLeft: 10 }}>
+            <Typography
+              fontSize={18}
+              onClick={() => setExpandAdvanced(!expandAdvanced)}
+              fontWeight={600}
+              color={'#808080'}
+              style={{ marginLeft: 10, cursor: 'pointer' }}
+            >
               Advanced settings
             </Typography>
             <img
