@@ -14,6 +14,7 @@ const discordIcon = '/assets/svg/discord.svg';
 const telegramIcon = '/assets/telegram.png';
 const mediumIcon = '/assets/svg/medium.svg';
 const websiteIcon = '/assets/svg/world.svg';
+const tokenIcon = '/assets/svg/ic_token.svg';
 
 export default function CampaignModal({ isVisible, data, close }) {
   const styles = useStyles();
@@ -252,14 +253,14 @@ export default function CampaignModal({ isVisible, data, close }) {
               </Grid>
               {formValues?.ads_page_token_name && (
                 <Grid>
-                  <Typography fontSize={20} fontWeight={700} marginBottom={3}>
+                  <Typography fontSize={20} fontWeight={700} marginBottom={1}>
                     Token Tracker
                   </Typography>
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     {formValues?.ads_page_token_name && (
                       <div className={styles.ctnSocial}>
-                        <img src={websiteIcon} alt="discord" />
-                        <Typography fontSize={15} fontWeight={400}>
+                        <img src={tokenIcon} alt="discord" />
+                        <Typography fontSize={15} fontWeight={400} color={'#7089FF'}>
                           {formValues?.ads_page_token_name} ({formValues?.ads_page_token_symbol})
                         </Typography>
                       </div>
