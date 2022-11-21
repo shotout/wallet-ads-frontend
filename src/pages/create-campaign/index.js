@@ -1377,7 +1377,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderTopAdCreation(content, index) {
     return (
-      <Grid container>
+      <Grid container marginBottom={2}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
@@ -1599,7 +1599,7 @@ export default function AddCampaign({ content, params }) {
     return (
       <div className={styles.ctnInputCollection}>
         <div className={styles.rowTitleWrapper}>
-          <div className={styles.leftTitle}>
+          <div className={styles.leftTitleAdText}>
             <Typography variant="h6">Ad text</Typography>
             <img
               onMouseEnter={(event) => {
@@ -1626,8 +1626,8 @@ export default function AddCampaign({ content, params }) {
                 >
                   <div className={styles.adtextTitleContainer}>
                     <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+
                     {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
-                    {/* {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id)} />} */}
                   </div>
 
                   <div className={styles.textAreaCollection}>

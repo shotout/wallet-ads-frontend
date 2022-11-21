@@ -305,6 +305,23 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  leftTitleAdText: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'absolute',
+    top: -8,
+    marginTop: 10,
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
   inputCollectionWrapper: {
     '& > input': {
       fontFamily: 'Public Sans,sans-serif',
@@ -344,7 +361,7 @@ const useStyles = makeStyles((theme) => ({
   textAreaCollection: {
     '& > textarea': {
       border: 0,
-      height: 160,
+      height: 120,
       width: '100%',
       background: '#F1F1F1',
       borderRadius: 8,
@@ -609,7 +626,7 @@ const useStyles = makeStyles((theme) => ({
   },
   addAdButton: {
     border: 0,
-    height: 160,
+    height: 120,
     width: '100%',
     background: '#F1F1F1',
     borderRadius: 8,
