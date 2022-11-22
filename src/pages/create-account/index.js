@@ -224,6 +224,7 @@ export default function Register({ isMobile }) {
                         size="small"
                         fullWidth
                         placeholder="Post Code"
+                        type="number"
                       />
                     </div>
                   </Grid>
@@ -269,6 +270,7 @@ export default function Register({ isMobile }) {
                     size="small"
                     fullWidth
                     placeholder="Email address"
+                    type={'email'}
                   />
                 </div>
               </Grid>
@@ -283,6 +285,7 @@ export default function Register({ isMobile }) {
                     size="small"
                     fullWidth
                     placeholder="Telephone"
+                    type={'number'}
                   />
                 </div>
               </Grid>
