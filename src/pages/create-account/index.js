@@ -36,7 +36,7 @@ export default function Register({ isMobile }) {
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [contentType, setContentType] = useState('success');
+  const [contentType, setContentType] = useState('register');
   const [showMenu, setShowMenu] = useState(false);
 
   const handleChange = (prop) => (event) => {
