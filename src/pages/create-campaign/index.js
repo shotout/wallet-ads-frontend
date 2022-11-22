@@ -1654,7 +1654,7 @@ export default function AddCampaign({ content, params }) {
                   marginBottom={1}
                 >
                   <div className={styles.adtextTitleContainer}>
-                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1} ${v.isErr}`}</Typography>
+                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
                     {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                   </div>
 

@@ -359,7 +359,7 @@ export default function Register({ isMobile }) {
             ctnBtnStyle={styles.btnStyle}
             label={'Create account'}
           />
-          {renderDirect()}
+          {!isMobile && renderDirect()}
         </div>
       );
     }
@@ -406,7 +406,6 @@ export default function Register({ isMobile }) {
         ) : (
           renderHeader()
         )}
-
         {renderInput()}
         {renderSuccess()}
         <AuthFooter />
