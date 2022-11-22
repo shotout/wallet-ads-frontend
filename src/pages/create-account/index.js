@@ -212,9 +212,9 @@ export default function Register({ isMobile }) {
                   />
                 </div>
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={6} sm={12} xs={12}>
                 <Grid container spacing={2}>
-                  <Grid item md={6} xs={12}>
+                  <Grid item md={6} sm={6} xs={6}>
                     <div className={styles.inputWrapper}>
                       <TextField
                         value={values.post_code}
@@ -228,7 +228,7 @@ export default function Register({ isMobile }) {
                       />
                     </div>
                   </Grid>
-                  <Grid item md={6} xs={12}>
+                  <Grid item md={6} sm={6} xs={6}>
                     <div className={styles.inputWrapper}>
                       <TextField
                         value={values.city}
