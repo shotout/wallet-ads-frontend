@@ -225,6 +225,7 @@ export default function Register({ isMobile }) {
                         fullWidth
                         placeholder="Post Code"
                         type="number"
+                        inputProps={{ inputMode: 'numeric' }}
                       />
                     </div>
                   </Grid>
@@ -286,6 +287,7 @@ export default function Register({ isMobile }) {
                     fullWidth
                     placeholder="Telephone"
                     type={'number'}
+                    inputProps={{ inputMode: 'numeric' }}
                   />
                 </div>
               </Grid>

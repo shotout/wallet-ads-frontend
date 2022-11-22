@@ -1416,7 +1416,7 @@ export default function AddCampaign({ content, params }) {
                 {renderPopover('ad_name', questionObj.ad_name)}
               </div>
               <div>
-                <Typography fontSize={12} color={'#808080'} marginBottom={-2}>
+                <Typography variant="body2" color="#808080">
                   (Not visible for your audiences)
                 </Typography>
               </div>
@@ -1654,8 +1654,12 @@ export default function AddCampaign({ content, params }) {
                   marginBottom={1}
                 >
                   <div className={styles.adtextTitleContainer}>
-                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
-                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
+                    <Typography variant={'body2'} marginBottom={4} className={styles.adTextTitle}>{`Ad text ${
+                      i + 1
+                    }`}</Typography>
+                    {i !== 0 && (
+                      <img src={rubishIcon} style={{ marginBottom: 30 }} onClick={() => removeAdText(v.id, index)} />
+                    )}
                   </div>
 
                   <div className={styles.textAreaCollection}>

@@ -61,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   ctnDesc: {
     paddingTop: 40,
     marginLeft: 20,
-    marginBottom: 60,
+    marginBottom: 20,
   },
 }));
 
