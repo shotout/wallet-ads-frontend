@@ -13,6 +13,7 @@ import { eventTrack, GTMTracker } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const emailBanner = '/assets/email_banner.png';
+const menuIcon = '/assets/svg/menu.svg';
 
 const defaultState = {
   company_name: '',
@@ -29,13 +30,14 @@ const defaultState = {
   country: '',
 };
 
-export default function Register() {
+export default function Register({ isMobile }) {
   const styles = useStyles();
   const [values, setValues] = useState(defaultState);
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [contentType, setContentType] = useState('register');
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleChange = (prop) => (event) => {
     if (errorMessage[prop]?.length > 0) {
@@ -81,6 +83,47 @@ export default function Register() {
       </div>
     );
   }
+
+  function renderMobileHeader() {
+    return (
+      <div className={styles.ctnMobileHeader}>
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
+        <div className="menu">
+          <img onClick={() => setShowMenu(!showMenu)} src={menuIcon} alt="wallet-ads" />
+        </div>
+      </div>
+    );
+  }
+
+  const renderMobileMenu = () => (
+    <div className={styles.ctnMenuRoot}>
+      <div className={styles.ctnMobileHeader}>
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
+        <div className="menu">
+          <img onClick={() => setShowMenu(!showMenu)} src={menuIcon} alt="wallet-ads" />
+        </div>
+      </div>
+
+      <div className={styles.ctnLink}>
+        <Link href={routes.walletadsFeature}>
+          <a target={'_blank'}>Features</a>
+        </Link>
+        <Link href={routes.walletadsExplore}>
+          <a target={'_blank'}>Explore</a>
+        </Link>
+        <Link href={routes.walletadsContact}>
+          <a target={'_blank'}>Contact</a>
+        </Link>
+        <Link href={routes.walletadsLogin}>
+          <a target={'_blank'}>Login</a>
+        </Link>
+      </div>
+    </div>
+  );
 
   function renderDirect() {
     return (
@@ -355,7 +398,15 @@ export default function Register() {
     <Page title="Sign up" description="Create your WALLETADS account now!">
       <meta name="description" />
       <div className={styles.ctnRoot}>
-        {renderHeader()}
+        {isMobile ? (
+          <>
+            <div>{renderMobileHeader()}</div>
+            <div>{showMenu && renderMobileMenu()}</div>
+          </>
+        ) : (
+          renderHeader()
+        )}
+
         {renderInput()}
         {renderSuccess()}
         <AuthFooter />
@@ -367,15 +418,10 @@ export default function Register() {
 export async function getServerSideProps(context) {
   const UA = context.req.headers['user-agent'];
   const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  if (isMobile) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: `/forbidden`,
-      },
-    };
-  }
+
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      isMobile,
+    }, // will be passed to the page component as props
   };
 }
