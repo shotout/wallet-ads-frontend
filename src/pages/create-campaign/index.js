@@ -618,12 +618,13 @@ export default function AddCampaign({ content, params }) {
         }
       });
       isAdTextValid = validationAdsText();
+      console.log(isAdTextValid);
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
-      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid) {
+      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid && isAdTextValid) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
@@ -645,7 +646,7 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#availability-section';
         } else if (isAudienceValid.length === 0) {
           window.location.href = '#card-audience';
-        } else if (!isAdsValid || !isAudienceFormAdsValid) {
+        } else if (!isAdsValid || !isAudienceFormAdsValid || !isAdTextValid) {
           window.location.href = '#card-ads';
         }
       }
