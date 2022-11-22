@@ -48,7 +48,7 @@ export default function AdsCard({ item, audienceData }) {
 
   function renderAudience() {
     return (
-      <div className={styles.audienceWrapper}>
+      <div>
         {audenceDatas.map((v, i) => (
           <div key={`aud-${i}`} className={styles.audienceContainer}>
             <CheckboxAds isActive={true} />
