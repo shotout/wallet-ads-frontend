@@ -326,7 +326,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     position: 'absolute',
-    top: -5,
+    top: 12,
     marginTop: 10,
     '& > img': {
       width: 16,
@@ -631,15 +631,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     height: 20,
     marginTop: 15,
+    marginBottom: 15,
     '& > img': {
       cursor: 'pointer',
-      marginLeft: 10,
+      marginLeft: 7,
     },
   },
   adTextTitle: {
     fontFamily: 'Public Sans, sans-serif',
     color: '#808080',
-    marginBottom: 20,
   },
   addAdButton: {
     border: 0,

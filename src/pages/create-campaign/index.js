@@ -1654,12 +1654,8 @@ export default function AddCampaign({ content, params }) {
                   marginBottom={1}
                 >
                   <div className={styles.adtextTitleContainer}>
-                    <Typography variant={'body2'} marginBottom={4} className={styles.adTextTitle}>{`Ad text ${
-                      i + 1
-                    }`}</Typography>
-                    {i !== 0 && (
-                      <img src={rubishIcon} style={{ marginBottom: 30 }} onClick={() => removeAdText(v.id, index)} />
-                    )}
+                    <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                   </div>
 
                   <div className={styles.textAreaCollection}>
