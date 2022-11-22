@@ -210,4 +210,12 @@ export default makeStyles((theme) => ({
     // &::-webkit-line-clamp: vertical;
     // white-space: normal;
   },
+  txtDescription: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: 3,
+    marginBottom: 5,
+  },
 }));

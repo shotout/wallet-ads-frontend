@@ -74,6 +74,7 @@ export default function AddPaymentMethod({
       handleSubmit();
     } else {
       if (type === 'crypto') {
+        setLoading(true);
         handleChooseCrypto();
       } else {
         directStripe(values.promoCode);
@@ -83,7 +84,6 @@ export default function AddPaymentMethod({
 
   const handleChooseCrypto = async () => {
     const campaign = await createCampaignID();
-    setLoading(true);
     payCyrptoCurrency({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
@@ -227,6 +227,7 @@ export default function AddPaymentMethod({
                 label={'Add credit card'}
                 eventName={'Pay with stripe'}
                 isLoading={isPaymentLoading}
+                disabled={isPaymentLoading}
               />
             </Grid>
             <Grid item sm={6} md={6} xs={12}>
@@ -236,6 +237,7 @@ export default function AddPaymentMethod({
                 onClick={() => handlePaymentChoose('crypto')}
                 label={'I would like to pay using cryptocurrencies'}
                 eventName={'Pay with crypto'}
+                disabled={loading}
               />
             </Grid>
           </Grid>

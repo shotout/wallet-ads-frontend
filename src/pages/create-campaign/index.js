@@ -1,4 +1,4 @@
-import { Box, Grid, Popover, Typography } from '@mui/material';
+import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -31,7 +31,6 @@ import DefaultButton from '../../components/default-button';
 import moment from 'moment';
 import SuccessAddCampaign from '../../components/success-add-campaign';
 import AddPaymentMethod from '../../components/add-payment-method';
-import { useStripe } from '@stripe/react-stripe-js';
 import { BACKEND_URL } from '../../helpers/constants';
 import { normalizeCurrency } from '../../helpers/currency';
 import { getFutureDate } from '../../helpers/dateHelper';
@@ -56,9 +55,11 @@ const questionObj = {
 };
 
 const informationObj = {
-  profile: 'The Profile & Collection page is similar to the profile page of your social media accounts - but for WALLETADS it is campaign specific. To guarantee the best deliverability, each of your WALLETADS campaigns will get a unique Profile and Collection page name.',
-  adCreation: 'Create the ad that you would like the users to see. Our system will convert your assets into an NFT and distribute it into the the users’ wallets - optimized by our advanced targeting system.',
-}
+  profile:
+    'The Profile & Collection page is similar to the profile page of your social media accounts - but for WALLETADS it is campaign specific. To guarantee the best deliverability, each of your WALLETADS campaigns will get a unique Profile and Collection page name.',
+  adCreation:
+    'Create the ad that you would like the users to see. Our system will convert your assets into an NFT and distribute it into the the users’ wallets - optimized by our advanced targeting system.',
+};
 
 // ----------------------------------------------------------------------
 
@@ -82,9 +83,20 @@ const mediumIcon = '/assets/medium.png';
 const websiteIcon = '/assets/website.png';
 const deleteIcon = '/assets/svg/delete.svg';
 const informationIcon = '/icons/ic_information.svg';
+const expandOpenIcon = '/icons/ic_expandopen.svg';
+const expandCloseIcon = '/icons/ic_expandclose.svg';
+const rubishIcon = '/icons/ic_rubish.svg';
+const addAdIcon = '/icons/ic_add.svg';
 
+const initDecription = [
+  {
+    id: makeId(),
+    adtext: '',
+    isErr: false,
+  },
+];
 
-const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -96,6 +108,7 @@ export default function AddCampaign({ content, params }) {
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
+  const [expandAdvanced, setExpandAdvanced] = useState(false);
   const [formValues, setFormValues] = useState({
     campaign_name: '',
     campaign_start_date: new Date(getFutureDate(2)),
@@ -107,6 +120,8 @@ export default function AddCampaign({ content, params }) {
     ads_page_discord: '',
     ads_page_medium: '',
     ads_page_telegram: '',
+    ads_page_token_name: '',
+    ads_page_token_symbol: '',
   });
   const [selectedAudience, setSelectedAudience] = useState(null);
   const [loadingSubmit, setLoadingSubmit] = useState(null);
@@ -251,6 +266,8 @@ export default function AddCampaign({ content, params }) {
         ads_page_discord: adsPage.discord,
         ads_page_medium: adsPage.medium,
         ads_page_telegram: adsPage.telegram,
+        ads_page_token_name: adsPage.token_name,
+        ads_page_token_symbol: adsPage.token_symbol,
       });
     }
   }, []);
@@ -261,7 +278,7 @@ export default function AddCampaign({ content, params }) {
     setActivePopover(null);
     setBannerCollection(null);
     setLogoCollection(null);
-    setPicture([{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }]);
+    setPicture([{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }]);
     setFormValues({
       campaign_name: '',
       campaign_start_date: new Date(getFutureDate(2)),
@@ -273,6 +290,8 @@ export default function AddCampaign({ content, params }) {
       ads_page_discord: '',
       ads_page_medium: '',
       ads_page_telegram: '',
+      ads_page_token_name: '',
+      ads_page_token_symbol: '',
     });
     setSelectedAudience(null);
     setLoadingSubmit(null);
@@ -418,13 +437,15 @@ export default function AddCampaign({ content, params }) {
       formRes.append('ads_page_discord', formValues.ads_page_discord);
       formRes.append('ads_page_medium', formValues.ads_page_medium);
       formRes.append('ads_page_telegram', formValues.ads_page_telegram);
+      formRes.append('ads_page_token_name', formValues.ads_page_token_name);
+      formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
       formRes.append('ads_page_logo', logoCollection);
       formRes.append('ads_page_banner', bannerCollection);
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
         if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
-        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         if (ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
             formRes.append(
@@ -513,6 +534,43 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
+  const addAdText = (index) => {
+    console.log(index);
+    console.log(pictureData);
+    const body = {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    };
+
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
+        return {
+          ...v,
+          description: [...v.description, body],
+        };
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
+  const removeAdText = (id, index) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
+        return {
+          ...v,
+          description: filterDesc,
+        };
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
   const isAdsArrValid = (ads) => {
     if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
       return true;
@@ -522,12 +580,14 @@ export default function AddCampaign({ content, params }) {
 
   const validateSubmit = () => {
     try {
+      // convertDescriptionDataToString();
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
       let isAdsValid = false;
       let inputValid = true;
       let selectedAdsAudience = [];
+      let isAdTextValid;
       const errorObj = {
         campaignName: formValues.campaign_name === '',
         collectionPageName: formValues.ads_page_name === '',
@@ -557,6 +617,7 @@ export default function AddCampaign({ content, params }) {
           arrValid.push(ads);
         }
       });
+      isAdTextValid = validationAdsText();
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
@@ -573,7 +634,7 @@ export default function AddCampaign({ content, params }) {
         }
       } else {
         setErrorBox({
-          errorAds: !isAdsValid || !isAudienceFormAdsValid,
+          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid,
           errorAudience: isAudienceValid.length === 0,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
@@ -588,9 +649,23 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-ads';
         }
       }
+      // validationAdsText();
     } catch (err) {
       console.log('err :', err);
     }
+  };
+
+  const validationAdsText = () => {
+    let isValid = true;
+    pictureData.map((picData, pictureIndex) => {
+      picData.description.map((desc, descIndex) => {
+        if (desc.adtext === '') {
+          handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+          isValid = false;
+        }
+      });
+    });
+    return isValid;
   };
 
   const deactivateErrorCampaign = () => {
@@ -665,11 +740,11 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangeDefaultValue = (value, stateName) => {
-    console.log(stateName, value)
+    console.log(stateName, value);
     setFormValues({
       ...formValues,
       [stateName]: value,
-      campaign_end_day: 7
+      campaign_end_day: 7,
     });
   };
 
@@ -747,7 +822,14 @@ export default function AddCampaign({ content, params }) {
     setAudienceForm(listData.concat(addData));
   };
 
-  const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture) => {
+  const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture, descId) => {
+    const a = {
+      acceptedFiles,
+      stateName,
+      indexContent,
+      isPicture,
+    };
+    console.log(a);
     let file = null;
     deactivateErrorBoxAds();
     if (isPicture) {
@@ -783,7 +865,30 @@ export default function AddCampaign({ content, params }) {
               ...pict,
               [stateName]: listAudience,
             };
+          } else if (stateName === 'description') {
+            // const arrDesc = adText.map((v, i) => {
+            //   if (i === descId) {
+            //     return { ...v, adtext: acceptedFiles.target.value };
+            //   } else {
+            //     return adText;
+            //   }
+            // });
+            // console.log(adText);
+            // console.log(arrDesc);
+            let newArrDesc = [...pict.description];
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
+
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
           }
+
           return {
             ...pict,
             [stateName]: acceptedFiles.target.value,
@@ -1103,9 +1208,7 @@ export default function AddCampaign({ content, params }) {
                     <div className={styles.leftWrapper}>
                       <CheckboxAds isActive={formValues.campaign_end_date_type === '3'} />
                     </div>
-                    <div
-                      className={`${styles.midWrapper}`}
-                    >
+                    <div className={`${styles.midWrapper}`}>
                       <span>After:</span>
                       <input
                         value={formValues.campaign_end_day}
@@ -1294,22 +1397,29 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderLeftAdCreation(content, index) {
+  function renderTopAdCreation(content, index) {
     return (
-      <div className={styles.ctnLeftCollection}>
-        <div className={styles.ctnInputCollection}>
+      <Grid container marginBottom={2}>
+        <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Ad name</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'ad_name');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('ad_name', questionObj.ad_name)}
+            <div className={styles.leftTitleBetween}>
+              <div className={styles.leftTitle}>
+                <Typography variant="h6">Ad name</Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_name');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_name', questionObj.ad_name)}
+              </div>
+              <div>
+                <Typography variant="body2" color="#808080">
+                  (Not visible for your audiences)
+                </Typography>
+              </div>
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
@@ -1323,8 +1433,8 @@ export default function AddCampaign({ content, params }) {
             />
             {renderErrorText(errorBox.errorAds && !content.name)}
           </div>
-        </div>
-        <div className={styles.ctnInputCollection}>
+        </Grid>
+        <Grid md={6} sm={6} xl={6} addingLeft={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
               <Typography variant="h6">Media</Typography>
@@ -1380,8 +1490,8 @@ export default function AddCampaign({ content, params }) {
             }}
           />
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 
@@ -1516,33 +1626,60 @@ export default function AddCampaign({ content, params }) {
 
   function renderRightAdCreation(content, index) {
     return (
-      <div className={styles.ctnRightCollection}>
-        <div className={styles.ctnInputCollection}>
-          <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Ad text</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'ad_text');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('ad_text', questionObj.ad_text)}
-            </div>
-          </div>
-          <div className={styles.textAreaCollection}>
-            <textarea
-              value={content.description}
-              onChange={(event) => {
-                handleChangePicture(event, 'description', index);
+      <div className={styles.ctnInputCollection}>
+        <div className={styles.rowTitleWrapper}>
+          <div className={styles.leftTitleAdText}>
+            <Typography variant="h6">Ad text</Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'ad_text');
               }}
-              placeholder="Add your ad text here"
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
             />
-            {renderErrorText(errorBox.errorAds && !content.description)}
+            {renderPopover('ad_text', questionObj.ad_text)}
           </div>
         </div>
+        <Grid container>
+          {typeof content.description === 'string'
+            ? ''
+            : content.description?.map((v, i) => (
+                <Grid
+                  key={`adtext-${i}`}
+                  md={6}
+                  sm={6}
+                  xl={6}
+                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+                  marginBottom={1}
+                >
+                  <div className={styles.adtextTitleContainer}>
+                    <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
+                  </div>
+
+                  <div className={styles.textAreaCollection}>
+                    <textarea
+                      // value={content.description}
+                      onChange={(event) => {
+                        handleChangePicture(event, 'description', index, false, i);
+                      }}
+                      placeholder="Add your ad text here"
+                    />
+                    {renderErrorText(errorBox.errorAds && v.isErr)}
+                  </div>
+                </Grid>
+              ))}
+          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+            <div className={styles.adtextTitleContainer}>{''}</div>
+            <div className={styles.addAdButton} onClick={() => addAdText(index)}>
+              <img src={addAdIcon} />
+              <Typography fontSize={16} fontWeight={600} color={'#808080'}>
+                Add ad text
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
       </div>
     );
   }
@@ -1641,11 +1778,118 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderBottomCollection() {
+    return (
+      <div>
+        <div className={styles.ctnCollectionBottomHeaderContainer}>
+          <div className={styles.leftTitle}>
+            <img
+              src={expandAdvanced ? expandOpenIcon : expandCloseIcon}
+              onClick={() => setExpandAdvanced(!expandAdvanced)}
+              alt="expand"
+            />
+            <Typography
+              fontSize={18}
+              onClick={() => setExpandAdvanced(!expandAdvanced)}
+              fontWeight={600}
+              color={'#808080'}
+              style={{ marginLeft: 10, cursor: 'pointer' }}
+            >
+              Advanced settings
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'add_social_media_link');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('add_social_media_link', questionObj.add_social_media_link)}
+          </div>
+          <div style={{ justifyContent: 'flex-end' }}>
+            <Typography fontSize={14} fontWeight={400} color={'#808080'}>
+              Optional
+            </Typography>
+          </div>
+        </div>
+        {/* <Box sx={{ display: 'flex', backgroundColor: 'red', paddingTop: 10 }}> */}
+        <Collapse in={expandAdvanced}>
+          <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
+            Token tracker:
+          </Typography>
+          <Grid container>
+            <Grid md={6} sm={6} xl={6} padding={1}>
+              <div className={styles.leftTitleBottom}>
+                <Typography fontSize={14} fontWeight={700}>
+                  Name
+                </Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_text');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_text', questionObj.ad_text)}
+              </div>
+              <div className={styles.inputCollectionWrapper}>
+                <input
+                  onChange={(value) => {
+                    handleResetErrorValue('collectionPageName');
+                    handleChangeValues(value, 'ads_page_token_name');
+                  }}
+                  value={formValues.ads_page_token_name}
+                  placeholder="Name"
+                  type="text"
+                />
+                {/* {renderErrorText(errorInput.collectionPageName)} */}
+              </div>
+            </Grid>
+            <Grid md={6} sm={6} xl={6} padding={1}>
+              <div className={styles.inputCollectionWrapper}>
+                <div className={styles.leftTitleBottom}>
+                  <Typography fontSize={14} fontWeight={700}>
+                    Symbol
+                  </Typography>
+                  <img
+                    onMouseEnter={(event) => {
+                      handleHoverOpen(event, 'ad_text');
+                    }}
+                    onMouseLeave={handleHoverClose}
+                    src={askIcon}
+                    alt="ask"
+                  />
+                  {renderPopover('ad_text', questionObj.ad_text)}
+                </div>
+                <input
+                  onChange={(value) => {
+                    handleChangeValues(value, 'ads_page_token_symbol');
+                  }}
+                  value={formValues.ads_page_token_symbol}
+                  placeholder="Symbol"
+                  type="text"
+                />
+                {/* {renderErrorText(errorInput.collectionPageName)} */}
+              </div>
+            </Grid>
+          </Grid>
+        </Collapse>
+        {/* </Box> */}
+      </div>
+    );
+  }
+
   function renderInputCollection() {
     return (
-      <div className={styles.ctnInputCollectionPageWrapper}>
-        {renderLeftCollection()}
-        {renderRightCollection()}
+      <div className={styles.ctnInputCollectionPageWrapper} style={{ flexDirection: 'column' }}>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          {renderLeftCollection()}
+          {renderRightCollection()}
+        </div>
+        <Divider />
+        {renderBottomCollection()}
       </div>
     );
   }
@@ -1655,13 +1899,13 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.ctnSectionTarget}>
         <div className={styles.ctnMidInput}>
           <Typography variant="span" textAlign={'justify'}>
-              {text}
+            {text}
           </Typography>
         </div>
         <div className={styles.ctnIconInformation}>
           <img src={informationIcon} alt="campaign" />
         </div>
-    </div>
+      </div>
     );
   }
 
@@ -1673,10 +1917,10 @@ export default function AddCampaign({ content, params }) {
         }`}
         key={content.adsId}
       >
-        <div className={styles.ctnInputCollectionPageWrapper}>
-          {renderLeftAdCreation(content, index)}
-          {renderRightAdCreation(content, index)}
-        </div>
+        {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
+        {renderTopAdCreation(content, index)}
+        {renderRightAdCreation(content, index)}
+        {/* </div> */}
         <div className={styles.ctnSelectAudience}>
           <div className={styles.ctnInputCollection}>
             <div className={styles.rowTitleWrapper}>
@@ -1770,7 +2014,7 @@ export default function AddCampaign({ content, params }) {
           className={styles.btnCreateAd}
           onClick={() => {
             const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: '', adsId: makeId() });
+            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
             setPicture(currentArr);
           }}
         >

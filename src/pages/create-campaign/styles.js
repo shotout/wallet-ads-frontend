@@ -211,7 +211,7 @@ const useStyles = makeStyles((theme) => ({
       objectFit: 'contain',
     },
   },
-  
+
   ctnIconTargetAlt: {
     marginRight: 40,
     '& > img': {
@@ -305,6 +305,40 @@ const useStyles = makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  leftTitleBetween: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    fontFamily: 'Public Sans,sans-serif',
+    justifyContent: 'space-between',
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
+  leftTitleAdText: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'absolute',
+    top: 12,
+    marginTop: 10,
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
   inputCollectionWrapper: {
     '& > input': {
       fontFamily: 'Public Sans,sans-serif',
@@ -344,7 +378,7 @@ const useStyles = makeStyles((theme) => ({
   textAreaCollection: {
     '& > textarea': {
       border: 0,
-      height: 160,
+      height: 120,
       width: '100%',
       background: '#F1F1F1',
       borderRadius: 8,
@@ -506,13 +540,13 @@ const useStyles = makeStyles((theme) => ({
   ctnPopover: {
     '& > .MuiPaper-root': {
       background: 'rgba(0, 0, 0,0.9)',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnPopoverError: {
     '& > .MuiPaper-root': {
       background: '#FFD8DF',
-      boxShadow:' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px'
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
     },
   },
   ctnInputColumn: {
@@ -553,6 +587,79 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingTop: 10,
+  },
+  ctnCollectionBottomHeaderContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    '& > div': {
+      display: 'flex',
+      width: '100%',
+      marginTop: 10,
+    },
+  },
+  leftTitleBottom: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 5,
+    '& > img': {
+      width: 12,
+      height: 12,
+      objectFit: 'contain',
+      marginLeft: 4,
+      cursor: 'pointer',
+      marginBottom: 3,
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
+  ctnAdCollection: {
+    width: '100%',
+    paddingRight: 40,
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+      paddingRight: 0,
+    },
+  },
+  adtextTitleContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 20,
+    marginTop: 15,
+    marginBottom: 15,
+    '& > img': {
+      cursor: 'pointer',
+      marginLeft: 7,
+    },
+  },
+  adTextTitle: {
+    fontFamily: 'Public Sans, sans-serif',
+    color: '#808080',
+  },
+  addAdButton: {
+    border: 0,
+    height: 120,
+    width: '100%',
+    background: '#F1F1F1',
+    borderRadius: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontFamily: 'Public Sans,sans-serif',
+    paddingTop: 20,
+    paddingBottom: 20,
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 25,
+      marginRight: 10,
+    },
   },
 }));
 

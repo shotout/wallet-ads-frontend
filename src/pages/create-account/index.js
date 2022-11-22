@@ -13,6 +13,7 @@ import { eventTrack, GTMTracker } from '../../utils/tracker';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const emailBanner = '/assets/email_banner.png';
+const menuIcon = '/assets/svg/menu.svg';
 
 const defaultState = {
   company_name: '',
@@ -29,13 +30,14 @@ const defaultState = {
   country: '',
 };
 
-export default function Register() {
+export default function Register({ isMobile }) {
   const styles = useStyles();
   const [values, setValues] = useState(defaultState);
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [contentType, setContentType] = useState('register');
+  const [contentType, setContentType] = useState('success');
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleChange = (prop) => (event) => {
     if (errorMessage[prop]?.length > 0) {
@@ -81,6 +83,47 @@ export default function Register() {
       </div>
     );
   }
+
+  function renderMobileHeader() {
+    return (
+      <div className={styles.ctnMobileHeader}>
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
+        <div className="menu">
+          <img onClick={() => setShowMenu(!showMenu)} src={menuIcon} alt="wallet-ads" />
+        </div>
+      </div>
+    );
+  }
+
+  const renderMobileMenu = () => (
+    <div className={styles.ctnMenuRoot}>
+      <div className={styles.ctnMobileHeader}>
+        <Link href={routes.walletads}>
+          <img src={appIcon} alt="wallet-ads" />
+        </Link>
+        <div className="menu">
+          <img onClick={() => setShowMenu(!showMenu)} src={menuIcon} alt="wallet-ads" />
+        </div>
+      </div>
+
+      <div className={styles.ctnLink}>
+        <Link href={routes.walletadsFeature}>
+          <a target={'_blank'}>Features</a>
+        </Link>
+        <Link href={routes.walletadsExplore}>
+          <a target={'_blank'}>Explore</a>
+        </Link>
+        <Link href={routes.walletadsContact}>
+          <a target={'_blank'}>Contact</a>
+        </Link>
+        <Link href={routes.walletadsLogin}>
+          <a target={'_blank'}>Login</a>
+        </Link>
+      </div>
+    </div>
+  );
 
   function renderDirect() {
     return (
@@ -169,9 +212,9 @@ export default function Register() {
                   />
                 </div>
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={6} sm={12} xs={12}>
                 <Grid container spacing={2}>
-                  <Grid item md={6} xs={12}>
+                  <Grid item md={6} sm={6} xs={6}>
                     <div className={styles.inputWrapper}>
                       <TextField
                         value={values.post_code}
@@ -181,10 +224,12 @@ export default function Register() {
                         size="small"
                         fullWidth
                         placeholder="Post Code"
+                        type="number"
+                        inputProps={{ inputMode: 'numeric' }}
                       />
                     </div>
                   </Grid>
-                  <Grid item md={6} xs={12}>
+                  <Grid item md={6} sm={6} xs={6}>
                     <div className={styles.inputWrapper}>
                       <TextField
                         value={values.city}
@@ -226,6 +271,7 @@ export default function Register() {
                     size="small"
                     fullWidth
                     placeholder="Email address"
+                    type={'email'}
                   />
                 </div>
               </Grid>
@@ -240,6 +286,8 @@ export default function Register() {
                     size="small"
                     fullWidth
                     placeholder="Telephone"
+                    type={'number'}
+                    inputProps={{ inputMode: 'numeric' }}
                   />
                 </div>
               </Grid>
@@ -316,7 +364,7 @@ export default function Register() {
             ctnBtnStyle={styles.btnStyle}
             label={'Create account'}
           />
-          {renderDirect()}
+          {!isMobile && renderDirect()}
         </div>
       );
     }
@@ -326,24 +374,26 @@ export default function Register() {
   function renderSuccess() {
     if (contentType === 'success') {
       return (
-        <div className={styles.ctnInput}>
-          <div className={styles.ctnSuccess}>
-            <img src={emailBanner} alt="success" />
-            <Typography
-              variant="h5"
-              marginTop={3}
-              marginBottom={2}
-              fontWeight="800"
-              lineHeight={1.3}
-              textAlign={'center'}
-            >
-              We are currently validating your data and will send you a link to activate your account within the next 24
-              hours.
-            </Typography>
-            <Typography variant="body1" textAlign={'center'}>
-              Once you receive the activation email, please confirm your email address by clicking the button in the
-              email.
-            </Typography>
+        <div className={`${isMobile ? styles.centerPosition : null}`}>
+          <div className={styles.ctnInput}>
+            <div className={styles.ctnSuccess}>
+              <img src={emailBanner} alt="success" />
+              <Typography
+                variant="h5"
+                marginTop={3}
+                marginBottom={2}
+                fontWeight="800"
+                lineHeight={1.3}
+                textAlign={'center'}
+              >
+                We are currently validating your data and will send you a link to activate your account within the next
+                24 hours.
+              </Typography>
+              <Typography variant="body1" textAlign={'center'}>
+                Once you receive the activation email, please confirm your email address by clicking the button in the
+                email.
+              </Typography>
+            </div>
           </div>
         </div>
       );
@@ -354,8 +404,15 @@ export default function Register() {
   return (
     <Page title="Sign up" description="Create your WALLETADS account now!">
       <meta name="description" />
-      <div className={styles.ctnRoot}>
-        {renderHeader()}
+      <div className={`${styles.ctnRoot} ${!isMobile ? styles.bgImage : styles.bgGradation}`}>
+        {isMobile ? (
+          <>
+            <div>{renderMobileHeader()}</div>
+            <div>{showMenu && renderMobileMenu()}</div>
+          </>
+        ) : (
+          renderHeader()
+        )}
         {renderInput()}
         {renderSuccess()}
         <AuthFooter />
@@ -367,15 +424,10 @@ export default function Register() {
 export async function getServerSideProps(context) {
   const UA = context.req.headers['user-agent'];
   const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
-  if (isMobile) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: `/forbidden`,
-      },
-    };
-  }
+
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      isMobile,
+    }, // will be passed to the page component as props
   };
 }

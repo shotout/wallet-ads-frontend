@@ -1,11 +1,13 @@
 import React from 'react';
 import useStyles from './styles';
 import { BACKEND_URL } from '../../helpers/constants';
-import { Typography } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import CheckboxAds from '../checkbox';
 
 export default function AdsCard({ item, audienceData }) {
   const styles = useStyles();
+
+  // const [description, setDescription] = React.useState(JSON.string())
 
   const audenceDatas = audienceData.filter((audience) => audience.ads_id === item.id);
   console.log(audenceDatas.name);
@@ -19,11 +21,27 @@ export default function AdsCard({ item, audienceData }) {
   }
 
   function renderAdText() {
+    let contents = null;
+    try {
+      contents = JSON.parse(item.description);
+    } catch (error) {
+      contents = item.description;
+    }
+
     return (
       <div className={styles.adtextContainer}>
-        <Typography fontWeight={400} textAlign={'justify'}>
-          {item.description}
-        </Typography>
+        {typeof contents === 'object' &&
+          contents.map((v, i) => (
+            <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+              <Typography fontSize={16} fontWeight={600}>
+                Ad text {i + 1}:
+              </Typography>
+              <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+                {v.adtext}
+              </Typography>
+              {contents.length > 1 && <Divider />}
+            </div>
+          ))}
       </div>
     );
   }
@@ -48,9 +66,7 @@ export default function AdsCard({ item, audienceData }) {
           {item.name}
         </Typography>
         {renderImage()}
-        <Typography fontSize={18} fontWeight={600}>
-          Ad text:
-        </Typography>
+
         {renderAdText()}
         <div className={styles.ctnDivider}>{''}</div>
         <Typography fontSize={18} fontWeight={600} marginBottom={2}>
