@@ -92,6 +92,7 @@ const initDecription = [
   {
     id: makeId(),
     adtext: '',
+    isErr: false,
   },
 ];
 
@@ -539,6 +540,7 @@ export default function AddCampaign({ content, params }) {
     const body = {
       id: makeId(),
       adtext: '',
+      isErr: false,
     };
 
     const newData = pictureData.map((v, i) => {
@@ -585,6 +587,7 @@ export default function AddCampaign({ content, params }) {
       let isAdsValid = false;
       let inputValid = true;
       let selectedAdsAudience = [];
+      let isAdTextValid;
       const errorObj = {
         campaignName: formValues.campaign_name === '',
         collectionPageName: formValues.ads_page_name === '',
@@ -614,6 +617,7 @@ export default function AddCampaign({ content, params }) {
           arrValid.push(ads);
         }
       });
+      isAdTextValid = validationAdsText();
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
@@ -630,7 +634,7 @@ export default function AddCampaign({ content, params }) {
         }
       } else {
         setErrorBox({
-          errorAds: !isAdsValid || !isAudienceFormAdsValid,
+          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid,
           errorAudience: isAudienceValid.length === 0,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
@@ -645,9 +649,23 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-ads';
         }
       }
+      // validationAdsText();
     } catch (err) {
       console.log('err :', err);
     }
+  };
+
+  const validationAdsText = () => {
+    let isValid = true;
+    pictureData.map((picData, pictureIndex) => {
+      picData.description.map((desc, descIndex) => {
+        if (desc.adtext === '') {
+          handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+          isValid = false;
+        }
+      });
+    });
+    return isValid;
   };
 
   const deactivateErrorCampaign = () => {
@@ -858,7 +876,12 @@ export default function AddCampaign({ content, params }) {
             // console.log(adText);
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
-            newArrDesc[descId].adtext = acceptedFiles.target.value;
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
 
             return {
               ...pict,
@@ -1631,8 +1654,7 @@ export default function AddCampaign({ content, params }) {
                   marginBottom={1}
                 >
                   <div className={styles.adtextTitleContainer}>
-                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
-
+                    <Typography className={styles.adTextTitle}>{`Ad text ${i + 1} ${v.isErr}`}</Typography>
                     {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                   </div>
 
@@ -1644,7 +1666,7 @@ export default function AddCampaign({ content, params }) {
                       }}
                       placeholder="Add your ad text here"
                     />
-                    {renderErrorText(errorBox.errorAds && !content.description)}
+                    {renderErrorText(errorBox.errorAds && v.isErr)}
                   </div>
                 </Grid>
               ))}
