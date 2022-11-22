@@ -646,7 +646,7 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#availability-section';
         } else if (isAudienceValid.length === 0) {
           window.location.href = '#card-audience';
-        } else if (!isAdsValid || !isAudienceFormAdsValid) {
+        } else if (!isAdsValid || !isAudienceFormAdsValid || !isAdTextValid) {
           window.location.href = '#card-ads';
         }
       }
