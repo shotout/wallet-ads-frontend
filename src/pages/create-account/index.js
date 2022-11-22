@@ -36,7 +36,7 @@ export default function Register({ isMobile }) {
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [contentType, setContentType] = useState('register');
+  const [contentType, setContentType] = useState('success');
   const [showMenu, setShowMenu] = useState(false);
 
   const handleChange = (prop) => (event) => {
@@ -374,24 +374,26 @@ export default function Register({ isMobile }) {
   function renderSuccess() {
     if (contentType === 'success') {
       return (
-        <div className={styles.ctnInput}>
-          <div className={styles.ctnSuccess}>
-            <img src={emailBanner} alt="success" />
-            <Typography
-              variant="h5"
-              marginTop={3}
-              marginBottom={2}
-              fontWeight="800"
-              lineHeight={1.3}
-              textAlign={'center'}
-            >
-              We are currently validating your data and will send you a link to activate your account within the next 24
-              hours.
-            </Typography>
-            <Typography variant="body1" textAlign={'center'}>
-              Once you receive the activation email, please confirm your email address by clicking the button in the
-              email.
-            </Typography>
+        <div className={`${isMobile ? styles.centerPosition : null}`}>
+          <div className={styles.ctnInput}>
+            <div className={styles.ctnSuccess}>
+              <img src={emailBanner} alt="success" />
+              <Typography
+                variant="h5"
+                marginTop={3}
+                marginBottom={2}
+                fontWeight="800"
+                lineHeight={1.3}
+                textAlign={'center'}
+              >
+                We are currently validating your data and will send you a link to activate your account within the next
+                24 hours.
+              </Typography>
+              <Typography variant="body1" textAlign={'center'}>
+                Once you receive the activation email, please confirm your email address by clicking the button in the
+                email.
+              </Typography>
+            </div>
           </div>
         </div>
       );
@@ -402,7 +404,7 @@ export default function Register({ isMobile }) {
   return (
     <Page title="Sign up" description="Create your WALLETADS account now!">
       <meta name="description" />
-      <div className={styles.ctnRoot}>
+      <div className={`${styles.ctnRoot} ${!isMobile ? styles.bgImage : styles.bgGradation}`}>
         {isMobile ? (
           <>
             <div>{renderMobileHeader()}</div>

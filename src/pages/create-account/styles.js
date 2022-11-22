@@ -7,7 +7,17 @@ export default makeStyles((theme) => ({
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
-    // justifyContent: 'center',
+  },
+  centerPosition: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '85vh',
+  },
+  bgGradation: {
+    background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(203, 180, 223, 0.5) 100%)',
+  },
+  bgImage: {
     backgroundImage: 'url("/assets/auth_bg.png")',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'right',
