@@ -90,7 +90,7 @@ const addAdIcon = '/icons/ic_add.svg';
 
 const initDecription = [
   {
-    id: makeId(),
+    id: null,
     adtext: '',
     isErr: false,
   },
@@ -657,6 +657,8 @@ export default function AddCampaign({ content, params }) {
   };
 
   const validationAdsText = () => {
+    console.log(pictureData);
+    let adTextToSend = [];
     let isValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
@@ -664,8 +666,11 @@ export default function AddCampaign({ content, params }) {
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
           isValid = false;
         }
+        adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
       });
     });
+    console.log(adTextToSend);
+    console.log(JSON.stringify(adTextToSend));
     return isValid;
   };
 
@@ -878,6 +883,7 @@ export default function AddCampaign({ content, params }) {
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
             if (acceptedFiles) {
+              newArrDesc[descId].id = Number(descId) + 1;
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
             } else {
