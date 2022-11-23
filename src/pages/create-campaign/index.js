@@ -1889,8 +1889,8 @@ export default function AddCampaign({ content, params }) {
           {renderLeftCollection()}
           {renderRightCollection()}
         </div>
-        <Divider />
-        {renderBottomCollection()}
+        {/* <Divider /> */}
+        {/* {renderBottomCollection()} */}
       </div>
     );
   }
