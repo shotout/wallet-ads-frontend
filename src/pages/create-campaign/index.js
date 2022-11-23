@@ -1671,7 +1671,7 @@ export default function AddCampaign({ content, params }) {
                   </div>
                 </Grid>
               ))}
-          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+          {/* <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
@@ -1679,7 +1679,7 @@ export default function AddCampaign({ content, params }) {
                 Add ad text
               </Typography>
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
     );
