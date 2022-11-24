@@ -1835,13 +1835,13 @@ export default function AddCampaign({ content, params }) {
                 </Typography>
                 <img
                   onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'ad_text');
+                    handleHoverOpen(event, 'token_name');
                   }}
                   onMouseLeave={handleHoverClose}
                   src={askIcon}
                   alt="ask"
                 />
-                {renderPopover('ad_text', questionObj.token_tracker_name)}
+                {renderPopover('token_name', questionObj.token_tracker_name)}
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
@@ -1864,13 +1864,13 @@ export default function AddCampaign({ content, params }) {
                   </Typography>
                   <img
                     onMouseEnter={(event) => {
-                      handleHoverOpen(event, 'ad_text');
+                      handleHoverOpen(event, 'token_symbol');
                     }}
                     onMouseLeave={handleHoverClose}
                     src={askIcon}
                     alt="ask"
                   />
-                  {renderPopover('ad_text', questionObj.token_symbol)}
+                  {renderPopover('token_symbol', questionObj.token_symbol)}
                 </div>
                 <input
                   onChange={(value) => {
