@@ -443,7 +443,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             Status
           </Typography>
         </Grid>
-        <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+        <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
           <div
             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             onClick={() => handleSort('campaign', true, '', 'count_airdrop')}
@@ -456,10 +456,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+        <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
             <div className={styles.leftTitle}>
-              <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }} textAlign={'center'}>
+              <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
                 Impressions
               </Typography>
               <img
@@ -497,7 +497,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid> */}
-        <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+        <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
             <Typography variant="body1" fontWeight={'bold'} textAlign={'center'} sx={{ cursor: 'pointer' }}>
               Mints
@@ -537,7 +537,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     onClick={() => openCampaignModal(item.id)}
                     color={'#7089FF'}
                   >
-                    {shortString(item.name, 10)}
+                    {shortString(item.name, 20)}
                   </Typography>
                   {renderPopover('logo_text_banner', '')}
                 </div>
@@ -550,12 +550,12 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
               <Grid item md={2} sm={12}>
-                <Typography variant="body1" textAlign={'center'}>
+                <Typography variant="body1" textAlign={'right'}>
                   {normalizeCurrency(item.count_airdrop) ?? '-'}
                 </Typography>
               </Grid>
-              <Grid item md={2} sm={12}>
-                <Typography variant="body1" textAlign={'center'}>
+              <Grid item md={2.5} sm={12}>
+                <Typography variant="body1" textAlign={'right'}>
                   {normalizeCurrency(item.count_impression) ?? '-'}
                 </Typography>
               </Grid>
@@ -565,8 +565,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {/* <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{normalizeCurrency(item.count_click) ?? '-'}</Typography>
               </Grid> */}
-              <Grid item md={2} sm={12}>
-                <Typography variant="body1" textAlign={'center'}>
+              <Grid item md={1.5} sm={12}>
+                <Typography variant="body1" textAlign={'right'}>
                   {normalizeCurrency(item.count_mint) ?? '-'}
                 </Typography>
               </Grid>
@@ -598,12 +598,12 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </Typography>
           </Grid>
           <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'} textAlign={'center'}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'} textAlign={'center'}>
+          <Grid item md={2.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.impressions) ?? 0}
             </Typography>
           </Grid>
@@ -617,8 +617,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {normalizeCurrency(totalCampainOverview.linkClicks) ?? 0}
             </Typography>
           </Grid> */}
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'} textAlign={'center'}>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.mints) ?? 0}
             </Typography>
           </Grid>
@@ -772,7 +772,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             Ad creative
           </Typography>
         </Grid>
-        <Grid item md={2} sm={12} display="flex" justifyContent={'center'}>
+        <Grid item md={2} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audince', true, '', 'count_airdrop')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Airdrops
@@ -782,7 +782,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex" justifyContent={'center'}>
+        <Grid item md={2.5} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_impression')}>
             <div className={styles.leftTitle}>
               <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -823,7 +823,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid> */}
-        <Grid item md={2} sm={12} display="flex" justifyContent={'center'}>
+        <Grid item md={1.5} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_mint')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Mints
@@ -883,10 +883,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   <img src={expandIcon} />
                 </div>
               </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
               </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+              <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography textAlign={'center'} variant="body1">
                   {normalizeCurrency(item?.count_impression) ?? '-'}
                 </Typography>
@@ -897,7 +897,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_click) ?? '-'}</Typography>
               </Grid> */}
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'center'}>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography textAlign={'center'} variant="body1">
                   {normalizeCurrency(item?.count_mint) ?? '-'}
                 </Typography>
@@ -924,13 +924,13 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {''}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12} textAlign={'center'}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2} sm={12} textAlign={'right'}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12} textAlign={'center'}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.impressions) ?? 0}
             </Typography>
           </Grid>
@@ -944,8 +944,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {normalizeCurrency(totalAudienceOverview.linkClicks) ?? 0}
             </Typography>
           </Grid> */}
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'} textAlign={'center'}>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.mints) ?? 0}
             </Typography>
           </Grid>
