@@ -108,6 +108,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     const labels = [];
     const airdrops = [];
     const views = [];
+    const impressions = [];
     const res = await getAudienceByCampaignID(id);
 
     setCapmapaignID(id);
@@ -117,7 +118,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.count_airdrop);
-      views.push(element.count_view);
+      impressions.push(element.count_impression);
     });
     const totalAirDrop = sumArr(res.data.audiences, 'count_airdrop', true);
     const totalClick = sumArr(res.data.audiences, 'count_click', true);
@@ -131,7 +132,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
       views: totalView,
       mints: totalMint,
     });
-    setChartDatas({ labels: labels, airdrops: airdrops, views: views });
+    setChartDatas({ labels: labels, airdrops: airdrops, impressions: impressions });
   };
 
   const sumCampainOverview = (val) => {
@@ -982,7 +983,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             <div className={styles.ctnTitle}>
               <Typography variant="h6">{campaignName} - Impressions</Typography>
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.views} title={'Impressions'} />
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.impressions} title={'Impressions'} />
           </div>
         </Grid>
       </Grid>
