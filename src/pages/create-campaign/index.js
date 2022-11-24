@@ -52,6 +52,9 @@ const questionObj = {
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
   errorAd: 'Another ad is already selected to be shown to this audience.',
+  advanced_tracking: 'Optional: Add advanced settings for experienced users to fully customize your campaign.',
+  token_tracker_name: 'Add the name of your token tracker.',
+  token_symbol: 'Add the symbol of your token tracker.',
 };
 
 const informationObj = {
@@ -657,7 +660,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const validationAdsText = () => {
-    console.log(pictureData);
     let adTextToSend = [];
     let isValid = true;
     pictureData.map((picData, pictureIndex) => {
@@ -1806,13 +1808,13 @@ export default function AddCampaign({ content, params }) {
             </Typography>
             <img
               onMouseEnter={(event) => {
-                handleHoverOpen(event, 'add_social_media_link');
+                handleHoverOpen(event, 'add_text');
               }}
               onMouseLeave={handleHoverClose}
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('add_social_media_link', questionObj.add_social_media_link)}
+            {renderPopover('add_text', questionObj.advanced_tracking)}
           </div>
           <div style={{ justifyContent: 'flex-end' }}>
             <Typography fontSize={14} fontWeight={400} color={'#808080'}>
@@ -1839,7 +1841,7 @@ export default function AddCampaign({ content, params }) {
                   src={askIcon}
                   alt="ask"
                 />
-                {renderPopover('ad_text', questionObj.ad_text)}
+                {renderPopover('ad_text', questionObj.token_tracker_name)}
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
@@ -1868,7 +1870,7 @@ export default function AddCampaign({ content, params }) {
                     src={askIcon}
                     alt="ask"
                   />
-                  {renderPopover('ad_text', questionObj.ad_text)}
+                  {renderPopover('ad_text', questionObj.token_symbol)}
                 </div>
                 <input
                   onChange={(value) => {
