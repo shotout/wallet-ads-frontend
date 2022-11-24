@@ -980,8 +980,16 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         </Grid>
         <Grid item md={6} sm={12}>
           <div className={styles.ctnCard}>
-            <div className={styles.ctnTitle}>
+            <div className={`${styles.ctnTitle} ${styles.leftTitle}`}>
               <Typography variant="h6">{campaignName} - Impressions</Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'logo_text_banner', impressionText);
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
             </div>
             <ChartBar labels={chartDatas.labels} datas={chartDatas.impressions} title={'Impressions'} />
           </div>
