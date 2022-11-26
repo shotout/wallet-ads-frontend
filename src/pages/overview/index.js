@@ -858,7 +858,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   {renderPopover('audience', '')}
                 </div>
               </Grid>
-              <Grid item md={4} sm={12} alignItems={'center'} justifyContent={'center'}>
+              <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
                 {renderPopover('banner_image', '')}
                 <div
                   className={styles.statusContainer}
@@ -883,10 +883,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   <img src={expandIcon} />
                 </div>
               </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
               </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+              <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography textAlign={'center'} variant="body1">
                   {normalizeCurrency(item?.count_impression) ?? '-'}
                 </Typography>
@@ -913,7 +913,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container spacing={3} paddingX={2}>
+        <Grid container paddingX={2}>
           <Grid item md={3} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
