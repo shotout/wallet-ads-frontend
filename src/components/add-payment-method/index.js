@@ -227,7 +227,7 @@ export default function AddPaymentMethod({
                 label={'Add credit card'}
                 eventName={'Pay with stripe'}
                 isLoading={isPaymentLoading}
-                disabled={isPaymentLoading}
+                disabled={isPaymentLoading || loading}
               />
             </Grid>
             <Grid item sm={6} md={6} xs={12}>
@@ -237,7 +237,7 @@ export default function AddPaymentMethod({
                 onClick={() => handlePaymentChoose('crypto')}
                 label={'I would like to pay using cryptocurrencies'}
                 eventName={'Pay with crypto'}
-                disabled={loading}
+                disabled={loading || isPaymentLoading}
               />
             </Grid>
           </Grid>

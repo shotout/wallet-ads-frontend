@@ -103,7 +103,6 @@ const initialPicture = [{ image: null, fe_id: [], name: '', description: initDec
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
-  // const { themeStretch } = useSettings();
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -612,16 +611,19 @@ export default function AddCampaign({ content, params }) {
         inputValid = false;
       }
       const arrValid = [];
+      const arrNotValid = [];
       pictureData.forEach((ads) => {
         if (isAdsArrValid(ads)) {
           ads.fe_id.forEach((feId) => {
             selectedAdsAudience.push(feId);
           });
           arrValid.push(ads);
+        } else {
+          arrNotValid.push(ads.fe_id);
         }
       });
       isAdTextValid = validationAdsText();
-      console.log(isAdTextValid);
+
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
@@ -650,7 +652,7 @@ export default function AddCampaign({ content, params }) {
         } else if (isAudienceValid.length === 0) {
           window.location.href = '#card-audience';
         } else if (!isAdsValid || !isAudienceFormAdsValid || !isAdTextValid) {
-          window.location.href = '#card-ads';
+          window.location.href = `#card-ads-${arrNotValid[0]}`;
         }
       }
       // validationAdsText();
@@ -661,18 +663,20 @@ export default function AddCampaign({ content, params }) {
 
   const validationAdsText = () => {
     let adTextToSend = [];
+    let arrNotValid = [];
     let isValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
+          arrNotValid.push[picData.fe_id];
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+
           isValid = false;
         }
-        adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
       });
     });
-    console.log(adTextToSend);
-    console.log(JSON.stringify(adTextToSend));
+    window.location.href = `#card-ads-${arrNotValid[0]}`;
     return isValid;
   };
 
@@ -1679,7 +1683,7 @@ export default function AddCampaign({ content, params }) {
                   </div>
                 </Grid>
               ))}
-          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+          {/* <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
@@ -1687,7 +1691,7 @@ export default function AddCampaign({ content, params }) {
                 Add ad text
               </Typography>
             </div>
-          </Grid>
+          </Grid> */}
         </Grid>
       </div>
     );
@@ -1892,7 +1896,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderInputCollection() {
     return (
-      <div className={styles.ctnInputCollectionPageWrapper} style={{ flexDirection: 'column' }}>
+      <div className={styles.ctnInputCollectionPageWrapper} style={{ flexDirection: 'column' }} id="card-ads-undefined">
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           {renderLeftCollection()}
           {renderRightCollection()}
@@ -1919,8 +1923,10 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCardAdCreation(content, index) {
+    console.log('asda', content.fe_id);
     return (
       <div
+        id={`card-ads-${content.fe_id}`}
         className={`${styles.inputCollectionCard} ${
           errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''
         }`}
@@ -2002,7 +2008,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderAdCreation() {
     return (
-      <div className={styles.ctnAdCreation} id="card-ads">
+      <div className={styles.ctnAdCreation}>
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
