@@ -1687,7 +1687,7 @@ export default function AddCampaign({ content, params }) {
         </div>
         <Grid container>
           {typeof content.description === 'string' ? (
-            <Grid md={6} sm={6} xl={6} marginBottom={1}>
+            <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
               <div className={styles.textAreaCollection}>
                 <textarea
                   value={content.description}
