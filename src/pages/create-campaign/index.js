@@ -99,7 +99,8 @@ const initDecription = [
   },
 ];
 
-const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+// const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -111,6 +112,10 @@ export default function AddCampaign({ content, params }) {
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
+  const [collectionPageMedia, setCollectionPageMedia] = useState({
+    logo: '',
+    banner: '',
+  });
   const [formValues, setFormValues] = useState({
     campaign_name: '',
     campaign_start_date: new Date(getFutureDate(2)),
@@ -169,6 +174,7 @@ export default function AddCampaign({ content, params }) {
     errorAds: false,
     errorBoxCampaignName: false,
     errorBoxAvailability: false,
+    errorCollection: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -337,6 +343,7 @@ export default function AddCampaign({ content, params }) {
       errorAds: false,
       errorBoxCampaignName: false,
       errorBoxAvailability: false,
+      errorCollection: false,
     });
     setShowCreditCard({
       ...showCreditCard,
@@ -447,7 +454,9 @@ export default function AddCampaign({ content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
         if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
-        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+
         if (ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
             formRes.append(
@@ -610,6 +619,8 @@ export default function AddCampaign({ content, params }) {
         setErrorInput(errorObj);
         inputValid = false;
       }
+      let isCollectionSection =
+        formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
       pictureData.forEach((ads) => {
@@ -622,14 +633,14 @@ export default function AddCampaign({ content, params }) {
           arrNotValid.push(ads.fe_id);
         }
       });
-      isAdTextValid = validationAdsText();
+      // isAdTextValid = validationAdsText();
 
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
-      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid && isAdTextValid) {
+      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
@@ -640,19 +651,22 @@ export default function AddCampaign({ content, params }) {
         }
       } else {
         setErrorBox({
-          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid,
+          errorAds: !isAdsValid || !isAudienceFormAdsValid,
           errorAudience: isAudienceValid.length === 0,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
+          errorCollection: !isCollectionSection,
         });
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
-        } else if (isAvailabilityValid) {
-          window.location.href = '#availability-section';
         } else if (isAudienceValid.length === 0) {
           window.location.href = '#card-audience';
-        } else if (!isAdsValid || !isAudienceFormAdsValid || !isAdTextValid) {
+        } else if (!isCollectionSection) {
+          window.location.href = '#collection-section';
+        } else if (!isAdsValid || !isAudienceFormAdsValid) {
           window.location.href = `#card-ads-${arrNotValid[0]}`;
+        } else if (isAvailabilityValid) {
+          window.location.href = '#availability-section';
         }
       }
       // validationAdsText();
@@ -877,30 +891,31 @@ export default function AddCampaign({ content, params }) {
               ...pict,
               [stateName]: listAudience,
             };
-          } else if (stateName === 'description') {
-            // const arrDesc = adText.map((v, i) => {
-            //   if (i === descId) {
-            //     return { ...v, adtext: acceptedFiles.target.value };
-            //   } else {
-            //     return adText;
-            //   }
-            // });
-            // console.log(adText);
-            // console.log(arrDesc);
-            let newArrDesc = [...pict.description];
-            if (acceptedFiles) {
-              newArrDesc[descId].id = Number(descId) + 1;
-              newArrDesc[descId].adtext = acceptedFiles.target.value;
-              newArrDesc[descId].isErr = false;
-            } else {
-              newArrDesc[descId].isErr = true;
-            }
-
-            return {
-              ...pict,
-              [stateName]: newArrDesc,
-            };
           }
+          // else if (stateName === 'description') {
+          // const arrDesc = adText.map((v, i) => {
+          //   if (i === descId) {
+          //     return { ...v, adtext: acceptedFiles.target.value };
+          //   } else {
+          //     return adText;
+          //   }
+          // });
+          // console.log(adText);
+          // console.log(arrDesc);
+          // let newArrDesc = [...pict.description];
+          // if (acceptedFiles) {
+          //   newArrDesc[descId].id = Number(descId) + 1;
+          //   newArrDesc[descId].adtext = acceptedFiles.target.value;
+          //   newArrDesc[descId].isErr = false;
+          // } else {
+          //   newArrDesc[descId].isErr = true;
+          // }
+
+          // return {
+          //   ...pict,
+          //   [stateName]: newArrDesc,
+          // };
+          // }
 
           return {
             ...pict,
@@ -935,6 +950,10 @@ export default function AddCampaign({ content, params }) {
           preview: URL.createObjectURL(file),
         })
       );
+      setErrorBox({
+        ...errorBox,
+        errorCollection: false,
+      });
     }
   };
 
@@ -947,6 +966,10 @@ export default function AddCampaign({ content, params }) {
           preview: URL.createObjectURL(file),
         })
       );
+      setErrorBox({
+        ...errorBox,
+        errorCollection: false,
+      });
     }
   };
 
@@ -1304,7 +1327,7 @@ export default function AddCampaign({ content, params }) {
 
   function renderCardAudience() {
     return (
-      <div className={styles.cardAudienceWrapper} id="define-audience-card">
+      <div className={styles.cardAudienceWrapper} id="card-audience">
         <div className={styles.ctnTitle}>
           <div className={styles.rowTitle} />
           <Typography variant="h5" marginTop={2} marginX={2} paragraph>
@@ -1531,6 +1554,10 @@ export default function AddCampaign({ content, params }) {
               onChange={(value) => {
                 handleResetErrorValue('collectionPageName');
                 handleChangeValues(value, 'ads_page_name');
+                setErrorBox({
+                  ...errorBox,
+                  errorCollection: false,
+                });
               }}
               value={formValues.ads_page_name}
               placeholder="Add your collection page name here"
@@ -1617,6 +1644,10 @@ export default function AddCampaign({ content, params }) {
               onChange={(value) => {
                 handleChangeValues(value, 'ads_page_description');
                 handleResetErrorValue('collectionDesc');
+                setErrorBox({
+                  ...errorBox,
+                  errorCollection: false,
+                });
               }}
               maxLength={1000}
               value={formValues.ads_page_description}
@@ -1641,7 +1672,7 @@ export default function AddCampaign({ content, params }) {
     return (
       <div className={styles.ctnInputCollection}>
         <div className={styles.rowTitleWrapper}>
-          <div className={styles.leftTitleAdText}>
+          <div className={styles.leftTitle}>
             <Typography variant="h6">Ad text</Typography>
             <img
               onMouseEnter={(event) => {
@@ -1655,34 +1686,47 @@ export default function AddCampaign({ content, params }) {
           </div>
         </div>
         <Grid container>
-          {typeof content.description === 'string'
-            ? ''
-            : content.description?.map((v, i) => (
-                <Grid
-                  key={`adtext-${i}`}
-                  md={6}
-                  sm={6}
-                  xl={6}
-                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
-                  marginBottom={1}
-                >
-                  <div className={styles.adtextTitleContainer}>
-                    <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
-                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
-                  </div>
+          {typeof content.description === 'string' ? (
+            <Grid md={6} sm={6} xl={6} marginBottom={1}>
+              <div className={styles.textAreaCollection}>
+                <textarea
+                  value={content.description}
+                  onChange={(event) => {
+                    handleChangePicture(event, 'description', index);
+                  }}
+                  placeholder="Add your ad text here"
+                />
+                {renderErrorText(errorBox.errorAds && !content.description)}
+              </div>
+            </Grid>
+          ) : (
+            content.description?.map((v, i) => (
+              <Grid
+                key={`adtext-${i}`}
+                md={6}
+                sm={6}
+                xl={6}
+                style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+                marginBottom={1}
+              >
+                <div className={styles.adtextTitleContainer}>
+                  <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                  {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
+                </div>
 
-                  <div className={styles.textAreaCollection}>
-                    <textarea
-                      // value={content.description}
-                      onChange={(event) => {
-                        handleChangePicture(event, 'description', index, false, i);
-                      }}
-                      placeholder="Add your ad text here"
-                    />
-                    {renderErrorText(errorBox.errorAds && v.isErr)}
-                  </div>
-                </Grid>
-              ))}
+                <div className={styles.textAreaCollection}>
+                  <textarea
+                    // value={content.description}
+                    onChange={(event) => {
+                      handleChangePicture(event, 'description', index, false, i);
+                    }}
+                    placeholder="Add your ad text here"
+                  />
+                  {renderErrorText(errorBox.errorAds && v.isErr)}
+                </div>
+              </Grid>
+            ))
+          )}
           {/* <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
@@ -1896,7 +1940,11 @@ export default function AddCampaign({ content, params }) {
 
   function renderInputCollection() {
     return (
-      <div className={styles.ctnInputCollectionPageWrapper} style={{ flexDirection: 'column' }} id="card-ads-undefined">
+      <div
+        className={`${styles.ctnInputCollectionPageWrapper}}`}
+        style={{ flexDirection: 'column' }}
+        id="collection-section"
+      >
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           {renderLeftCollection()}
           {renderRightCollection()}
@@ -2029,7 +2077,7 @@ export default function AddCampaign({ content, params }) {
           className={styles.btnCreateAd}
           onClick={() => {
             const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+            currentArr.push({ image: null, fe_id: [], name: '', description: '', adsId: makeId() });
             setPicture(currentArr);
           }}
         >
@@ -2068,7 +2116,9 @@ export default function AddCampaign({ content, params }) {
           <div className={styles.rowTitle} />
         </div>
         {renderSectionInformation(informationObj.profile)}
-        <div className={styles.inputCollectionCard}>{renderInputCollection()}</div>
+        <div className={`${styles.inputCollectionCard} ${errorBox.errorCollection ? styles.ctnRedBorder : ''}`}>
+          {renderInputCollection()}
+        </div>
         {renderAdCreation()}
         {renderCreateAnotherAd()}
       </div>
