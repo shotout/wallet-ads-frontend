@@ -1178,7 +1178,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
           <div className={styles.availWrapper}>
             <Grid container spacing={4} className={styles.gridAvailability}>
-              <Grid item md={4} xl={3} xs={12}>
+              <Grid item md={4} xl={4} xs={12}>
                 <div
                   onClick={() => {
                     handleChangeDefaultValue('1', 'campaign_end_date_type');
@@ -1204,7 +1204,7 @@ export default function AddCampaign({ content, params }) {
                   </div>
                 </div>
               </Grid>
-              <Grid item md={4} xl={3} xs={12}>
+              <Grid item md={4} xl={4} xs={12}>
                 <div
                   onClick={() => {
                     handleChangeDefaultValue('2', 'campaign_end_date_type');
@@ -1230,7 +1230,7 @@ export default function AddCampaign({ content, params }) {
                   </div>
                 </div>
               </Grid>
-              <Grid item md={4} xl={3} xs={12}>
+              <Grid item md={4} xl={4} xs={12}>
                 <div className={styles.ctnInputColumn}>
                   <div
                     onClick={() => {
@@ -1949,8 +1949,8 @@ export default function AddCampaign({ content, params }) {
           {renderLeftCollection()}
           {renderRightCollection()}
         </div>
-        <Divider />
-        {renderBottomCollection()}
+        {/* <Divider />
+        {renderBottomCollection()} */}
       </div>
     );
   }
@@ -2036,7 +2036,7 @@ export default function AddCampaign({ content, params }) {
               );
             })}
           </Grid>
-          {renderErrorText(errorBox.errorAds && content.fe_id.length === 0)}
+          {/* {renderErrorText(errorBox.errorAds && content.fe_id.length === 0)} */}
         </div>
         {pictureData.length > 1 && (
           <div className={styles.ctnDeleteADs}>

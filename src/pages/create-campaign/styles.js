@@ -193,7 +193,7 @@ const useStyles = makeStyles((theme) => ({
   ctnSectionTarget: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'center',
     backgroundColor: '#fff',
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     marginLeft: 20,
