@@ -1537,7 +1537,7 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
-              <Typography variant="h6">Collection page name</Typography>
+              <Typography variant="h6">Page name</Typography>
               <img
                 onMouseEnter={(event) => {
                   handleHoverOpen(event, 'collection_page_name');
@@ -1627,7 +1627,7 @@ export default function AddCampaign({ content, params }) {
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
-              <Typography variant="h6">Collection page text</Typography>
+              <Typography variant="h6">Page description</Typography>
               <img
                 onMouseEnter={(event) => {
                   handleHoverOpen(event, 'collection_page_text');
