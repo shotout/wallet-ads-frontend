@@ -198,6 +198,7 @@ export default function CardAudience({
               groupSeparator=","
               decimalSeparator="."
               maxLength={5}
+              min={100}
             />
             <img
               src={pencilIcon}

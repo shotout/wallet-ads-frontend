@@ -996,7 +996,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         </Grid>
         <Grid item md={6} sm={12}>
           <div className={styles.ctnCard}>
-            <div className={`${styles.ctnTitle} ${styles.leftTitle}`}>
+            <div className={`${styles.ctnTitle} ${styles.leftTitleOnBlur}`}>
               <Typography variant="h6">{campaignName} - Impressions</Typography>
               <img
                 onMouseEnter={(event) => {

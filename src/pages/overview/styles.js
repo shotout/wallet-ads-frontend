@@ -159,6 +159,21 @@ export default makeStyles((theme) => ({
       position: 'relative',
     },
   },
+  leftTitleOnBlur: {
+    display: 'flex',
+    alignItems: 'center',
+
+    '& > img': {
+      width: 16,
+      height: 16,
+      objectFit: 'contain',
+      marginLeft: 8,
+      cursor: 'pointer',
+    },
+    '& > div': {
+      position: 'relative',
+    },
+  },
   paginationContainer: {
     display: 'flex',
     alignItems: 'center',
