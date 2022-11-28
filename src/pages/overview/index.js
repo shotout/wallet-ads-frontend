@@ -227,10 +227,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 {typeof contents === 'object' &&
                   contents.map((v, i) => (
                     <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                      <Typography fontSize={16} fontWeight={600}>
+                      {/* <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
-                      </Typography>
-                      <Typography
+                      </Typography> */}
+                      {/* <Typography
                         fontWeight={400}
                         fontSize={14}
                         color={'#000000'}
@@ -238,7 +238,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                         className={styles.txtDescription}
                       >
                         {v.adtext}
-                      </Typography>
+                      </Typography> */}
                       {contents.length > 1 && <Divider />}
                     </div>
                   ))}
