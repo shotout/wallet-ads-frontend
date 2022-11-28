@@ -770,7 +770,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleAudienceOverview() {
     return (
-      <Grid container spacing={3} paddingRight={2}>
+      <Grid container paddingRight={2}>
         <Grid item md={3} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
