@@ -24,6 +24,7 @@ import DefaultButton from '../../components/default-button';
 import FormControl from '@mui/material/FormControl';
 import ChartBar from '../../components/chart-bar';
 import CampaignModal from './../../../src/components/campaign-modal';
+import AdsModal from './../../../src/components/ads-modal';
 import { routes } from '../../helpers/routes';
 import { shortString } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
@@ -54,6 +55,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const router = useRouter();
   const [hover, setHover] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
+  const [adsModal, setAdsModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: true,
@@ -861,7 +863,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
                 {renderPopover('banner_image', '')}
                 <div
+                  style={{ cursor: 'pointer' }}
                   className={styles.statusContainer}
+                  onClick={() => setAdsModal(true)}
                   onMouseEnter={(event) => {
                     const data = {
                       img: `${url + item?.ads?.image.url}`,
@@ -1047,6 +1051,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         </div>
       </div>
       <CampaignModal isVisible={campaignModal} data={campaignDetails} close={() => setCampaignModal(false)} />
+      <AdsModal isVisible={adsModal} data={dataPopover} close={() => setAdsModal(false)} />
     </Page>
   );
 }
