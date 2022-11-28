@@ -588,22 +588,25 @@ export default function AddCampaign({ content, params }) {
 
   const validateSubmit = () => {
     try {
+      let isBudgetValid = true;
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
-      isAudienceValid.forEach((aud) => {
-        if (aud.budgetAds !== '' && aud.selectedCategory !== null) {
+
+      audienceForm.forEach((aud) => {
+        if (aud.selectedCategory !== null) {
+          if (!aud.budgetAds) {
+            setErrorBox({
+              ...errorBox,
+              errorAudience: true,
+            });
+            window.location.href = '#card-audience';
+            isBudgetValid = false;
+          }
           setErrorBox({
             ...errorBox,
             errorAudience: false,
           });
-        } else {
-          setErrorBox({
-            ...errorBox,
-            errorAudience: true,
-          });
-          window.location.href = '#card-audience';
-          return;
         }
       });
       let isAdsValid = false;
@@ -651,7 +654,7 @@ export default function AddCampaign({ content, params }) {
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
-      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid) {
+      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid && isBudgetValid) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
@@ -663,7 +666,7 @@ export default function AddCampaign({ content, params }) {
       } else {
         setErrorBox({
           errorAds: !isAdsValid || !isAudienceFormAdsValid,
-          errorAudience: isAudienceValid.length === 0,
+          errorAudience: isAudienceValid.length === 0 || !isBudgetValid,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
           errorCollection: !isCollectionSection,
