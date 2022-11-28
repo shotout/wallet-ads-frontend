@@ -24,6 +24,7 @@ import DefaultButton from '../../components/default-button';
 import FormControl from '@mui/material/FormControl';
 import ChartBar from '../../components/chart-bar';
 import CampaignModal from './../../../src/components/campaign-modal';
+import AdsModal from './../../../src/components/ads-modal';
 import { routes } from '../../helpers/routes';
 import { shortString } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
@@ -54,6 +55,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const router = useRouter();
   const [hover, setHover] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
+  const [adsModal, setAdsModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
     sortItem: true,
@@ -94,7 +96,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
-    // console.log(content);
+    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -224,13 +226,26 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div className={styles.adtextContainer}>
-                {typeof contents === 'object' &&
+                {/* <Typography fontSize={16} fontWeight={600}>
+                        Ad text {i + 1}:
+                      </Typography> */}
+                <Typography
+                  fontWeight={400}
+                  fontSize={14}
+                  color={'#000000'}
+                  textAlign={'justify'}
+                  className={styles.txtDescription}
+                >
+                  {dataPopover?.desc}
+                </Typography>
+
+                {/* {typeof contents === 'object' &&
                   contents.map((v, i) => (
                     <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                      <Typography fontSize={16} fontWeight={600}>
+                      {/* <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
-                      </Typography>
-                      <Typography
+                      </Typography> */}
+                {/* <Typography
                         fontWeight={400}
                         fontSize={14}
                         color={'#000000'}
@@ -238,10 +253,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                         className={styles.txtDescription}
                       >
                         {v.adtext}
-                      </Typography>
-                      {contents.length > 1 && <Divider />}
-                    </div>
-                  ))}
+                      </Typography> */}
+                {/* {contents.length > 1 && <Divider />} */}
+                {/* </div> */}
               </div>
             </div>
           )}
@@ -417,7 +431,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleCampaignOverview() {
     return (
-      <Grid container spacing={3} paddingX={2}>
+      <Grid container spacing={3} paddingRight={2}>
         <Grid item md={2.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -514,7 +528,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemCampaignOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container spacing={3} paddingX={2}>
+        <Grid container spacing={3} paddingRight={2}>
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2.5} sm={12} display="flex">
@@ -581,7 +595,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container spacing={3} paddingX={2}>
+        <Grid container spacing={3} paddingRight={2}>
           <Grid item md={2.5} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
@@ -713,7 +727,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         <div className={styles.ctnTitle}>
           <Grid container>
             <Grid item md={6} sm={12} display="flex">
-              <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
+              <FormControl sx={{ minWidth: '100%' }} size="small">
                 <Select
                   defaultValue={listCampaigns?.content[listCampaign.length - 1]?.id}
                   defaultChecked={listCampaigns?.content[listCampaign.length - 1]?.id}
@@ -756,7 +770,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleAudienceOverview() {
     return (
-      <Grid container spacing={3} paddingX={2}>
+      <Grid container paddingRight={2}>
         <Grid item md={3} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -840,7 +854,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemAudienceOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container paddingX={2}>
+        <Grid container paddingRight={2}>
           {listAudience.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={3} sm={12} display="flex" alignItems={'center'}>
@@ -861,7 +875,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
                 {renderPopover('banner_image', '')}
                 <div
+                  style={{ cursor: 'pointer' }}
                   className={styles.statusContainer}
+                  // onClick={() => setAdsModal(true)}
                   onMouseEnter={(event) => {
                     const data = {
                       img: `${url + item?.ads?.image.url}`,
@@ -913,7 +929,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container paddingX={2}>
+        <Grid container paddingRight={2}>
           <Grid item md={3} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
@@ -1033,7 +1049,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   }
 
   return (
-    <Page title="Login" description="Login to your WALLETADS account mow!">
+    <Page title="Overview" description="Overview WALLETADS account!">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
           <div className={styles.p20}>
@@ -1047,6 +1063,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         </div>
       </div>
       <CampaignModal isVisible={campaignModal} data={campaignDetails} close={() => setCampaignModal(false)} />
+      <AdsModal isVisible={adsModal} data={dataPopover} close={() => setAdsModal(false)} />
     </Page>
   );
 }

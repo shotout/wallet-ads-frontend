@@ -1995,6 +1995,9 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
+              console.log('Content campaignid', content);
+              console.log('fe_id list', content.fe_id);
+              console.log('item', item);
               const isActive = content.campaign_id ? true : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
