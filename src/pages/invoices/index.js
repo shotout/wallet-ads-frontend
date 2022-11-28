@@ -5,7 +5,7 @@ import Page from '../../components/Page';
 import useStyles from './styles';
 import { Fragment, useState } from 'react';
 import Layout from '../../layouts';
-import {  getProfilUser } from '../../helpers/auth';
+import { getProfilUser, getUserData } from '../../helpers/auth';
 import { getInvoicesList } from '../../utils/requests';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -275,7 +275,8 @@ Invoice.defaultProps = {
 
 export async function getServerSideProps(context) {
   try {
-    const userData = await getProfilUser(context);
+    const userData = await getUserData(context);
+    console.log(userData);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
     if (isMobile) {
@@ -286,16 +287,18 @@ export async function getServerSideProps(context) {
         },
       };
     }
-    
+
+    // if (userData) {
     const res = await getInvoicesList(context);
+    //   console.log(res);
     return {
       props: {
         userData,
         content: res.data || [],
-      }, 
+      },
     };
-    
   } catch (error) {
+    //   console.log('Error', error);
     return {
       redirect: {
         permanent: false,
