@@ -96,7 +96,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
-    // console.log(content);
+    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -431,7 +431,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleCampaignOverview() {
     return (
-      <Grid container spacing={3} paddingX={2}>
+      <Grid container spacing={3} paddingRight={2}>
         <Grid item md={2.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -528,7 +528,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemCampaignOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container spacing={3} paddingX={2}>
+        <Grid container spacing={3} paddingRight={2}>
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={2.5} sm={12} display="flex">
@@ -595,7 +595,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container spacing={3} paddingX={2}>
+        <Grid container spacing={3} paddingRight={2}>
           <Grid item md={2.5} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
@@ -727,7 +727,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         <div className={styles.ctnTitle}>
           <Grid container>
             <Grid item md={6} sm={12} display="flex">
-              <FormControl sx={{ m: 1, minWidth: '100%' }} size="small">
+              <FormControl sx={{ minWidth: '100%' }} size="small">
                 <Select
                   defaultValue={listCampaigns?.content[listCampaign.length - 1]?.id}
                   defaultChecked={listCampaigns?.content[listCampaign.length - 1]?.id}
@@ -770,7 +770,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleAudienceOverview() {
     return (
-      <Grid container spacing={3} paddingX={2}>
+      <Grid container spacing={3} paddingRight={2}>
         <Grid item md={3} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -854,7 +854,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemAudienceOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container paddingX={2}>
+        <Grid container paddingRight={2}>
           {listAudience.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={3} sm={12} display="flex" alignItems={'center'}>
@@ -929,7 +929,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container paddingX={2}>
+        <Grid container paddingRight={2}>
           <Grid item md={3} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
@@ -1049,7 +1049,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   }
 
   return (
-    <Page title="Login" description="Login to your WALLETADS account mow!">
+    <Page title="Overview" description="Overview WALLETADS account!">
       <div className={styles.ctnRoot}>
         <div className={styles.ctnWrapper}>
           <div className={styles.p20}>
