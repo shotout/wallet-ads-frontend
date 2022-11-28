@@ -108,6 +108,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     const labels = [];
     const airdrops = [];
     const views = [];
+    const impressions = [];
     const res = await getAudienceByCampaignID(id);
 
     setCapmapaignID(id);
@@ -117,7 +118,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     res.data.audiences.forEach((element) => {
       labels.push(element.name);
       airdrops.push(element.count_airdrop);
-      views.push(element.count_view);
+      impressions.push(element.count_impression);
     });
     const totalAirDrop = sumArr(res.data.audiences, 'count_airdrop', true);
     const totalClick = sumArr(res.data.audiences, 'count_click', true);
@@ -131,7 +132,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
       views: totalView,
       mints: totalMint,
     });
-    setChartDatas({ labels: labels, airdrops: airdrops, views: views });
+    setChartDatas({ labels: labels, airdrops: airdrops, impressions: impressions });
   };
 
   const sumCampainOverview = (val) => {
@@ -416,8 +417,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleCampaignOverview() {
     return (
-      <Grid container spacing={3}>
-        <Grid item md={2} sm={12} display="flex">
+      <Grid container spacing={3} paddingX={2}>
+        <Grid item md={2.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Campaign
@@ -442,8 +443,11 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             Status
           </Typography>
         </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
-          <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_airdrop')}>
+        <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+          <div
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            onClick={() => handleSort('campaign', true, '', 'count_airdrop')}
+          >
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Airdrops
             </Typography>
@@ -452,7 +456,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex">
+        <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_impression')}>
             <div className={styles.leftTitle}>
               <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -473,7 +477,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
+        {/* <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_view')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Views
@@ -482,7 +486,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <img src={iconShort} alt="ic-short" />
             </div>
           </div>
-        </Grid>
+        </Grid> */}
         {/* <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_click')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -493,9 +497,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid> */}
-        <Grid item md={1.5} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('campaign', true, '', 'count_mint')}>
-            <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'center'} sx={{ cursor: 'pointer' }}>
               Mints
             </Typography>
             <div className={styles.ctnIconShort}>
@@ -510,10 +514,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemCampaignOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container spacing={3}>
+        <Grid container spacing={3} paddingX={2}>
           {listContent.content.map((item) => (
             <Fragment key={item.id.toString()}>
-              <Grid item md={2} sm={12} display="flex">
+              <Grid item md={2.5} sm={12} display="flex">
                 <div
                   onMouseEnter={(event) => {
                     console.log(item.name.length > 10);
@@ -533,7 +537,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     onClick={() => openCampaignModal(item.id)}
                     color={'#7089FF'}
                   >
-                    {shortString(item.name, 10)}
+                    {shortString(item.name, 20)}
                   </Typography>
                   {renderPopover('logo_text_banner', '')}
                 </div>
@@ -545,20 +549,26 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <Grid item md={1.5} sm={12} alignItems={'center'}>
                 <Typography variant="body1">{renderStatus(item.status)}</Typography>
               </Grid>
-              <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{normalizeCurrency(item.count_airdrop) ?? '-'}</Typography>
-              </Grid>
               <Grid item md={2} sm={12}>
-                <Typography variant="body1">{normalizeCurrency(item.count_impression) ?? '-'}</Typography>
+                <Typography variant="body1" textAlign={'right'}>
+                  {normalizeCurrency(item.count_airdrop) ?? '-'}
+                </Typography>
               </Grid>
-              <Grid item md={1.5} sm={12}>
+              <Grid item md={2.5} sm={12}>
+                <Typography variant="body1" textAlign={'right'}>
+                  {normalizeCurrency(item.count_impression) ?? '-'}
+                </Typography>
+              </Grid>
+              {/* <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{normalizeCurrency(item.count_view) ?? '-'}</Typography>
-              </Grid>
+              </Grid> */}
               {/* <Grid item md={1.5} sm={12}>
                 <Typography variant="body1">{normalizeCurrency(item.count_click) ?? '-'}</Typography>
               </Grid> */}
               <Grid item md={1.5} sm={12}>
-                <Typography variant="body1">{normalizeCurrency(item.count_mint) ?? '-'}</Typography>
+                <Typography variant="body1" textAlign={'right'}>
+                  {normalizeCurrency(item.count_mint) ?? '-'}
+                </Typography>
               </Grid>
             </Fragment>
           ))}
@@ -571,8 +581,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container spacing={3}>
-          <Grid item md={2} sm={12} display="flex">
+        <Grid container spacing={3} paddingX={2}>
+          <Grid item md={2.5} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
             </Typography>
@@ -587,28 +597,28 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {''}
             </Typography>
           </Grid>
-          <Grid item md={1.5} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.impressions) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={1.5} sm={12}>
+          {/* <Grid item md={2} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {normalizeCurrency(totalCampainOverview.views) ?? 0}
             </Typography>
-          </Grid>
+          </Grid> */}
           {/* <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {normalizeCurrency(totalCampainOverview.linkClicks) ?? 0}
             </Typography>
           </Grid> */}
-          <Grid item md={1} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalCampainOverview.mints) ?? 0}
             </Typography>
           </Grid>
@@ -746,7 +756,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
 
   function renderListTitleAudienceOverview() {
     return (
-      <Grid container spacing={3}>
+      <Grid container spacing={3} paddingX={2}>
         <Grid item md={3} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', false, '', 'name')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -762,7 +772,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             Ad creative
           </Typography>
         </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
+        <Grid item md={2} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audince', true, '', 'count_airdrop')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Airdrops
@@ -772,7 +782,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={2} sm={12} display="flex">
+        <Grid item md={2.5} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_impression')}>
             <div className={styles.leftTitle}>
               <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -793,7 +803,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid>
-        <Grid item md={1.5} sm={12} display="flex">
+        {/* <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_view')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Views
@@ -802,7 +812,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <img src={iconShort} alt="ic-short" />
             </div>
           </div>
-        </Grid>
+        </Grid> */}
         {/* <Grid item md={1.5} sm={12} display="flex">
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_click')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
@@ -813,7 +823,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
             </div>
           </div>
         </Grid> */}
-        <Grid item md={1} sm={12} display="flex">
+        <Grid item md={1.5} sm={12} display="flex" justifyContent={'flex-end'}>
           <div style={{ display: 'flex' }} onClick={() => handleSort('audience', true, '', 'count_mint')}>
             <Typography variant="body1" fontWeight={'bold'} sx={{ cursor: 'pointer' }}>
               Mints
@@ -830,7 +840,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   function renderListItemAudienceOverview() {
     return (
       <div className={styles.ctnItem}>
-        <Grid container spacing={3}>
+        <Grid container paddingX={2}>
           {listAudience.content.map((item) => (
             <Fragment key={item.id.toString()}>
               <Grid item md={3} sm={12} display="flex" alignItems={'center'}>
@@ -842,13 +852,13 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   onMouseLeave={handleHoverClose}
                 >
                   <Typography variant="body1" marginRight={1}>
-                    {shortString(item.name, 20)}
+                    {shortString(item.name, 25)}
                   </Typography>
                   <img src={expandIcon} />
                   {renderPopover('audience', '')}
                 </div>
               </Grid>
-              <Grid item md={3} sm={12} alignItems={'center'}>
+              <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
                 {renderPopover('banner_image', '')}
                 <div
                   className={styles.statusContainer}
@@ -868,25 +878,29 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   </div>
                   {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
                   <Typography variant="body1" marginRight={1} style={{ whiteSpace: 'nowrap' }}>
-                    {shortString(item?.ads?.name, 10, '')}
+                    {shortString(item?.ads?.name, 25, '')}
                   </Typography>
                   <img src={expandIcon} />
                 </div>
               </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
               </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.count_impression) ?? '-'}</Typography>
+              <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+                <Typography textAlign={'center'} variant="body1">
+                  {normalizeCurrency(item?.count_impression) ?? '-'}
+                </Typography>
               </Grid>
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+              {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_view) ?? '-'}</Typography>
-              </Grid>
+              </Grid> */}
               {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_click) ?? '-'}</Typography>
               </Grid> */}
-              <Grid item md={1} sm={12} display="flex" alignItems={'center'}>
-                <Typography variant="body1">{normalizeCurrency(item?.count_mint) ?? '-'}</Typography>
+              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+                <Typography textAlign={'center'} variant="body1">
+                  {normalizeCurrency(item?.count_mint) ?? '-'}
+                </Typography>
               </Grid>
             </Fragment>
           ))}
@@ -899,7 +913,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <>
         <div className={styles.ctnTitle} />
-        <Grid container spacing={3}>
+        <Grid container paddingX={2}>
           <Grid item md={3} sm={12} display="flex">
             <Typography variant="body1" fontWeight={'bold'}>
               Total
@@ -910,28 +924,28 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               {''}
             </Typography>
           </Grid>
-          <Grid item md={1.5} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2} sm={12} textAlign={'right'}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.airdrops) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={2} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={2.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.impressions) ?? 0}
             </Typography>
           </Grid>
-          <Grid item md={1.5} sm={12}>
+          {/* <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {normalizeCurrency(totalAudienceOverview.views) ?? 0}
             </Typography>
-          </Grid>
+          </Grid> */}
           {/* <Grid item md={1.5} sm={12}>
             <Typography variant="body1" fontWeight={'bold'}>
               {normalizeCurrency(totalAudienceOverview.linkClicks) ?? 0}
             </Typography>
           </Grid> */}
-          <Grid item md={1} sm={12}>
-            <Typography variant="body1" fontWeight={'bold'}>
+          <Grid item md={1.5} sm={12}>
+            <Typography variant="body1" fontWeight={'bold'} textAlign={'right'}>
               {normalizeCurrency(totalAudienceOverview.mints) ?? 0}
             </Typography>
           </Grid>
@@ -966,10 +980,18 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         </Grid>
         <Grid item md={6} sm={12}>
           <div className={styles.ctnCard}>
-            <div className={styles.ctnTitle}>
-              <Typography variant="h6">{campaignName} - Views</Typography>
+            <div className={`${styles.ctnTitle} ${styles.leftTitle}`}>
+              <Typography variant="h6">{campaignName} - Impressions</Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'logo_text_banner', impressionText);
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
             </div>
-            <ChartBar labels={chartDatas.labels} datas={chartDatas.views} title={'Views'} />
+            <ChartBar labels={chartDatas.labels} datas={chartDatas.impressions} title={'Impressions'} />
           </div>
         </Grid>
       </Grid>

@@ -33,8 +33,8 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
   function renderDesc() {
     return (
       <div className={styles.ctnDesc}>
-        <Typography variant="h6">{formValues.ads_page_name || 'Collection page name'}</Typography>
-        <Typography variant="body1">{formValues.ads_page_description || 'Your collection page text here'}</Typography>
+        <Typography variant="h6">{formValues.ads_page_name || 'Your page name'}</Typography>
+        <Typography variant="body1">{formValues.ads_page_description || 'Your page description'}</Typography>
       </div>
     );
   }
