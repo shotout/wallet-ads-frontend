@@ -877,7 +877,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <div
                   style={{ cursor: 'pointer' }}
                   className={styles.statusContainer}
-                  onClick={() => setAdsModal(true)}
+                  // onClick={() => setAdsModal(true)}
                   onMouseEnter={(event) => {
                     const data = {
                       img: `${url + item?.ads?.image.url}`,
