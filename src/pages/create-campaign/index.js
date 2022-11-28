@@ -216,7 +216,6 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      console.log('asad', content);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -546,8 +545,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const addAdText = (index) => {
-    console.log(index);
-    console.log(pictureData);
     const body = {
       id: makeId(),
       adtext: '',
@@ -591,11 +588,24 @@ export default function AddCampaign({ content, params }) {
 
   const validateSubmit = () => {
     try {
-      // convertDescriptionDataToString();
-      audienceForm.forEach((audForm) => console.log(audForm));
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
+      isAudienceValid.forEach((aud) => {
+        if (aud.budgetAds !== '' && aud.selectedCategory !== null) {
+          setErrorBox({
+            ...errorBox,
+            errorAudience: false,
+          });
+        } else {
+          setErrorBox({
+            ...errorBox,
+            errorAudience: true,
+          });
+          window.location.href = '#card-audience';
+          return;
+        }
+      });
       let isAdsValid = false;
       let inputValid = true;
       let selectedAdsAudience = [];
@@ -767,7 +777,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangeDefaultValue = (value, stateName) => {
-    console.log(stateName, value);
     setFormValues({
       ...formValues,
       [stateName]: value,
@@ -850,13 +859,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const handleChangePicture = (acceptedFiles, stateName, indexContent, isPicture, descId) => {
-    const a = {
-      acceptedFiles,
-      stateName,
-      indexContent,
-      isPicture,
-    };
-    console.log(a);
     let file = null;
     deactivateErrorBoxAds();
     if (isPicture) {
@@ -1972,7 +1974,6 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCardAdCreation(content, index) {
-    console.log('asda', content.fe_id);
     return (
       <div
         id={`card-ads-${content.fe_id}`}
@@ -1996,9 +1997,6 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              console.log('Content campaignid', content);
-              console.log('fe_id list', content.fe_id);
-              console.log('item', item);
               const isActive = content.campaign_id ? true : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
