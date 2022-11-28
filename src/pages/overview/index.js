@@ -226,13 +226,26 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div className={styles.adtextContainer}>
-                {typeof contents === 'object' &&
+                {/* <Typography fontSize={16} fontWeight={600}>
+                        Ad text {i + 1}:
+                      </Typography> */}
+                <Typography
+                  fontWeight={400}
+                  fontSize={14}
+                  color={'#000000'}
+                  textAlign={'justify'}
+                  className={styles.txtDescription}
+                >
+                  {dataPopover?.desc}
+                </Typography>
+
+                {/* {typeof contents === 'object' &&
                   contents.map((v, i) => (
                     <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
                       {/* <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
                       </Typography> */}
-                      {/* <Typography
+                {/* <Typography
                         fontWeight={400}
                         fontSize={14}
                         color={'#000000'}
@@ -241,9 +254,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                       >
                         {v.adtext}
                       </Typography> */}
-                      {contents.length > 1 && <Divider />}
-                    </div>
-                  ))}
+                {/* {contents.length > 1 && <Divider />} */}
+                {/* </div> */}
               </div>
             </div>
           )}

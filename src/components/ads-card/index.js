@@ -30,7 +30,10 @@ export default function AdsCard({ item, audienceData }) {
 
     return (
       <div className={styles.adtextContainer}>
-        {typeof contents === 'object' &&
+        <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+          {contents}
+        </Typography>
+        {/* {typeof contents === 'object' &&
           contents.map((v, i) => (
             <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
               <Typography fontSize={16} fontWeight={600}>
@@ -41,7 +44,7 @@ export default function AdsCard({ item, audienceData }) {
               </Typography>
               {contents.length > 1 && <Divider />}
             </div>
-          ))}
+          ))} */}
       </div>
     );
   }
