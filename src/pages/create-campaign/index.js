@@ -592,6 +592,7 @@ export default function AddCampaign({ content, params }) {
   const validateSubmit = () => {
     try {
       // convertDescriptionDataToString();
+      audienceForm.forEach((audForm) => console.log(audForm));
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
