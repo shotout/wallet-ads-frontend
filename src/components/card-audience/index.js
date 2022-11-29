@@ -182,7 +182,11 @@ export default function CardAudience({
           <Typography variant="body1" textAlign={'center'} fontWeight="bold" color={'#7089FF'}>
             Budget:
           </Typography>
-          <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
+          <div
+            className={`${styles.ctnPriceInput} ${
+              data.budgetAds === '' || data.budgetAds < 100 ? styles.redBorder : ''
+            }`}
+          >
             <span>USD</span>
             <CurrencyInput
               name="currencyInput"
@@ -351,6 +355,7 @@ export default function CardAudience({
         className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${
           data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
         }
+        ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
         ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
         onClick={() => {
           if (!data.selectedCategory) {
@@ -362,6 +367,7 @@ export default function CardAudience({
           className={`${styles.headerAudience} ${
             data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
           }
+          ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.borderTopError : ''}
           ${isErrorAudienceNull ? styles.borderTopError : ''}
           `}
         >

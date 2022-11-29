@@ -597,9 +597,9 @@ export default function AddCampaign({ content, params }) {
       const isAudienceNull = audienceForm.filter(
         (audience) => audience.selectedCategory === null && audience.budgetAds === ''
       );
-
-      console.log('audiennce', audienceForm.length);
-      console.log('audiennce null', isAudienceNull.length);
+      const isAudienceUnderMinimum = audienceForm.filter(
+        (audience) => audience.selectedCategory !== null && audience.budgetAds < 100
+      );
 
       audienceForm.forEach((aud) => {
         if (aud.selectedCategory !== null) {
@@ -669,7 +669,8 @@ export default function AddCampaign({ content, params }) {
         inputValid &&
         isAudienceFormAdsValid &&
         isBudgetValid &&
-        !isAvailabilityValid
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0
       ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
@@ -690,7 +691,7 @@ export default function AddCampaign({ content, params }) {
         });
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
-        } else if (isAudienceValid.length === 0) {
+        } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
