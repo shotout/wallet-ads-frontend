@@ -175,6 +175,7 @@ export default function AddCampaign({ content, params }) {
     errorBoxCampaignName: false,
     errorBoxAvailability: false,
     errorCollection: false,
+    errorAudienceNull: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -343,6 +344,7 @@ export default function AddCampaign({ content, params }) {
       errorBoxCampaignName: false,
       errorBoxAvailability: false,
       errorCollection: false,
+      errorAudienceNull: false,
     });
     setShowCreditCard({
       ...showCreditCard,
@@ -592,6 +594,12 @@ export default function AddCampaign({ content, params }) {
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
+      const isAudienceNull = audienceForm.filter(
+        (audience) => audience.selectedCategory === null && audience.budgetAds === ''
+      );
+
+      console.log('audiennce', audienceForm.length);
+      console.log('audiennce null', isAudienceNull.length);
 
       audienceForm.forEach((aud) => {
         if (aud.selectedCategory !== null) {
@@ -612,7 +620,7 @@ export default function AddCampaign({ content, params }) {
       let isAdsValid = false;
       let inputValid = true;
       let selectedAdsAudience = [];
-      let isAdTextValid;
+
       const errorObj = {
         campaignName: formValues.campaign_name === '',
         collectionPageName: formValues.ads_page_name === '',
@@ -629,6 +637,7 @@ export default function AddCampaign({ content, params }) {
       const isAvailabilityValid =
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
+
       if (campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName || availability) {
         setErrorInput(errorObj);
         inputValid = false;
@@ -654,7 +663,14 @@ export default function AddCampaign({ content, params }) {
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
-      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid && isBudgetValid) {
+      if (
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isAudienceFormAdsValid &&
+        isBudgetValid &&
+        !isAvailabilityValid
+      ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
@@ -670,6 +686,7 @@ export default function AddCampaign({ content, params }) {
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
           errorCollection: !isCollectionSection,
+          errorAudienceNull: audienceForm.length === isAudienceNull.length,
         });
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
@@ -1356,6 +1373,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
+                  isErrorAudienceNull={errorBox.errorAudienceNull}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
@@ -1372,6 +1390,7 @@ export default function AddCampaign({ content, params }) {
                       setErrorBox({
                         ...errorBox,
                         errorAudience: false,
+                        errorAudienceNull: false,
                       });
                     }
                     setSelectedAudience(index);

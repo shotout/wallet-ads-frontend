@@ -16,6 +16,7 @@ const deleteIcon = '/assets/svg/delete.svg';
 const pencilIcon = '/assets/pencil.png';
 
 export default function CardAudience({
+  isErrorAudienceNull,
   isError,
   showArrow,
   label,
@@ -42,7 +43,7 @@ export default function CardAudience({
   };
 
   useEffect(() => {
-    console.log(data);
+    console.log(isErrorAudienceNull);
     // if (data.selectedCategory) {
     //   setTimeout(() => {
     //     if (inputEl.current && inputEl.current.focus) {
@@ -348,8 +349,9 @@ export default function CardAudience({
     <div className={styles.ctnAudience}>
       <div
         className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${
-          isError || (data.budgetAds === '' && data.selectedCategory !== null) ? styles.ctnRedBorder : ''
-        }`}
+          data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
+        }
+        ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
         onClick={() => {
           if (!data.selectedCategory) {
             if (typeof onPressCard === 'function') onPressCard();
@@ -358,8 +360,10 @@ export default function CardAudience({
       >
         <div
           className={`${styles.headerAudience} ${
-            isError || (data.budgetAds === '' && data.selectedCategory !== null) ? styles.borderTopError : ''
-          }`}
+            data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
+          }
+          ${isErrorAudienceNull ? styles.borderTopError : ''}
+          `}
         >
           <div className={styles.ctnWrapper}>
             <SvgIconStyle
