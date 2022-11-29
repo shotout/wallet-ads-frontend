@@ -989,7 +989,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         <Grid item md={6} sm={12}>
           <div className={styles.ctnCard}>
             <div className={styles.ctnTitle}>
-              <Typography variant="h6">{campaignName} - Airdrops</Typography>
+              <Typography variant="h6">
+                {campaignName} {content.data.length === 0 ? '' : '-'} Airdrops
+              </Typography>
             </div>
             <ChartBar labels={chartDatas.labels} datas={chartDatas.airdrops} title={'Airdrops'} />
           </div>
@@ -997,7 +999,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         <Grid item md={6} sm={12}>
           <div className={styles.ctnCard}>
             <div className={`${styles.ctnTitle} ${styles.leftTitleOnBlur}`}>
-              <Typography variant="h6">{campaignName} - Impressions</Typography>
+              <Typography variant="h6">
+                {campaignName} {content.data.length === 0 ? '' : '-'} Impressions
+              </Typography>
               <img
                 onMouseEnter={(event) => {
                   handleHoverOpen(event, 'logo_text_banner', impressionText);
