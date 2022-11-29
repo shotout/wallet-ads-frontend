@@ -348,7 +348,7 @@ export default function CardAudience({
     <div className={styles.ctnAudience}>
       <div
         className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${
-          isError ? styles.ctnRedBorder : ''
+          isError || (data.budgetAds === '' && data.selectedCategory !== null) ? styles.ctnRedBorder : ''
         }`}
         onClick={() => {
           if (!data.selectedCategory) {
@@ -356,7 +356,11 @@ export default function CardAudience({
           }
         }}
       >
-        <div className={`${styles.headerAudience} ${isError ? styles.borderTopError : ''}`}>
+        <div
+          className={`${styles.headerAudience} ${
+            isError || (data.budgetAds === '' && data.selectedCategory !== null) ? styles.borderTopError : ''
+          }`}
+        >
           <div className={styles.ctnWrapper}>
             <SvgIconStyle
               src={headerCard}
