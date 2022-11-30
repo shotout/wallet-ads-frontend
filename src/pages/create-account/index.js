@@ -291,8 +291,8 @@ export default function Register({ isMobile }) {
                     size="small"
                     fullWidth
                     placeholder="Telephone"
-                    type={'number'}
-                    inputProps={{ inputMode: 'numeric' }}
+                    type={'tel'}
+                    inputProps={{ inputMode: 'tel' }}
                   />
                 </div>
               </Grid>
