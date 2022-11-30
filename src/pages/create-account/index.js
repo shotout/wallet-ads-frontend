@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { routes } from '../../helpers/routes';
 import AuthFooter from '../../components/auth-footer';
 import { eventTrack, GTMTracker } from '../../utils/tracker';
+import { object } from 'underscore';
 
 const appIcon = '/assets/svg/wallet_logo.svg';
 const emailBanner = '/assets/email_banner.png';
@@ -70,6 +71,10 @@ export default function Register({ isMobile }) {
       if (err.data) {
         if (err.data.errors) {
           setErrorMessage(responseValidatorObj(err.data.errors));
+          let key = Object.keys(responseValidatorObj(err.data.errors));
+          console.log(key[0]);
+
+          window.location.href = `#${key[0]}`;
         }
       }
       setLoading(false);
@@ -148,7 +153,7 @@ export default function Register({ isMobile }) {
           <div className={styles.ctnForm}>
             <Grid container spacing={2}>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="company_name">
                   <TextField
                     value={values.company_name}
                     onChange={handleChange('company_name')}
@@ -160,7 +165,7 @@ export default function Register({ isMobile }) {
                   />
                 </div>
               </Grid>
-              <Grid item md={6} xs={12}>
+              <Grid item md={6} xs={12} id="tax_id">
                 <div className={styles.inputWrapper}>
                   <TextField
                     value={values.tax_id}
@@ -174,7 +179,7 @@ export default function Register({ isMobile }) {
                 </div>
               </Grid>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="first_name">
                   <TextField
                     value={values.first_name}
                     onChange={handleChange('first_name')}
@@ -187,7 +192,7 @@ export default function Register({ isMobile }) {
                 </div>
               </Grid>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="last_name">
                   <TextField
                     value={values.last_name}
                     onChange={handleChange('last_name')}
@@ -200,7 +205,7 @@ export default function Register({ isMobile }) {
                 </div>
               </Grid>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="street">
                   <TextField
                     value={values.street}
                     onChange={handleChange('street')}
@@ -215,7 +220,7 @@ export default function Register({ isMobile }) {
               <Grid item md={6} sm={12} xs={12}>
                 <Grid container spacing={2}>
                   <Grid item md={6} sm={6} xs={6}>
-                    <div className={styles.inputWrapper}>
+                    <div className={styles.inputWrapper} id="post_code">
                       <TextField
                         value={values.post_code}
                         onChange={handleChange('post_code')}
@@ -230,7 +235,7 @@ export default function Register({ isMobile }) {
                     </div>
                   </Grid>
                   <Grid item md={6} sm={6} xs={6}>
-                    <div className={styles.inputWrapper}>
+                    <div className={styles.inputWrapper} id="city">
                       <TextField
                         value={values.city}
                         onChange={handleChange('city')}
@@ -245,7 +250,7 @@ export default function Register({ isMobile }) {
                 </Grid>
               </Grid>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="country">
                   <TextField
                     value={values.country}
                     onChange={handleChange('country')}
@@ -262,7 +267,7 @@ export default function Register({ isMobile }) {
             <div className={styles.ctnGridBottom} />
             <Grid container spacing={2}>
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="email">
                   <TextField
                     value={values.email}
                     onChange={handleChange('email')}
@@ -277,7 +282,7 @@ export default function Register({ isMobile }) {
               </Grid>
 
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="phone">
                   <TextField
                     value={values.phone}
                     onChange={handleChange('phone')}
@@ -293,7 +298,7 @@ export default function Register({ isMobile }) {
               </Grid>
 
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="password">
                   <TextField
                     value={values.password}
                     onChange={handleChange('password')}
@@ -325,7 +330,7 @@ export default function Register({ isMobile }) {
               </Grid>
 
               <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
+                <div className={styles.inputWrapper} id="password_confirmation">
                   <TextField
                     value={values.password_confirmation}
                     onChange={handleChange('password_confirmation')}
