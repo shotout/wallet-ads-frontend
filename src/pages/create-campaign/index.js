@@ -236,6 +236,8 @@ export default function AddCampaign({ content, params }) {
         adsId: makeId(),
       }));
 
+      console.log(content);
+
       const audienceArr = content.audiences.map((item) => {
         const targeting = item.detail_target;
         return {
@@ -696,7 +698,7 @@ export default function AddCampaign({ content, params }) {
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
         } else if (!isAdsValid || !isAudienceFormAdsValid) {
-          window.location.href = `#card-ads-${arrNotValid[0]}`;
+          window.location.href = `#card-ads-${arrNotValid[0] ?? pictureData[0].fe_id[0]}`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
         }
