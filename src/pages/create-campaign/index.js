@@ -700,8 +700,10 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
-        } else if (!isAdsValid || !isAudienceFormAdsValid) {
-          window.location.href = `#card-ads-${arrNotValid[0] ?? pictureData[0].fe_id[0]}`;
+        } else if (!isAdsValid) {
+          window.location.href = `#card-ads-${arrNotValid[0]}`;
+        } else if (!isAudienceFormAdsValid) {
+          window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
         }
@@ -2010,6 +2012,7 @@ export default function AddCampaign({ content, params }) {
         }`}
         key={content.adsId}
       >
+        <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
         {renderRightAdCreation(content, index)}
@@ -2025,8 +2028,6 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              console.log(content);
-              console.log(item);
               const isActive = content.campaign_id
                 ? content.fe_id.includes(item.selected_fe_id)
                 : content.fe_id.includes(item.audienceId);
