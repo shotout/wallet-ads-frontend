@@ -201,9 +201,11 @@ export default function AddCampaign({ content, params }) {
 
   function getAdsId(id) {
     const adsIdArr = [];
+    console.log(id);
+    console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
-        adsIdArr.push(index);
+        adsIdArr.push(aud.selected_fe_id);
       }
     });
     return adsIdArr;
@@ -236,13 +238,12 @@ export default function AddCampaign({ content, params }) {
         adsId: makeId(),
       }));
 
-      console.log(content);
-
       const audienceArr = content.audiences.map((item) => {
         const targeting = item.detail_target;
         return {
           id: item.id,
           audienceId: makeId(),
+          selected_fe_id: item.selected_fe_id,
           optimized: parsePriceToCategory(item.price_airdrop) !== null,
           selectedCategory: parsePriceToCategory(item.price_airdrop),
           budgetAds: (item.price || '').toString(),
@@ -405,6 +406,7 @@ export default function AddCampaign({ content, params }) {
           id: audience.id,
           file: audience.audienceFile && audience.audienceFile ? audience.audienceFile : null,
           fe_id: index,
+          selected_fe_id: audience.audienceId,
           price: audience.budgetAds ? audience.budgetAds.replace(',', '') : '',
           price_airdrop: audience.selectedCategory ? getAudiencePrice(audience).toString() : null,
           total_user: calculateAirdropPerUser(audience).toString(),
@@ -470,10 +472,11 @@ export default function AddCampaign({ content, params }) {
         }
         if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
       });
-
+      console.log(campaignData);
       campaignData.forEach((campaign, indexCampaign) => {
         if (campaign.fe_id || campaign.fe_id === 0)
           formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
+        if (campaign) formRes.append(`campaign_audiences[${indexCampaign}][selected_fe_id]`, campaign.selected_fe_id);
         if (campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id);
         if (campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file);
         if (campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price);
@@ -2022,7 +2025,11 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.fe_id.includes(item.audienceId);
+              console.log(content);
+              console.log(item);
+              const isActive = content.campaign_id
+                ? content.fe_id.includes(item.selected_fe_id)
+                : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
@@ -2034,9 +2041,11 @@ export default function AddCampaign({ content, params }) {
                           : !item.optimized
                           ? styles.ctnDisable
                           : styles.ctnAudienceItem
-                      }`}
+                      }
+                      ${content.campaign_id ? styles.ctnDisable : ''}`}
                       onClick={(event) => {
                         if (!item.optimized) return;
+                        if (content.campaign_id) return;
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
