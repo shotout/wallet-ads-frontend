@@ -26,6 +26,7 @@ import {
   getCampaignDetail,
   handleEditCampaign,
   getProfilUser,
+  cancelStripe,
 } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
@@ -219,6 +220,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      console.log(content);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -280,8 +282,16 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_name: adsPage.token_name,
         ads_page_token_symbol: adsPage.token_symbol,
       });
+
+      cancelCreateCampaignId(content.id);
     }
   }, []);
+
+  const cancelCreateCampaignId = async (campaign_id) => {
+    await cancelStripe({
+      campaign_id,
+    });
+  };
 
   const handleResetPage = () => {
     setModalSuccess(null);

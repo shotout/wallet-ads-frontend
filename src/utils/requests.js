@@ -136,6 +136,13 @@ export const handleSubmitPromo = (data) =>
     data,
   });
 
+export const cancelStripe = (data) =>
+  axios({
+    url: '/payment/cancelstripe',
+    method: 'POST',
+    data,
+  });
+
 export const handleSubscribe = (data) =>
   axios({
     url: '/user/subscribe',
