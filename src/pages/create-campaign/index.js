@@ -100,8 +100,8 @@ const initDecription = [
   },
 ];
 
-// const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
-const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+// const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -469,8 +469,8 @@ export default function AddCampaign({ content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
         if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
-        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
-        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
 
         if (ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
@@ -482,7 +482,7 @@ export default function AddCampaign({ content, params }) {
         }
         if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
       });
-      console.log(campaignData);
+
       campaignData.forEach((campaign, indexCampaign) => {
         if (campaign.fe_id || campaign.fe_id === 0)
           formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
@@ -932,31 +932,30 @@ export default function AddCampaign({ content, params }) {
               ...pict,
               [stateName]: listAudience,
             };
-          }
-          // else if (stateName === 'description') {
-          // const arrDesc = adText.map((v, i) => {
-          //   if (i === descId) {
-          //     return { ...v, adtext: acceptedFiles.target.value };
-          //   } else {
-          //     return adText;
-          //   }
-          // });
-          // console.log(adText);
-          // console.log(arrDesc);
-          // let newArrDesc = [...pict.description];
-          // if (acceptedFiles) {
-          //   newArrDesc[descId].id = Number(descId) + 1;
-          //   newArrDesc[descId].adtext = acceptedFiles.target.value;
-          //   newArrDesc[descId].isErr = false;
-          // } else {
-          //   newArrDesc[descId].isErr = true;
-          // }
+          } else if (stateName === 'description') {
+            // const arrDesc = adText.map((v, i) => {
+            //   if (i === descId) {
+            //     return { ...v, adtext: acceptedFiles.target.value };
+            //   } else {
+            //     return adText;
+            //   }
+            // });
+            // console.log(adText);
+            // console.log(arrDesc);
+            let newArrDesc = [...pict.description];
+            if (acceptedFiles) {
+              newArrDesc[descId].id = Number(descId) + 1;
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
 
-          // return {
-          //   ...pict,
-          //   [stateName]: newArrDesc,
-          // };
-          // }
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
+          }
 
           return {
             ...pict,
@@ -1770,7 +1769,7 @@ export default function AddCampaign({ content, params }) {
               </Grid>
             ))
           )}
-          {/* <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
@@ -1778,7 +1777,7 @@ export default function AddCampaign({ content, params }) {
                 Add ad text
               </Typography>
             </div>
-          </Grid> */}
+          </Grid>
         </Grid>
       </div>
     );
