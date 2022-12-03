@@ -92,19 +92,18 @@ const expandCloseIcon = '/icons/ic_expandclose.svg';
 const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
 
-const initDecription = [
-  {
-    id: null,
-    adtext: '',
-    isErr: false,
-  },
-];
-
-const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
 // const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
+  const initDecription = [
+    {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    },
+  ];
+  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -202,8 +201,6 @@ export default function AddCampaign({ content, params }) {
 
   function getAdsId(id) {
     const adsIdArr = [];
-    console.log(id);
-    console.log(content.audiences);
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
         adsIdArr.push(aud.selected_fe_id);
@@ -220,7 +217,6 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      console.log(content);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -597,7 +593,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    console.log('check arr valid', ads);
     if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
       return true;
     }
@@ -714,11 +709,13 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
-        } else if (!isAdsValid) {
-          window.location.href = `#card-ads-${arrNotValid[0]}`;
-        } else if (!isAdTextValid.isAdTextValid) {
-          window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
-        } else if (!isAudienceFormAdsValid) {
+        } else if (!isAdsValid || !isAdTextValid.isAdTextValid) {
+          window.location.href = `#card-ads-${arrNotValid[0] ?? isAdTextValid.arrFeIdNotValid[0]}`;
+        }
+        // else if (!isAdTextValid.isAdTextValid) {
+        //   window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
+        // }
+        else if (!isAudienceFormAdsValid) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
@@ -737,7 +734,6 @@ export default function AddCampaign({ content, params }) {
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
-          console.log('error');
           arrFeIdNotValid.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
@@ -745,9 +741,7 @@ export default function AddCampaign({ content, params }) {
         }
       });
     });
-    console.log('SIVALID', isAdTextValid);
-    console.log(`#card-ads-${arrFeIdNotValid}`);
-    // window.location.href = `#card-ads-${arrNotValid[0]}`;
+
     return { isAdTextValid, arrFeIdNotValid };
   };
 
@@ -761,7 +755,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAvailability = () => {
-    if (errorBox.errorAds) {
+    if (errorBox.errorBoxAvailability) {
       setErrorBox({
         ...errorBox,
         errorBoxAvailability: false,
@@ -952,11 +946,9 @@ export default function AddCampaign({ content, params }) {
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
             if (acceptedFiles) {
-              newArrDesc[descId].id = Number(descId) + 1;
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
             } else {
-              console.log('EROROROR');
               newArrDesc[descId].isErr = true;
             }
 
@@ -1723,7 +1715,7 @@ export default function AddCampaign({ content, params }) {
     return (
       <div className={styles.ctnInputCollection}>
         <div className={styles.rowTitleWrapper}>
-          <div className={styles.leftTitle}>
+          <div className={styles.leftTitleAdText}>
             <Typography variant="h6">Ad text</Typography>
             <img
               onMouseEnter={(event) => {
@@ -2032,13 +2024,19 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  const isMultipleAdTextValid = (content) => {
+    let filterEmpty = content.description.filter((desc) => desc.adtext === '');
+    return filterEmpty.length === 0;
+  };
+
   function renderCardAdCreation(content, index) {
     return (
       <div
         id={`card-ads-${content.fe_id}`}
         className={`${styles.inputCollectionCard} ${
           errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''
-        }`}
+        }
+        ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
         <div id={`card-ads-err-${index}`}> </div>
@@ -2143,7 +2141,7 @@ export default function AddCampaign({ content, params }) {
           className={styles.btnCreateAd}
           onClick={() => {
             const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: '', adsId: makeId() });
+            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
             setPicture(currentArr);
           }}
         >
