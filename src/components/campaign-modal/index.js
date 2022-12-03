@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Popover, Typography, Divider } from '@mui/material';
 import useStyles from './styles';
 import CardAudience from '../card-audience';
@@ -16,8 +16,9 @@ const mediumIcon = '/assets/svg/medium.svg';
 const websiteIcon = '/assets/svg/world.svg';
 const tokenIcon = '/assets/svg/ic_token.svg';
 
-export default function CampaignModal({ isVisible, data, close }) {
+export default function CampaignModal({ isVisible, data, close, isScrollToBottom }) {
   const styles = useStyles();
+  const refAdsCard = useRef();
   const [audienceForm, setAudienceForm] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
@@ -25,7 +26,6 @@ export default function CampaignModal({ isVisible, data, close }) {
   const [totalBudget, setTotalBudget] = useState(0);
 
   useEffect(() => {
-    console.log(data);
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
@@ -76,7 +76,21 @@ export default function CampaignModal({ isVisible, data, close }) {
     const getTotalBudgetAds = sumArr(data?.audiences, 'price');
 
     setTotalBudget(getTotalBudgetAds);
+
+    scrollToBottom();
   }, [data]);
+
+  const scrollToBottom = () => {
+    console.log(isScrollToBottom);
+    // if (isScrollToBottom) {
+    setTimeout(() => {
+      window.location.href = isScrollToBottom ? '#ad-card-section' : '#amain-section';
+    }, 100);
+    // }
+    // setTimeout(() => {
+    //   window.location.href = '#main-section';
+    // }, 100);
+  };
 
   const sumArr = (arr, val) => {
     return data?.audiences
@@ -118,7 +132,7 @@ export default function CampaignModal({ isVisible, data, close }) {
 
   function renderCampainNameSection() {
     return (
-      <Grid container className={styles.section1}>
+      <Grid container className={styles.section1} id="main-section">
         <Grid style={{ width: '45%', padding: 10 }}>
           <div className={styles.ctnTextLayout1}>
             <Typography fontSize={18} fontWeight={400}>
@@ -277,7 +291,7 @@ export default function CampaignModal({ isVisible, data, close }) {
 
   function renderAdsCard() {
     return (
-      <div className={styles.ctnRowAudience}>
+      <div className={styles.ctnRowAudience} id="ad-card-section" ref={refAdsCard}>
         {sectionTitle('Ads used in this campaign:')}
         <Grid container spacing={2}>
           {data?.ads.map((item, index) => (
@@ -307,7 +321,7 @@ export default function CampaignModal({ isVisible, data, close }) {
         {renderCardAudience()}
         <Divider variant="middle" />
         {renderCollection()}
-        <Divider variant="middle" style={{ marginBottom: 10, marginTop: 20 }} />
+        <Divider variant="middle" style={{ marginBottom: 10, marginTop: 20 }} id="ad-card-section" />
         {renderAdsCard()}
       </div>
     );

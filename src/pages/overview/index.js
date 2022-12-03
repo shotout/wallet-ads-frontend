@@ -55,6 +55,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const router = useRouter();
   const [hover, setHover] = useState(null);
   const [campaignModal, setCampaignModal] = useState(false);
+  const [isScrollToBottom, setIsScrollToBottom] = useState(false);
   const [adsModal, setAdsModal] = useState(false);
   const [activePopover, setActivePopover] = useState(null);
   const [listContent, setContent] = useState({
@@ -96,7 +97,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   const [campaignDetails, setCampaignDetails] = useState(null);
   const [dataPopover, setDataPopover] = useState(null);
   useEffect(() => {
-    console.log(content);
     initFunction(listCampaign);
   }, []);
 
@@ -164,7 +164,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
   };
 
   const handleHoverOpen = (event, popoverName, data) => {
-    console.log(data);
     event.preventDefault();
     setHover(event.currentTarget);
     setActivePopover(popoverName);
@@ -229,7 +228,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 {/* <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
                       </Typography> */}
-                <Typography
+                {/* <Typography
                   fontWeight={400}
                   fontSize={14}
                   color={'#000000'}
@@ -237,7 +236,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   className={styles.txtDescription}
                 >
                   {dataPopover?.desc}
-                </Typography>
+                </Typography> */}
 
                 {/* {typeof contents === 'object' &&
                   contents.map((v, i) => (
@@ -534,7 +533,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <Grid item md={2.5} sm={12} display="flex">
                 <div
                   onMouseEnter={(event) => {
-                    console.log(item.name.length > 10);
                     if (Number(item.name.length) >= 10) {
                       handleHoverOpen(event, 'logo_text_banner', item.name);
                     }
@@ -548,7 +546,10 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   <Typography
                     variant="body1"
                     style={{ cursor: 'pointer', textDecoration: 'underline', whiteSpace: 'nowrap' }}
-                    onClick={() => openCampaignModal(item.id)}
+                    onClick={() => {
+                      setIsScrollToBottom(false);
+                      openCampaignModal(item.id);
+                    }}
                     color={'#7089FF'}
                   >
                     {shortString(item.name, 20)}
@@ -691,8 +692,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     });
     const paginationa = pages.data.links.shift();
     const pagination2 = pages.data.links.pop();
-
-    console.log(pages.data.current_page);
 
     await sumCampainOverview(pages.data.data);
     setPagination({ data: pages.data.links, currentPage: pages.data.current_page });
@@ -877,14 +876,16 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <div
                   style={{ cursor: 'pointer' }}
                   className={styles.statusContainer}
-                  // onClick={() => setAdsModal(true)}
+                  onClick={() => {
+                    setIsScrollToBottom(true);
+                    openCampaignModal(item.ads.campaign_id);
+                  }}
                   onMouseEnter={(event) => {
                     const data = {
                       img: `${url + item?.ads?.image.url}`,
                       desc: item.ads?.description,
                       title: item?.ads?.name,
                     };
-                    // console.log(`${url + item?.ads?.image.url}`);
                     handleHoverOpen(event, 'banner_image', data);
                   }}
                   onMouseLeave={handleHoverClose}
@@ -1066,7 +1067,15 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
           </div>
         </div>
       </div>
-      <CampaignModal isVisible={campaignModal} data={campaignDetails} close={() => setCampaignModal(false)} />
+      <CampaignModal
+        isVisible={campaignModal}
+        isScrollToBottom={isScrollToBottom}
+        data={campaignDetails}
+        close={() => {
+          setIsScrollToBottom(false);
+          setCampaignModal(false);
+        }}
+      />
       <AdsModal isVisible={adsModal} data={dataPopover} close={() => setAdsModal(false)} />
     </Page>
   );
