@@ -1915,16 +1915,27 @@ export default function AddCampaign({ content, params }) {
         </div>
         {/* <Box sx={{ display: 'flex', backgroundColor: 'red', paddingTop: 10 }}> */}
         <Collapse in={expandAdvanced}>
-          <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
-            Token tracker:
-          </Typography>
+          <div className={styles.leftTitle}>
+            <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
+              Token tracker:
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'token_name');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('token_name', questionObj.token_tracker_name)}
+          </div>
           <Grid container>
             <Grid md={6} sm={6} xl={6} padding={1}>
               <div className={styles.leftTitleBottom}>
                 <Typography fontSize={14} fontWeight={700}>
                   Name
                 </Typography>
-                <img
+                {/* <img
                   onMouseEnter={(event) => {
                     handleHoverOpen(event, 'token_name');
                   }}
@@ -1932,7 +1943,7 @@ export default function AddCampaign({ content, params }) {
                   src={askIcon}
                   alt="ask"
                 />
-                {renderPopover('token_name', questionObj.token_tracker_name)}
+                {renderPopover('token_name', questionObj.token_tracker_name)} */}
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
@@ -1953,7 +1964,7 @@ export default function AddCampaign({ content, params }) {
                   <Typography fontSize={14} fontWeight={700}>
                     Symbol
                   </Typography>
-                  <img
+                  {/* <img
                     onMouseEnter={(event) => {
                       handleHoverOpen(event, 'token_symbol');
                     }}
@@ -1961,7 +1972,7 @@ export default function AddCampaign({ content, params }) {
                     src={askIcon}
                     alt="ask"
                   />
-                  {renderPopover('token_symbol', questionObj.token_symbol)}
+                  {renderPopover('token_symbol', questionObj.token_symbol)} */}
                 </div>
                 <input
                   onChange={(value) => {
@@ -1992,8 +2003,8 @@ export default function AddCampaign({ content, params }) {
           {renderLeftCollection()}
           {renderRightCollection()}
         </div>
-        {/* <Divider />
-        {renderBottomCollection()} */}
+        <Divider />
+        {renderBottomCollection()}
       </div>
     );
   }
