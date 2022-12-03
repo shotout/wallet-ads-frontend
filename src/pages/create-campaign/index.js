@@ -597,6 +597,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
+    console.log('check arr valid', ads);
     if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
       return true;
     }
@@ -606,6 +607,7 @@ export default function AddCampaign({ content, params }) {
   const validateSubmit = () => {
     try {
       let isBudgetValid = true;
+      let isAdTextValid;
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
       );
@@ -671,7 +673,8 @@ export default function AddCampaign({ content, params }) {
           arrNotValid.push(ads.fe_id);
         }
       });
-      // isAdTextValid = validationAdsText();
+
+      isAdTextValid = validationAdsText();
 
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
@@ -685,7 +688,8 @@ export default function AddCampaign({ content, params }) {
         isAudienceFormAdsValid &&
         isBudgetValid &&
         !isAvailabilityValid &&
-        isAudienceUnderMinimum.length === 0
+        isAudienceUnderMinimum.length === 0 &&
+        isAdTextValid.isAdTextValid
       ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
@@ -697,7 +701,7 @@ export default function AddCampaign({ content, params }) {
         }
       } else {
         setErrorBox({
-          errorAds: !isAdsValid || !isAudienceFormAdsValid,
+          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid.isAdTextValid,
           errorAudience: isAudienceValid.length === 0 || !isBudgetValid,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
@@ -712,6 +716,8 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#collection-section';
         } else if (!isAdsValid) {
           window.location.href = `#card-ads-${arrNotValid[0]}`;
+        } else if (!isAdTextValid.isAdTextValid) {
+          window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
         } else if (!isAudienceFormAdsValid) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
@@ -726,21 +732,23 @@ export default function AddCampaign({ content, params }) {
 
   const validationAdsText = () => {
     let adTextToSend = [];
-    let arrNotValid = [];
-    let isValid = true;
+    let arrFeIdNotValid = [];
+    let isAdTextValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
-          arrNotValid.push[picData.fe_id];
+          console.log('error');
+          arrFeIdNotValid.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
-
-          isValid = false;
+          isAdTextValid = false;
         }
       });
     });
-    window.location.href = `#card-ads-${arrNotValid[0]}`;
-    return isValid;
+    console.log('SIVALID', isAdTextValid);
+    console.log(`#card-ads-${arrFeIdNotValid}`);
+    // window.location.href = `#card-ads-${arrNotValid[0]}`;
+    return { isAdTextValid, arrFeIdNotValid };
   };
 
   const deactivateErrorCampaign = () => {
@@ -948,6 +956,7 @@ export default function AddCampaign({ content, params }) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
             } else {
+              console.log('EROROROR');
               newArrDesc[descId].isErr = true;
             }
 
