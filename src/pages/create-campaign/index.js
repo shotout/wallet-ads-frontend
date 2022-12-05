@@ -227,10 +227,12 @@ export default function AddCampaign({ content, params }) {
       setBannerCollection({
         preview: adsBanner && adsBanner.url ? `${BACKEND_URL}${adsBanner.url}` : null,
       });
+      console.log(content.ads);
       const adCreation = content.ads.map((item) => ({
         ...item,
         fe_id: getAdsId(item.id),
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
+        description: JSON.parse(item.description),
         preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         imageProps: item.image,
         adsId: makeId(),
@@ -578,6 +580,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const removeAdText = (id, index) => {
+    console.log(id);
     const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
@@ -1753,13 +1756,15 @@ export default function AddCampaign({ content, params }) {
                 marginBottom={1}
               >
                 <div className={styles.adtextTitleContainer}>
-                  <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                  <Typography variant={'body2'} className={styles.adTextTitle}>
+                    {`Ad text ${i + 1}`}
+                  </Typography>
                   {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                 </div>
 
                 <div className={styles.textAreaCollection}>
                   <textarea
-                    // value={content.description}
+                    value={v.adtext}
                     onChange={(event) => {
                       handleChangePicture(event, 'description', index, false, i);
                     }}
@@ -2064,16 +2069,15 @@ export default function AddCampaign({ content, params }) {
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        !isActive && checkIsAudienceAdsSelected(item.audienceId)
+                        !isActive && checkIsAudienceAdsSelected(!item.audienceId)
                           ? styles.ctnDisable
                           : !item.optimized
                           ? styles.ctnDisable
                           : styles.ctnAudienceItem
-                      }
-                      ${content.campaign_id ? styles.ctnDisable : ''}`}
+                      }`}
                       onClick={(event) => {
                         if (!item.optimized) return;
-                        if (content.campaign_id) return;
+
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))

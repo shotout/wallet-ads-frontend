@@ -33,7 +33,7 @@ export default function Index({ labels, datas, title }) {
         callbacks: {
           title: function (tooltipItem, data) {
             return `${title}`;
-          }, 
+          },
           //   label: function(tooltipItem, data) {
           //     return data['datasets'][0]['data'][tooltipItem['index']];
           //   },
@@ -47,7 +47,6 @@ export default function Index({ labels, datas, title }) {
         },
       },
     },
-    
   };
 
   const data = {
@@ -61,13 +60,6 @@ export default function Index({ labels, datas, title }) {
         barThickness: 50,
       },
     ],
-    options: {
-      scales: {
-          y: {
-              beginAtZero: false
-          }
-      }
-  }
   };
 
   const changeColor = () => {
