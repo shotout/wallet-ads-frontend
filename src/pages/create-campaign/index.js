@@ -2076,7 +2076,7 @@ export default function AddCampaign({ content, params }) {
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
-                        if (!item.optimized) return;
+                        // if (!item.optimized) return;
 
                         if (
                           (item.optimized && isEditable) ||
