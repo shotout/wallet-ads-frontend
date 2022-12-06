@@ -80,6 +80,7 @@ const totalBudgetIcon = '/assets/total_budget.png';
 const blackCalendar = '/assets/black_calendar.png';
 const addIcon = '/assets/add_icon.png';
 const askIcon = '/assets/ask_icon.png';
+const tokenTrackerImg = '/assets/tokentracker.png';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
@@ -1036,10 +1037,14 @@ export default function AddCampaign({ content, params }) {
         }}
         className={styles.ctnPopover}
       >
-        <Box sx={{ p: 2, maxWidth: 260 }}>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            {content || ''}
-          </Typography>
+        <Box sx={type === 'tes' ? { p: 1, maxWidth: 500 } : { p: 2, maxWidth: 260 }}>
+          {type === 'tes' ? (
+            <img src={tokenTrackerImg} style={{ width: 1000, borderRadius: 8 }} />
+          ) : (
+            <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+              {content || ''}
+            </Typography>
+          )}
         </Box>
       </Popover>
     );
@@ -1925,13 +1930,13 @@ export default function AddCampaign({ content, params }) {
             </Typography>
             <img
               onMouseEnter={(event) => {
-                handleHoverOpen(event, 'token_name');
+                handleHoverOpen(event, 'tes');
               }}
               onMouseLeave={handleHoverClose}
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('token_name', questionObj.token_tracker_name)}
+            {renderPopover('tes', questionObj.token_tracker_name)}
           </div>
           <Grid container>
             <Grid md={6} sm={6} xl={6} padding={1}>
@@ -2027,11 +2032,6 @@ export default function AddCampaign({ content, params }) {
       </div>
     );
   }
-
-  const isMultipleAdTextValid = (content) => {
-    let filterEmpty = content.description.filter((desc) => desc.adtext === '');
-    return filterEmpty.length === 0;
-  };
 
   function renderCardAdCreation(content, index) {
     return (
