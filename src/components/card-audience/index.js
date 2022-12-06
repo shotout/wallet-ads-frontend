@@ -16,6 +16,7 @@ const deleteIcon = '/assets/svg/delete.svg';
 const pencilIcon = '/assets/pencil.png';
 
 export default function CardAudience({
+  isErrorAudienceNull,
   isError,
   showArrow,
   label,
@@ -42,7 +43,7 @@ export default function CardAudience({
   };
 
   useEffect(() => {
-    console.log(data);
+    console.log(isErrorAudienceNull);
     // if (data.selectedCategory) {
     //   setTimeout(() => {
     //     if (inputEl.current && inputEl.current.focus) {
@@ -181,7 +182,11 @@ export default function CardAudience({
           <Typography variant="body1" textAlign={'center'} fontWeight="bold" color={'#7089FF'}>
             Budget:
           </Typography>
-          <div className={`${styles.ctnPriceInput} ${data.budgetAds === '' ? styles.redBorder : ''}`}>
+          <div
+            className={`${styles.ctnPriceInput} ${
+              data.budgetAds === '' || data.budgetAds < 100 ? styles.redBorder : ''
+            }`}
+          >
             <span>USD</span>
             <CurrencyInput
               name="currencyInput"
@@ -348,15 +353,24 @@ export default function CardAudience({
     <div className={styles.ctnAudience}>
       <div
         className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${
-          isError ? styles.ctnRedBorder : ''
-        }`}
+          data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
+        }
+        ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
+        ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
         onClick={() => {
           if (!data.selectedCategory) {
             if (typeof onPressCard === 'function') onPressCard();
           }
         }}
       >
-        <div className={`${styles.headerAudience} ${isError ? styles.borderTopError : ''}`}>
+        <div
+          className={`${styles.headerAudience} ${
+            data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
+          }
+          ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.borderTopError : ''}
+          ${isErrorAudienceNull ? styles.borderTopError : ''}
+          `}
+        >
           <div className={styles.ctnWrapper}>
             <SvgIconStyle
               src={headerCard}

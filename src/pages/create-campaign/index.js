@@ -26,6 +26,7 @@ import {
   getCampaignDetail,
   handleEditCampaign,
   getProfilUser,
+  cancelStripe,
 } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
@@ -91,19 +92,18 @@ const expandCloseIcon = '/icons/ic_expandclose.svg';
 const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
 
-const initDecription = [
-  {
-    id: null,
-    adtext: '',
-    isErr: false,
-  },
-];
-
-// const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
-const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+// const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
+  const initDecription = [
+    {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    },
+  ];
+  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -175,6 +175,7 @@ export default function AddCampaign({ content, params }) {
     errorBoxCampaignName: false,
     errorBoxAvailability: false,
     errorCollection: false,
+    errorAudienceNull: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -202,7 +203,7 @@ export default function AddCampaign({ content, params }) {
     const adsIdArr = [];
     content.audiences.forEach((aud, index) => {
       if (aud.ads_id === id) {
-        adsIdArr.push(index);
+        adsIdArr.push(aud.selected_fe_id);
       }
     });
     return adsIdArr;
@@ -226,10 +227,12 @@ export default function AddCampaign({ content, params }) {
       setBannerCollection({
         preview: adsBanner && adsBanner.url ? `${BACKEND_URL}${adsBanner.url}` : null,
       });
+      console.log(content.ads);
       const adCreation = content.ads.map((item) => ({
         ...item,
         fe_id: getAdsId(item.id),
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
+        description: JSON.parse(item.description),
         preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         imageProps: item.image,
         adsId: makeId(),
@@ -240,6 +243,7 @@ export default function AddCampaign({ content, params }) {
         return {
           id: item.id,
           audienceId: makeId(),
+          selected_fe_id: item.selected_fe_id,
           optimized: parsePriceToCategory(item.price_airdrop) !== null,
           selectedCategory: parsePriceToCategory(item.price_airdrop),
           budgetAds: (item.price || '').toString(),
@@ -276,8 +280,16 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_name: adsPage.token_name,
         ads_page_token_symbol: adsPage.token_symbol,
       });
+
+      cancelCreateCampaignId(content.id);
     }
   }, []);
+
+  const cancelCreateCampaignId = async (campaign_id) => {
+    await cancelStripe({
+      campaign_id,
+    });
+  };
 
   const handleResetPage = () => {
     setModalSuccess(null);
@@ -343,6 +355,7 @@ export default function AddCampaign({ content, params }) {
       errorBoxCampaignName: false,
       errorBoxAvailability: false,
       errorCollection: false,
+      errorAudienceNull: false,
     });
     setShowCreditCard({
       ...showCreditCard,
@@ -401,6 +414,7 @@ export default function AddCampaign({ content, params }) {
           id: audience.id,
           file: audience.audienceFile && audience.audienceFile ? audience.audienceFile : null,
           fe_id: index,
+          selected_fe_id: audience.audienceId,
           price: audience.budgetAds ? audience.budgetAds.replace(',', '') : '',
           price_airdrop: audience.selectedCategory ? getAudiencePrice(audience).toString() : null,
           total_user: calculateAirdropPerUser(audience).toString(),
@@ -453,8 +467,8 @@ export default function AddCampaign({ content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
         if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
-        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
-        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
 
         if (ads.fe_id.length > 0) {
           ads.fe_id.forEach((feId, feIndex) => {
@@ -470,6 +484,7 @@ export default function AddCampaign({ content, params }) {
       campaignData.forEach((campaign, indexCampaign) => {
         if (campaign.fe_id || campaign.fe_id === 0)
           formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
+        if (campaign) formRes.append(`campaign_audiences[${indexCampaign}][selected_fe_id]`, campaign.selected_fe_id);
         if (campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id);
         if (campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file);
         if (campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price);
@@ -565,6 +580,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const removeAdText = (id, index) => {
+    console.log(id);
     const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
@@ -589,8 +605,15 @@ export default function AddCampaign({ content, params }) {
   const validateSubmit = () => {
     try {
       let isBudgetValid = true;
+      let isAdTextValid;
       const isAudienceValid = audienceForm.filter(
         (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
+      );
+      const isAudienceNull = audienceForm.filter(
+        (audience) => audience.selectedCategory === null && audience.budgetAds === ''
+      );
+      const isAudienceUnderMinimum = audienceForm.filter(
+        (audience) => audience.selectedCategory !== null && audience.budgetAds < 100
       );
 
       audienceForm.forEach((aud) => {
@@ -612,7 +635,7 @@ export default function AddCampaign({ content, params }) {
       let isAdsValid = false;
       let inputValid = true;
       let selectedAdsAudience = [];
-      let isAdTextValid;
+
       const errorObj = {
         campaignName: formValues.campaign_name === '',
         collectionPageName: formValues.ads_page_name === '',
@@ -629,6 +652,7 @@ export default function AddCampaign({ content, params }) {
       const isAvailabilityValid =
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
+
       if (campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName || availability) {
         setErrorInput(errorObj);
         inputValid = false;
@@ -647,14 +671,24 @@ export default function AddCampaign({ content, params }) {
           arrNotValid.push(ads.fe_id);
         }
       });
-      // isAdTextValid = validationAdsText();
+
+      isAdTextValid = validationAdsText();
 
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
-      if (isAudienceValid.length > 0 && isAdsValid && inputValid && isAudienceFormAdsValid && isBudgetValid) {
+      if (
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isAudienceFormAdsValid &&
+        isBudgetValid &&
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0 &&
+        isAdTextValid.isAdTextValid
+      ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
@@ -665,20 +699,27 @@ export default function AddCampaign({ content, params }) {
         }
       } else {
         setErrorBox({
-          errorAds: !isAdsValid || !isAudienceFormAdsValid,
+          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid.isAdTextValid,
           errorAudience: isAudienceValid.length === 0 || !isBudgetValid,
           errorBoxCampaignName: isCampaignNameValid,
           errorBoxAvailability: isAvailabilityValid,
           errorCollection: !isCollectionSection,
+          errorAudienceNull: audienceForm.length === isAudienceNull.length,
         });
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
-        } else if (isAudienceValid.length === 0) {
+        } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
-        } else if (!isAdsValid || !isAudienceFormAdsValid) {
-          window.location.href = `#card-ads-${arrNotValid[0]}`;
+        } else if (!isAdsValid || !isAdTextValid.isAdTextValid) {
+          window.location.href = `#card-ads-${arrNotValid[0] ?? isAdTextValid.arrFeIdNotValid[0]}`;
+        }
+        // else if (!isAdTextValid.isAdTextValid) {
+        //   window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
+        // }
+        else if (!isAudienceFormAdsValid) {
+          window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
         }
@@ -691,21 +732,20 @@ export default function AddCampaign({ content, params }) {
 
   const validationAdsText = () => {
     let adTextToSend = [];
-    let arrNotValid = [];
-    let isValid = true;
+    let arrFeIdNotValid = [];
+    let isAdTextValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
-          arrNotValid.push[picData.fe_id];
+          arrFeIdNotValid.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
-
-          isValid = false;
+          isAdTextValid = false;
         }
       });
     });
-    window.location.href = `#card-ads-${arrNotValid[0]}`;
-    return isValid;
+
+    return { isAdTextValid, arrFeIdNotValid };
   };
 
   const deactivateErrorCampaign = () => {
@@ -718,7 +758,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAvailability = () => {
-    if (errorBox.errorAds) {
+    if (errorBox.errorBoxAvailability) {
       setErrorBox({
         ...errorBox,
         errorBoxAvailability: false,
@@ -897,31 +937,29 @@ export default function AddCampaign({ content, params }) {
               ...pict,
               [stateName]: listAudience,
             };
-          }
-          // else if (stateName === 'description') {
-          // const arrDesc = adText.map((v, i) => {
-          //   if (i === descId) {
-          //     return { ...v, adtext: acceptedFiles.target.value };
-          //   } else {
-          //     return adText;
-          //   }
-          // });
-          // console.log(adText);
-          // console.log(arrDesc);
-          // let newArrDesc = [...pict.description];
-          // if (acceptedFiles) {
-          //   newArrDesc[descId].id = Number(descId) + 1;
-          //   newArrDesc[descId].adtext = acceptedFiles.target.value;
-          //   newArrDesc[descId].isErr = false;
-          // } else {
-          //   newArrDesc[descId].isErr = true;
-          // }
+          } else if (stateName === 'description') {
+            // const arrDesc = adText.map((v, i) => {
+            //   if (i === descId) {
+            //     return { ...v, adtext: acceptedFiles.target.value };
+            //   } else {
+            //     return adText;
+            //   }
+            // });
+            // console.log(adText);
+            // console.log(arrDesc);
+            let newArrDesc = [...pict.description];
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
 
-          // return {
-          //   ...pict,
-          //   [stateName]: newArrDesc,
-          // };
-          // }
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
+          }
 
           return {
             ...pict,
@@ -1356,6 +1394,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
+                  isErrorAudienceNull={errorBox.errorAudienceNull}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
@@ -1372,6 +1411,7 @@ export default function AddCampaign({ content, params }) {
                       setErrorBox({
                         ...errorBox,
                         errorAudience: false,
+                        errorAudienceNull: false,
                       });
                     }
                     setSelectedAudience(index);
@@ -1678,7 +1718,7 @@ export default function AddCampaign({ content, params }) {
     return (
       <div className={styles.ctnInputCollection}>
         <div className={styles.rowTitleWrapper}>
-          <div className={styles.leftTitle}>
+          <div className={styles.leftTitleAdText}>
             <Typography variant="h6">Ad text</Typography>
             <img
               onMouseEnter={(event) => {
@@ -1716,13 +1756,15 @@ export default function AddCampaign({ content, params }) {
                 marginBottom={1}
               >
                 <div className={styles.adtextTitleContainer}>
-                  <Typography variant={'body2'} className={styles.adTextTitle}>{`Ad text ${i + 1}`}</Typography>
+                  <Typography variant={'body2'} className={styles.adTextTitle}>
+                    {`Ad text ${i + 1}`}
+                  </Typography>
                   {i !== 0 && <img src={rubishIcon} onClick={() => removeAdText(v.id, index)} />}
                 </div>
 
                 <div className={styles.textAreaCollection}>
                   <textarea
-                    // value={content.description}
+                    value={v.adtext}
                     onChange={(event) => {
                       handleChangePicture(event, 'description', index, false, i);
                     }}
@@ -1733,7 +1775,7 @@ export default function AddCampaign({ content, params }) {
               </Grid>
             ))
           )}
-          {/* <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
             <div className={styles.adtextTitleContainer}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
@@ -1741,7 +1783,7 @@ export default function AddCampaign({ content, params }) {
                 Add ad text
               </Typography>
             </div>
-          </Grid> */}
+          </Grid>
         </Grid>
       </div>
     );
@@ -1878,16 +1920,27 @@ export default function AddCampaign({ content, params }) {
         </div>
         {/* <Box sx={{ display: 'flex', backgroundColor: 'red', paddingTop: 10 }}> */}
         <Collapse in={expandAdvanced}>
-          <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
-            Token tracker:
-          </Typography>
+          <div className={styles.leftTitle}>
+            <Typography fontSize={18} fontWeight={700} padding={1} paddingTop={2}>
+              Token tracker:
+            </Typography>
+            <img
+              onMouseEnter={(event) => {
+                handleHoverOpen(event, 'token_name');
+              }}
+              onMouseLeave={handleHoverClose}
+              src={askIcon}
+              alt="ask"
+            />
+            {renderPopover('token_name', questionObj.token_tracker_name)}
+          </div>
           <Grid container>
             <Grid md={6} sm={6} xl={6} padding={1}>
               <div className={styles.leftTitleBottom}>
                 <Typography fontSize={14} fontWeight={700}>
                   Name
                 </Typography>
-                <img
+                {/* <img
                   onMouseEnter={(event) => {
                     handleHoverOpen(event, 'token_name');
                   }}
@@ -1895,7 +1948,7 @@ export default function AddCampaign({ content, params }) {
                   src={askIcon}
                   alt="ask"
                 />
-                {renderPopover('token_name', questionObj.token_tracker_name)}
+                {renderPopover('token_name', questionObj.token_tracker_name)} */}
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
@@ -1916,7 +1969,7 @@ export default function AddCampaign({ content, params }) {
                   <Typography fontSize={14} fontWeight={700}>
                     Symbol
                   </Typography>
-                  <img
+                  {/* <img
                     onMouseEnter={(event) => {
                       handleHoverOpen(event, 'token_symbol');
                     }}
@@ -1924,7 +1977,7 @@ export default function AddCampaign({ content, params }) {
                     src={askIcon}
                     alt="ask"
                   />
-                  {renderPopover('token_symbol', questionObj.token_symbol)}
+                  {renderPopover('token_symbol', questionObj.token_symbol)} */}
                 </div>
                 <input
                   onChange={(value) => {
@@ -1955,8 +2008,8 @@ export default function AddCampaign({ content, params }) {
           {renderLeftCollection()}
           {renderRightCollection()}
         </div>
-        {/* <Divider />
-        {renderBottomCollection()} */}
+        <Divider />
+        {renderBottomCollection()}
       </div>
     );
   }
@@ -1976,15 +2029,22 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  const isMultipleAdTextValid = (content) => {
+    let filterEmpty = content.description.filter((desc) => desc.adtext === '');
+    return filterEmpty.length === 0;
+  };
+
   function renderCardAdCreation(content, index) {
     return (
       <div
         id={`card-ads-${content.fe_id}`}
         className={`${styles.inputCollectionCard} ${
           errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''
-        }`}
+        }
+        ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
+        <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
         {renderRightAdCreation(content, index)}
@@ -2000,21 +2060,24 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.campaign_id ? true : content.fe_id.includes(item.audienceId);
+              const isActive = content.campaign_id
+                ? content.fe_id.includes(item.selected_fe_id)
+                : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
                 <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
-                        !isActive && checkIsAudienceAdsSelected(item.audienceId)
+                        !isActive && checkIsAudienceAdsSelected(!item.audienceId)
                           ? styles.ctnDisable
                           : !item.optimized
                           ? styles.ctnDisable
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
-                        if (!item.optimized) return;
+                        // if (!item.optimized) return;
+
                         if (
                           (item.optimized && isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
@@ -2082,7 +2145,7 @@ export default function AddCampaign({ content, params }) {
           className={styles.btnCreateAd}
           onClick={() => {
             const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: '', adsId: makeId() });
+            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
             setPicture(currentArr);
           }}
         >
