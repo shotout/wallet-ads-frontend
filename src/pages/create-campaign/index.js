@@ -712,13 +712,11 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
-        } else if (!isAdsValid || !isAdTextValid.isAdTextValid) {
-          window.location.href = `#card-ads-${arrNotValid[0] ?? isAdTextValid.arrFeIdNotValid[0]}`;
-        }
-        // else if (!isAdTextValid.isAdTextValid) {
-        //   window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
-        // }
-        else if (!isAudienceFormAdsValid) {
+        } else if (!isAdsValid) {
+          window.location.href = `#card-ads-${arrNotValid[0]}`;
+        } else if (!isAdTextValid.isAdTextValid) {
+          window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+        } else if (!isAudienceFormAdsValid) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
@@ -737,7 +735,7 @@ export default function AddCampaign({ content, params }) {
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
-          arrFeIdNotValid.push(picData.fe_id);
+          arrFeIdNotValid.push(desc.id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
           isAdTextValid = false;
@@ -1764,6 +1762,7 @@ export default function AddCampaign({ content, params }) {
 
                 <div className={styles.textAreaCollection}>
                   <textarea
+                    id={`ad-text-area-${v.id}`}
                     value={v.adtext}
                     onChange={(event) => {
                       handleChangePicture(event, 'description', index, false, i);
