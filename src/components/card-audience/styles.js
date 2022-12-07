@@ -218,7 +218,7 @@ export default makeStyles((theme) => ({
   },
   redBorder: {
     borderColor: '#AD4061',
-    backgroundColor: '#ff6b6b',
+    backgroundColor: '#FFD8DF',
   },
   ctnRedBorder: {
     border: '2px solid red',
