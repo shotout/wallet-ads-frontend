@@ -1036,10 +1036,20 @@ export default function AddCampaign({ content, params }) {
           pointerEvents: 'none',
         }}
         className={styles.ctnPopover}
+        PaperProps={{
+          style: {
+            background: type === 'token-tracker' ? '#f8f9fa' : 'rgba(0, 0, 0,0.9)',
+          },
+        }}
       >
-        <Box sx={type === 'tes' ? { p: 1, maxWidth: 500 } : { p: 2, maxWidth: 260 }}>
-          {type === 'tes' ? (
-            <img src={tokenTrackerImg} style={{ width: 1000, borderRadius: 8 }} />
+        <Box sx={type === 'token-tracker' ? { p: 1, maxWidth: 500 } : { p: 2, maxWidth: 260 }}>
+          {type === 'token-tracker' ? (
+            <>
+              <Typography variant="body2" sx={{ color: '#000' }} textAlign="left" marginLeft={2} fontSize={12} fontWeight={800}> 
+                Example:
+              </Typography>
+              <img src={tokenTrackerImg} style={{ width: 1000, borderRadius: 8 }} />
+            </>
           ) : (
             <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
               {content || ''}
@@ -1930,13 +1940,13 @@ export default function AddCampaign({ content, params }) {
             </Typography>
             <img
               onMouseEnter={(event) => {
-                handleHoverOpen(event, 'tes');
+                handleHoverOpen(event, 'token-tracker');
               }}
               onMouseLeave={handleHoverClose}
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('tes', questionObj.token_tracker_name)}
+            {renderPopover('token-tracker', questionObj.token_tracker_name)}
           </div>
           <Grid container>
             <Grid md={6} sm={6} xl={6} padding={1}>
