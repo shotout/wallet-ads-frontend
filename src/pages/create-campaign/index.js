@@ -614,7 +614,7 @@ export default function AddCampaign({ content, params }) {
         (audience) => audience.selectedCategory === null && audience.budgetAds === ''
       );
       const isAudienceUnderMinimum = audienceForm.filter(
-        (audience) => audience.selectedCategory !== null && audience.budgetAds < 100
+        (audience) => audience.selectedCategory !== null && audience.budgetAds < 500
       );
 
       audienceForm.forEach((aud) => {
