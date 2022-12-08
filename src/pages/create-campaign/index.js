@@ -1272,6 +1272,7 @@ export default function AddCampaign({ content, params }) {
                     <span>Days</span>
                   </div>
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
               <Grid item md={4} xl={4} xs={12}>
                 <div
@@ -1298,6 +1299,7 @@ export default function AddCampaign({ content, params }) {
                     <span>Days</span>
                   </div>
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
               <Grid item md={4} xl={4} xs={12}>
                 <div className={styles.ctnInputColumn}>
@@ -1335,6 +1337,7 @@ export default function AddCampaign({ content, params }) {
                     <span id="red-alert">Please enter less than 91 days.</span>
                   )}
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
             </Grid>
           </div>
