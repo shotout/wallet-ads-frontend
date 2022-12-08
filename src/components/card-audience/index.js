@@ -30,9 +30,12 @@ export default function CardAudience({
   onRemove,
   readOnly,
 }) {
+  React.useEffect(() => {});
+
   const styles = useStyles();
   const inputEl = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isErr, setIsErr] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,8 +45,17 @@ export default function CardAudience({
     setAnchorEl(null);
   };
 
+  const checkiferr = () => {
+    if (data.budgetAds < 500) {
+      setIsErr(true);
+    } else {
+      setIsErr(false);
+    }
+  };
+
   useEffect(() => {
     console.log(isErrorAudienceNull);
+    checkiferr();
     // if (data.selectedCategory) {
     //   setTimeout(() => {
     //     if (inputEl.current && inputEl.current.focus) {
@@ -51,7 +63,7 @@ export default function CardAudience({
     //     }
     //   }, 100);
     // }
-  }, [data]);
+  }, []);
 
   function renderPopover() {
     const open = Boolean(anchorEl);
@@ -179,7 +191,7 @@ export default function CardAudience({
     } else {
       return (
         <div className={`${styles.inputPriceWrapper}`}>
-          {data.budgetAds < 500 ? (
+          {data.budgetAds < 500 && isErr ? (
             <Box
               sx={{
                 position: 'absolute',
@@ -217,7 +229,8 @@ export default function CardAudience({
               placeholder=""
               ref={inputEl}
               onChange={onChangeBudget}
-              // onBlur={handleOnBlur}
+              onBlur={() => checkiferr()}
+              onFocus={() => setIsErr(false)}
               allowDecimals={false}
               allowNegativeValue={false}
               disableAbbreviations
