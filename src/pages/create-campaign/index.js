@@ -714,11 +714,27 @@ export default function AddCampaign({ content, params }) {
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
         } else if (!isAdsValid) {
-          if (!isAdTextValid.isAdTextValid) {
-            window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
-          } else {
+          let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
+          let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
+
+          console.log('card', errCard);
+          console.log('addtexterr', addTextErr);
+
+          if (errCard < addTextErr) {
             window.location.href = `#card-ads-${arrNotValid[0]}`;
+          } else {
+            if (errCard) {
+              window.location.href = `#card-ads-${arrNotValid[0]}`;
+            } else {
+              window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+            }
           }
+
+          // if (!isAdTextValid.isAdTextValid) {
+          //   window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+          // } else {
+          //   window.location.href = `#card-ads-${arrNotValid[0]}`;
+          // }
           //
         } else if (!isAdTextValid.isAdTextValid) {
           window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
@@ -737,11 +753,13 @@ export default function AddCampaign({ content, params }) {
   const validationAdsText = () => {
     let adTextToSend = [];
     let arrFeIdNotValid = [];
+    let arrFeID = [];
     let isAdTextValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
           arrFeIdNotValid.push(desc.id);
+          arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
           isAdTextValid = false;
@@ -749,7 +767,7 @@ export default function AddCampaign({ content, params }) {
       });
     });
 
-    return { isAdTextValid, arrFeIdNotValid };
+    return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
   const deactivateErrorCampaign = () => {
