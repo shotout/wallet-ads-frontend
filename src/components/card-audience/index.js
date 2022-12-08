@@ -197,7 +197,7 @@ export default function CardAudience({
                 textAlign="justify"
                 fontFamily={'Public Sans, sans-serif'}
               >
-                Please input a minimum budget of USD500
+                Please enter a minimum budget of USD500.
               </Typography>
             </Box>
           ) : null}
