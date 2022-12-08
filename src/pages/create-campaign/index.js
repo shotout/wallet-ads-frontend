@@ -80,7 +80,7 @@ const totalBudgetIcon = '/assets/total_budget.png';
 const blackCalendar = '/assets/black_calendar.png';
 const addIcon = '/assets/add_icon.png';
 const askIcon = '/assets/ask_icon.png';
-const tokenTrackerImg = '/assets/tokentracker.png';
+const tokenTrackerImg = '/assets/tokentracker.jpg';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
