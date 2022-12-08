@@ -714,7 +714,12 @@ export default function AddCampaign({ content, params }) {
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
         } else if (!isAdsValid) {
-          window.location.href = `#card-ads-${arrNotValid[0]}`;
+          if (!isAdTextValid.isAdTextValid) {
+            window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+          } else {
+            window.location.href = `#card-ads-${arrNotValid[0]}`;
+          }
+          //
         } else if (!isAdTextValid.isAdTextValid) {
           window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
         } else if (!isAudienceFormAdsValid) {
@@ -1045,7 +1050,14 @@ export default function AddCampaign({ content, params }) {
         <Box sx={type === 'token-tracker' ? { p: 1, maxWidth: 500 } : { p: 2, maxWidth: 260 }}>
           {type === 'token-tracker' ? (
             <>
-              <Typography variant="body2" sx={{ color: '#000' }} textAlign="left" marginLeft={2} fontSize={12} fontWeight={800}> 
+              <Typography
+                variant="body2"
+                sx={{ color: '#000' }}
+                textAlign="left"
+                marginLeft={2}
+                fontSize={12}
+                fontWeight={800}
+              >
                 Example:
               </Typography>
               <img src={tokenTrackerImg} style={{ width: 1000, borderRadius: 8 }} />
