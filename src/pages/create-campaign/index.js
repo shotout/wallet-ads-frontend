@@ -597,10 +597,9 @@ export default function AddCampaign({ content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
+    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
-    return false;
   };
 
   const validateSubmit = () => {
@@ -669,6 +668,7 @@ export default function AddCampaign({ content, params }) {
           });
           arrValid.push(ads);
         } else {
+          console.log('Not Valid');
           arrNotValid.push(ads.fe_id);
         }
       });
@@ -721,6 +721,8 @@ export default function AddCampaign({ content, params }) {
           console.log('addtexterr', addTextErr);
 
           if (errCard < addTextErr) {
+            window.location.href = `#card-ads-${arrNotValid[0]}`;
+          } else if (errCard === addTextErr) {
             window.location.href = `#card-ads-${arrNotValid[0]}`;
           } else {
             if (errCard) {
