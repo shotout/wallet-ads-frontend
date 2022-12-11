@@ -717,9 +717,6 @@ export default function AddCampaign({ content, params }) {
           let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
 
-          console.log('card', errCard);
-          console.log('addtexterr', addTextErr);
-
           if (errCard < addTextErr) {
             window.location.href = `#card-ads-${arrNotValid[0]}`;
           } else if (errCard === addTextErr) {
@@ -731,13 +728,6 @@ export default function AddCampaign({ content, params }) {
               window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
             }
           }
-
-          // if (!isAdTextValid.isAdTextValid) {
-          //   window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
-          // } else {
-          //   window.location.href = `#card-ads-${arrNotValid[0]}`;
-          // }
-          //
         } else if (!isAdTextValid.isAdTextValid) {
           window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
         } else if (!isAudienceFormAdsValid) {
