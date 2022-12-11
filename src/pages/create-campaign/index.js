@@ -228,7 +228,7 @@ export default function AddCampaign({ content, params }) {
       setBannerCollection({
         preview: adsBanner && adsBanner.url ? `${BACKEND_URL}${adsBanner.url}` : null,
       });
-      console.log(content.ads);
+
       const adCreation = content.ads.map((item) => ({
         ...item,
         fe_id: getAdsId(item.id),
@@ -581,7 +581,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const removeAdText = (id, index) => {
-    console.log(id);
     const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
@@ -668,7 +667,6 @@ export default function AddCampaign({ content, params }) {
           });
           arrValid.push(ads);
         } else {
-          console.log('Not Valid');
           arrNotValid.push(ads.fe_id);
         }
       });
@@ -680,6 +678,9 @@ export default function AddCampaign({ content, params }) {
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
+      // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
+      // console.log('is arr valid', isAudienceFormAdsValidCP);
+      // console.log(selectedAdsAudience);
       if (
         isAudienceValid.length > 0 &&
         isAdsValid &&
@@ -717,15 +718,29 @@ export default function AddCampaign({ content, params }) {
           let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
 
+          console.log('Err Card', arrNotValid);
+          console.log('ad text err', addTextErr);
+          console.log('is arr valid', isAudienceFormAdsValid);
+
           if (errCard < addTextErr) {
             window.location.href = `#card-ads-${arrNotValid[0]}`;
           } else if (errCard === addTextErr) {
             window.location.href = `#card-ads-${arrNotValid[0]}`;
           } else {
             if (errCard) {
-              window.location.href = `#card-ads-${arrNotValid[0]}`;
+              console.log(isAudienceFormAdsValid);
+              if (isAudienceFormAdsValid === false) {
+                window.location.href = `#checkbox-${arrNotValid[0]}`;
+              } else {
+                window.location.href = `#card-ads-${arrNotValid[0]}`;
+              }
             } else {
-              window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+              console.log(isAudienceFormAdsValid);
+              if (!isAudienceFormAdsValid) {
+                window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+              } else {
+                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+              }
             }
           }
         } else if (!isAdTextValid.isAdTextValid) {
@@ -2099,7 +2114,15 @@ export default function AddCampaign({ content, params }) {
                 : content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
-                <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
+                <Grid
+                  id={`checkbox-${item.audienceId}`}
+                  item
+                  md={3}
+                  sm={6}
+                  xs={12}
+                  className={styles.ctnSectionAd}
+                  key={item.audienceId.toString()}
+                >
                   <div className={styles.ctnAudienceWrapper}>
                     <div
                       className={`${styles.ctnAudienceItem} ${
