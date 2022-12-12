@@ -2109,10 +2109,14 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.campaign_id
-                ? content.fe_id.includes(item.selected_fe_id)
-                : content.fe_id.includes(item.audienceId);
+              const isActive = content.fe_id.includes(item.audienceId);
+
+              console.log(content.fe_id);
+              console.log(item);
+
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
+
+              console.log(item);
               return (
                 <Grid
                   id={`checkbox-${item.audienceId}`}
