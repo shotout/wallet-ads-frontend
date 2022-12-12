@@ -218,6 +218,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      cancelCreateCampaignId(content.id);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -281,8 +282,6 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_name: adsPage.token_name,
         ads_page_token_symbol: adsPage.token_symbol,
       });
-
-      cancelCreateCampaignId(content.id);
     }
   }, []);
 
@@ -722,23 +721,48 @@ export default function AddCampaign({ content, params }) {
           console.log('ad text err', addTextErr);
           console.log('is arr valid', isAudienceFormAdsValid);
 
-          if (errCard < addTextErr) {
-            window.location.href = `#card-ads-${arrNotValid[0]}`;
+          if (errCard > addTextErr) {
+            if (arrNotValid[0]) {
+              window.location.href = `#card-ads-${arrNotValid[0]}`;
+            } else {
+              window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            }
+            // if (isAudienceFormAdsValid !== false) {
+            //   console.log('tes');
+            //   console.log(errCard);
+            //   console.log(isAudienceFormAdsValid);
+            //   window.location.href = `#card-ads-${arrNotValid[0]}`;
+            //   // window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            // } else {
+            //   console.log('tes');
+            //   console.log(errCard);
+            //   console.log(isAudienceFormAdsValid);
+            //   // if (isAudienceFormAdsValid) {
+            //   //   window.location.href = `#card-ads-${arrNotValid[0]}`;
+            //   // }
+            //   window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            // }
           } else if (errCard === addTextErr) {
+            console.log('2');
             window.location.href = `#card-ads-${arrNotValid[0]}`;
           } else {
             if (errCard) {
-              console.log(isAudienceFormAdsValid);
+              console.log('3');
               if (isAudienceFormAdsValid === false) {
-                window.location.href = `#checkbox-${arrNotValid[0]}`;
-              } else {
+                console.log('5');
                 window.location.href = `#card-ads-${arrNotValid[0]}`;
+              } else {
+                console.log('6');
+                window.location.href = `#checkbox-${arrNotValid[0]}`;
               }
             } else {
+              console.log('4');
               console.log(isAudienceFormAdsValid);
-              if (!isAudienceFormAdsValid) {
+              if (isAudienceFormAdsValid === false) {
+                console.log('712');
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
+                console.log('8');
                 window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
               }
             }
@@ -2109,14 +2133,11 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.fe_id.includes(item.audienceId);
-
-              console.log(content.fe_id);
-              console.log(item);
+              const isActive = content.campaign_id
+                ? content.fe_id.includes(item.selected_fe_id)
+                : content.fe_id.includes(item.audienceId);
 
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
-
-              console.log(item);
               return (
                 <Grid
                   id={`checkbox-${item.audienceId}`}
@@ -2129,7 +2150,7 @@ export default function AddCampaign({ content, params }) {
                 >
                   <div className={styles.ctnAudienceWrapper}>
                     <div
-                      className={`${styles.ctnAudienceItem} ${
+                      className={`${styles.ctnAudienceItem} ${content.capaign_id ?  styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
                           : !item.optimized
