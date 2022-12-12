@@ -268,7 +268,7 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
               {formValues?.ads_page_token_name && (
                 <Grid>
                   <Typography fontSize={20} fontWeight={700} marginBottom={1}>
-                    Token Tracker:
+                    Token tracker:
                   </Typography>
                   <div style={{ display: 'flex', flexDirection: 'row' }}>
                     {formValues?.ads_page_token_name && (
