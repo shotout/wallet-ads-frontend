@@ -122,7 +122,7 @@ export default function CreditCard({ totalBudget, isVisible = null, handleHoverC
                     <div className={styles.ctnDescWrapper}>
                         <img src={ccImage} className={styles.ccStyle} alt="Credit" />
                         <Typography variant="body2" fontWeight={"600"} marginTop={2} color="#fff">
-                            Please add your payment details to set up and schedule campaigns on wallet ads. You can select paying with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" on the right side.
+                            Please add your payment details to set up and schedule campaigns on WALLETADS. You can select paying with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" on the right side.
                         </Typography>
                     </div>
                 </Grid>
