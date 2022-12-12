@@ -1,53 +1,55 @@
-import { Popover, Typography } from '@mui/material'
-import Iconify from '../Iconify'
-import useStyles from './styles'
+import { Popover, Typography } from '@mui/material';
+import Iconify from '../Iconify';
+import useStyles from './styles';
 
-const launchImage = '/assets/launch.png'
+const launchImage = '/assets/launch.png';
 
-export default function SuccessAddCampaign({ isVisible = null, handleHoverClose }){
-    const styles = useStyles()
+export default function SuccessAddCampaign({ isVisible = null, handleHoverClose }) {
+  const styles = useStyles();
 
-    const handleDirectCampaign = () => {
-        handleHoverClose()
-    }
+  const handleDirectCampaign = () => {
+    handleHoverClose();
+  };
 
-    return (
-        <Popover
-          id={"success-campaign"}
-          open={Boolean(isVisible)}
-          anchorEl={isVisible}
-          anchorOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'center',
-            horizontal: 'center',
-          }}
-          onClose={handleDirectCampaign}
-          className={styles.ctnPopover}
-      >
-          <div className={styles.ctnWrapper}>
-            <div className={styles.ctnBackground}>
-                <img src={launchImage} alt="launch" />
-            </div>
-            <div className={styles.ctnContent}>
-                <Typography variant="h5" sx={{ color: '#fff' }} fontWeight="800" textAlign="center">
-                        Your campaign has successfully been scheduled and is currently in review by our team!
-                </Typography>
-                <Typography variant="subtitle1" sx={{ color: '#fff' }} marginTop={1} textAlign="center">
-                    {isVisible === 'cryptocurrency' ? 'Our team will send you an email with the payment details for cryptocurrencies within the next 24 hours.' : 'You will receive an email as soon as the campaign is running.'}
-                </Typography>
-                <div className={styles.ctnBtnCampaign} onClick={handleDirectCampaign}>
-                    <Typography variant="body2" fontWeight={"bold"} sx={{ color: '#fff' }} textAlign="center">
-                        Create another campaign
-                    </Typography>
-                </div>
-                <div className={styles.ctnClose} onClick={handleHoverClose}>
-                    <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
-                </div>
-            </div>
+  return (
+    <Popover
+      id={'success-campaign'}
+      open={Boolean(isVisible)}
+      anchorEl={isVisible}
+      anchorOrigin={{
+        vertical: 'center',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'center',
+        horizontal: 'center',
+      }}
+      onClose={handleDirectCampaign}
+      className={styles.ctnPopover}
+    >
+      <div className={styles.ctnWrapper}>
+        <div className={styles.ctnBackground}>
+          <img src={launchImage} alt="launch" />
+        </div>
+        <div className={styles.ctnContent}>
+          <Typography variant="h5" sx={{ color: '#fff' }} fontWeight="800" textAlign="center">
+            Your campaign has successfully been scheduled and is currently in review by our team!
+          </Typography>
+          <Typography variant="subtitle1" sx={{ color: '#fff' }} marginTop={1} textAlign="center">
+            {isVisible === 'cryptocurrency'
+              ? 'Our team will send you an email with the payment details for cryptocurrencies within the next 24 hours.'
+              : 'You will receive an email as soon as the campaign is running.'}
+          </Typography>
+          <div className={styles.ctnBtnCampaign} onClick={handleDirectCampaign}>
+            <Typography variant="body2" fontWeight={'bold'} sx={{ color: '#fff' }} textAlign="center">
+              Create another campaign
+            </Typography>
           </div>
-      </Popover>
-    )
+          <div className={styles.ctnClose} onClick={handleHoverClose}>
+            <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
+          </div>
+        </div>
+      </div>
+    </Popover>
+  );
 }

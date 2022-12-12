@@ -2150,7 +2150,7 @@ export default function AddCampaign({ content, params }) {
                 >
                   <div className={styles.ctnAudienceWrapper}>
                     <div
-                      className={`${styles.ctnAudienceItem} ${content.capaign_id ?  styles.ctnDisable : {}} ${
+                      className={`${styles.ctnAudienceItem} ${content.capaign_id ? styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
                           : !item.optimized

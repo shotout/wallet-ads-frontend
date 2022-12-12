@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
     },
     ctnPopover:{
         background: 'rgba(0,0,0,0.3)',
+        display: 'flex',
         '& > .MuiPaper-root':{
             background: 'transparent'
         }
