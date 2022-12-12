@@ -80,6 +80,7 @@ const totalBudgetIcon = '/assets/total_budget.png';
 const blackCalendar = '/assets/black_calendar.png';
 const addIcon = '/assets/add_icon.png';
 const askIcon = '/assets/ask_icon.png';
+const tokenTrackerImg = '/assets/tokentracker.jpg';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
@@ -217,6 +218,7 @@ export default function AddCampaign({ content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      cancelCreateCampaignId(content.id);
       window.scrollTo(0, document.body.scrollHeight);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -227,7 +229,7 @@ export default function AddCampaign({ content, params }) {
       setBannerCollection({
         preview: adsBanner && adsBanner.url ? `${BACKEND_URL}${adsBanner.url}` : null,
       });
-      console.log(content.ads);
+
       const adCreation = content.ads.map((item) => ({
         ...item,
         fe_id: getAdsId(item.id),
@@ -280,8 +282,6 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_name: adsPage.token_name,
         ads_page_token_symbol: adsPage.token_symbol,
       });
-
-      cancelCreateCampaignId(content.id);
     }
   }, []);
 
@@ -580,7 +580,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const removeAdText = (id, index) => {
-    console.log(id);
     const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
@@ -596,10 +595,9 @@ export default function AddCampaign({ content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    if (ads.image && ads.fe_id.length > 0 && ads.description && ads.name) {
+    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
-    return false;
   };
 
   const validateSubmit = () => {
@@ -613,7 +611,7 @@ export default function AddCampaign({ content, params }) {
         (audience) => audience.selectedCategory === null && audience.budgetAds === ''
       );
       const isAudienceUnderMinimum = audienceForm.filter(
-        (audience) => audience.selectedCategory !== null && audience.budgetAds < 100
+        (audience) => audience.selectedCategory !== null && audience.budgetAds < 500
       );
 
       audienceForm.forEach((aud) => {
@@ -679,6 +677,9 @@ export default function AddCampaign({ content, params }) {
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
+      // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
+      // console.log('is arr valid', isAudienceFormAdsValidCP);
+      // console.log(selectedAdsAudience);
       if (
         isAudienceValid.length > 0 &&
         isAdsValid &&
@@ -712,13 +713,63 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           window.location.href = '#collection-section';
-        } else if (!isAdsValid || !isAdTextValid.isAdTextValid) {
-          window.location.href = `#card-ads-${arrNotValid[0] ?? isAdTextValid.arrFeIdNotValid[0]}`;
-        }
-        // else if (!isAdTextValid.isAdTextValid) {
-        //   window.location.href = `#card-ads-${isAdTextValid.arrFeIdNotValid[0]}`;
-        // }
-        else if (!isAudienceFormAdsValid) {
+        } else if (!isAdsValid) {
+          let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
+          let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
+
+          console.log('Err Card', arrNotValid);
+          console.log('ad text err', addTextErr);
+          console.log('is arr valid', isAudienceFormAdsValid);
+
+          if (errCard > addTextErr) {
+            if (arrNotValid[0]) {
+              window.location.href = `#card-ads-${arrNotValid[0]}`;
+            } else {
+              window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            }
+            // if (isAudienceFormAdsValid !== false) {
+            //   console.log('tes');
+            //   console.log(errCard);
+            //   console.log(isAudienceFormAdsValid);
+            //   window.location.href = `#card-ads-${arrNotValid[0]}`;
+            //   // window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            // } else {
+            //   console.log('tes');
+            //   console.log(errCard);
+            //   console.log(isAudienceFormAdsValid);
+            //   // if (isAudienceFormAdsValid) {
+            //   //   window.location.href = `#card-ads-${arrNotValid[0]}`;
+            //   // }
+            //   window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+            // }
+          } else if (errCard === addTextErr) {
+            console.log('2');
+            window.location.href = `#card-ads-${arrNotValid[0]}`;
+          } else {
+            if (errCard) {
+              console.log('3');
+              if (isAudienceFormAdsValid === false) {
+                console.log('5');
+                window.location.href = `#card-ads-${arrNotValid[0]}`;
+              } else {
+                console.log('6');
+                window.location.href = `#checkbox-${arrNotValid[0]}`;
+              }
+            } else {
+              console.log('4');
+              console.log(isAudienceFormAdsValid);
+              if (isAudienceFormAdsValid === false) {
+                console.log('712');
+                window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+              } else {
+                console.log('8');
+                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+              }
+            }
+          }
+        } else if (!isAdTextValid.isAdTextValid) {
+          window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+        } else if (!isAudienceFormAdsValid) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
@@ -733,11 +784,13 @@ export default function AddCampaign({ content, params }) {
   const validationAdsText = () => {
     let adTextToSend = [];
     let arrFeIdNotValid = [];
+    let arrFeID = [];
     let isAdTextValid = true;
     pictureData.map((picData, pictureIndex) => {
       picData.description.map((desc, descIndex) => {
         if (desc.adtext === '') {
-          arrFeIdNotValid.push(picData.fe_id);
+          arrFeIdNotValid.push(desc.id);
+          arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
           isAdTextValid = false;
@@ -745,7 +798,7 @@ export default function AddCampaign({ content, params }) {
       });
     });
 
-    return { isAdTextValid, arrFeIdNotValid };
+    return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
   const deactivateErrorCampaign = () => {
@@ -1037,11 +1090,32 @@ export default function AddCampaign({ content, params }) {
           pointerEvents: 'none',
         }}
         className={styles.ctnPopover}
+        PaperProps={{
+          style: {
+            background: type === 'token-tracker' ? '#f8f9fa' : 'rgba(0, 0, 0,0.9)',
+          },
+        }}
       >
-        <Box sx={{ p: 2, maxWidth: 260 }}>
-          <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
-            {content || ''}
-          </Typography>
+        <Box sx={type === 'token-tracker' ? { p: 1, maxWidth: 500 } : { p: 2, maxWidth: 260 }}>
+          {type === 'token-tracker' ? (
+            <>
+              <Typography
+                variant="body2"
+                sx={{ color: '#000' }}
+                textAlign="left"
+                marginLeft={2}
+                fontSize={12}
+                fontWeight={800}
+              >
+                Example:
+              </Typography>
+              <img src={tokenTrackerImg} style={{ width: 1000, borderRadius: 8 }} />
+            </>
+          ) : (
+            <Typography variant="body2" sx={{ color: '#fff' }} textAlign="center">
+              {content || ''}
+            </Typography>
+          )}
         </Box>
       </Popover>
     );
@@ -1247,6 +1321,7 @@ export default function AddCampaign({ content, params }) {
                     <span>Days</span>
                   </div>
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
               <Grid item md={4} xl={4} xs={12}>
                 <div
@@ -1273,6 +1348,7 @@ export default function AddCampaign({ content, params }) {
                     <span>Days</span>
                   </div>
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
               <Grid item md={4} xl={4} xs={12}>
                 <div className={styles.ctnInputColumn}>
@@ -1310,6 +1386,7 @@ export default function AddCampaign({ content, params }) {
                     <span id="red-alert">Please enter less than 91 days.</span>
                   )}
                 </div>
+                {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
             </Grid>
           </div>
@@ -1764,6 +1841,7 @@ export default function AddCampaign({ content, params }) {
 
                 <div className={styles.textAreaCollection}>
                   <textarea
+                    id={`ad-text-area-${v.id}`}
                     value={v.adtext}
                     onChange={(event) => {
                       handleChangePicture(event, 'description', index, false, i);
@@ -1926,13 +2004,13 @@ export default function AddCampaign({ content, params }) {
             </Typography>
             <img
               onMouseEnter={(event) => {
-                handleHoverOpen(event, 'token_name');
+                handleHoverOpen(event, 'token-tracker');
               }}
               onMouseLeave={handleHoverClose}
               src={askIcon}
               alt="ask"
             />
-            {renderPopover('token_name', questionObj.token_tracker_name)}
+            {renderPopover('token-tracker', questionObj.token_tracker_name)}
           </div>
           <Grid container>
             <Grid md={6} sm={6} xl={6} padding={1}>
@@ -2029,11 +2107,6 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  const isMultipleAdTextValid = (content) => {
-    let filterEmpty = content.description.filter((desc) => desc.adtext === '');
-    return filterEmpty.length === 0;
-  };
-
   function renderCardAdCreation(content, index) {
     return (
       <div
@@ -2063,13 +2136,22 @@ export default function AddCampaign({ content, params }) {
               const isActive = content.campaign_id
                 ? content.fe_id.includes(item.selected_fe_id)
                 : content.fe_id.includes(item.audienceId);
+
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
-                <Grid item md={3} sm={6} xs={12} className={styles.ctnSectionAd} key={item.audienceId.toString()}>
+                <Grid
+                  id={`checkbox-${item.audienceId}`}
+                  item
+                  md={3}
+                  sm={6}
+                  xs={12}
+                  className={styles.ctnSectionAd}
+                  key={item.audienceId.toString()}
+                >
                   <div className={styles.ctnAudienceWrapper}>
                     <div
-                      className={`${styles.ctnAudienceItem} ${
-                        !isActive && checkIsAudienceAdsSelected(!item.audienceId)
+                      className={`${styles.ctnAudienceItem} ${content.capaign_id ?  styles.ctnDisable : {}} ${
+                        !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
                           : !item.optimized
                           ? styles.ctnDisable

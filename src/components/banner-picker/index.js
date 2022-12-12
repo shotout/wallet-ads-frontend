@@ -57,7 +57,6 @@ export default function BannerPicker({
   const styles = useStyles();
 
   function isImage() {
-    console.log('file name', file);
     if (!file.name) {
       const fileName = file;
 
@@ -75,7 +74,6 @@ export default function BannerPicker({
   }
 
   function renderLeftContent() {
-    console.log('LOGO', imageProps);
     if (isImage()) {
       return (
         <div className={styles.leftRow}>

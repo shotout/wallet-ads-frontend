@@ -127,7 +127,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     position: 'absolute',
     bottom: -70,
-    zIndex:99,
+    zIndex: 99,
     '& > img': {
       width: 60,
       height: 30,
@@ -218,6 +218,7 @@ export default makeStyles((theme) => ({
   },
   redBorder: {
     borderColor: '#AD4061',
+    backgroundColor: '#FFD8DF',
   },
   ctnRedBorder: {
     border: '2px solid red',
@@ -253,5 +254,11 @@ export default makeStyles((theme) => ({
     cursor: 'pointer',
     position: 'absolute',
     right: 20,
+  },
+  ctnPopoverError: {
+    '& > .MuiPaper-root': {
+      background: '#FFD8DF',
+      boxShadow: ' rgba(0, 0, 0, 0.1) 0px 10px 15px -10px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+    },
   },
 }));

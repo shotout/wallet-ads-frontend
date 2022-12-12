@@ -1,4 +1,4 @@
-import { Popover, Typography } from '@mui/material';
+import { Popover, Typography, Box } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import Iconify from '../Iconify';
 import useStyles from './styles';
@@ -30,9 +30,12 @@ export default function CardAudience({
   onRemove,
   readOnly,
 }) {
+  React.useEffect(() => {});
+
   const styles = useStyles();
   const inputEl = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isErr, setIsErr] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,8 +45,17 @@ export default function CardAudience({
     setAnchorEl(null);
   };
 
+  const checkiferr = () => {
+    if (data.budgetAds < 500) {
+      setIsErr(true);
+    } else {
+      setIsErr(false);
+    }
+  };
+
   useEffect(() => {
     console.log(isErrorAudienceNull);
+    checkiferr();
     // if (data.selectedCategory) {
     //   setTimeout(() => {
     //     if (inputEl.current && inputEl.current.focus) {
@@ -51,7 +63,7 @@ export default function CardAudience({
     //     }
     //   }, 100);
     // }
-  }, [data]);
+  }, []);
 
   function renderPopover() {
     const open = Boolean(anchorEl);
@@ -179,12 +191,34 @@ export default function CardAudience({
     } else {
       return (
         <div className={`${styles.inputPriceWrapper}`}>
+          {data.budgetAds < 500 && isErr ? (
+            <Box
+              sx={{
+                position: 'absolute',
+                borderRadius: 1,
+                padding: 1,
+                bottom: '55%',
+                zIndex: 50,
+                backgroundColor: '#FFD8DF',
+                boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px',
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{ color: '#ad4061' }}
+                textAlign="justify"
+                fontFamily={'Public Sans, sans-serif'}
+              >
+                Please enter a minimum budget of USD500.
+              </Typography>
+            </Box>
+          ) : null}
           <Typography variant="body1" textAlign={'center'} fontWeight="bold" color={'#7089FF'}>
             Budget:
           </Typography>
           <div
             className={`${styles.ctnPriceInput} ${
-              data.budgetAds === '' || data.budgetAds < 100 ? styles.redBorder : ''
+              data.budgetAds === '' || data.budgetAds < 500 ? styles.redBorder : ''
             }`}
           >
             <span>USD</span>
@@ -195,7 +229,8 @@ export default function CardAudience({
               placeholder=""
               ref={inputEl}
               onChange={onChangeBudget}
-              // onBlur={handleOnBlur}
+              onBlur={() => checkiferr()}
+              onFocus={() => setIsErr(false)}
               allowDecimals={false}
               allowNegativeValue={false}
               disableAbbreviations
@@ -204,6 +239,7 @@ export default function CardAudience({
               decimalSeparator="."
               maxLength={5}
               min={100}
+              className={data.budgetAds === '' || data.budgetAds < 500 ? styles.redBorder : ''}
             />
             <img
               src={pencilIcon}
@@ -291,7 +327,7 @@ export default function CardAudience({
         'application/vnd.ms-excel': '.xls',
         'file/vnd.ms-excel': '.xls',
       };
-      console.log(data);
+
       return (
         <div className={styles.ctnDescAudience}>
           <div className={styles.ctnDefaultContentWrapper}>
@@ -355,7 +391,7 @@ export default function CardAudience({
         className={`${styles.cardAudience} ${!data.selectedCategory ? styles.ctnCursor : ''} ${
           data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
         }
-        ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
+        ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
         ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
         onClick={() => {
           if (!data.selectedCategory) {
@@ -367,7 +403,7 @@ export default function CardAudience({
           className={`${styles.headerAudience} ${
             data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
           }
-          ${data.budgetAds < 100 && data.selectedCategory !== null ? styles.borderTopError : ''}
+          ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
           ${isErrorAudienceNull ? styles.borderTopError : ''}
           `}
         >
