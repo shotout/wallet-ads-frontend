@@ -9,6 +9,10 @@ const avatarDummy = '/assets/avatar_dummy.png';
 const logoutIcon = '/assets/svg/logout.svg';
 const paymentGroup = '/assets/groupcard.svg';
 const walletsAdsPayment = '/assets/walletadspayment.svg';
+const americanExpress = '/assets/americanexpress.png';
+const masterCard = '/assets/mastercard.png';
+const visa = '/assets/visa.png';
+const unionpay = '/assets/unionpay.png';
 
 export default function HeaderUser({ label, ctnBtnStyle = '' }) {
   const styles = useStyles();
@@ -17,8 +21,11 @@ export default function HeaderUser({ label, ctnBtnStyle = '' }) {
     <div className={styles.ctnHeaderWrapper}>
       <img id="app-icon" src={appIcon} alt="app-icons" />
       <div className={styles.ctnPaymentWrapper}>
-        <img id="app-icon" src={paymentGroup} alt="app-icons" />
-        <img id="app-icon" src={walletsAdsPayment} alt="app-icons" style={{ marginLeft: 20 }} />
+        <img id="payment" src={americanExpress} alt="app-icons" />
+        <img id="payment" src={masterCard} alt="app-icons" />
+        <img id="payment" src={visa} alt="app-icons" />
+        <img id="payment" src={unionpay} alt="app-icons" />
+        <img id="payment2" src={walletsAdsPayment} alt="app-icons"  />
       </div>
 
       <div className={styles.rightHeader}>

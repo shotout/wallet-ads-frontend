@@ -24,12 +24,25 @@ export default makeStyles((theme) => ({
     paddingTop: 0,
     marginLeft: 20,
     marginRight: 20,
-    // '& > #app-icon':{
-    //     width: 220,
-    //     height: 50,
-    //     objectFit: 'contain'
-    // },
+    '& > #app-icon': {
+      width: 220,
+      height: 50,
+      objectFit: 'contain',
+    },
+    '& > #payment': {
+      width: 55,
+      height: 'auto',
+      margin: 6,
+      objectFit: 'contain',
+    },
+    '& > #payment2': {
+      width: 140,
+      height: 'auto',
+      margin: 6,
+      objectFit: 'contain',
+    },
   },
+
   rightHeader: {
     display: 'flex',
     alignItems: 'center',

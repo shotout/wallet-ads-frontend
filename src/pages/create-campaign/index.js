@@ -377,7 +377,7 @@ export default function AddCampaign({ content, params }) {
     }
 
     let i = 0;
-
+    console.log(params.id);
     let res = null;
     if (params.id) {
       res = await handleEditCampaign(datas, params.id);
