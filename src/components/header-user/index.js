@@ -8,7 +8,7 @@ const appIcon = '/assets/svg/wallet_logo.svg';
 const avatarDummy = '/assets/avatar_dummy.png';
 const logoutIcon = '/assets/svg/logout.svg';
 const paymentGroup = '/assets/groupcard.svg';
-const walletsAdsPayment = '/assets/payment.png';
+const walletsAdsPayment = '/assets/walletadspayment.svg';
 
 export default function HeaderUser({ label, ctnBtnStyle = '' }) {
   const styles = useStyles();

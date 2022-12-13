@@ -43,8 +43,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
 
   const isDesktop = useResponsive('up', 'lg');
 
-  const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } =
-    useCollapseDrawer();
+  const { isCollapse, collapseClick, collapseHover, onHoverEnter, onHoverLeave } = useCollapseDrawer();
 
   useEffect(() => {
     if (isOpenSidebar) {
@@ -60,7 +59,6 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-
       <NavSectionVertical navConfig={navConfig} isCollapse={isCollapse} />
 
       <Box sx={{ flexGrow: 1 }} />
@@ -100,12 +98,14 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
               borderTop: '1px solid rgba(145, 158, 171, 0.24)',
               bgcolor: 'background.default',
               height: 'auto !important',
-              background: 'linear-gradient(90deg, #FFFFFF 0%, #FDFDFD 58.95%, #F6F6F6 80.16%, #EBEBEB 95.25%, #E5E5E5 100%)',
+              background:
+                'linear-gradient(90deg, #FFFFFF 0%, #FDFDFD 58.95%, #F6F6F6 80.16%, #EBEBEB 95.25%, #E5E5E5 100%)',
               paddingBottom: 2,
               borderTopRightRadius: '50px',
               borderBottomRightRadius: '50px',
-              marginBottom: 20,
-              top: '28%',
+              // marginBottom: 20,
+              // top: '30%',
+              transform: 'translate(0,90%)',
               transition: (theme) =>
                 theme.transitions.create('width', {
                   duration: theme.transitions.duration.standard,

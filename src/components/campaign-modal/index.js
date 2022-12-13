@@ -229,40 +229,47 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
           <Grid style={{ width: '40%', paddingLeft: 50 }}>
             <Grid container display={'flex'} flexDirection={'column'}>
               <Grid height={250}>
-                <Typography fontSize={20} fontWeight={700} marginBottom={3}>
-                  Your social media links:
-                </Typography>
-                {formValues?.ads_page_website && (
-                  <div className={styles.ctnSocial}>
-                    <img src={websiteIcon} alt="discord" />
-                    <Typography fontSize={15} fontWeight={400}>
-                      {formValues?.ads_page_website}
+                {!formValues?.ads_page_website &&
+                !formValues?.ads_page_discord &&
+                !formValues?.ads_page_medium &&
+                !formValues?.ads_page_telegram ? null : (
+                  <>
+                    <Typography fontSize={20} fontWeight={700} marginBottom={3}>
+                      Your social media links:
                     </Typography>
-                  </div>
-                )}
-                {formValues?.ads_page_discord && (
-                  <div className={styles.ctnSocial}>
-                    <img src={discordIcon} alt="discord" />
-                    <Typography fontSize={15} fontWeight={400}>
-                      {formValues?.ads_page_discord}
-                    </Typography>
-                  </div>
-                )}
-                {formValues?.ads_page_medium && (
-                  <div className={styles.ctnSocial}>
-                    <img src={mediumIcon} alt="discord" />
-                    <Typography fontSize={15} fontWeight={400}>
-                      {formValues?.ads_page_medium}
-                    </Typography>
-                  </div>
-                )}
-                {formValues?.ads_page_telegram && (
-                  <div className={styles.ctnSocial}>
-                    <img src={telegramIcon} alt="discord" />
-                    <Typography fontSize={15} fontWeight={400}>
-                      {formValues?.ads_page_telegram}
-                    </Typography>
-                  </div>
+                    {formValues?.ads_page_website && (
+                      <div className={styles.ctnSocial}>
+                        <img src={websiteIcon} alt="discord" />
+                        <Typography fontSize={15} fontWeight={400}>
+                          {formValues?.ads_page_website}
+                        </Typography>
+                      </div>
+                    )}
+                    {formValues?.ads_page_discord && (
+                      <div className={styles.ctnSocial}>
+                        <img src={discordIcon} alt="discord" />
+                        <Typography fontSize={15} fontWeight={400}>
+                          {formValues?.ads_page_discord}
+                        </Typography>
+                      </div>
+                    )}
+                    {formValues?.ads_page_medium && (
+                      <div className={styles.ctnSocial}>
+                        <img src={mediumIcon} alt="discord" />
+                        <Typography fontSize={15} fontWeight={400}>
+                          {formValues?.ads_page_medium}
+                        </Typography>
+                      </div>
+                    )}
+                    {formValues?.ads_page_telegram && (
+                      <div className={styles.ctnSocial}>
+                        <img src={telegramIcon} alt="discord" />
+                        <Typography fontSize={15} fontWeight={400}>
+                          {formValues?.ads_page_telegram}
+                        </Typography>
+                      </div>
+                    )}
+                  </>
                 )}
               </Grid>
               {formValues?.ads_page_token_name && (

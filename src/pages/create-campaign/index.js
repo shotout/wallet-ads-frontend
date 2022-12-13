@@ -244,7 +244,7 @@ export default function AddCampaign({ content, params }) {
         const targeting = item.detail_target;
         return {
           id: item.id,
-          audienceId: makeId(),
+          audienceId: item.selected_fe_id,
           selected_fe_id: item.selected_fe_id,
           optimized: parsePriceToCategory(item.price_airdrop) !== null,
           selectedCategory: parsePriceToCategory(item.price_airdrop),
@@ -2133,9 +2133,7 @@ export default function AddCampaign({ content, params }) {
           </div>
           <Grid container spacing={2}>
             {audienceForm.map((item, audienceIndex) => {
-              const isActive = content.campaign_id
-                ? content.fe_id.includes(item.selected_fe_id)
-                : content.fe_id.includes(item.audienceId);
+              const isActive = content.fe_id.includes(item.audienceId);
 
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
