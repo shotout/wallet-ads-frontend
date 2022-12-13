@@ -216,7 +216,7 @@ export default function AddPaymentMethod({
               display="flex"
             >
               <Typography variant="body1" align="justify">
-                Please add your payment details to set up and schedule campaigns on wallet ads. You can select paying
+                Please add your payment details to set up and schedule campaigns on WALLETADS. You can select paying
                 with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" below.
               </Typography>
             </Grid>
