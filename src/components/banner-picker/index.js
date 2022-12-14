@@ -144,7 +144,7 @@ export default function BannerPicker({
     }
     return (
       <div className={styles.btnPicker} {...getRootProps()}>
-        <input {...getInputProps()} enctype="multipart/form-data" />
+        <input {...getInputProps()} />
         <img src={whiteCameraIcon} alt="camera" />
         <Typography variant="subtitle1" color={'#fff'}>
           {label}
