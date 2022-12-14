@@ -719,12 +719,12 @@ export default function AddCampaign({ content, params }) {
           // formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
           if (collectionPageName) {
             window.location.href = '#collection-page-name';
-          } else if (collectionDesc) {
-            window.location.href = '#collection-ads-description';
           } else if (collectionLogo) {
             window.location.href = '#collection-ads-logo';
           } else if (collectionBanner) {
             window.location.href = '#collection-ads-banner';
+          } else if (collectionDesc) {
+            window.location.href = '#collection-ads-description';
           }
         } else if (!isAdsValid) {
           let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
