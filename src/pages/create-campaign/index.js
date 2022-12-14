@@ -733,21 +733,29 @@ export default function AddCampaign({ content, params }) {
           let errCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
-          console.log(pictureData[validCard].name);
-          console.log(errCard);
-          console.log(addTextErr);
-          if (errCard >= 0 && addTextErr < 0) {
+
+          // if (!pictureData[validCard].name || !pictureData[validCard].image) {
+          //   window.location.href = `#card-ads-${errAudienceID[0]}`;
+          // }
+
+          if (errCard > addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              window.location.href = `#card-ads-${errAudienceID[0]}`;
+              window.location.href = `#ad-name-${errAudienceID[0]}`;
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
           } else if (errCard === addTextErr) {
-            window.location.href = `#card-ads-${errAudienceID[0]}`;
+            if (!pictureData[validCard].name || !pictureData[validCard].image) {
+              window.location.href = `#ad-name-${errAudienceID[0]}`;
+            } else {
+              window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+            }
+            // window.location.href = `#card-ads-${errAudienceID[0]}`;
           } else {
             if (errCard >= 0) {
               if (isAudienceFormAdsValid === false) {
-                window.location.href = `#card-ads-${errAudienceID[0]}`;
+                // window.location.href = `#card-ads-${errAudienceID[0]}`;
+                window.location.href = `#checkbox-container-${errAudienceID[0]}`;
               } else {
                 window.location.href = `#checkbox-${errAudienceID[0]}`;
               }
@@ -1551,12 +1559,12 @@ export default function AddCampaign({ content, params }) {
 
   function renderTopAdCreation(content, index) {
     return (
-      <Grid container marginBottom={2}>
+      <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitleBetween}>
               <div className={styles.leftTitle}>
-                <Typography variant="h6">Ad name</Typography>
+                <Typography variant="h6">Ad name </Typography>
                 <img
                   onMouseEnter={(event) => {
                     handleHoverOpen(event, 'ad_name');
