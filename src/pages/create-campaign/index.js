@@ -367,10 +367,12 @@ export default function AddCampaign({ content, params }) {
 
   const createCampaignId = async () => {
     let datas;
-
+    console.log(formValues);
+    console.log(formResp);
     if (content && params.status === 'fail') {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
+
       datas = formValues;
     } else {
       datas = formResp;
@@ -443,7 +445,7 @@ export default function AddCampaign({ content, params }) {
       setLoadingSubmit(true);
       const campaignData = getAudienceArr();
       const formRes = new FormData();
-      formRes.append('campaign_name', formValues.campaign_name);
+      formRes.append('campaign_name', formValues.campaign_name.toString());
       formRes.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'));
       formRes.append('campaign_end_date_type', formValues.campaign_end_date_type);
       if (formValues.campaign_end_date_type === '3')
@@ -546,6 +548,8 @@ export default function AddCampaign({ content, params }) {
           });
         }
       });
+
+      // console.log(formRes);
       setFormResp(formRes);
 
       setShowCreditCard({
@@ -712,14 +716,19 @@ export default function AddCampaign({ content, params }) {
         } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
           window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
-          window.location.href = '#collection-section';
+          // formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+          if (collectionPageName) {
+            window.location.href = '#collection-page-name';
+          } else if (collectionDesc) {
+            window.location.href = '#collection-ads-description';
+          } else if (collectionLogo) {
+            window.location.href = '#collection-ads-logo';
+          } else if (collectionBanner) {
+            window.location.href = '#collection-ads-banner';
+          }
         } else if (!isAdsValid) {
           let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
-
-          console.log('Err Card', arrNotValid);
-          console.log('ad text err', addTextErr);
-          console.log('is arr valid', isAudienceFormAdsValid);
 
           if (errCard > addTextErr) {
             if (arrNotValid[0]) {
@@ -1659,7 +1668,7 @@ export default function AddCampaign({ content, params }) {
       <div className={styles.ctnLeftCollection}>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
+            <div className={styles.leftTitle} id="collection-page-name">
               <Typography variant="h6">Page name</Typography>
               <img
                 onMouseEnter={(event) => {
@@ -1691,7 +1700,7 @@ export default function AddCampaign({ content, params }) {
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
+            <div className={styles.leftTitle} id={`collection-ads-logo`}>
               <Typography variant="h6">Add logo</Typography>
               <img
                 onMouseEnter={(event) => {
@@ -1720,7 +1729,7 @@ export default function AddCampaign({ content, params }) {
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
+            <div className={styles.leftTitle} id={`collection-ads-banner`}>
               <Typography variant="h6">Add banner</Typography>
               <img
                 onMouseEnter={(event) => {
@@ -1749,7 +1758,7 @@ export default function AddCampaign({ content, params }) {
         </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
+            <div className={styles.leftTitle} id={`collection-ads-description`}>
               <Typography variant="h6">Page description</Typography>
               <img
                 onMouseEnter={(event) => {
