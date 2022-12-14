@@ -367,25 +367,24 @@ export default function AddCampaign({ content, params }) {
 
   const createCampaignId = async () => {
     let datas;
-    console.log(formValues);
-    console.log(formResp);
+
     if (content && params.status === 'fail') {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
 
-      datas = formValues;
+      datas = formResp;
     } else {
       datas = formResp;
     }
 
-    let i = 0;
-    console.log(params.id);
+    // let i = 0;
+    // console.log(params.id);
     let res = null;
-    // if (params.id) {
-    //   res = await handleEditCampaign(datas, params.id);
-    // } else {
-    res = await handleAddCampaign(datas);
-    // }
+    if (params.id) {
+      res = await handleEditCampaign(datas, params.id);
+    } else {
+      res = await handleAddCampaign(datas);
+    }
 
     return res;
   };
@@ -599,6 +598,7 @@ export default function AddCampaign({ content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
+    console.log(ads);
     if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
@@ -663,6 +663,7 @@ export default function AddCampaign({ content, params }) {
         formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
+      const errAudienceID = [];
       pictureData.forEach((ads) => {
         if (isAdsArrValid(ads)) {
           ads.fe_id.forEach((feId) => {
@@ -670,7 +671,9 @@ export default function AddCampaign({ content, params }) {
           });
           arrValid.push(ads);
         } else {
+          console.log(ads);
           arrNotValid.push(ads.fe_id);
+          errAudienceID.push(ads.adsId);
         }
       });
 
@@ -727,51 +730,32 @@ export default function AddCampaign({ content, params }) {
             window.location.href = '#collection-ads-description';
           }
         } else if (!isAdsValid) {
-          let errCard = pictureData.findIndex((card) => card.fe_id === arrNotValid[0]);
+          let errCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
+          let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
-
-          if (errCard > addTextErr) {
-            if (arrNotValid[0]) {
-              window.location.href = `#card-ads-${arrNotValid[0]}`;
+          console.log(pictureData[validCard].name);
+          console.log(errCard);
+          console.log(addTextErr);
+          if (errCard >= 0 && addTextErr < 0) {
+            if (!pictureData[validCard].name || !pictureData[validCard].image) {
+              window.location.href = `#card-ads-${errAudienceID[0]}`;
             } else {
-              window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+              window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
-            // if (isAudienceFormAdsValid !== false) {
-            //   console.log('tes');
-            //   console.log(errCard);
-            //   console.log(isAudienceFormAdsValid);
-            //   window.location.href = `#card-ads-${arrNotValid[0]}`;
-            //   // window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
-            // } else {
-            //   console.log('tes');
-            //   console.log(errCard);
-            //   console.log(isAudienceFormAdsValid);
-            //   // if (isAudienceFormAdsValid) {
-            //   //   window.location.href = `#card-ads-${arrNotValid[0]}`;
-            //   // }
-            //   window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
-            // }
           } else if (errCard === addTextErr) {
-            console.log('2');
-            window.location.href = `#card-ads-${arrNotValid[0]}`;
+            window.location.href = `#card-ads-${errAudienceID[0]}`;
           } else {
-            if (errCard) {
-              console.log('3');
+            if (errCard >= 0) {
               if (isAudienceFormAdsValid === false) {
-                console.log('5');
-                window.location.href = `#card-ads-${arrNotValid[0]}`;
+                window.location.href = `#card-ads-${errAudienceID[0]}`;
               } else {
-                console.log('6');
-                window.location.href = `#checkbox-${arrNotValid[0]}`;
+                window.location.href = `#checkbox-${errAudienceID[0]}`;
               }
             } else {
-              console.log('4');
               console.log(isAudienceFormAdsValid);
               if (isAudienceFormAdsValid === false) {
-                console.log('712');
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
-                console.log('8');
                 window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
               }
             }
@@ -2119,7 +2103,7 @@ export default function AddCampaign({ content, params }) {
   function renderCardAdCreation(content, index) {
     return (
       <div
-        id={`card-ads-${content.fe_id}`}
+        id={`card-ads-${content.adsId}`}
         className={`${styles.inputCollectionCard} ${
           errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnRedBorder : ''
         }
@@ -2140,7 +2124,7 @@ export default function AddCampaign({ content, params }) {
               </div>
             </div>
           </div>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
 

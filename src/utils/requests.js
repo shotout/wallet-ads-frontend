@@ -65,8 +65,8 @@ export const handleAddCampaign = (data) =>
 
 export const handleEditCampaign = (data, id) =>
   axios({
-    url: `/campaigns/${id}`,
-    method: 'PATCH',
+    url: `/campaigns/update/${id}`,
+    method: 'POST',
     data,
     headers: {
       'Content-Type': 'multipart/form-data',
