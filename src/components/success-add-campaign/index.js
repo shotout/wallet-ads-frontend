@@ -26,6 +26,7 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
       }}
       onClose={handleDirectCampaign}
       className={styles.ctnPopover}
+      style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >
       <div className={styles.ctnWrapper}>
         <div className={styles.ctnBackground}>

@@ -2,7 +2,6 @@ import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
   ctnWrapper: {
-    position: 'relative',
     overflow: 'hidden',
     width: '100%',
     justifyContent: 'center',
@@ -15,6 +14,7 @@ export default makeStyles((theme) => ({
     '& > .MuiPaper-root': {
       maxWidth: 680,
       background: '#fff',
+      marginTop: '15vh',
     },
   },
   ctnPromo: {
