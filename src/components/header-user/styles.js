@@ -30,13 +30,13 @@ export default makeStyles((theme) => ({
       objectFit: 'contain',
     },
     '& > #payment': {
-      width: 55,
+      width: 45,
       height: 'auto',
       margin: 6,
       objectFit: 'contain',
     },
     '& > #payment2': {
-      width: 140,
+      width: 120,
       height: 'auto',
       margin: 6,
       objectFit: 'contain',
