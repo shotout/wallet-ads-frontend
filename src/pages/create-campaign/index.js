@@ -462,8 +462,8 @@ export default function AddCampaign({ content, params }) {
       formRes.append('ads_page_telegram', formValues.ads_page_telegram);
       formRes.append('ads_page_token_name', formValues.ads_page_token_name);
       formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
-      formRes.append('ads_page_logo', typeof logoCollection === 'object' ? '' : logoCollection);
-      formRes.append('ads_page_banner', typeof bannerCollection === 'object' ? '' : bannerCollection);
+      formRes.append('ads_page_logo', logoCollection);
+      formRes.append('ads_page_banner', bannerCollection);
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
