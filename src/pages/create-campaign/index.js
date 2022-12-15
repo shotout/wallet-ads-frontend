@@ -372,7 +372,7 @@ export default function AddCampaign({ content, params }) {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
 
-      datas = formResp;
+      datas = formValues;
     } else {
       datas = formResp;
     }
