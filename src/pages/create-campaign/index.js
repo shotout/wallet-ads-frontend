@@ -177,6 +177,7 @@ export default function AddCampaign({ content, params }) {
     errorBoxAvailability: false,
     errorCollection: false,
     errorAudienceNull: false,
+    errorAdvanced: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -688,6 +689,25 @@ export default function AddCampaign({ content, params }) {
       // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
       // console.log('is arr valid', isAudienceFormAdsValidCP);
       // console.log(selectedAdsAudience);
+
+      // Cek token symbol
+      let isAdvancedSettingValid = true;
+
+      if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
+        isAdvancedSettingValid = true;
+        isCollectionSection = true;
+      } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
+        if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
+          isAdvancedSettingValid = false;
+          isCollectionSection = false;
+        } else {
+          isAdvancedSettingValid = true;
+          isCollectionSection = true;
+        }
+      }
+
+      console.log(isAdvancedSettingValid);
+
       if (
         isAudienceValid.length > 0 &&
         isAdsValid &&
@@ -696,7 +716,8 @@ export default function AddCampaign({ content, params }) {
         isBudgetValid &&
         !isAvailabilityValid &&
         isAudienceUnderMinimum.length === 0 &&
-        isAdTextValid.isAdTextValid
+        isAdTextValid.isAdTextValid &&
+        isAdvancedSettingValid
       ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
@@ -714,6 +735,7 @@ export default function AddCampaign({ content, params }) {
           errorBoxAvailability: isAvailabilityValid,
           errorCollection: !isCollectionSection,
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
+          errorAdvanced: !isAdvancedSettingValid,
         });
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
@@ -729,15 +751,14 @@ export default function AddCampaign({ content, params }) {
             window.location.href = '#collection-ads-banner';
           } else if (collectionDesc) {
             window.location.href = '#collection-ads-description';
+          } else if (!isAdvancedSettingValid) {
+            setExpandAdvanced(true);
+            window.location.href = '#advanced-setting';
           }
         } else if (!isAdsValid) {
           let errCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
-
-          // if (!pictureData[validCard].name || !pictureData[validCard].image) {
-          //   window.location.href = `#card-ads-${errAudienceID[0]}`;
-          // }
 
           if (errCard > addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
@@ -751,11 +772,9 @@ export default function AddCampaign({ content, params }) {
             } else {
               window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
             }
-            // window.location.href = `#card-ads-${errAudienceID[0]}`;
           } else {
             if (errCard >= 0) {
               if (isAudienceFormAdsValid === false) {
-                // window.location.href = `#card-ads-${errAudienceID[0]}`;
                 window.location.href = `#checkbox-container-${errAudienceID[0]}`;
               } else {
                 window.location.href = `#checkbox-${errAudienceID[0]}`;
@@ -1967,7 +1986,7 @@ export default function AddCampaign({ content, params }) {
     return (
       <div>
         <div className={styles.ctnCollectionBottomHeaderContainer}>
-          <div className={styles.leftTitle}>
+          <div className={styles.leftTitle} id={`advanced-setting`}>
             <img
               src={expandAdvanced ? expandOpenIcon : expandCloseIcon}
               onClick={() => setExpandAdvanced(!expandAdvanced)}
@@ -2020,27 +2039,21 @@ export default function AddCampaign({ content, params }) {
                 <Typography fontSize={14} fontWeight={700}>
                   Name
                 </Typography>
-                {/* <img
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'token_name');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                  src={askIcon}
-                  alt="ask"
-                />
-                {renderPopover('token_name', questionObj.token_tracker_name)} */}
               </div>
               <div className={styles.inputCollectionWrapper}>
                 <input
                   onChange={(value) => {
-                    handleResetErrorValue('collectionPageName');
+                    setErrorBox({
+                      ...errorBox,
+                      errorCollection: false,
+                    });
                     handleChangeValues(value, 'ads_page_token_name');
                   }}
                   value={formValues.ads_page_token_name}
                   placeholder="Name"
                   type="text"
                 />
-                {/* {renderErrorText(errorInput.collectionPageName)} */}
+                {renderErrorText(errorBox.errorAdvanced && !formValues.ads_page_token_name)}
               </div>
             </Grid>
             <Grid md={6} sm={6} xl={6} padding={1}>
@@ -2049,25 +2062,20 @@ export default function AddCampaign({ content, params }) {
                   <Typography fontSize={14} fontWeight={700}>
                     Symbol
                   </Typography>
-                  {/* <img
-                    onMouseEnter={(event) => {
-                      handleHoverOpen(event, 'token_symbol');
-                    }}
-                    onMouseLeave={handleHoverClose}
-                    src={askIcon}
-                    alt="ask"
-                  />
-                  {renderPopover('token_symbol', questionObj.token_symbol)} */}
                 </div>
                 <input
                   onChange={(value) => {
+                    setErrorBox({
+                      ...errorBox,
+                      errorCollection: false,
+                    });
                     handleChangeValues(value, 'ads_page_token_symbol');
                   }}
                   value={formValues.ads_page_token_symbol}
                   placeholder="Symbol"
                   type="text"
                 />
-                {/* {renderErrorText(errorInput.collectionPageName)} */}
+                {renderErrorText(errorBox.errorAdvanced && !formValues.ads_page_token_symbol)}
               </div>
             </Grid>
           </Grid>

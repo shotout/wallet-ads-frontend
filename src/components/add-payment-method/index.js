@@ -183,7 +183,7 @@ export default function AddPaymentMethod({
     <Popover
       id={'success-campaign'}
       open={Boolean(isVisible)}
-      // open={true}
+      //  open={true}
       anchorEl={isVisible ? isVisible.sessionId : null}
       anchorOrigin={{
         vertical: 'center',
