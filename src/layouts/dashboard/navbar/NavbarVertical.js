@@ -105,7 +105,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
               borderBottomRightRadius: '50px',
               // marginBottom: 20,
               // top: '30%',
-              transform: 'translate(0,90%)',
+              transform: 'translate(0,85%)',
               transition: (theme) =>
                 theme.transitions.create('width', {
                   duration: theme.transitions.duration.standard,
