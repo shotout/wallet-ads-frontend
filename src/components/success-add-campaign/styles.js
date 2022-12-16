@@ -9,11 +9,15 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
     '& > .MuiPaper-root': {
+      background: 'rgba(0,0,0,0.02)',
       width: 680,
-      position: 'relative',
-      background: 'transparent',
-      margin: '5vh auto 0',
-      overflow: 'hidden',
+      // position: 'relative',
+      // background: 'transparent',
+      // margin: '5vh auto 0',
+      // overflow: 'hidden',
+      '&::-webkit-scrollbar': {
+        width: 0,
+      },
     },
   },
   ctnBackground: {
@@ -58,5 +62,10 @@ export default makeStyles((theme) => ({
     bottom: 300,
     right: 20,
     cursor: 'pointer',
+  },
+  tr: {
+    position: 'relative',
+    height: '100vh',
+    overflowY: 'hidden',
   },
 }));
