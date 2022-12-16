@@ -23,9 +23,9 @@ export default makeStyles((theme) => ({
     },
   },
   tr: {
-    // position: 'relative',
-    // height: '100vh',
-    // overflowY: 'hidden',
+    position: 'relative',
+    height: '100vh',
+    overflowY: 'hidden',
   },
   ctnPromo: {
     // display: 'none', //just delete this line to show promocode
@@ -88,7 +88,7 @@ export default makeStyles((theme) => ({
   header: {
     height: 80,
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   ctnClose: {
     // position: 'absolute',

@@ -212,8 +212,7 @@ export default function AddPaymentMethod({
                 <Typography
                   variant="h4"
                   sx={{ color: '#000' }}
-                marginLeft={4}
-
+                  marginLeft={4}
                   fontWeight="800"
                   textAlign="center"
                   width={'100%'}
@@ -223,7 +222,13 @@ export default function AddPaymentMethod({
               </div>
 
               {/* <div className={styles.ctnClose} onClick={resetState}> */}
-              <Iconify icon={'ant-design:close-outlined'} width={28} height={28} className={styles.ctnClose} />
+              <Iconify
+                icon={'ant-design:close-outlined'}
+                onClick={resetState}
+                width={28}
+                height={28}
+                className={styles.ctnClose}
+              />
               {/* </div> */}
             </div>
             <Grid container spacing={4} className={styles.gridAvailability}>
