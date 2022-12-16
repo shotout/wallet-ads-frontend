@@ -12,8 +12,14 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
     '& > .MuiPaper-root': {
+      position: 'relative',
       maxWidth: 680,
       background: '#fff',
+      margin: '25vh auto 0',
+
+      // top: '50%',
+      // left: '50%',
+      // transform: 'translate(-50%, -50%)',
     },
   },
   ctnPromo: {

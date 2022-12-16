@@ -183,16 +183,16 @@ export default function AddPaymentMethod({
     <Popover
       id={'success-campaign'}
       open={Boolean(isVisible)}
-      //  open={true}
+      anchorReference={'none'}
       anchorEl={isVisible ? isVisible.sessionId : null}
-      anchorOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
+      // anchorOrigin={{
+      //   vertical: 'center',
+      //   horizontal: 'center',
+      // }}
+      // transformOrigin={{
+      //   vertical: 'center',
+      //   horizontal: 'center',
+      // }}
       onClose={resetState}
       className={styles.ctnPopover}
       style={{ '&::WebkitScrollbar': { display: 'none' } }}
