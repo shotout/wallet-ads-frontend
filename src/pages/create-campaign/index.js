@@ -657,12 +657,12 @@ export default function AddCampaign({ content, params }) {
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
 
-      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability) {
+      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability || collectionBanner) {
         setErrorInput(errorObj);
         inputValid = false;
       }
       let isCollectionSection = false;
-      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -696,7 +696,7 @@ export default function AddCampaign({ content, params }) {
       if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
         isAdvancedSettingValid = true;
         isCollectionSection =
-          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
       } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
         if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
           isAdvancedSettingValid = false;
@@ -705,7 +705,7 @@ export default function AddCampaign({ content, params }) {
         } else {
           isAdvancedSettingValid = true;
           isCollectionSection =
-            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
         }
       }
 
@@ -1740,7 +1740,7 @@ export default function AddCampaign({ content, params }) {
           />
           {renderErrorText(errorInput.collectionLogo)}
         </div>
-        {/* <div className={styles.ctnInputCollection}>
+        <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-banner`}>
               <Typography variant="h6">Add banner</Typography>
@@ -1768,7 +1768,7 @@ export default function AddCampaign({ content, params }) {
             label={'Add banner'}
           />
           {renderErrorText(errorInput.collectionBanner)}
-        </div> */}
+        </div>
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-description`}>
