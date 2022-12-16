@@ -9,8 +9,10 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
     '& > .MuiPaper-root': {
+      width: 680,
+      position: 'relative',
       background: 'transparent',
-      marginTop: '3vh',
+      margin: '25vh auto 0',
       overflow: 'hidden',
     },
   },

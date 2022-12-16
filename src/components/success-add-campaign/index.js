@@ -17,14 +17,15 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
       open={Boolean(isVisible)}
       // /open={true}
       anchorEl={isVisible}
-      anchorOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'center',
-        horizontal: 'center',
-      }}
+      anchorReference={'none'}
+      // anchorOrigin={{
+      //   vertical: 'center',
+      //   horizontal: 'center',
+      // }}
+      // transformOrigin={{
+      //   vertical: 'center',
+      //   horizontal: 'center',
+      // }}
       onClose={handleDirectCampaign}
       className={styles.ctnPopover}
       style={{ '&::WebkitScrollbar': { display: 'none' } }}
