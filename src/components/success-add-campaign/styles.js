@@ -12,7 +12,7 @@ export default makeStyles((theme) => ({
       width: 680,
       position: 'relative',
       background: 'transparent',
-      margin: '20vh auto 0',
+      margin: '5vh auto 0',
       overflow: 'hidden',
     },
   },

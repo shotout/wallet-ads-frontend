@@ -5,6 +5,8 @@ export default makeStyles((theme) => ({
     overflow: 'hidden',
     width: '100%',
     justifyContent: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
     '& > .content': {
       padding: 30,
     },
@@ -12,15 +14,18 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
     '& > .MuiPaper-root': {
-      position: 'relative',
       maxWidth: 680,
-      background: '#fff',
-      margin: '20vh auto 0',
-
-      // top: '50%',
-      // left: '50%',
-      // transform: 'translate(-50%, -50%)',
+      background: 'rgba(0,0,0,0.02)',
+      overflowY: 'hidden',
+      '&::-webkit-scrollbar': {
+        width: 0,
+      },
     },
+  },
+  tr: {
+    position: 'relative',
+    height: '100vh',
+    overflowY: 'hidden',
   },
   ctnPromo: {
     // display: 'none', //just delete this line to show promocode
@@ -80,10 +85,15 @@ export default makeStyles((theme) => ({
       color: '#fff',
     },
   },
+  header: {
+    height: 80,
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
   ctnClose: {
-    position: 'absolute',
-    top: 30,
-    right: 20,
+    // position: 'absolute',
+    // top: 0,
+    // right: 20,
     cursor: 'pointer',
   },
   ctnLink: {
