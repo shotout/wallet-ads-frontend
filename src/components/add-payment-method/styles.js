@@ -23,9 +23,9 @@ export default makeStyles((theme) => ({
     },
   },
   tr: {
-    position: 'relative',
-    height: '100vh',
-    overflowY: 'hidden',
+    // position: 'relative',
+    // height: '100vh',
+    // overflowY: 'hidden',
   },
   ctnPromo: {
     // display: 'none', //just delete this line to show promocode
