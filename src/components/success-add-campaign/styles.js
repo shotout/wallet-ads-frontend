@@ -10,7 +10,7 @@ export default makeStyles((theme) => ({
     background: 'rgba(0,0,0,0.3)',
     '& > .MuiPaper-root': {
       background: 'transparent',
-      marginTop: '10vh',
+      marginTop: '2vh',
       overflow: 'hidden',
     },
   },
