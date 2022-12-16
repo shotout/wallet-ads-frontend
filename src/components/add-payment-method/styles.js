@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
       position: 'relative',
       maxWidth: 680,
       background: '#fff',
-      margin: '25vh auto 0',
+      margin: '20vh auto 0',
 
       // top: '50%',
       // left: '50%',
