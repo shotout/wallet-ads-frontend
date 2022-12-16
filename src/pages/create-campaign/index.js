@@ -661,7 +661,8 @@ export default function AddCampaign({ content, params }) {
         setErrorInput(errorObj);
         inputValid = false;
       }
-      let isCollectionSection = formValues.ads_page_name && formValues.ads_page_description && logoCollection;
+      let isCollectionSection = false;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -694,14 +695,17 @@ export default function AddCampaign({ content, params }) {
 
       if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
         isAdvancedSettingValid = true;
-        isCollectionSection = true;
+        isCollectionSection =
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
         if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
           isAdvancedSettingValid = false;
           isCollectionSection = false;
+          // formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
         } else {
           isAdvancedSettingValid = true;
-          isCollectionSection = true;
+          isCollectionSection =
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
         }
       }
 
@@ -755,7 +759,7 @@ export default function AddCampaign({ content, params }) {
           let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
 
-          if (errCard > addTextErr) {
+          if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
               window.location.href = `#ad-name-${errAudienceID[0]}`;
             } else {
@@ -767,9 +771,11 @@ export default function AddCampaign({ content, params }) {
             } else {
               window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
             }
+            // window.location.href = `#card-ads-${errAudienceID[0]}`;
           } else {
             if (errCard >= 0) {
               if (isAudienceFormAdsValid === false) {
+                // window.location.href = `#card-ads-${errAudienceID[0]}`;
                 window.location.href = `#checkbox-container-${errAudienceID[0]}`;
               } else {
                 window.location.href = `#checkbox-${errAudienceID[0]}`;

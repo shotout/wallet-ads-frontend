@@ -15,7 +15,7 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
     <Popover
       id={'success-campaign'}
       open={Boolean(isVisible)}
-      // open={true}
+      // /open={true}
       anchorEl={isVisible}
       anchorOrigin={{
         vertical: 'center',
