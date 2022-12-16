@@ -20,7 +20,7 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
             <img src={bannerSource} alt="banner-source" />
           ) : (
             <Typography variant="h6" color={'#fff'}>
-              Banner image 1400 x 350
+              {/* Banner image 1400 x 350 */}
             </Typography>
           )}
         </div>

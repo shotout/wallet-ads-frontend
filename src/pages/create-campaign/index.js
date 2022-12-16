@@ -657,12 +657,11 @@ export default function AddCampaign({ content, params }) {
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
 
-      if (campaignName || collectionBanner || collectionDesc || collectionLogo || collectionPageName || availability) {
+      if (campaignName ||  collectionDesc || collectionLogo || collectionPageName || availability) {
         setErrorInput(errorObj);
         inputValid = false;
       }
-      let isCollectionSection =
-        formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+      let isCollectionSection = formValues.ads_page_name && formValues.ads_page_description && logoCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -1739,7 +1738,7 @@ export default function AddCampaign({ content, params }) {
           />
           {renderErrorText(errorInput.collectionLogo)}
         </div>
-        <div className={styles.ctnInputCollection}>
+        {/* <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-banner`}>
               <Typography variant="h6">Add banner</Typography>
@@ -1767,7 +1766,7 @@ export default function AddCampaign({ content, params }) {
             label={'Add banner'}
           />
           {renderErrorText(errorInput.collectionBanner)}
-        </div>
+        </div> */}
         <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-description`}>
