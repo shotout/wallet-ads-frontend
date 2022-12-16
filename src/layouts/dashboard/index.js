@@ -96,13 +96,15 @@ export default function DashboardLayout({ children }) {
       {/* <DashboardHeader isCollapse={isCollapse} onOpenSidebar={() => setOpen(true)} /> */}
 
       <NavbarVertical isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
-      <Box 
+
+      <Box
         sx={{
           position: 'relative',
-          width: '100%'
-        }}>
-      <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
-      <AuthFooter />
+          width: '100%',
+        }}
+      >
+        <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+        <AuthFooter />
       </Box>
     </Box>
   );

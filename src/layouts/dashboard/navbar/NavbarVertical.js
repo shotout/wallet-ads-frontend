@@ -85,45 +85,48 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
       )}
 
       {isDesktop && (
-        <Drawer
-          open
-          variant="persistent"
-          onMouseEnter={onHoverEnter}
-          onMouseLeave={onHoverLeave}
-          PaperProps={{
-            sx: {
-              width: NAVBAR.DASHBOARD_WIDTH,
-              borderRightStyle: 'dashed',
-              borderBottom: '1px solid rgba(145, 158, 171, 0.24)',
-              borderTop: '1px solid rgba(145, 158, 171, 0.24)',
-              bgcolor: 'background.default',
-              height: 'auto !important',
-              background:
-                'linear-gradient(90deg, #FFFFFF 0%, #FDFDFD 58.95%, #F6F6F6 80.16%, #EBEBEB 95.25%, #E5E5E5 100%)',
-              paddingBottom: 2,
-              borderTopRightRadius: '50px',
-              borderBottomRightRadius: '50px',
-              // marginBottom: 20,
-              // top: '30%',
-              transform: 'translate(0,85%)',
-              transition: (theme) =>
-                theme.transitions.create('width', {
-                  duration: theme.transitions.duration.standard,
+        <Box display={'flex'} justifyContent={'center'} alignItems={'center'} position={'absolute'} height={'100vh'}>
+          <Drawer
+            open
+            variant="persistent"
+            onMouseEnter={onHoverEnter}
+            onMouseLeave={onHoverLeave}
+            PaperProps={{
+              sx: {
+                position: 'fixed',
+                width: NAVBAR.DASHBOARD_WIDTH,
+                borderRightStyle: 'dashed',
+                borderBottom: '1px solid rgba(145, 158, 171, 0.24)',
+                borderTop: '1px solid rgba(145, 158, 171, 0.24)',
+                bgcolor: 'background.default',
+                height: 'auto !important',
+                background:
+                  'linear-gradient(90deg, #FFFFFF 0%, #FDFDFD 58.95%, #F6F6F6 80.16%, #EBEBEB 95.25%, #E5E5E5 100%)',
+                paddingBottom: 2,
+                borderTopRightRadius: '50px',
+                borderBottomRightRadius: '50px',
+                margin: '0 auto',
+                top: '30vh',
+
+                transition: (theme) =>
+                  theme.transitions.create('width', {
+                    duration: theme.transitions.duration.standard,
+                  }),
+                ...(isCollapse && {
+                  width: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
+                  height: 'auto !important',
                 }),
-              ...(isCollapse && {
-                width: NAVBAR.DASHBOARD_COLLAPSE_WIDTH,
-                height: 'auto !important',
-              }),
-              ...(collapseHover && {
-                ...cssStyles(theme).bgBlur(),
-                boxShadow: (theme) => theme.customShadows.z24,
-                height: 'auto !important',
-              }),
-            },
-          }}
-        >
-          {renderContent}
-        </Drawer>
+                ...(collapseHover && {
+                  ...cssStyles(theme).bgBlur(),
+                  boxShadow: (theme) => theme.customShadows.z24,
+                  height: 'auto !important',
+                }),
+              },
+            }}
+          >
+            {renderContent}
+          </Drawer>
+        </Box>
       )}
     </RootStyle>
   );
