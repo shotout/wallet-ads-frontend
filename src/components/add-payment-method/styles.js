@@ -14,8 +14,6 @@ export default makeStyles((theme) => ({
     '& > .MuiPaper-root': {
       maxWidth: 680,
       background: '#fff',
-      transform: 'translate(100%)',
-      // marginTop: '15vh',
     },
   },
   ctnPromo: {
