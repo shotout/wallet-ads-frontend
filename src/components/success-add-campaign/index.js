@@ -1,4 +1,4 @@
-import { Popover, Typography } from '@mui/material';
+import { Popover, Typography, Box } from '@mui/material';
 import Iconify from '../Iconify';
 import useStyles from './styles';
 
@@ -15,44 +15,51 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
     <Popover
       id={'success-campaign'}
       open={Boolean(isVisible)}
-      // /open={true}
       anchorEl={isVisible}
-      anchorReference={'none'}
-      // anchorOrigin={{
-      //   vertical: 'center',
-      //   horizontal: 'center',
-      // }}
-      // transformOrigin={{
-      //   vertical: 'center',
-      //   horizontal: 'center',
-      // }}
+      anchorOrigin={{
+        vertical: 'center',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'center',
+        horizontal: 'center',
+      }}
       onClose={handleDirectCampaign}
       className={styles.ctnPopover}
       style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >
-      <div className={styles.ctnWrapper}>
-        <div className={styles.ctnBackground}>
-          <img src={launchImage} alt="launch" />
-        </div>
-        <div className={styles.ctnContent}>
-          <Typography variant="h5" sx={{ color: '#fff' }} fontWeight="800" textAlign="center">
-            Your campaign has successfully been scheduled and is currently in review by our team!
-          </Typography>
-          <Typography variant="subtitle1" sx={{ color: '#fff' }} marginTop={1} textAlign="center">
-            {isVisible === 'cryptocurrency'
-              ? 'Our team will send you an email with the payment details for cryptocurrencies within the next 24 hours.'
-              : 'You will receive an email as soon as the campaign is running.'}
-          </Typography>
-          <div className={styles.ctnBtnCampaign} onClick={handleDirectCampaign}>
-            <Typography variant="body2" fontWeight={'bold'} sx={{ color: '#fff' }} textAlign="center">
-              Create another campaign
+      {/* <Box
+        display={'flex'}
+        justifyContent={'center'}
+        alignItems={'center'}
+        overflow={'hidden'}
+        className={styles.tr}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      > */}
+        <div className={styles.ctnWrapper}>
+          <div className={styles.ctnBackground}>
+            <img src={launchImage} alt="launch" />
+          </div>
+          <div className={styles.ctnContent}>
+            <Typography variant="h5" sx={{ color: '#fff' }} fontWeight="800" textAlign="center">
+              Your campaign has successfully been scheduled and is currently in review by our team!
             </Typography>
-          </div>
-          <div className={styles.ctnClose} onClick={handleHoverClose}>
-            <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
+            <Typography variant="subtitle1" sx={{ color: '#fff' }} marginTop={1} textAlign="center">
+              {isVisible === 'cryptocurrency'
+                ? 'Our team will send you an email with the payment details for cryptocurrencies within the next 24 hours.'
+                : 'You will receive an email as soon as the campaign is running.'}
+            </Typography>
+            <div className={styles.ctnBtnCampaign} onClick={handleDirectCampaign}>
+              <Typography variant="body2" fontWeight={'bold'} sx={{ color: '#fff' }} textAlign="center">
+                Create another campaign
+              </Typography>
+            </div>
+            <div className={styles.ctnClose} onClick={handleHoverClose}>
+              <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
+            </div>
           </div>
         </div>
-      </div>
+      {/* </Box> */}
     </Popover>
   );
 }
