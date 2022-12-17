@@ -85,7 +85,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
       )}
 
       {isDesktop && (
-        <Box display={'flex'} justifyContent={'center'} alignItems={'center'} position={'absolute'} height={'100vh'}>
+        <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100vh'} position={'fixed'} zIndex={100}>
           <Drawer
             open
             variant="persistent"
@@ -93,7 +93,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
             onMouseLeave={onHoverLeave}
             PaperProps={{
               sx: {
-                position: 'fixed',
+                position: 'relative',
                 width: NAVBAR.DASHBOARD_WIDTH,
                 borderRightStyle: 'dashed',
                 borderBottom: '1px solid rgba(145, 158, 171, 0.24)',
@@ -106,8 +106,6 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
                 borderTopRightRadius: '50px',
                 borderBottomRightRadius: '50px',
                 margin: '0 auto',
-                top: '29vh',
-
                 transition: (theme) =>
                   theme.transitions.create('width', {
                     duration: theme.transitions.duration.standard,
@@ -126,6 +124,7 @@ export default function NavbarVertical({ isOpenSidebar, onCloseSidebar }) {
           >
             {renderContent}
           </Drawer>
+       
         </Box>
       )}
     </RootStyle>
