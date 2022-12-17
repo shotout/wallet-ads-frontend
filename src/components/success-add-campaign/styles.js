@@ -8,12 +8,14 @@ export default makeStyles((theme) => ({
   },
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
+
     '& > .MuiPaper-root': {
-      background: 'rgba(0,0,0,0.02)',
+      background: 'rgba(0,0,0,0.01)',
       width: 680,
       // position: 'relative',
       // background: 'transparent',
-      // margin: '5vh auto 0',
+      margin: '-3% auto',
+
       overflow: 'hidden',
       '&::-webkit-scrollbar': {
         width: 0,
@@ -21,18 +23,14 @@ export default makeStyles((theme) => ({
     },
   },
   ctnBackground: {
-    //  position: 'absolute',
     width: '100%',
     height: 440,
     zIndex: 1,
-
     '& > img': {
       width: '100%',
       objectFit: 'contain',
       bottom: 0,
     },
-    // bottom: -6,
-    // left: -3,
   },
   ctnContent: {
     position: 'absolute',

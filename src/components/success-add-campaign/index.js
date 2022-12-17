@@ -37,10 +37,8 @@ export default function SuccessAddCampaign({ isVisible = null, handleHoverClose 
         style={{ '&::WebkitScrollbar': { display: 'none' } }}
       >
         <div className={styles.ctnWrapper}>
-          <div>
-            <div className={styles.ctnBackground}>
-              <img src={launchImage} alt="launch" />
-            </div>
+          <div className={styles.ctnBackground}>
+            <img src={launchImage} alt="launch" />
             <div className={styles.ctnContent}>
               <Typography variant="h5" sx={{ color: '#fff' }} fontWeight="800" textAlign="center">
                 Your campaign has successfully been scheduled and is currently in review by our team!
