@@ -1,4 +1,4 @@
-import { Grid, Popover, Typography, FormGroup, TextField } from '@mui/material';
+import { Grid, Popover, Typography, FormGroup, TextField, Box } from '@mui/material';
 import { useState } from 'react';
 import { handleSubmitPromo, payCyrptoCurrency } from '../../utils/requests';
 import DefaultButton from '../default-button';
@@ -183,7 +183,7 @@ export default function AddPaymentMethod({
     <Popover
       id={'success-campaign'}
       open={Boolean(isVisible)}
-      //  open={true}
+      // anchorReference={'none'}
       anchorEl={isVisible ? isVisible.sessionId : null}
       anchorOrigin={{
         vertical: 'center',
@@ -197,83 +197,110 @@ export default function AddPaymentMethod({
       className={styles.ctnPopover}
       style={{ '&::WebkitScrollbar': { display: 'none' } }}
     >
-      <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
-        <div className="content">
-          <Typography variant="h4" sx={{ color: '#000' }} marginBottom={4} fontWeight="800" textAlign="center">
-            Add payment method
-          </Typography>
-          <Grid container spacing={4} className={styles.gridAvailability}>
-            <Grid item sm={6} md={4} xs={12}>
-              <img src={ccImage} className={styles.ccStyle} alt="Credit" />
-            </Grid>
-            <Grid
-              item
-              sm={6}
-              md={8}
-              xs={12}
-              justifyContent="center"
-              alignItems="center"
-              flexDirection={'column'}
-              display="flex"
-            >
-              <Typography variant="body1" align="justify">
-                Please add your payment details to set up and schedule campaigns on WALLETADS. You can select paying
-                with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" below.
-              </Typography>
-            </Grid>
-            <Grid item sm={6} md={6} xs={12}>
-              <DefaultButton
-                onClick={() => handlePaymentChoose('cc')}
-                ctnBtnStyle={styles.btnStyle}
-                label={'Add credit card'}
-                eventName={'Pay with stripe'}
-                isLoading={isPaymentLoading}
-                disabled={isPaymentLoading || loading}
+      <Box
+        display={'flex'}
+        justifyContent={'center'}
+        alignItems={'center'}
+        overflow={'hidden'}
+        className={styles.tr}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+          <div className="content">
+            <div className={styles.header}>
+              <div style={{ width: '99%' }}>
+                <Typography
+                  variant="h4"
+                  sx={{ color: '#000' }}
+                  marginLeft={4}
+                  fontWeight="800"
+                  textAlign="center"
+                  width={'100%'}
+                >
+                  Add payment method
+                </Typography>
+              </div>
+
+              {/* <div className={styles.ctnClose} onClick={resetState}> */}
+              <Iconify
+                icon={'ant-design:close-outlined'}
+                onClick={resetState}
+                width={28}
+                height={28}
+                className={styles.ctnClose}
               />
+              {/* </div> */}
+            </div>
+            <Grid container spacing={4} className={styles.gridAvailability}>
+              <Grid item sm={6} md={4} xs={12}>
+                <img src={ccImage} className={styles.ccStyle} alt="Credit" />
+              </Grid>
+              <Grid
+                item
+                sm={6}
+                md={8}
+                xs={12}
+                justifyContent="center"
+                alignItems="center"
+                flexDirection={'column'}
+                display="flex"
+              >
+                <Typography variant="body1" align="justify">
+                  Please add your payment details to set up and schedule campaigns on WALLETADS. You can select paying
+                  with cryptocurrencies by clicking "I would like to pay using cryptocurrencies" below.
+                </Typography>
+              </Grid>
+              <Grid item sm={6} md={6} xs={12}>
+                <DefaultButton
+                  onClick={() => handlePaymentChoose('cc')}
+                  ctnBtnStyle={styles.btnStyle}
+                  label={'Add credit card'}
+                  eventName={'Pay with stripe'}
+                  isLoading={isPaymentLoading}
+                  disabled={isPaymentLoading || loading}
+                />
+              </Grid>
+              <Grid item sm={6} md={6} xs={12}>
+                <DefaultButton
+                  isLoading={loading}
+                  ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                  onClick={() => handlePaymentChoose('crypto')}
+                  label={'I would like to pay using cryptocurrencies'}
+                  eventName={'Pay with crypto'}
+                  disabled={loading || isPaymentLoading}
+                />
+              </Grid>
             </Grid>
-            <Grid item sm={6} md={6} xs={12}>
-              <DefaultButton
-                isLoading={loading}
-                ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
-                onClick={() => handlePaymentChoose('crypto')}
-                label={'I would like to pay using cryptocurrencies'}
-                eventName={'Pay with crypto'}
-                disabled={loading || isPaymentLoading}
-              />
-            </Grid>
-          </Grid>
-          <div className={styles.ctnClose} onClick={resetState}>
-            <Iconify icon={'ant-design:close-outlined'} width={28} height={28} />
+          </div>
+          <div
+            className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
+              values.isApplied && styles.ctnBackgroundSuccess
+            }`}
+          >
+            {!values.isApplied ? (
+              isPromoAvail ? (
+                renderFormPromoCode()
+              ) : (
+                <Typography variant="body1" color="#000" textAlign={'center'} className={styles.ctnPromoText}>
+                  Do you have a promo code?{' '}
+                  <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
+                    Click here.
+                  </span>
+                </Typography>
+              )
+            ) : (
+              <>
+                <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
+                  <span className={styles.ctnBold}> {`Promo code ${values.promoCode} was successfully applied!`}</span>
+                </Typography>
+                <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
+                  Your discount of <span className={styles.ctnBold}>USD500</span> will be shown on the invoice.
+                </Typography>
+              </>
+            )}
           </div>
         </div>
-        <div
-          className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
-            values.isApplied && styles.ctnBackgroundSuccess
-          }`}
-        >
-          {!values.isApplied ? (
-            isPromoAvail ? (
-              renderFormPromoCode()
-            ) : (
-              <Typography variant="body1" color="#000" textAlign={'center'} className={styles.ctnPromoText}>
-                Do you have a promo code?{' '}
-                <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
-                  Click here.
-                </span>
-              </Typography>
-            )
-          ) : (
-            <>
-              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                <span className={styles.ctnBold}> {`Promo code ${values.promoCode} was successfully applied!`}</span>
-              </Typography>
-              <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                Your discount of <span className={styles.ctnBold}>USD500</span> will be shown on the invoice.
-              </Typography>
-            </>
-          )}
-        </div>
-      </div>
+      </Box>
     </Popover>
   );
 }

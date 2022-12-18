@@ -2047,10 +2047,19 @@ export default function AddCampaign({ content, params }) {
                     setErrorBox({
                       ...errorBox,
                       errorCollection: false,
+                      errorAdvanced: false,
                     });
                     handleChangeValues(value, 'ads_page_token_name');
                   }}
                   value={formValues.ads_page_token_name}
+                  onBlur={() => {
+                    if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
+                      setErrorBox({
+                        ...errorBox,
+                        errorAdvanced: false,
+                      });
+                    }
+                  }}
                   placeholder="Name"
                   type="text"
                 />

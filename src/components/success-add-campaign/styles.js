@@ -8,15 +8,22 @@ export default makeStyles((theme) => ({
   },
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
+
     '& > .MuiPaper-root': {
-      background: 'transparent',
-      marginTop: '3vh',
+      background: 'rgba(0,0,0,0.01)',
+      width: 680,
+      // position: 'relative',
+      // background: 'transparent',
+      margin: '-3% auto',
+
       overflow: 'hidden',
+      '&::-webkit-scrollbar': {
+        width: 0,
+      },
     },
   },
   ctnBackground: {
-    position: 'absolute',
-    width: '101%',
+    width: '100%',
     height: 440,
     zIndex: 1,
     '& > img': {
@@ -24,13 +31,12 @@ export default makeStyles((theme) => ({
       objectFit: 'contain',
       bottom: 0,
     },
-    bottom: -6,
-    left: -3,
   },
   ctnContent: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    // height: 50,
+    top: '46%',
     zIndex: 99,
     display: 'flex',
     flexDirection: 'column',
@@ -56,5 +62,10 @@ export default makeStyles((theme) => ({
     bottom: 300,
     right: 20,
     cursor: 'pointer',
+  },
+  tr: {
+    position: 'relative',
+    height: '100vh',
+    overflowY: 'hidden',
   },
 }));
