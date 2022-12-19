@@ -224,6 +224,7 @@ export default function AddCampaign({ content, params }) {
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
+
       setLogoCollection({
         preview: adsLogo && adsLogo.url ? `${BACKEND_URL}${adsLogo.url}` : null,
       });
@@ -373,10 +374,12 @@ export default function AddCampaign({ content, params }) {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
 
-      datas = formValues;
+      datas = formResp;
     } else {
       datas = formResp;
     }
+
+    console.log(datas);
 
     // let i = 0;
     // console.log(params.id);
@@ -463,8 +466,14 @@ export default function AddCampaign({ content, params }) {
       formRes.append('ads_page_telegram', formValues.ads_page_telegram);
       formRes.append('ads_page_token_name', formValues.ads_page_token_name);
       formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
-      formRes.append('ads_page_logo', logoCollection);
-      formRes.append('ads_page_banner', bannerCollection);
+      formRes.append(
+        typeof logoCollection.preview === 'string' ? 'ads_page_logo_url' : 'ads_page_logo',
+        typeof logoCollection.preview === 'string' ? logoCollection.preview : logoCollection
+      );
+      formRes.append(
+        typeof bannerCollection.preview === 'string' ? 'ads_page_banner_url' : 'ads_page_banner',
+        typeof bannerCollection.preview === 'string' ? bannerCollection.preview : bannerCollection
+      );
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
