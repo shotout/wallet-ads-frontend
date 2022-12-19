@@ -136,6 +136,10 @@ export default function AddCampaign({ content, params }) {
   const [showModalSuccess, setModalSuccess] = useState(false);
   const [formResp, setFormResp] = useState(null);
   const [emptyAudience, setEmptyAudience] = useState(true);
+  const [isUpload, setIsUpload] = useState({
+    logo: false,
+    banner: false,
+  });
   const [audienceForm, setAudienceForm] = useState([
     {
       audienceId: makeId(),
@@ -466,14 +470,16 @@ export default function AddCampaign({ content, params }) {
       formRes.append('ads_page_telegram', formValues.ads_page_telegram);
       formRes.append('ads_page_token_name', formValues.ads_page_token_name);
       formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
-      formRes.append(
-        typeof logoCollection.preview === 'string' ? 'ads_page_logo_url' : 'ads_page_logo',
-        typeof logoCollection.preview === 'string' ? logoCollection.preview : logoCollection
-      );
-      formRes.append(
-        typeof bannerCollection.preview === 'string' ? 'ads_page_banner_url' : 'ads_page_banner',
-        typeof bannerCollection.preview === 'string' ? bannerCollection.preview : bannerCollection
-      );
+      formRes.append('ads_page_logo', logoCollection);
+      // formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
+      // isUpload.logo ? formRes.append('ads_page_logo', logoCollection) : null;
+      // formRes.append(
+      //   isUpload.banner ? 'ads_page_banner' : 'ads_page_banner_url',
+      //   isUpload.banner ? bannerCollection : bannerCollection?.preview
+      // );
+
+      console.log(typeof logoCollection);
+      console.log(typeof logoCollection.preview);
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
@@ -1078,6 +1084,10 @@ export default function AddCampaign({ content, params }) {
           preview: URL.createObjectURL(file),
         })
       );
+      setIsUpload({
+        ...isUpload,
+        banner: true,
+      });
       setErrorBox({
         ...errorBox,
         errorCollection: false,
@@ -1094,6 +1104,10 @@ export default function AddCampaign({ content, params }) {
           preview: URL.createObjectURL(file),
         })
       );
+      setIsUpload({
+        ...isUpload,
+        logo: true,
+      });
       setErrorBox({
         ...errorBox,
         errorCollection: false,
@@ -1685,6 +1699,122 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderBottomCollectionDesc() {
+    return (
+      <div style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+        <div style={{ width: '50%', paddingRight: 40 }}>
+          <div className={styles.ctnInputCollection}>
+            <div className={styles.rowTitleWrapper}>
+              <div className={styles.leftTitle} id={`collection-ads-description`}>
+                <Typography variant="h6">Page description</Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'collection_page_text');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('collection_page_text', questionObj.collection_page_text)}
+              </div>
+            </div>
+            <div className={styles.textAreaCollection}>
+              <textarea
+                onChange={(value) => {
+                  handleChangeValues(value, 'ads_page_description');
+                  handleResetErrorValue('collectionDesc');
+                  setErrorBox({
+                    ...errorBox,
+                    errorCollection: false,
+                  });
+                }}
+                maxLength={1000}
+                value={formValues.ads_page_description}
+                placeholder="Add your collection page text here"
+              />
+              <div className={styles.ctnCounter}>
+                <Typography variant="body2" color="#808080">
+                  {`${formValues.ads_page_description.length} characters`}
+                </Typography>
+                <Typography variant="body2" color="#808080">
+                  Maximum 1000 characters
+                </Typography>
+              </div>
+              {renderErrorText(errorInput.collectionDesc)}
+            </div>
+          </div>
+        </div>
+        <div style={{ width: '50%' }}>
+          <div className={styles.ctnInputCollection}>
+            <div className={styles.rowTitleWrapper}>
+              <div className={styles.leftTitle}>
+                <Typography variant="h6">Add social media links</Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'add_social_media_link');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('add_social_media_link', questionObj.add_social_media_link)}
+              </div>
+            </div>
+            <div className={styles.inputCollectionIcon}>
+              <img src={websiteIcon} alt="website" />
+              <input
+                onChange={(value) => {
+                  handleResetErrorValue('collectionSocialMedia');
+                  handleChangeValues(value, 'ads_page_website');
+                }}
+                value={formValues.ads_page_website}
+                placeholder="yoursite.io"
+                type="text"
+              />
+            </div>
+            <div className={styles.inputCollectionIcon}>
+              <img src={discordIcon} alt="discord" />
+              <input
+                onChange={(value) => {
+                  handleResetErrorValue('collectionSocialMedia');
+                  handleChangeValues(value, 'ads_page_discord');
+                }}
+                value={formValues.ads_page_discord}
+                placeholder="https://discord.gg/abcdef"
+                type="text"
+              />
+            </div>
+            <div className={styles.inputCollectionIcon}>
+              <img src={mediumIcon} alt="medium" />
+              <input
+                onChange={(value) => {
+                  handleResetErrorValue('collectionSocialMedia');
+                  handleChangeValues(value, 'ads_page_medium');
+                }}
+                value={formValues.ads_page_medium}
+                placeholder="https://medium.com/@YourMediumHandle"
+                type="text"
+              />
+            </div>
+            <div className={styles.inputCollectionIcon}>
+              <img src={telegramIcon} alt="telegram" />
+              <input
+                onChange={(value) => {
+                  handleResetErrorValue('collectionSocialMedia');
+                  handleChangeValues(value, 'ads_page_telegram');
+                }}
+                value={formValues.ads_page_telegram}
+                placeholder="https://t.me/abcdef"
+                type="text"
+              />
+            </div>
+            {renderErrorText(errorInput.collectionSocialMedia)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function renderLeftCollection() {
     return (
       <div className={styles.ctnLeftCollection}>
@@ -1720,7 +1850,7 @@ export default function AddCampaign({ content, params }) {
             {renderErrorText(errorInput.collectionPageName)}
           </div>
         </div>
-        <div className={styles.ctnInputCollection}>
+        <div className={styles.ctnInputCollection} style={{ marginTop: 20 }}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-logo`}>
               <Typography variant="h6">Add logo</Typography>
@@ -1778,46 +1908,6 @@ export default function AddCampaign({ content, params }) {
           />
           {renderErrorText(errorInput.collectionBanner)}
         </div> */}
-        <div className={styles.ctnInputCollection}>
-          <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle} id={`collection-ads-description`}>
-              <Typography variant="h6">Page description</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'collection_page_text');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('collection_page_text', questionObj.collection_page_text)}
-            </div>
-          </div>
-          <div className={styles.textAreaCollection}>
-            <textarea
-              onChange={(value) => {
-                handleChangeValues(value, 'ads_page_description');
-                handleResetErrorValue('collectionDesc');
-                setErrorBox({
-                  ...errorBox,
-                  errorCollection: false,
-                });
-              }}
-              maxLength={1000}
-              value={formValues.ads_page_description}
-              placeholder="Add your collection page text here"
-            />
-            <div className={styles.ctnCounter}>
-              <Typography variant="body2" color="#808080">
-                {`${formValues.ads_page_description.length} characters`}
-              </Typography>
-              <Typography variant="body2" color="#808080">
-                Maximum 1000 characters
-              </Typography>
-            </div>
-            {renderErrorText(errorInput.collectionDesc)}
-          </div>
-        </div>
       </div>
     );
   }
@@ -1922,71 +2012,6 @@ export default function AddCampaign({ content, params }) {
                 : bannerCollection.preview || null
             }
           />
-        </div>
-        <div className={styles.ctnInputCollection}>
-          <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Add social media links</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'add_social_media_link');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('add_social_media_link', questionObj.add_social_media_link)}
-            </div>
-          </div>
-          <div className={styles.inputCollectionIcon}>
-            <img src={websiteIcon} alt="website" />
-            <input
-              onChange={(value) => {
-                handleResetErrorValue('collectionSocialMedia');
-                handleChangeValues(value, 'ads_page_website');
-              }}
-              value={formValues.ads_page_website}
-              placeholder="yoursite.io"
-              type="text"
-            />
-          </div>
-          <div className={styles.inputCollectionIcon}>
-            <img src={discordIcon} alt="discord" />
-            <input
-              onChange={(value) => {
-                handleResetErrorValue('collectionSocialMedia');
-                handleChangeValues(value, 'ads_page_discord');
-              }}
-              value={formValues.ads_page_discord}
-              placeholder="https://discord.gg/abcdef"
-              type="text"
-            />
-          </div>
-          <div className={styles.inputCollectionIcon}>
-            <img src={mediumIcon} alt="medium" />
-            <input
-              onChange={(value) => {
-                handleResetErrorValue('collectionSocialMedia');
-                handleChangeValues(value, 'ads_page_medium');
-              }}
-              value={formValues.ads_page_medium}
-              placeholder="https://medium.com/@YourMediumHandle"
-              type="text"
-            />
-          </div>
-          <div className={styles.inputCollectionIcon}>
-            <img src={telegramIcon} alt="telegram" />
-            <input
-              onChange={(value) => {
-                handleResetErrorValue('collectionSocialMedia');
-                handleChangeValues(value, 'ads_page_telegram');
-              }}
-              value={formValues.ads_page_telegram}
-              placeholder="https://t.me/abcdef"
-              type="text"
-            />
-          </div>
-          {renderErrorText(errorInput.collectionSocialMedia)}
         </div>
       </div>
     );
@@ -2111,11 +2136,15 @@ export default function AddCampaign({ content, params }) {
         style={{ flexDirection: 'column' }}
         id="collection-section"
       >
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          {renderLeftCollection()}
-          {renderRightCollection()}
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            {renderLeftCollection()}
+            {renderRightCollection()}
+          </div>
+          <div style={{ width: '100%' }}>{renderBottomCollectionDesc()}</div>
         </div>
         <Divider />
+
         {renderBottomCollection()}
       </div>
     );

@@ -283,6 +283,18 @@ const useStyles = makeStyles((theme) => ({
       paddingRight: 0,
     },
   },
+  ctnBottomCollection: {
+    display: 'flex',
+    width: '100%',
+    // paddingRight: 40,
+    // display: 'flex',
+    // flexDirection: 'row',
+    // backgroundColor:'red',
+    // [theme.breakpoints.down('md')]: {
+    //   width: '100%',
+    //   paddingRight: 0,
+    // },
+  },
   rowTitleWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
