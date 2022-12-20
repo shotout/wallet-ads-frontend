@@ -1879,7 +1879,7 @@ export default function AddCampaign({ content, params }) {
           />
           {renderErrorText(errorInput.collectionLogo)}
         </div>
-        <div className={styles.ctnInputCollection}>
+        {/* <div className={styles.ctnInputCollection}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle} id={`collection-ads-banner`}>
               <Typography variant="h6">Add banner</Typography>
@@ -1907,7 +1907,7 @@ export default function AddCampaign({ content, params }) {
             label={'Add banner'}
           />
           {renderErrorText(errorInput.collectionBanner)}
-        </div>
+        </div> */}
       </div>
     );
   }
