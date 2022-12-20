@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   ctnBanner: {
-    background: '#D9D9D9',
-    paddingTop: '28%',
+    background: '#f1f1f1',
+    paddingTop: '20%',
     position: 'relative',
     width: '100%',
     height: 50,

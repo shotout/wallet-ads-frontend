@@ -15,7 +15,6 @@ export default makeStyles((theme) => ({
       // position: 'relative',
       // background: 'transparent',
       margin: '-3% auto',
-
       overflow: 'hidden',
       '&::-webkit-scrollbar': {
         width: 0,

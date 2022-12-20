@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ctnBanner: {
     background: '#F1F1F1',
-    paddingTop: '28%',
+    paddingTop: '23%',
     position: 'relative',
     width: '100%',
   },
@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 10,
   },
   ctnDesc: {
-    paddingTop: 40,
+    paddingTop: 25,
     marginLeft: 20,
     marginBottom: 20,
   },

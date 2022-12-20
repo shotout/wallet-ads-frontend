@@ -6,6 +6,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'center',
     backgroundColor: 'white',
+    marginBottom: 50,
     borderRadius: 10,
     '& > .content': {
       padding: 30,
