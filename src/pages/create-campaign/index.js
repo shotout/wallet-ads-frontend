@@ -1907,7 +1907,7 @@ export default function AddCampaign({ content, params }) {
             label={'Add banner'}
           />
           {renderErrorText(errorInput.collectionBanner)}
-        </div> 
+        </div>
       </div>
     );
   }
