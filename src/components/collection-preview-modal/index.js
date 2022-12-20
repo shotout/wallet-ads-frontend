@@ -21,7 +21,7 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
     return (
       <div className={styles.ctnBanner}>
         <div className={styles.bannerItem}>
-          <img src={bannerSource} alt="banner-source" loading="lazy" />
+          {/* <img src={bannerSource} alt="banner-source" loading="lazy" /> */}
         </div>
         {renderProfile()}
       </div>
