@@ -672,12 +672,12 @@ export default function AddCampaign({ content, params }) {
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
 
-      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability || collectionBanner) {
+      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability ) {
         setErrorInput(errorObj);
         inputValid = false;
       }
       let isCollectionSection = false;
-      formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
