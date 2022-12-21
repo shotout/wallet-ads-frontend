@@ -81,6 +81,7 @@ const blackCalendar = '/assets/black_calendar.png';
 const addIcon = '/assets/add_icon.png';
 const askIcon = '/assets/ask_icon.png';
 const tokenTrackerImg = '/assets/tokentracker.jpg';
+const rocket = '/assets/rocket.png';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
@@ -92,8 +93,7 @@ const expandOpenIcon = '/icons/ic_expandopen.svg';
 const expandCloseIcon = '/icons/ic_expandclose.svg';
 const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
-
-// const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+const iconPlus = '/assets/icon-plus.png';
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -117,6 +117,20 @@ export default function AddCampaign({ content, params }) {
     logo: '',
     banner: '',
   });
+  const [sampleAds, setSampleAds] = useState([
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+  ]);
   const [formValues, setFormValues] = useState({
     campaign_name: '',
     campaign_start_date: new Date(getFutureDate(2)),
@@ -1440,6 +1454,106 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
+  function renderReceiveSampleAd() {
+    const addSampleAd = () => {
+      const newData = {
+        id: makeId(),
+        samleAd: '',
+      };
+
+      setSampleAds((sampleAds) => [...sampleAds, newData]);
+    };
+
+    const deleteSampleAdd = (id) => {
+      const newData = sampleAds.filter((sampleAd) => sampleAd.id !== id);
+      setSampleAds(newData);
+    };
+
+    const onchangeAds = (e, id) => {
+      const newData = [...sampleAds];
+      const findIndex = newData.findIndex((data) => data.id === id);
+      newData[findIndex].sampleAd = e.target.value;
+      setSampleAds(newData);
+    };
+
+    return (
+      <div
+        className={`${styles.ctnSection} ${errorBox.errorBoxAvailability ? styles.ctnRedBorder : ''}`}
+        id="availability-section"
+      >
+        <div className={styles.ctnIcon}>
+          <img src={rocket} alt="campaign" />
+        </div>
+        <div className={styles.ctnMidInput}>
+          <Typography variant="h6" paragraph sx={{ marginBottom: 0 }}>
+            Receive a sample ad of your campaign
+          </Typography>
+          <Typography variant="span" paragraph>
+            Add up to 5 wallet addresses to receive a sample ad during the campaign flight.
+          </Typography>
+          <div className={styles.availWrapper}>
+            <Grid container spacing={4} className={styles.gridAvailability}>
+              {sampleAds.map((samleAd, index) => (
+                <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
+                  <div className={styles.ctnInputColumn}>
+                    <div
+                      onClick={() => {
+                        handleChangeDefaultValue('3', 'campaign_end_date_type');
+                        deactivateErrorBoxAvailability();
+                      }}
+                      className={`${styles.inputGray} ${styles.fixedWidth} ${
+                        formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}
+                      } ${Number(formValues.campaign_end_day) > 90 ? styles.ctnRedBorderInput : ''}`}
+                    >
+                      <div className={`${styles.midWrapperSampleAd}`}>
+                        <input
+                          value={samleAd.sampleAd}
+                          placeholder={
+                            sampleAds.length - 1 === index
+                              ? 'Add more wallet address'
+                              : 'Enter your wallet address here'
+                          }
+                          onChange={(event) => {
+                            onchangeAds(event, samleAd.id);
+                          }}
+                          style={{  }}
+                          type={'text'}
+                        />
+
+                        {sampleAds.length > 3 ? (
+                          index > 1 && index < 4 && sampleAds.length - 1 !== index ? (
+                            <div className={styles.leftWrapperSampleAd}>
+                              <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
+                            </div>
+                          ) : (
+                            <div className={styles.leftWrapperSampleAd} />
+                          )
+                        ) : (
+                          <div className={styles.leftWrapperSampleAd} />
+                        )}
+
+                        {sampleAds.length - 1 === index && (
+                          <div className={styles.leftWrapperSampleAd}>
+                            {sampleAds.length === 5 ? (
+                              <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
+                            ) : (
+                              <img src={iconPlus} onClick={addSampleAd} />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {/* {renderErrorText(errorBox.errorBoxAvailability)} */}
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   function renderTargeting() {
     return (
       <div className={styles.ctnSectionTarget}>
@@ -2369,6 +2483,7 @@ export default function AddCampaign({ content, params }) {
           {renderDefineAudience()}
           {renderCollectionPage()}
           {renderAvailability()}
+          {renderReceiveSampleAd()}
           {renderSetupAirdrop()}
         </div>
         {/* <AuthFooter /> */}

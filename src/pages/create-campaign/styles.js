@@ -163,6 +163,37 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+
+  leftWrapperSampleAd: {
+    display: 'flex',
+    paddingLeft: 12,
+    '& > img': {
+      width: 22,
+      height: 22,
+      objectFit: 'contain',
+      marginLeft: 12,
+      cursor: 'pointer',
+    },
+  },
+  midWrapperSampleAd: {
+    marginRight: 24,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    '& > input': {
+      fontFamily: 'Public Sans,sans-serif',
+      border: 0,
+      height: 30,
+      background: '#f1f1f1',
+      borderRadius: 8,
+      marginRight: 24,
+      fontSize: 15,
+      outline: 'none',
+    },
+  },
+
   unactiveInput: {
     '& > input': {
       color: '#808080',
