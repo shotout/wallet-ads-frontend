@@ -114,10 +114,7 @@ export default function AddCampaign({ content, params }) {
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
-  const [collectionPageMedia, setCollectionPageMedia] = useState({
-    logo: '',
-    banner: '',
-  });
+
   const [sampleAds, setSampleAds] = useState([
     {
       id: makeId(),
@@ -493,8 +490,11 @@ export default function AddCampaign({ content, params }) {
       //   isUpload.banner ? bannerCollection : bannerCollection?.preview
       // );
 
-      console.log(typeof logoCollection);
-      console.log(typeof logoCollection.preview);
+      sampleAds.forEach((sample, index) => {
+        if(sample.sampleAd){
+          formRes.append(`wallet_address[${index}]`, sample.sampleAd)
+        }
+      })
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
