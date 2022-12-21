@@ -1553,7 +1553,7 @@ export default function AddCampaign({ content, params }) {
                           <Typography
                             fontFamily={'Public Sans,sans-serif'}
                             variant="subtitle"
-                            color={'grey'}
+                            color={'#808080'}
                             paddingLeft={2}
                           >
                             Add more wallet addresses
