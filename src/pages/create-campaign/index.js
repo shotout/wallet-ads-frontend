@@ -1568,7 +1568,9 @@ export default function AddCampaign({ content, params }) {
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
                             ) : (
                               // eslint-disable-next-line jsx-a11y/alt-text
-                              <img src={iconPlus} onClick={addSampleAd} />
+                              <img src={iconPlus}    onClick={() => {
+                                if (sampleAds.length - 1 !== index) addSampleAd();
+                              }} />
                             )}
                           </div>
                         )}
