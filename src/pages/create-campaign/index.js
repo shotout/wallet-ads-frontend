@@ -491,10 +491,10 @@ export default function AddCampaign({ content, params }) {
       // );
 
       sampleAds.forEach((sample, index) => {
-        if(sample.sampleAd){
-          formRes.append(`wallet_address[${index}]`, sample.sampleAd)
+        if (sample.sampleAd) {
+          formRes.append(`wallet_address[${index}]`, sample.sampleAd);
         }
-      })
+      });
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
@@ -1478,10 +1478,7 @@ export default function AddCampaign({ content, params }) {
     };
 
     return (
-      <div
-        className={`${styles.ctnSection} ${errorBox.errorBoxAvailability ? styles.ctnRedBorder : ''}`}
-        id="availability-section"
-      >
+      <div className={`${styles.ctnSection}`}>
         <div className={styles.ctnIcon}>
           <img src={rocket} alt="campaign" />
         </div>
@@ -1534,7 +1531,7 @@ export default function AddCampaign({ content, params }) {
                             onChange={(event) => {
                               onchangeAds(event, samleAd.id);
                             }}
-                            style={{ width: '100%' }}
+                            style={{ width: '100%', paddingRight:10 }}
                             type={'text'}
                           />
                         ) : (
@@ -1568,9 +1565,12 @@ export default function AddCampaign({ content, params }) {
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
                             ) : (
                               // eslint-disable-next-line jsx-a11y/alt-text
-                              <img src={iconPlus}    onClick={() => {
-                                if (sampleAds.length - 1 !== index) addSampleAd();
-                              }} />
+                              <img
+                                src={iconPlus}
+                                onClick={() => {
+                                  if (sampleAds.length - 1 !== index) addSampleAd();
+                                }}
+                              />
                             )}
                           </div>
                         )}
