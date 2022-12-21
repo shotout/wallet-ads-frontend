@@ -166,12 +166,12 @@ const useStyles = makeStyles((theme) => ({
 
   leftWrapperSampleAd: {
     display: 'flex',
-    paddingLeft: 12,
+
     '& > img': {
       width: 22,
       height: 22,
       objectFit: 'contain',
-      marginLeft: 12,
+      marginRight: 10,
       cursor: 'pointer',
     },
   },
@@ -188,7 +188,8 @@ const useStyles = makeStyles((theme) => ({
       height: 30,
       background: '#f1f1f1',
       borderRadius: 8,
-      marginRight: 24,
+      // marginRight: 24,
+      paddingLeft: 10,
       fontSize: 15,
       outline: 'none',
     },

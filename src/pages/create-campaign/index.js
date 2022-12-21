@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
@@ -1485,6 +1486,9 @@ export default function AddCampaign({ content, params }) {
           <img src={rocket} alt="campaign" />
         </div>
         <div className={styles.ctnMidInput}>
+          <Typography variant="subtitle" color={'grey'} paragraph sx={{ marginBottom: 0 }} position="absolute" right={100}>
+            optional
+          </Typography>
           <Typography variant="h6" paragraph sx={{ marginBottom: 0 }}>
             Receive a sample ad of your campaign
           </Typography>
@@ -1516,7 +1520,7 @@ export default function AddCampaign({ content, params }) {
                           onChange={(event) => {
                             onchangeAds(event, samleAd.id);
                           }}
-                          style={{  }}
+                          style={{ width: '100%' }}
                           type={'text'}
                         />
 
@@ -1535,8 +1539,10 @@ export default function AddCampaign({ content, params }) {
                         {sampleAds.length - 1 === index && (
                           <div className={styles.leftWrapperSampleAd}>
                             {sampleAds.length === 5 ? (
+                              // eslint-disable-next-line jsx-a11y/alt-text
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
                             ) : (
+                              // eslint-disable-next-line jsx-a11y/alt-text
                               <img src={iconPlus} onClick={addSampleAd} />
                             )}
                           </div>
