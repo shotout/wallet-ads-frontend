@@ -1508,11 +1508,13 @@ export default function AddCampaign({ content, params }) {
             <Grid container spacing={4} className={styles.gridAvailability}>
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
-                  <div className={styles.ctnInputColumn}>
+                  <div
+                    className={styles.ctnInputColumn}
+                    style={sampleAds.length === 6 && sampleAds.length - 1 === index ? { display: 'none' } : null}
+                  >
                     <div
                       onClick={() => {
-                        handleChangeDefaultValue('3', 'campaign_end_date_type');
-                        deactivateErrorBoxAvailability();
+                        if (sampleAds.length - 1 === index) addSampleAd();
                       }}
                       className={`${styles.inputGray}`}
                     >
@@ -1548,7 +1550,7 @@ export default function AddCampaign({ content, params }) {
                         )}
 
                         {sampleAds.length > 3 ? (
-                          index > 1 && index < 4 && sampleAds.length - 1 !== index ? (
+                          index > 1 && index < 5 && sampleAds.length - 1 !== index ? (
                             <div className={styles.leftWrapperSampleAd}>
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
                             </div>
@@ -1561,7 +1563,7 @@ export default function AddCampaign({ content, params }) {
 
                         {sampleAds.length - 1 === index && (
                           <div className={styles.leftWrapperSampleAd}>
-                            {sampleAds.length === 5 ? (
+                            {sampleAds.length === 6 ? (
                               // eslint-disable-next-line jsx-a11y/alt-text
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
                             ) : (
