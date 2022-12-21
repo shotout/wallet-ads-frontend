@@ -1486,9 +1486,6 @@ export default function AddCampaign({ content, params }) {
           <img src={rocket} alt="campaign" />
         </div>
         <div className={styles.ctnMidInput}>
-          <Typography variant="subtitle" color={'grey'} paragraph sx={{ marginBottom: 0 }} position="absolute" right={100}>
-            optional
-          </Typography>
           <Typography variant="h6" paragraph sx={{ marginBottom: 0 }}>
             Receive a sample ad of your campaign
           </Typography>
@@ -1496,6 +1493,18 @@ export default function AddCampaign({ content, params }) {
             Add up to 5 wallet addresses to receive a sample ad during the campaign flight.
           </Typography>
           <div className={styles.availWrapper}>
+            <Typography
+              fontFamily={'Public Sans,sans-serif'}
+              variant="subtitle"
+              color={'grey'}
+              paragraph
+              sx={{ marginBottom: 0 }}
+              position="absolute"
+              right={0}
+              top={-70}
+            >
+              Optional
+            </Typography>
             <Grid container spacing={4} className={styles.gridAvailability}>
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
@@ -1505,24 +1514,38 @@ export default function AddCampaign({ content, params }) {
                         handleChangeDefaultValue('3', 'campaign_end_date_type');
                         deactivateErrorBoxAvailability();
                       }}
-                      className={`${styles.inputGray} ${styles.fixedWidth} ${
-                        formValues.campaign_end_date_type !== '3' ? styles.unactiveChecbox : {}
-                      } ${Number(formValues.campaign_end_day) > 90 ? styles.ctnRedBorderInput : ''}`}
+                      className={`${styles.inputGray}`}
                     >
-                      <div className={`${styles.midWrapperSampleAd}`}>
-                        <input
-                          value={samleAd.sampleAd}
-                          placeholder={
-                            sampleAds.length - 1 === index
-                              ? 'Add more wallet address'
-                              : 'Enter your wallet address here'
-                          }
-                          onChange={(event) => {
-                            onchangeAds(event, samleAd.id);
-                          }}
-                          style={{ width: '100%' }}
-                          type={'text'}
-                        />
+                      <div
+                        className={`${styles.midWrapperSampleAd}`}
+                        // style={`${sampleAds.length - 1 == index ? { cursor: 'pointer' } : null}`}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {sampleAds.length - 1 !== index ? (
+                          <input
+                            value={samleAd.sampleAd}
+                            placeholder={
+                              sampleAds.length - 1 === index
+                                ? 'Add more wallet address'
+                                : 'Enter your wallet address here'
+                            }
+                            onChange={(event) => {
+                              onchangeAds(event, samleAd.id);
+                            }}
+                            style={{ width: '100%' }}
+                            type={'text'}
+                          />
+                        ) : (
+                          <Typography
+                            fontFamily={'Public Sans,sans-serif'}
+                            variant="subtitle"
+                            color={'grey'}
+                            width={'100%'}
+                            paddingLeft={2}
+                          >
+                            Add more wallet addresses
+                          </Typography>
+                        )}
 
                         {sampleAds.length > 3 ? (
                           index > 1 && index < 4 && sampleAds.length - 1 !== index ? (
@@ -1550,6 +1573,7 @@ export default function AddCampaign({ content, params }) {
                       </div>
                     </div>
                   </div>
+
                   {/* {renderErrorText(errorBox.errorBoxAvailability)} */}
                 </Grid>
               ))}
