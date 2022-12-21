@@ -1515,6 +1515,21 @@ export default function AddCampaign({ content, params }) {
                       }}
                       className={`${styles.inputGray}`}
                     >
+                      {sampleAds.length - 1 === index && (
+                        <div className={styles.leftWrapperSampleAd}>
+                          {sampleAds.length === 6 ? null : (
+                            // eslint-disable-next-line jsx-a11y/alt-text
+                            <img
+                              src={iconPlus}
+                              onClick={() => {
+                                if (sampleAds.length - 1 !== index) addSampleAd();
+                              }}
+                              style={{ marginLeft: 10 }}
+                            />
+                          )}
+                        </div>
+                      )}
+
                       <div
                         className={`${styles.midWrapperSampleAd}`}
                         // style={`${sampleAds.length - 1 == index ? { cursor: 'pointer' } : null}`}
@@ -1531,7 +1546,7 @@ export default function AddCampaign({ content, params }) {
                             onChange={(event) => {
                               onchangeAds(event, samleAd.id);
                             }}
-                            style={{ width: '100%', paddingRight:10 }}
+                            style={{ width: '100%', paddingRight: 10 }}
                             type={'text'}
                           />
                         ) : (
@@ -1539,7 +1554,6 @@ export default function AddCampaign({ content, params }) {
                             fontFamily={'Public Sans,sans-serif'}
                             variant="subtitle"
                             color={'grey'}
-                            width={'100%'}
                             paddingLeft={2}
                           >
                             Add more wallet addresses
@@ -1560,17 +1574,9 @@ export default function AddCampaign({ content, params }) {
 
                         {sampleAds.length - 1 === index && (
                           <div className={styles.leftWrapperSampleAd}>
-                            {sampleAds.length === 6 ? (
+                            {sampleAds.length === 6 && (
                               // eslint-disable-next-line jsx-a11y/alt-text
                               <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
-                            ) : (
-                              // eslint-disable-next-line jsx-a11y/alt-text
-                              <img
-                                src={iconPlus}
-                                onClick={() => {
-                                  if (sampleAds.length - 1 !== index) addSampleAd();
-                                }}
-                              />
                             )}
                           </div>
                         )}
