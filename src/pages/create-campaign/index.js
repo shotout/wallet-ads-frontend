@@ -1303,7 +1303,7 @@ export default function AddCampaign({ content, params }) {
           <Typography variant="h6" paragraph>
             Campaign Name
           </Typography>
-          <div className={styles.ctnGray}>
+          <div className={styles.ctnGray} style={{ marginRight: 20 }}>
             <input
               placeholder="New campaign"
               type="text"
@@ -1503,7 +1503,7 @@ export default function AddCampaign({ content, params }) {
             >
               Optional
             </Typography>
-           
+
             <Grid container spacing={4} className={styles.gridAvailability}>
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
@@ -2357,7 +2357,7 @@ export default function AddCampaign({ content, params }) {
                   md={3}
                   sm={6}
                   xs={12}
-                  className={styles.ctnSectionAd}
+                  // className={styles.ctnSectionAd}
                   key={item.audienceId.toString()}
                 >
                   <div className={styles.ctnAudienceWrapper}>
