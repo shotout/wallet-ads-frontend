@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ctnMidInput: {
     flexGrow: 1,
-    paddingRight: 20,
+    //  paddingRight: 10,
   },
   ctnRightInput: {
     minWidth: '20%',
