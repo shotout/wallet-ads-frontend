@@ -1492,8 +1492,9 @@ export default function AddCampaign({ content, params }) {
           <div className={styles.availWrapper}>
             <Typography
               fontFamily={'Public Sans,sans-serif'}
-              variant="subtitle"
-              color={'grey'}
+              fontSize={14}
+              fontWeight={400}
+              color={'#808080'}
               paragraph
               sx={{ marginBottom: 0 }}
               position="absolute"
@@ -1502,6 +1503,7 @@ export default function AddCampaign({ content, params }) {
             >
               Optional
             </Typography>
+           
             <Grid container spacing={4} className={styles.gridAvailability}>
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
