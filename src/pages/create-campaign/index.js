@@ -1776,11 +1776,6 @@ export default function AddCampaign({ content, params }) {
                 />
                 {renderPopover('ad_name', questionObj.ad_name)}
               </div>
-              <div>
-                <Typography variant="body2" color="#808080">
-                  (Not visible for your audiences)
-                </Typography>
-              </div>
             </div>
           </div>
           <div className={styles.inputCollectionWrapper}>
