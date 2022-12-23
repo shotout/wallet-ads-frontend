@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ctnMidInput: {
     flexGrow: 1,
-    paddingRight: 20,
+    //  paddingRight: 10,
   },
   ctnRightInput: {
     minWidth: '20%',
@@ -163,6 +163,38 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+
+  leftWrapperSampleAd: {
+    display: 'flex',
+
+    '& > img': {
+      width: 22,
+      height: 22,
+      objectFit: 'contain',
+      marginRight: 10,
+      cursor: 'pointer',
+    },
+  },
+  midWrapperSampleAd: {
+    marginRight: 24,
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    '& > input': {
+      fontFamily: 'Public Sans,sans-serif',
+      border: 0,
+      height: 30,
+      background: '#f1f1f1',
+      borderRadius: 8,
+      // marginRight: 24,
+      paddingLeft: 10,
+      fontSize: 15,
+      outline: 'none',
+    },
+  },
+
   unactiveInput: {
     '& > input': {
       color: '#808080',

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
@@ -81,6 +82,7 @@ const blackCalendar = '/assets/black_calendar.png';
 const addIcon = '/assets/add_icon.png';
 const askIcon = '/assets/ask_icon.png';
 const tokenTrackerImg = '/assets/tokentracker.jpg';
+const rocket = '/assets/rocket.png';
 
 const discordIcon = '/assets/discord.png';
 const telegramIcon = '/assets/telegram.png';
@@ -92,8 +94,7 @@ const expandOpenIcon = '/icons/ic_expandopen.svg';
 const expandCloseIcon = '/icons/ic_expandclose.svg';
 const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
-
-// const initialPicture = [{ image: null, fe_id: [], name: '', description: '', adsId: makeId() }];
+const iconPlus = '/assets/icon-plus.png';
 
 export default function AddCampaign({ content, params }) {
   const styles = useStyles();
@@ -113,10 +114,21 @@ export default function AddCampaign({ content, params }) {
   const [logoCollection, setLogoCollection] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
-  const [collectionPageMedia, setCollectionPageMedia] = useState({
-    logo: '',
-    banner: '',
-  });
+
+  const [sampleAds, setSampleAds] = useState([
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+    {
+      id: makeId(),
+      sampleAd: '',
+    },
+  ]);
   const [formValues, setFormValues] = useState({
     campaign_name: '',
     campaign_start_date: new Date(getFutureDate(2)),
@@ -478,8 +490,11 @@ export default function AddCampaign({ content, params }) {
       //   isUpload.banner ? bannerCollection : bannerCollection?.preview
       // );
 
-      console.log(typeof logoCollection);
-      console.log(typeof logoCollection.preview);
+      sampleAds.forEach((sample, index) => {
+        if (sample.sampleAd) {
+          formRes.append(`wallet_address[${index}]`, sample.sampleAd);
+        }
+      });
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
@@ -1288,7 +1303,7 @@ export default function AddCampaign({ content, params }) {
           <Typography variant="h6" paragraph>
             Campaign Name
           </Typography>
-          <div className={styles.ctnGray}>
+          <div className={styles.ctnGray} style={{ marginRight: 20 }}>
             <input
               placeholder="New campaign"
               type="text"
@@ -1433,6 +1448,147 @@ export default function AddCampaign({ content, params }) {
                 </div>
                 {renderErrorText(errorBox.errorBoxAvailability)}
               </Grid>
+            </Grid>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function renderReceiveSampleAd() {
+    const addSampleAd = () => {
+      const newData = {
+        id: makeId(),
+        samleAd: '',
+      };
+
+      setSampleAds((sampleAds) => [...sampleAds, newData]);
+    };
+
+    const deleteSampleAdd = (id) => {
+      const newData = sampleAds.filter((sampleAd) => sampleAd.id !== id);
+      setSampleAds(newData);
+    };
+
+    const onchangeAds = (e, id) => {
+      const newData = [...sampleAds];
+      const findIndex = newData.findIndex((data) => data.id === id);
+      newData[findIndex].sampleAd = e.target.value;
+      setSampleAds(newData);
+    };
+
+    return (
+      <div className={`${styles.ctnSection}`}>
+        <div className={styles.ctnIcon}>
+          <img src={rocket} alt="campaign" />
+        </div>
+        <div className={styles.ctnMidInput}>
+          <Typography variant="h6" paragraph sx={{ marginBottom: 0 }}>
+            Receive a sample ad of your campaign
+          </Typography>
+          <Typography variant="span" paragraph>
+            Add up to 5 wallet addresses to receive a sample ad during the campaign flight.
+          </Typography>
+          <div className={styles.availWrapper}>
+            <Typography
+              fontFamily={'Public Sans,sans-serif'}
+              fontSize={14}
+              fontWeight={400}
+              color={'#808080'}
+              paragraph
+              sx={{ marginBottom: 0 }}
+              position="absolute"
+              right={0}
+              top={-70}
+            >
+              Optional
+            </Typography>
+
+            <Grid container spacing={4} className={styles.gridAvailability}>
+              {sampleAds.map((samleAd, index) => (
+                <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
+                  <div
+                    className={styles.ctnInputColumn}
+                    style={sampleAds.length === 6 && sampleAds.length - 1 === index ? { display: 'none' } : null}
+                  >
+                    <div
+                      onClick={() => {
+                        if (sampleAds.length - 1 === index) addSampleAd();
+                      }}
+                      className={`${styles.inputGray}`}
+                    >
+                      {sampleAds.length - 1 === index && (
+                        <div className={styles.leftWrapperSampleAd}>
+                          {sampleAds.length === 6 ? null : (
+                            // eslint-disable-next-line jsx-a11y/alt-text
+                            <img
+                              src={iconPlus}
+                              onClick={() => {
+                                if (sampleAds.length - 1 !== index) addSampleAd();
+                              }}
+                              style={{ marginLeft: 10 }}
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      <div
+                        className={`${styles.midWrapperSampleAd}`}
+                        // style={`${sampleAds.length - 1 == index ? { cursor: 'pointer' } : null}`}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {sampleAds.length - 1 !== index ? (
+                          <input
+                            value={samleAd.sampleAd}
+                            placeholder={
+                              sampleAds.length - 1 === index
+                                ? 'Add more wallet address'
+                                : 'Enter your wallet address here'
+                            }
+                            onChange={(event) => {
+                              onchangeAds(event, samleAd.id);
+                            }}
+                            style={{ width: '100%', paddingRight: 10 }}
+                            type={'text'}
+                          />
+                        ) : (
+                          <Typography
+                            fontFamily={'Public Sans,sans-serif'}
+                            variant="subtitle"
+                            color={'#808080'}
+                            paddingLeft={2}
+                          >
+                            Add more wallet addresses
+                          </Typography>
+                        )}
+
+                        {sampleAds.length > 3 ? (
+                          index > 1 && index < 5 && sampleAds.length - 1 !== index ? (
+                            <div className={styles.leftWrapperSampleAd}>
+                              <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
+                            </div>
+                          ) : (
+                            <div className={styles.leftWrapperSampleAd} />
+                          )
+                        ) : (
+                          <div className={styles.leftWrapperSampleAd} />
+                        )}
+
+                        {sampleAds.length - 1 === index && (
+                          <div className={styles.leftWrapperSampleAd}>
+                            {sampleAds.length === 6 && (
+                              // eslint-disable-next-line jsx-a11y/alt-text
+                              <img src={rubishIcon} onClick={() => deleteSampleAdd(samleAd.id)} />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* {renderErrorText(errorBox.errorBoxAvailability)} */}
+                </Grid>
+              ))}
             </Grid>
           </div>
         </div>
@@ -2201,7 +2357,7 @@ export default function AddCampaign({ content, params }) {
                   md={3}
                   sm={6}
                   xs={12}
-                  className={styles.ctnSectionAd}
+                  // className={styles.ctnSectionAd}
                   key={item.audienceId.toString()}
                 >
                   <div className={styles.ctnAudienceWrapper}>
@@ -2369,6 +2525,7 @@ export default function AddCampaign({ content, params }) {
           {renderDefineAudience()}
           {renderCollectionPage()}
           {renderAvailability()}
+          {renderReceiveSampleAd()}
           {renderSetupAirdrop()}
         </div>
         {/* <AuthFooter /> */}
