@@ -6,6 +6,7 @@ import Iconify from '../Iconify';
 import useStyles from './styles';
 import responseValidatorObj from './../../helpers/responseValidatorObj';
 import { trackGoal } from '../../utils/tracker';
+import LoadingPage from '../../components/loading-page';
 
 const ccImage = '/assets/credit_card.png';
 
@@ -300,6 +301,7 @@ export default function AddPaymentMethod({
             )}
           </div>
         </div>
+        <LoadingPage show={isPaymentLoading || loading} />
       </Box>
     </Popover>
   );
