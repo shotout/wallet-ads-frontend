@@ -10,6 +10,9 @@ import {
   Legend,
 } from 'chart.js/auto';
 import { Bar, getElementsAtEvent, getElementAtEvent } from 'react-chartjs-2';
+import Moment from 'moment';
+import 'moment/locale/id';
+Moment.locale('id');
 
 ChartJS?.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -25,6 +28,16 @@ export default function Index({ labels, datas, title }) {
   ];
 
   const options = {
+    scales: {
+      yAxis: {
+        ticks: {
+          callback: function (value, index, ticks) {
+            return value;
+          },
+        },
+      },
+    },
+
     plugins: {
       legend: {
         display: false,
