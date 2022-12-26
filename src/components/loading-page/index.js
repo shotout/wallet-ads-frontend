@@ -7,6 +7,19 @@ import loadingAnimation from './loading';
 export default function Index(props) {
   const styles = useStyles();
   const { show } = props;
+  const [initLoad, setInitLoad] = React.useState(0);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      if (show) {
+        setInitLoad(100);
+      } else {
+        if (initLoad < 90) {
+          setInitLoad(Number(initLoad) + 10);
+        }
+      }
+    }, 1000);
+  }, [initLoad]);
 
   const defaultOptions = {
     loop: true,
@@ -20,6 +33,7 @@ export default function Index(props) {
   return (
     <Popover
       id={'success-campaign'}
+      // open={true}
       open={show}
       //   anchorEl={isVisible ? isVisible.sessionId : null}
       anchorOrigin={{
@@ -32,20 +46,29 @@ export default function Index(props) {
       }}
       onClose={close}
       className={styles.ctnPopover}
-      style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      style={{ '&::WebkitScrollbar': { display: 'none', overflow: 'hidden' } }}
     >
-    <Box
+      <Box
         display={'flex'}
         justifyContent={'center'}
         alignItems={'center'}
         overflow={'hidden'}
         className={styles.tr}
-        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        style={{ '&::WebkitScrollbar': { display: 'none', overflow: 'hidden' } }}
       >
-      <Typography color={'#fff'} position={'absolute'} zIndex={20000} variant={'body2'} bottom={38} fontSize={20} fontWeight={'bold'}left={'44%'}>
-        20%
-      </Typography>
-      <Lottie options={defaultOptions} height={230} width={330} style={{ background: 'rgba(255,255,255,0.0)' }} />
+        <Typography
+          color={'#fff'}
+          position={'absolute'}
+          zIndex={20000}
+          variant={'body2'}
+          fontSize={20}
+          fontWeight={'bold'}
+          left={'44%'}
+          marginTop={15}
+        >
+          {initLoad} %
+        </Typography>
+        <Lottie options={defaultOptions} height={230} width={330} style={{ background: 'rgba(255,255,255,0.0)' }} />
       </Box>
     </Popover>
   );
