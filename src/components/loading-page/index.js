@@ -33,8 +33,8 @@ export default function Index(props) {
   return (
     <Popover
       id={'success-campaign'}
-      // open={true}
-      open={show}
+      open={true}
+      // open={show}
       //   anchorEl={isVisible ? isVisible.sessionId : null}
       anchorOrigin={{
         vertical: 'center',
@@ -68,7 +68,13 @@ export default function Index(props) {
         >
           {initLoad} %
         </Typography>
-        <Lottie options={defaultOptions} height={230} width={330} style={{ background: 'rgba(255,255,255,0.0)' }} />
+        <Lottie
+          isClickToPauseDisabled={true}
+          options={defaultOptions}
+          height={230}
+          width={330}
+          style={{ background: 'rgba(255,255,255,0.0)' }}
+        />
       </Box>
     </Popover>
   );
