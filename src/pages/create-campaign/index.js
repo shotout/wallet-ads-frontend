@@ -2549,7 +2549,7 @@ export default function AddCampaign({ content, params }) {
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
         />
-        <LoadingPage show={showCreditCard.isPaymentLoading} />
+        {/* <LoadingPage show={showCreditCard.isPaymentLoading} /> */}
         {/* <CreditCard
           callbackSuccess={(modalType) => {
             handleSubmit(modalType)
