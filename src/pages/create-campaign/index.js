@@ -751,13 +751,11 @@ export default function AddCampaign({ content, params }) {
 
       if (
         isAudienceValid.length > 0 &&
-        isAdsValid &&
         inputValid &&
         isAudienceFormAdsValid &&
         isBudgetValid &&
         !isAvailabilityValid &&
         isAudienceUnderMinimum.length === 0 &&
-        isAdTextValid.isAdTextValid &&
         isAdvancedSettingValid
       ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
