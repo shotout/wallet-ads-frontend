@@ -2377,7 +2377,8 @@ export default function AddCampaign({ content, params }) {
                       onClick={(event) => {
                         // if (!item.optimized) return;
                         if (
-                          (item.optimized == isEditable || !item.optimized == isEditable) ||
+                          item.optimized == isEditable ||
+                          !item.optimized == isEditable ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
                           deactivateErrorBoxAds();
@@ -2438,23 +2439,23 @@ export default function AddCampaign({ content, params }) {
 
   function renderCreateAnotherAd() {
     // if (pictureData.length < audienceForm.filter((item) => item.selectedCategory !== null).length) {
-      return (
-        <div
-          className={styles.btnCreateAd}
-          onClick={() => {
-            const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
-            setPicture(currentArr);
-          }}
-        >
-          <img src={addIcon} alt="addIcon" />
-          <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
-            Create another ad
-          </Typography>
-        </div>
-      );
+    return (
+      <div
+        className={styles.btnCreateAd}
+        onClick={() => {
+          const currentArr = [...pictureData];
+          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+          setPicture(currentArr);
+        }}
+      >
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
+          Create another ad
+        </Typography>
+      </div>
+    );
     // }
-    return null;
+    // return null;
   }
 
   function renderAddAudience() {
