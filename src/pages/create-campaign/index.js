@@ -2370,7 +2370,9 @@ export default function AddCampaign({ content, params }) {
                       className={`${styles.ctnAudienceItem} ${content.capaign_id ? styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
-                          : styles.ctnAudienceItem                          
+                          : !item.optimized
+                          ? styles.ctnDisable
+                          : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
                         // if (!item.optimized) return;
@@ -2435,7 +2437,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCreateAnotherAd() {
-    if (pictureData.length == audienceForm.filter((item) => item.selectedCategory !== null).length) {
+    // if (pictureData.length < audienceForm.filter((item) => item.selectedCategory !== null).length) {
       return (
         <div
           className={styles.btnCreateAd}
@@ -2451,7 +2453,7 @@ export default function AddCampaign({ content, params }) {
           </Typography>
         </div>
       );
-    }
+    // }
     return null;
   }
 
