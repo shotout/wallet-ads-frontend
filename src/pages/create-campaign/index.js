@@ -2369,16 +2369,16 @@ export default function AddCampaign({ content, params }) {
                     <div
                       className={`${styles.ctnAudienceItem} ${content.capaign_id ? styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
-                          ? styles.ctnDisable
+                          ? styles.ctnAudienceItem
                           : !item.optimized
                           ? styles.ctnDisable
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
                         // if (!item.optimized) return;
+
                         if (
-                          item.optimized == isEditable ||
-                          !item.optimized == isEditable ||
+                          (item.optimized) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
                           deactivateErrorBoxAds();
