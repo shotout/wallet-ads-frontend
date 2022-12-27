@@ -2370,15 +2370,12 @@ export default function AddCampaign({ content, params }) {
                       className={`${styles.ctnAudienceItem} ${content.capaign_id ? styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnDisable
-                          : !item.optimized
-                          ? styles.ctnDisable
-                          : styles.ctnAudienceItem
+                          : styles.ctnAudienceItem                          
                       }`}
                       onClick={(event) => {
                         // if (!item.optimized) return;
-
                         if (
-                          (item.optimized && isEditable) ||
+                          (item.optimized == isEditable || !item.optimized == isEditable) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
                           deactivateErrorBoxAds();
@@ -2438,7 +2435,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCreateAnotherAd() {
-    if (pictureData.length < audienceForm.filter((item) => item.selectedCategory !== null).length) {
+    if (pictureData.length == audienceForm.filter((item) => item.selectedCategory !== null).length) {
       return (
         <div
           className={styles.btnCreateAd}
