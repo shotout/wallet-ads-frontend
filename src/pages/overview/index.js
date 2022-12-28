@@ -882,7 +882,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   }}
                   onMouseEnter={(event) => {
                     const data = {
-                      img: `${url + item?.ads?.image.url}`,
+                      img: `${url + item?.ads?.image?.url}`,
                       desc: item.ads?.description,
                       title: item?.ads?.name,
                     };
@@ -891,7 +891,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   onMouseLeave={handleHoverClose}
                 >
                   <div>
-                    <img src={`${url + item?.ads?.image.url}`} loading="lazy" />
+                    <img src={`${url + item?.ads?.image?.url}`} loading="lazy" />
                   </div>
                   {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
                   <Typography variant="body1" marginRight={1} style={{ whiteSpace: 'nowrap' }}>

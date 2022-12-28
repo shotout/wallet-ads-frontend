@@ -305,7 +305,7 @@ export default function AddCampaign({ content, params }) {
       const sampleAds = JSON.parse(content.sample_address);
       if (content.sample_address) {
         setSampleAds([]); // reset ads to null
-        sampleAds[0].map((v) => {
+        sampleAds[0]?.map((v) => {
           setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
         });
         setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
