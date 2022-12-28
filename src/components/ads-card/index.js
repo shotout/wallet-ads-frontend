@@ -13,11 +13,13 @@ export default function AdsCard({ item, audienceData }) {
   console.log(audenceDatas.name);
 
   function renderImage() {
-    return (
-      <div className={styles.cardBanner}>
-        <img src={`${BACKEND_URL}/${item.image.url}`} />
-      </div>
-    );
+    if (item && item.image) {
+      return (
+        <div className={styles.cardBanner}>
+          <img src={`${BACKEND_URL}/${item.image.url}`} />
+        </div>
+      );
+    }
   }
 
   function renderAdText() {
