@@ -305,7 +305,7 @@ export default function AddCampaign({ content, params }) {
       const sampleAds = JSON.parse(content.sample_address);
       if (content.sample_address) {
         setSampleAds([]); // reset ads to null
-        sampleAds[0].map((v) => {
+        sampleAds[0]?.map((v) => {
           setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
         });
         setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
@@ -977,30 +977,6 @@ export default function AddCampaign({ content, params }) {
 
   const handleAddAudience = () => {
     const addData = [
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
       {
         audienceId: makeId(),
         optimized: false,
@@ -2457,7 +2433,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderAddAudience() {
-    if (checkIsFormMax(audienceForm)) {
+    if (params.status === 'fail') {
       return (
         <div className={styles.btnCreateAd} onClick={handleAddAudience}>
           <img src={addIcon} alt="addIcon" />
