@@ -752,7 +752,6 @@ export default function AddCampaign({ content, params }) {
       if (
         isAudienceValid.length > 0 &&
         inputValid &&
-        isAudienceFormAdsValid &&
         isBudgetValid &&
         !isAvailabilityValid &&
         isAudienceUnderMinimum.length === 0 &&
