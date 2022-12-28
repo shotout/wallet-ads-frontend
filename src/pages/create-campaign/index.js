@@ -752,7 +752,6 @@ export default function AddCampaign({ content, params }) {
       if (
         isAudienceValid.length > 0 &&
         inputValid &&
-        isAudienceFormAdsValid &&
         isBudgetValid &&
         !isAvailabilityValid &&
         isAudienceUnderMinimum.length === 0 &&
@@ -977,30 +976,6 @@ export default function AddCampaign({ content, params }) {
 
   const handleAddAudience = () => {
     const addData = [
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
       {
         audienceId: makeId(),
         optimized: false,
@@ -2457,7 +2432,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderAddAudience() {
-    if (checkIsFormMax(audienceForm)) {
+    if (params.status === 'fail') {
       return (
         <div className={styles.btnCreateAd} onClick={handleAddAudience}>
           <img src={addIcon} alt="addIcon" />
