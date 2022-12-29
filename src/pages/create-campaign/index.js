@@ -302,14 +302,15 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_symbol: adsPage.token_symbol,
       });
 
-      const sampleAds = JSON.parse(content.sample_address);
-      if (content.sample_address) {
-        setSampleAds([]); // reset ads to null
-        sampleAds[0]?.map((v) => {
-          setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
-        });
-        setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
-      }
+      // const sampleAds = JSON.parse(content.sample_address);
+   
+      // if (content.sample_address) {
+      //   setSampleAds([]); // reset ads to null
+      //   sampleAds[0]?.map((v) => {
+      //     setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
+      //   });
+      //   setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
+      // }
     }
   }, []);
 
