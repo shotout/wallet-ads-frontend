@@ -303,7 +303,7 @@ export default function AddCampaign({ content, params }) {
       });
 
       // const sampleAds = JSON.parse(content.sample_address);
-   
+
       // if (content.sample_address) {
       //   setSampleAds([]); // reset ads to null
       //   sampleAds[0]?.map((v) => {
@@ -749,6 +749,23 @@ export default function AddCampaign({ content, params }) {
             formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
         }
       }
+      // : false,
+      // errorAds: false,
+      // errorBoxCampaignName: false,
+      // errorBoxAvailability: false,
+      // errorCollection: false,
+      // errorAudienceNull: false,
+      // errorAdvanced: false,
+      console.log(
+        '111',
+        errorBox.errorAudience,
+        errorBox.errorAds,
+        errorBox.errorBoxCampaignName,
+        errorBox.errorBoxAvailability,
+        errorBox.errorCollection,
+        errorBox.errorAudienceNull,
+        errorBox.errorAdvanced
+      );
 
       if (
         isAudienceValid.length > 0 &&
@@ -1212,7 +1229,7 @@ export default function AddCampaign({ content, params }) {
     if (isShow) {
       return (
         <div className={styles.ctnError}>
-          <span>{errorMessage || 'Please check this field.'}</span>
+          <span>{errorMessage || 'Please assign at least 1 ad to this audience or delete this audience'}</span>
         </div>
       );
     }
@@ -2311,6 +2328,9 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
+        <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+          Please assign an at least 1 audience to this ad or delete this ad.
+        </div>
         <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
@@ -2347,13 +2367,15 @@ export default function AddCampaign({ content, params }) {
                           ? styles.ctnAudienceItem
                           : !item.optimized
                           ? styles.ctnDisable
+                          : errorBox.errorAds
+                          ? styles.ctnRedBorder
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
                         // if (!item.optimized) return;
 
                         if (
-                          (item.optimized) ||
+                          item.optimized ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
                           deactivateErrorBoxAds();
@@ -2369,9 +2391,11 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {renderErrorText(
-                      errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)
-                    )}
+                    <div className={styles.ctnAudienceErrBox}>
+                      {renderErrorText(
+                        errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)
+                      )}
+                    </div>
                     {renderAdAudience(item)}
                   </div>
                 </Grid>
