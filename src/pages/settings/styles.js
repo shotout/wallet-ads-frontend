@@ -10,7 +10,8 @@ export default makeStyles((theme) => ({
         paddingRight: 60,
         paddingLeft: 60,
         cursor: 'pointer',
-        marginTop: 10
+        marginTop: 10,
+        marginLeft: 40
     },
     changePassword: {
         paddingTop: 32,
