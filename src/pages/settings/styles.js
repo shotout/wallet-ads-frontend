@@ -2,6 +2,19 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    ctnGridRadius: {
+        border: '1px solid #808080',
+        borderRadius: 12,
+        height: 34,
+        padding: 2,
+        paddingRight: 60,
+        paddingLeft: 60,
+        cursor: 'pointer',
+        marginTop: 10
+    },
+    changePassword: {
+        paddingTop: 32,
+    },
     ctnRoot: {
         position: 'relative',
         background: '#fff',
