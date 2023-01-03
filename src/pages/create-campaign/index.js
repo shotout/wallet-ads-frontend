@@ -1219,7 +1219,7 @@ export default function AddCampaign({ content, params }) {
     if (isShow) {
       return (
         <div className={styles.ctnError}>
-          <span>{errorMessage || 'Please assign at least 1 ad to this audience or delete this audience'}</span>
+          <span>{errorMessage || 'Please check this field'}</span>
         </div>
       );
     }
