@@ -2,6 +2,35 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    ctnCvc: {
+      marginTop: 28,
+    },
+    ctnCardSet: {
+      position: 'absolute',
+      right: -120,
+      paddingTop: 34,
+      zIndex: 1
+    },
+    btnBlack: {
+      background: '#000 !important',
+      '& > span': {
+        color: '#fff',
+      },
+    },
+    btnStyle: {
+      marginTop: 12,
+      height: 80,
+      '& > span': {
+        fontSize: 20,
+      },
+      [theme.breakpoints.down('md')]: {
+        marginTop: 0,
+        height: 40,
+        '& > span': {
+          fontSize: 12,
+        },
+      },
+    },
     forgotPassword: {
       cursor: 'pointer'
     },
@@ -10,16 +39,18 @@ export default makeStyles((theme) => ({
       height: '100vh',
       overflowY: 'hidden',
     },
-    ctnWrapper: {
-      overflow: 'hidden',
-      width: '100%',
-      justifyContent: 'center',
-      backgroundColor: 'white',
-      marginBottom: 50,
-      borderRadius: 10,
-      '& > .content': {
-        padding: 30,
-      },
+    ctnWrapperPopup: {
+        maxWidth: '1366px',
+        margin: 'auto',
+        backgroundColor: 'white',
+        padding: 20,
+        marginTop: 20,
+        marginBottom: 20,
+        borderRadius: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        width: '100%',
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
     },
     header: {
       height: 80,
@@ -57,7 +88,7 @@ export default makeStyles((theme) => ({
     changePassword: {
         paddingTop: 32,
         position: 'absolute',
-        left: '40%',
+        left: '42%',
         cursor: 'pointer'
     },
     ctnRoot: {
