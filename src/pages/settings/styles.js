@@ -2,6 +2,47 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    forgotPassword: {
+      cursor: 'pointer'
+    },
+    tr: {
+      position: 'relative',
+      height: '100vh',
+      overflowY: 'hidden',
+    },
+    ctnWrapper: {
+      overflow: 'hidden',
+      width: '100%',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      marginBottom: 50,
+      borderRadius: 10,
+      '& > .content': {
+        padding: 30,
+      },
+    },
+    header: {
+      height: 80,
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    ctnClose: {
+      // position: 'absolute',
+      // top: 0,
+      // right: 20,
+      cursor: 'pointer',
+    },
+    ctnPopover: {
+      background: 'rgba(0,0,0,0.3)',
+      '& > .MuiPaper-root': {
+          maxWidth: 680,
+          background: 'rgba(0,0,0,0.02)',
+          overflowY: 'hidden',
+          '&::-webkit-scrollbar': {
+          width: 0,
+          },
+      },
+    },
     ctnGridRadius: {
         border: '1px solid #808080',
         borderRadius: 12,
@@ -15,6 +56,9 @@ export default makeStyles((theme) => ({
     },
     changePassword: {
         paddingTop: 32,
+        position: 'absolute',
+        left: '40%',
+        cursor: 'pointer'
     },
     ctnRoot: {
         position: 'relative',

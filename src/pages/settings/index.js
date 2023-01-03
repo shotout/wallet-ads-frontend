@@ -1,4 +1,4 @@
-import { Grid, IconButton, InputAdornment, InputLabel, TextField, Typography } from '@mui/material';
+import { Grid, IconButton, InputAdornment, InputLabel, TextField, Typography, Popover, Box } from '@mui/material';
 import { useState } from 'react';
 import DefaultButton from '../../components/default-button';
 import AvatarPicker from '../../components/avatar-picker';
@@ -31,8 +31,11 @@ const defaultState = {
   photo: { url: null },
 };
 
+var conditionCP = false;
+
 export default function SettingUser({ userData }) {
   const styles = useStyles();
+  const [CPCondition, setCPCondition] = useState(false);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [showPassword, setShowPassword] = useState(false);
@@ -107,6 +110,121 @@ export default function SettingUser({ userData }) {
       setLoading(false);
     }
   };
+  const resetStateCP = () => {
+    conditionCP = !conditionCP;
+    setCPCondition(conditionCP);
+  };
+
+  function popupChangePassword() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={CPCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateCP}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          className={styles.tr}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: '#000' }}
+                    fontWeight="800"
+                    marginLeft={4}
+                    textAlign="center"
+                    width={'100%'}
+                  >
+                    Change Password
+                  </Typography>
+                </div>
+
+                <Iconify
+                  icon={'ant-design:close-outlined'}
+                  onClick={resetStateCP}
+                  width={28}
+                  height={28}
+                  marginLeft={4}
+                  className={styles.ctnClose}
+                />
+              </div>
+            </div>
+            <Grid item md={6} xs={12}>
+              <div className={styles.inputWrapper}>
+                <InputLabel shrink>Current Password</InputLabel>
+                <TextField
+                  value={values.first_name}
+                  onChange={handleChange('first_name')}
+                  error={errorMessage.first_name}
+                  helperText={errorMessage.first_name}
+                  size="small"
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                />
+              </div>
+              <div className={styles.forgotPassword}>
+                <Typography variant="body3" fontWeight="800" marginLeft={30} textAlign="right" width={'100%'}>
+                  Forgot password
+                </Typography>
+              </div>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <div className={styles.inputWrapper}>
+                <InputLabel shrink>New Password</InputLabel>
+                <TextField
+                  value={values.first_name}
+                  onChange={handleChange('first_name')}
+                  error={errorMessage.first_name}
+                  helperText={errorMessage.first_name}
+                  size="small"
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                />
+              </div>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <div className={styles.inputWrapper}>
+                <InputLabel shrink>Confirm New Password</InputLabel>
+                <TextField
+                  value={values.first_name}
+                  onChange={handleChange('first_name')}
+                  error={errorMessage.first_name}
+                  helperText={errorMessage.first_name}
+                  size="small"
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                />
+              </div>
+            </Grid>
+            <DefaultButton
+              eventName={'Save'}
+              ctnBtnStyle={styles.btnSave}
+              label={'Save'}
+              isLoading={isLoading}
+              onClick={handleSubmit}
+            />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
 
   function renderTitle() {
     return (
@@ -287,56 +405,64 @@ export default function SettingUser({ userData }) {
 
               <Grid item md={6} xs={12} />
             </Grid>
-           
           </Grid>
           <Grid item md={3} sm={12}>
             {renderProfilePicture()}
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-          <Grid container spacing={42}>
-            <Grid item md={6} xs={12}>
-              <div className={styles.inputWrapper}>
-                <InputLabel shrink>Password</InputLabel>
-                <TextField
-                  value={values.password}
-                  onChange={handleChange('password')}
-                  error={errorMessage.password}
-                  helperText={errorMessage.password}
-                  size="small"
-                  fullWidth
-                  type={showPassword ? 'text' : 'password'}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? (
-                            <Iconify icon="eva:eye-fill" width={24} height={24} />
-                          ) : (
-                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </div>
-            </Grid>
-          </Grid>
-          <div className={styles.ctnGridBottom} />
-          <Grid container spacing={2}>
-            <Grid item md={9} sm={12}>
-              <Typography variant="h6" textAlign={"left"}>Payment Method</Typography>
-              <Typography variant="body4" textAlign={"left"}>No payment method selected</Typography>
-            </Grid>
-            <div className={styles.ctnGridRadius}>
-              <Typography variant="body5" textAlign={"center"}>Add Payment Method</Typography>
+        <Grid container spacing={42}>
+          <Grid item md={6} xs={12}>
+            <div className={styles.inputWrapper}>
+              <InputLabel shrink>Password</InputLabel>
+              <TextField
+                value={values.password}
+                onChange={handleChange('password')}
+                error={errorMessage.password}
+                helperText={errorMessage.password}
+                size="small"
+                fullWidth
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                        {showPassword ? (
+                          <Iconify icon="eva:eye-fill" width={24} height={24} />
+                        ) : (
+                          <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
             </div>
           </Grid>
+          <Grid item md={6} xs={12}>
+            <div className={styles.changePassword}>
+              <Typography onClick={resetStateCP} variant="body3" textAlign={'left'}>
+                Change Password
+              </Typography>
+            </div>
+          </Grid>
+        </Grid>
+        <div className={styles.ctnGridBottom} />
+        <Grid container spacing={2}>
+          <Grid item md={9} sm={12}>
+            <Typography variant="h6" textAlign={'left'}>
+              Payment Method
+            </Typography>
+            <Typography variant="body4" textAlign={'left'}>
+              No payment method selected
+            </Typography>
+          </Grid>
+          <div className={styles.ctnGridRadius}>
+            <Typography variant="body5" textAlign={'center'}>
+              Add Payment Method
+            </Typography>
+          </div>
+        </Grid>
       </div>
     );
   }
@@ -347,6 +473,7 @@ export default function SettingUser({ userData }) {
         <div className={styles.ctnCard}>
           {renderTitle()}
           {renderForm()}
+          {popupChangePassword()}
         </div>
       </div>
     );
