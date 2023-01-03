@@ -756,16 +756,6 @@ export default function AddCampaign({ content, params }) {
       // errorCollection: false,
       // errorAudienceNull: false,
       // errorAdvanced: false,
-      console.log(
-        '111',
-        errorBox.errorAudience,
-        errorBox.errorAds,
-        errorBox.errorBoxCampaignName,
-        errorBox.errorBoxAvailability,
-        errorBox.errorCollection,
-        errorBox.errorAudienceNull,
-        errorBox.errorAdvanced
-      );
 
       if (
         isAudienceValid.length > 0 &&

@@ -65,6 +65,22 @@ const typography = {
     lineHeight: 22 / 14,
     fontSize: pxToRem(14),
   },
+  body3: {
+    lineHeight: 22 / 14,
+    fontSize: pxToRem(14),
+    color: 'blue',
+    textDecorationLine: 'underline'
+  },
+  body4: {
+    lineHeight: 1.5,
+    fontSize: pxToRem(12),
+    color: 'grey'
+  },
+  body5: {
+    lineHeight: 22 / 14,
+    fontSize: pxToRem(14),
+    fontWeight: 'bold'
+  },
   caption: {
     lineHeight: 1.5,
     fontSize: pxToRem(12),

@@ -202,7 +202,34 @@ export default function SettingUser({ userData }) {
               </Grid>
               <Grid item md={6} xs={12}>
                 <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Street</InputLabel>
+                  <InputLabel shrink>Email</InputLabel>
+                  <TextField
+                    value={values.email}
+                    onChange={handleChange('email')}
+                    error={errorMessage.email}
+                    helperText={errorMessage.email}
+                    size="small"
+                    fullWidth
+                  />
+                </div>
+              </Grid>
+
+              <Grid item md={6} xs={12}>
+                <div className={styles.inputWrapper}>
+                  <InputLabel shrink>Telephone</InputLabel>
+                  <TextField
+                    value={values.phone}
+                    onChange={handleChange('phone')}
+                    error={errorMessage.phone}
+                    helperText={errorMessage.phone}
+                    size="small"
+                    fullWidth
+                  />
+                </div>
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <div className={styles.inputWrapper}>
+                  <InputLabel shrink>Street address</InputLabel>
                   <TextField
                     value={values.street}
                     onChange={handleChange('street')}
@@ -260,105 +287,56 @@ export default function SettingUser({ userData }) {
 
               <Grid item md={6} xs={12} />
             </Grid>
-            <div className={styles.ctnGridBottom} />
-            <Grid container spacing={2}>
-              <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Email address</InputLabel>
-                  <TextField
-                    value={values.email}
-                    onChange={handleChange('email')}
-                    error={errorMessage.email}
-                    helperText={errorMessage.email}
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Telephone</InputLabel>
-                  <TextField
-                    value={values.phone}
-                    onChange={handleChange('phone')}
-                    error={errorMessage.phone}
-                    helperText={errorMessage.phone}
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Create Password</InputLabel>
-                  <TextField
-                    value={values.password}
-                    onChange={handleChange('password')}
-                    error={errorMessage.password}
-                    helperText={errorMessage.password}
-                    size="small"
-                    fullWidth
-                    type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <Iconify icon="eva:eye-fill" width={24} height={24} />
-                            ) : (
-                              <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </div>
-              </Grid>
-
-              <Grid item md={6} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Confirm Password</InputLabel>
-                  <TextField
-                    value={values.password_confirmation}
-                    onChange={handleChange('password_confirmation')}
-                    error={errorMessage.password_confirmation}
-                    helperText={errorMessage.password_confirmation}
-                    size="small"
-                    fullWidth
-                    type={showPassword ? 'text' : 'password'}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? (
-                              <Iconify icon="eva:eye-fill" width={24} height={24} />
-                            ) : (
-                              <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </div>
-              </Grid>
-            </Grid>
+           
           </Grid>
           <Grid item md={3} sm={12}>
             {renderProfilePicture()}
           </Grid>
         </Grid>
+        <div className={styles.ctnGridBottom} />
+          <Grid container spacing={42}>
+            <Grid item md={6} xs={12}>
+              <div className={styles.inputWrapper}>
+                <InputLabel shrink>Password</InputLabel>
+                <TextField
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  error={errorMessage.password}
+                  helperText={errorMessage.password}
+                  size="small"
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+            </Grid>
+          </Grid>
+          <div className={styles.ctnGridBottom} />
+          <Grid container spacing={2}>
+            <Grid item md={9} sm={12}>
+              <Typography variant="h6" textAlign={"left"}>Payment Method</Typography>
+              <Typography variant="body4" textAlign={"left"}>No payment method selected</Typography>
+            </Grid>
+            <div className={styles.ctnGridRadius}>
+              <Typography variant="body5" textAlign={"center"}>Add Payment Method</Typography>
+            </div>
+          </Grid>
       </div>
     );
   }
