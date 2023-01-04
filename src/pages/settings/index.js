@@ -11,13 +11,16 @@ import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile } from '../../utils/requests';
 
+const trashIcon = '/assets/trash.png';
+const deleteIcon = '/assets/delete_icon.png';
+const editIcon = '/assets/edit_icon.png';
+const cardLock = '/assets/lock.png';
 const ccImage = '/assets/credit_card.png';
 const cardVisa = '/assets/visa.png';
 const cardMC = '/assets/mastercard.png';
 const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
-const cardLock = '/assets/lock.png';
 
 SettingUser.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -38,6 +41,8 @@ const defaultState = {
   password_confirmation: '',
   photo: { url: null },
 };
+
+var conditionDPM = false;
 var conditionSCP = false;
 var conditionFP = false;
 var conditionCP = false;
@@ -46,6 +51,9 @@ var conditionAPM = false;
 
 export default function SettingUser({ userData }) {
   const styles = useStyles();
+
+  const [DPMCondition, setDPMCondition] = useState(false);
+  const [msgAddPayment, setMsgAddPayment] = useState(false);
   const [SCPCondition, setSCPCondition] = useState(false);
   const [FPCondition, setFPCondition] = useState(false);
   const [CPCondition, setCPCondition] = useState(false);
@@ -126,6 +134,11 @@ export default function SettingUser({ userData }) {
     }
   };
 
+  const resetStateDPM = (e) => {
+    conditionDPM = !conditionDPM;
+    setDPMCondition(conditionDPM);
+  };
+
   const resetStateSCP = (e) => {
     if (e) {
       setCPCondition(false);
@@ -140,12 +153,15 @@ export default function SettingUser({ userData }) {
     setFPCondition(conditionFP);
   };
 
-  const resetStateAPM = async () => {
+  const resetStateAPM = async (e) => {
     setTimeout(() => {
       setPMCondition(false);
     }, 200);
     conditionAPM = !conditionAPM;
     setAPMCondition(conditionAPM);
+
+    if (e) setMsgAddPayment(true);
+    else setMsgAddPayment(false);
   };
 
   const resetStatePM = () => {
@@ -157,6 +173,90 @@ export default function SettingUser({ userData }) {
     conditionCP = !conditionCP;
     setCPCondition(conditionCP);
   };
+
+  function popupDeletePM() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={DPMCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateDPM}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: '#000' }}
+                    fontWeight="800"
+                    marginLeft={4}
+                    textAlign="center"
+                    width={'100%'}
+                  >
+                    Confirm delete
+                  </Typography>
+                </div>
+
+                <Iconify
+                  icon={'ant-design:close-outlined'}
+                  onClick={resetStateDPM}
+                  width={28}
+                  height={28}
+                  marginLeft={4}
+                  className={styles.ctnClose}
+                />
+              </div>
+            </div>
+            <Grid container justifyContent="center" alignItems="center">
+              <img src={trashIcon} alt="Trash" />
+            </Grid>
+            <Grid item width={300} md={6} xs={12}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
+                Are you want to delete this payment method?
+              </Typography>
+            </Grid>
+            <Grid container>
+              <Grid item md={5.6} xs={12} marginRight={2}>
+                <DefaultButton
+                  eventName={'Yes'}
+                  ctnBtnStyle={styles.btnSave}
+                  label={'Yes'}
+                  isLoading={isLoading}
+                  onClick={resetStateDPM}
+                />
+              </Grid>
+              <Grid item md={5.4} xs={12}>
+                <DefaultButton
+                  eventName={'Cancel'}
+                  ctnBtnStyle={styles.btnSave}
+                  label={'Cancel'}
+                  isLoading={isLoading}
+                  onClick={resetStateDPM}
+                />
+              </Grid>
+            </Grid>
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
 
   function popupSaveChangePasword() {
     return (
@@ -327,7 +427,6 @@ export default function SettingUser({ userData }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
@@ -342,7 +441,7 @@ export default function SettingUser({ userData }) {
                     textAlign="center"
                     width={'100%'}
                   >
-                    Add a payment method
+                    {msgAddPayment ? 'Edit your payment details' : 'Add a payment method'}
                   </Typography>
                 </div>
 
@@ -359,26 +458,42 @@ export default function SettingUser({ userData }) {
             <Grid container spacing={2}>
               <Grid item md={12} xs={12}>
                 <div className={styles.inputWrapper}>
-                  <Grid
-                    container
-                    spacing={-20}
-                    justifyContent="center"
-                    alignItems="center"
-                    className={styles.ctnCardSet}
-                  >
-                    <Grid item sm={4} md={1} xs={12}>
-                      <img src={cardVisa} alt="Visa" />
+                  {msgAddPayment ? (
+                    <Grid
+                      container
+                      spacing={-36}
+                      marginTop={0.5}
+                      justifyContent="center"
+                      alignItems="center"
+                      className={styles.ctnCardSet}
+                    >
+                      <Grid item sm={4} md={1} xs={12}>
+                        <img src={cardMC} alt="MasterCard" />
+                      </Grid>
                     </Grid>
-                    <Grid item sm={4} md={1} xs={12}>
-                      <img src={cardMC} alt="MasterCard" />
+                  ) : (
+                    <Grid
+                      container
+                      spacing={-20}
+                      justifyContent="center"
+                      alignItems="center"
+                      className={styles.ctnCardSet}
+                    >
+                      <Grid item sm={4} md={1} xs={12}>
+                        <img src={cardVisa} alt="Visa" />
+                      </Grid>
+                      <Grid item sm={4} md={1} xs={12}>
+                        <img src={cardMC} alt="MasterCard" />
+                      </Grid>
+                      <Grid item sm={4} md={1} xs={12}>
+                        <img src={cardAE} alt="AmericanExpress" />
+                      </Grid>
+                      <Grid item sm={4} md={1} xs={12}>
+                        <img src={cardUP} alt="Unionpay" />
+                      </Grid>
                     </Grid>
-                    <Grid item sm={4} md={1} xs={12}>
-                      <img src={cardAE} alt="AmericanExpress" />
-                    </Grid>
-                    <Grid item sm={4} md={1} xs={12}>
-                      <img src={cardUP} alt="Unionpay" />
-                    </Grid>
-                  </Grid>
+                  )}
+
                   <InputLabel shrink>Card Number</InputLabel>
                   <TextField
                     value={values.first_name}
@@ -432,13 +547,20 @@ export default function SettingUser({ userData }) {
                   />
                 </div>
               </Grid>
+              <div style={{ width: '99%', marginLeft: 16 }}>
+                <Typography variant="body5" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
+                  {msgAddPayment
+                    ? 'By providing your card details, you consent to WALLETADS charging your card for future payments in accordance with its terms.'
+                    : ''}
+                </Typography>
+              </div>
             </Grid>
             <Grid container spacing={4} justifyContent="center" alignItems="center">
               <Grid item sm={6} md={6} xs={12}>
                 <DefaultButton
                   eventName={'Save'}
                   ctnBtnStyle={styles.btnSave}
-                  label={'Save'}
+                  label={msgAddPayment ? 'Update' : 'Save'}
                   isLoading={isLoading}
                   onClick={handleSubmit}
                 />
@@ -879,13 +1001,39 @@ export default function SettingUser({ userData }) {
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
-            <Typography variant="body4" textAlign={'left'}>
+            <Grid container justifyContent="left" alignItems="center">
+              <Grid onClick={() => resetStateAPM()} item sm={3} md={0.5} xs={12}>
+                <img src={cardMC} alt="MasterCard" />
+              </Grid>
+              <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
+                <Typography fontWeight="900" variant="h6" textAlign={'left'}>
+                  MasterCard . {'[LAST 4 CARD DIGITS]'}
+                </Typography>
+              </Grid>
+              <Grid item md={2} sm={4} marginLeft={-10}>
+                <div onClick={() => resetStateAPM(true)} className={styles.ctnOption}>
+                  <img src={editIcon} alt="edit" />
+                </div>
+              </Grid>
+              <Grid item md={2} sm={4} marginLeft={-14}>
+                <div onClick={resetStateDPM} className={styles.ctnOption}>
+                  <img src={deleteIcon} alt="delete" />
+                </div>
+              </Grid>
+            </Grid>
+            <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
+              <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
+                Expires on {'[MM/YY]'}
+              </Typography>
+            </Grid>
+            {/* <Typography variant="body4" textAlign={'left'}>
               No payment method selected
-            </Typography>
+            </Typography> */}
           </Grid>
           <div className={styles.ctnGridRadius}>
             <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
-              Add Payment Method
+              {/* Add Payment Method */}
+              Change payment method
             </Typography>
           </div>
         </Grid>
@@ -904,6 +1052,7 @@ export default function SettingUser({ userData }) {
           {popupAddPaymentMethod()}
           {popupForgotPasword()}
           {popupSaveChangePasword()}
+          {popupDeletePM()}
         </div>
       </div>
     );
