@@ -68,7 +68,7 @@ const typography = {
   body3: {
     lineHeight: 22 / 14,
     fontSize: pxToRem(14),
-    color: 'blue',
+    color: '#7089FF',
     textDecorationLine: 'underline'
   },
   body4: {

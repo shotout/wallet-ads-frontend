@@ -2,6 +2,78 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    ctnCvc: {
+      marginTop: 28,
+    },
+    ctnCardSet: {
+      position: 'absolute',
+      right: -120,
+      paddingTop: 34,
+      zIndex: 1
+    },
+    btnBlack: {
+      background: '#000 !important',
+      '& > span': {
+        color: '#fff',
+      },
+    },
+    btnStyle: {
+      marginTop: 12,
+      height: 80,
+      '& > span': {
+        fontSize: 20,
+      },
+      [theme.breakpoints.down('md')]: {
+        marginTop: 0,
+        height: 40,
+        '& > span': {
+          fontSize: 12,
+        },
+      },
+    },
+    forgotPassword: {
+      cursor: 'pointer'
+    },
+    tr: {
+      position: 'relative',
+      height: '100vh',
+      overflowY: 'hidden',
+    },
+    ctnWrapperPopup: {
+        maxWidth: '1366px',
+        margin: 'auto',
+        backgroundColor: 'white',
+        padding: 20,
+        marginTop: 20,
+        marginBottom: 20,
+        borderRadius: 20,
+        marginLeft: 20,
+        marginRight: 20,
+        width: '100%',
+        boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
+    },
+    header: {
+      height: 80,
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    ctnClose: {
+      // position: 'absolute',
+      // top: 0,
+      // right: 20,
+      cursor: 'pointer',
+    },
+    ctnPopover: {
+      background: 'rgba(0,0,0,0.3)',
+      '& > .MuiPaper-root': {
+          maxWidth: 680,
+          background: 'rgba(0,0,0,0.0)',
+          overflowY: 'hidden',
+          '&::-webkit-scrollbar': {
+          width: 0,
+          },
+      },
+    },
     ctnGridRadius: {
         border: '1px solid #808080',
         borderRadius: 12,
@@ -15,6 +87,9 @@ export default makeStyles((theme) => ({
     },
     changePassword: {
         paddingTop: 32,
+        position: 'absolute',
+        left: '42%',
+        cursor: 'pointer'
     },
     ctnRoot: {
         position: 'relative',
