@@ -1215,11 +1215,11 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderErrorText(isShow, errorMessage) {
+  function renderErrorText(isShow, errorMessage, field) {
     if (isShow) {
       return (
         <div className={styles.ctnError}>
-          <span>{errorMessage || 'Please check this field'}</span>
+          <span>{field == 'Audience' ? 'Please assign at least 1 ad to this audience or delete this audience' : errorMessage || 'Please check this field'}</span>
         </div>
       );
     }
@@ -2383,7 +2383,7 @@ export default function AddCampaign({ content, params }) {
                     </div>
                     <div className={styles.ctnAudienceErrBox}>
                       {renderErrorText(
-                        errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)
+                        errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId), null, 'Audience'
                       )}
                     </div>
                     {renderAdAudience(item)}
