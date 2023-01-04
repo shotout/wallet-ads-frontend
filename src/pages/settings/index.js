@@ -17,6 +17,7 @@ const cardMC = '/assets/mastercard.png';
 const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
+const cardLock = '/assets/lock.png';
 
 SettingUser.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -37,12 +38,16 @@ const defaultState = {
   password_confirmation: '',
   photo: { url: null },
 };
+var conditionSCP = false;
+var conditionFP = false;
 var conditionCP = false;
 var conditionPM = false;
 var conditionAPM = false;
 
 export default function SettingUser({ userData }) {
   const styles = useStyles();
+  const [SCPCondition, setSCPCondition] = useState(false);
+  const [FPCondition, setFPCondition] = useState(false);
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
   const [APMCondition, setAPMCondition] = useState(false);
@@ -121,6 +126,20 @@ export default function SettingUser({ userData }) {
     }
   };
 
+  const resetStateSCP = (e) => {
+    if (e) {
+      setCPCondition(false);
+      return setSCPCondition(false);
+    }
+    conditionSCP = !conditionSCP;
+    setSCPCondition(conditionSCP);
+  };
+
+  const resetStateFP = () => {
+    conditionFP = !conditionFP;
+    setFPCondition(conditionFP);
+  };
+
   const resetStateAPM = async () => {
     setTimeout(() => {
       setPMCondition(false);
@@ -138,6 +157,153 @@ export default function SettingUser({ userData }) {
     conditionCP = !conditionCP;
     setCPCondition(conditionCP);
   };
+
+  function popupSaveChangePasword() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={SCPCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateSCP}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: '#000' }}
+                    fontWeight="800"
+                    marginLeft={4}
+                    textAlign="center"
+                    width={'100%'}
+                  >
+                    Change Password
+                  </Typography>
+                </div>
+
+                <Iconify
+                  icon={'ant-design:close-outlined'}
+                  onClick={resetStateSCP}
+                  width={28}
+                  height={28}
+                  marginLeft={4}
+                  className={styles.ctnClose}
+                />
+              </div>
+            </div>
+            <Grid container justifyContent="center" alignItems="center">
+              <img src={cardLock} alt="Lock" />
+            </Grid>
+            <Grid item width={300} md={6} xs={12}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
+                Your password has been updated.
+              </Typography>
+            </Grid>
+            <DefaultButton
+              eventName={'Close'}
+              ctnBtnStyle={styles.btnSave}
+              label={'Close'}
+              isLoading={isLoading}
+              onClick={() => resetStateSCP(true)}
+            />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function popupForgotPasword() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={FPCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateFP}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: '#000' }}
+                    fontWeight="800"
+                    marginLeft={4}
+                    textAlign="center"
+                    width={'100%'}
+                  >
+                    Forgot Password?
+                  </Typography>
+                </div>
+
+                <Iconify
+                  icon={'ant-design:close-outlined'}
+                  onClick={resetStateFP}
+                  width={28}
+                  height={28}
+                  marginLeft={4}
+                  className={styles.ctnClose}
+                />
+              </div>
+            </div>
+            <Grid item width={300} md={6} xs={12}>
+              <Typography fontWeight="800" textAlign="center" width={'100%'} marginBottom={2}>
+                Enter your email address and you will receive an email with instructions on how to reset your password.
+              </Typography>
+            </Grid>
+            <TextField
+              value={values.email}
+              onChange={handleChange('email')}
+              error={errorMessage.email}
+              helperText={errorMessage.email}
+              size="small"
+              fullWidth
+            />
+            <DefaultButton
+              eventName={'ResetPassword'}
+              ctnBtnStyle={styles.btnSave}
+              label={'Reset Password'}
+              isLoading={isLoading}
+              onClick={resetStateFP}
+            />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
 
   function popupAddPaymentMethod() {
     return (
@@ -439,7 +605,7 @@ export default function SettingUser({ userData }) {
                   type={showPassword ? 'text' : 'password'}
                 />
               </div>
-              <div className={styles.forgotPassword}>
+              <div onClick={resetStateFP} className={styles.forgotPassword}>
                 <Typography variant="body3" fontWeight="800" marginLeft={30} textAlign="right" width={'100%'}>
                   Forgot password
                 </Typography>
@@ -478,7 +644,7 @@ export default function SettingUser({ userData }) {
               ctnBtnStyle={styles.btnSave}
               label={'Save'}
               isLoading={isLoading}
-              onClick={handleSubmit}
+              onClick={resetStateSCP}
             />
           </div>
         </Box>
@@ -700,8 +866,8 @@ export default function SettingUser({ userData }) {
             </div>
           </Grid>
           <Grid item md={6} xs={12}>
-            <div className={styles.changePassword}>
-              <Typography onClick={resetStateCP} variant="body3" textAlign={'left'}>
+            <div onClick={resetStateCP} className={styles.changePassword}>
+              <Typography variant="body3" textAlign={'left'}>
                 Change Password
               </Typography>
             </div>
@@ -736,6 +902,8 @@ export default function SettingUser({ userData }) {
           {popupChangePassword()}
           {popupPaymentMethod()}
           {popupAddPaymentMethod()}
+          {popupForgotPasword()}
+          {popupSaveChangePasword()}
         </div>
       </div>
     );
