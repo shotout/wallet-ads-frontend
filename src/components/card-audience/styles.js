@@ -1,6 +1,10 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
+  ctnError: {
+    color: '#E83155',
+    fontSize: 14,
+  },
   ctnAudience: {
     position: 'relative',
     // height: '97%',

@@ -29,6 +29,7 @@ export default function CardAudience({
   onChangeBudget = () => {},
   onRemove,
   readOnly,
+  errorAds,
 }) {
   React.useEffect(() => {});
 
@@ -314,6 +315,13 @@ export default function CardAudience({
               <Typography variant="span" textAlign={'center'} paragraph>
                 In this audience will receive airdrops
               </Typography>
+              {errorAds == false ? null : (
+                <div className={styles.ctnError}>
+                  <Typography variant="span" textAlign={'center'} paragraph>
+                    Please assign at least 1 ad to this audience or delete this audience
+                  </Typography>
+                </div>
+              )}
             </div>
           )}
         </div>
