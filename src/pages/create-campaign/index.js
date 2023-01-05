@@ -784,6 +784,10 @@ export default function AddCampaign({ content, params }) {
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
         });
+
+        if (errorBox.errorAds || !isAudienceFormAdsValid) {
+          return (window.location.href = '#card-audience');
+        }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
         } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
