@@ -2391,7 +2391,7 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {audienceIndex > 1 ? (
+                    {audienceIndex > 0 ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           errorBox.errorAds &&
