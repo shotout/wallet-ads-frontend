@@ -2,6 +2,11 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    ctnOption: {
+      width: 30,
+      height: 30,
+      cursor: 'pointer'
+    },
     ctnCvc: {
       marginTop: 28,
     },
@@ -79,8 +84,8 @@ export default makeStyles((theme) => ({
         borderRadius: 12,
         height: 34,
         padding: 2,
-        paddingRight: 60,
-        paddingLeft: 60,
+        paddingRight: 50,
+        paddingLeft: 50,
         cursor: 'pointer',
         marginTop: 10,
         marginLeft: 40
