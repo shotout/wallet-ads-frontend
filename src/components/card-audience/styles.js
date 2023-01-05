@@ -4,6 +4,7 @@ export default makeStyles((theme) => ({
   ctnError: {
     color: '#E83155',
     fontSize: 14,
+    textDecorationLine: 'underline'
   },
   ctnAudience: {
     position: 'relative',
