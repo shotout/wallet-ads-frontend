@@ -788,8 +788,6 @@ export default function AddCampaign({ content, params }) {
           window.location.href = '#campaign-name';
         } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
           window.location.href = '#card-audience';
-        } else if (errorBox.errorAds || !isAudienceFormAdsValid) {
-          window.location.href = '#card-audience';
         } else if (!isCollectionSection) {
           // formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
           if (collectionPageName) {
