@@ -1221,7 +1221,11 @@ export default function AddCampaign({ content, params }) {
     if (isShow) {
       return (
         <div className={styles.ctnError}>
-          <span>{field == 'Audience' ? 'Please assign at least 1 ad to this audience or delete this audience' : errorMessage || 'Please check this field'}</span>
+          <span>
+            {field == 'Audience'
+              ? 'Please assign at least 1 ad to this audience or delete this audience'
+              : errorMessage || 'Please check this field'}
+          </span>
         </div>
       );
     }
@@ -1717,6 +1721,7 @@ export default function AddCampaign({ content, params }) {
                   selectedAudience={selectedAudience}
                   selectedPage={selectedAudience === index}
                   label={`Audience ${index + 1}:`}
+                  index={index + 1}
                   errorAds={errorBox.errorAds}
                 />
               </Grid>
@@ -2329,7 +2334,7 @@ export default function AddCampaign({ content, params }) {
         {renderTopAdCreation(content, index)}
         {renderRightAdCreation(content, index)}
         {/* </div> */}
-        <div className={styles.ctnSelectAudience}>
+        <div className={styles.ctnSelectAudience} id={'card-ads'}>
           <div className={styles.ctnInputCollection}>
             <div className={styles.rowTitleWrapper}>
               <div className={styles.leftTitle}>
@@ -2384,11 +2389,19 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    <div className={styles.ctnAudienceErrBox}>
-                      {renderErrorText(
-                        errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId), null, 'Audience'
-                      )}
-                    </div>
+                    {audienceIndex > 1 ? (
+                      <div className={styles.ctnAudienceErrBox}>
+                        {renderErrorText(
+                          errorBox.errorAds &&
+                            !isActive &&
+                            item.optimized &&
+                            !checkIsAudienceAdsSelected(item.audienceId),
+                          null,
+                          'Audience'
+                        )}
+                      </div>
+                    ) : null}
+
                     {renderAdAudience(item)}
                   </div>
                 </Grid>
