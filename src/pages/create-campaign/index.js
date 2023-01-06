@@ -1678,7 +1678,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
-                  isErrorAudienceNull={errorBox.errorAudienceNull}
+                  isErrorAudienceNull={errorBox.errorAudienceNull || errorBox.errorAds}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
@@ -2397,18 +2397,16 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {audienceIndex > 0 ? (
-                      <div className={styles.ctnAudienceErrBox}>
-                        {renderErrorText(
-                          errorBox.errorAds &&
-                            !isActive &&
-                            item.optimized &&
-                            !checkIsAudienceAdsSelected(item.audienceId),
-                          null,
-                          'Audience'
-                        )}
-                      </div>
-                    ) : null}
+                    <div className={styles.ctnAudienceErrBox}>
+                      {renderErrorText(
+                        errorBox.errorAds &&
+                          !isActive &&
+                          item.optimized &&
+                          !checkIsAudienceAdsSelected(item.audienceId),
+                        null,
+                        'Audience'
+                      )}
+                    </div>
 
                     {renderAdAudience(item)}
                   </div>
