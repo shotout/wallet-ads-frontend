@@ -214,11 +214,11 @@ export default function AddCampaign({ content, params }) {
             creatorName: normalizeInitialData(targeting?.nft_purchases),
           },
           balancedTargeting: {
-            cryptoCurrency: normalizeInitialData(targeting.cryptocurrency_used),
-            year: normalizeInitialData(targeting.account_age_year),
-            months: normalizeInitialData(targeting.account_age_month),
-            day: normalizeInitialData(targeting.account_age_day),
-            airdropReceived: normalizeInitialData(targeting.airdrops_received),
+            cryptoCurrency: normalizeInitialData(targeting?.cryptocurrency_used),
+            year: normalizeInitialData(targeting?.account_age_year),
+            months: normalizeInitialData(targeting?.account_age_month),
+            day: normalizeInitialData(targeting?.account_age_day),
+            airdropReceived: normalizeInitialData(targeting?.airdrops_received),
           },
         };
       });
