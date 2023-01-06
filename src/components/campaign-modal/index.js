@@ -29,7 +29,16 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
-    const audienceArr = data?.audiences.map((item) => {
+
+    const newAudience = [];
+    data?.audiences.map((item) => {
+      const checkIfExist = newAudience.some((v) => v.selected_fe_id === item.selected_fe_id);
+      if (!checkIfExist) {
+        newAudience.push(item);
+      }
+    });
+
+    const audienceArr = newAudience.map((item) => {
       const targeting = item.detail_target;
       return {
         id: item.id,
@@ -73,7 +82,7 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
       ads_page_token_symbol: adsPage?.token_symbol,
     });
 
-    const getTotalBudgetAds = sumArr(data?.audiences, 'price');
+    const getTotalBudgetAds = sumArr(newAudience, 'price');
 
     setTotalBudget(getTotalBudgetAds);
 
@@ -93,7 +102,7 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
   };
 
   const sumArr = (arr, val) => {
-    return data?.audiences
+    return arr
       .map((item) => item[val])
       .reduce((a, b) => {
         return a + b;
