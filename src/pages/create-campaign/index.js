@@ -1672,7 +1672,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
-                  isErrorAudienceNull={errorBox.errorAudienceNull || errorBox.errorAds && index > 0}
+                  isErrorAudienceNull={errorBox.errorAudienceNull || errorBox.errorAds}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
