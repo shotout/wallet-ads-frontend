@@ -259,7 +259,15 @@ export default function AddCampaign({ content, params }) {
         adsId: makeId(),
       }));
 
-      const audienceArr = content.audiences.map((item) => {
+      const newAudience = [];
+      content.audiences.map((item) => {
+        const checkIfExist = newAudience.some((v) => v.selected_fe_id === item.selected_fe_id);
+        if (!checkIfExist) {
+          newAudience.push(item);
+        }
+      });
+
+      const audienceArr = newAudience.map((item) => {
         const targeting = item.detail_target;
         return {
           id: item.id,

@@ -102,11 +102,13 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
   };
 
   const sumArr = (arr, val) => {
-    return arr
-      .map((item) => item[val])
-      .reduce((a, b) => {
-        return a + b;
-      });
+    if (arr.length > 0) {
+      return arr
+        .map((item) => item[val])
+        .reduce((a, b) => {
+          return a + b;
+        });
+    }
   };
 
   function normalizeInitialData(value) {
