@@ -522,6 +522,12 @@ export default function AddCampaign({ content, params }) {
           });
         }
 
+        if (ads.fe_id.length > 0) {
+          ads.fe_id.forEach((feId, feIndex) => {
+            formRes.append(`campaign_ads[${adsIndex}][audience_id][${feIndex}]`, feId);
+          });
+        }
+
         if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
       });
 
