@@ -1672,7 +1672,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
-                  isErrorAudienceNull={errorBox.errorAudienceNull || errorBox.errorAds}
+                  isErrorAudienceNull={!checkIsAudienceAdsSelected(item.audienceId)}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
@@ -1724,7 +1724,7 @@ export default function AddCampaign({ content, params }) {
                   selectedPage={selectedAudience === index}
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
-                  errorAds={errorBox.errorAds}
+                  errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
                 />
               </Grid>
             ))}
@@ -2368,7 +2368,9 @@ export default function AddCampaign({ content, params }) {
                           : !item.optimized
                           ? styles.ctnDisable
                           : errorBox.errorAds
+                          ? !checkIsAudienceAdsSelected(item.audienceId)
                           ? styles.ctnRedBorder
+                          :  null
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
