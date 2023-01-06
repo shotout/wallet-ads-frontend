@@ -29,6 +29,8 @@ export default function CardAudience({
   onChangeBudget = () => {},
   onRemove,
   readOnly,
+  errorAds,
+  index,
 }) {
   React.useEffect(() => {});
 
@@ -64,6 +66,10 @@ export default function CardAudience({
     //   }, 100);
     // }
   }, []);
+
+  const onLink = () => {
+    window.location.href = '#card-ads';
+  };
 
   function renderPopover() {
     const open = Boolean(anchorEl);
@@ -314,6 +320,13 @@ export default function CardAudience({
               <Typography variant="span" textAlign={'center'} paragraph>
                 In this audience will receive airdrops
               </Typography>
+              {errorAds == true && index > 1 ? (
+                <div onClick={onLink} className={styles.ctnError} style={{ cursor: 'pointer' }}>
+                  <Typography variant="span" textAlign={'center'} paragraph>
+                    Please assign at least 1 ad to this audience or delete this audience.
+                  </Typography>
+                </div>
+              ) : null}
             </div>
           )}
         </div>
