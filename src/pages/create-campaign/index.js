@@ -756,8 +756,13 @@ export default function AddCampaign({ content, params }) {
       // errorCollection: false,
       // errorAudienceNull: false,
       // errorAdvanced: false,
+      var a = isAudienceNull.length;
+      var b = pictureData[0].fe_id.length;
+      var c = audienceForm.length;
+      var pictureValid = pictureData.length == 1 ? a + b == c : true;
 
       if (
+        pictureValid &&
         isAudienceValid.length > 0 &&
         isAdsValid &&
         inputValid &&
@@ -1672,7 +1677,7 @@ export default function AddCampaign({ content, params }) {
               >
                 <CardAudience
                   isError={errorBox.errorAudience}
-                  isErrorAudienceNull={!checkIsAudienceAdsSelected(item.audienceId)}
+                  isErrorAudienceNull={errorBox.errorAudienceNull}
                   onChangeBudget={(event) => {
                     handleChangeBudget(event, 'budgetAds', index);
                   }}
@@ -2348,6 +2353,8 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
+              // const isActive2 = pictureData[0].fe_id.length == content.fe_id.length
+              // console.log('44', pictureData[0].fe_id.length == content.fe_id.length, item)
 
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
@@ -2369,8 +2376,8 @@ export default function AddCampaign({ content, params }) {
                           ? styles.ctnDisable
                           : errorBox.errorAds
                           ? !checkIsAudienceAdsSelected(item.audienceId)
-                          ? styles.ctnRedBorder
-                          :  null
+                            ? styles.ctnRedBorder
+                            : null
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
@@ -2395,10 +2402,8 @@ export default function AddCampaign({ content, params }) {
                     </div>
                     <div className={styles.ctnAudienceErrBox}>
                       {renderErrorText(
-                        errorBox.errorAds &&
-                          !isActive &&
-                          item.optimized &&
-                          !checkIsAudienceAdsSelected(item.audienceId),
+                        (item.optimized && !isAdsArrValid(content)) ||
+                          (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
                         null,
                         'Audience'
                       )}
