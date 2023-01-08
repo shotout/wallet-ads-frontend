@@ -405,7 +405,7 @@ export default function CardAudience({
           data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
         }
         ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
-        ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
+        ${isErrorAudienceNull || data.selectedCategory === 'optimized' && errorAds ? styles.ctnRedBorder : ''}`}
         onClick={() => {
           if (!data.selectedCategory) {
             if (typeof onPressCard === 'function') onPressCard();
@@ -417,7 +417,7 @@ export default function CardAudience({
             data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
           }
           ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
-          ${isErrorAudienceNull ? styles.borderTopError : ''}
+          ${isErrorAudienceNull || data.selectedCategory === 'optimized' && errorAds ? styles.borderTopError : ''}
           `}
         >
           <div className={styles.ctnWrapper}>
