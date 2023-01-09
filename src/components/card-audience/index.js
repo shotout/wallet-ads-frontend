@@ -321,7 +321,7 @@ export default function CardAudience({
               <Typography variant="span" textAlign={'center'} paragraph>
                 In this audience will receive airdrops
               </Typography>
-              {errorAds == true && errorAdsBeforeSubmit ? (
+              {errorAds == true && errorAdsBeforeSubmit == true ? (
                 <div onClick={onLink} className={styles.ctnError} style={{ cursor: 'pointer' }}>
                   <Typography variant="span" textAlign={'center'} paragraph>
                     Please assign at least 1 ad to this audience or delete this audience.
