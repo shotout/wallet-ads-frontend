@@ -16,12 +16,14 @@ export default makeStyles((theme) => ({
     paddingTop: 50,
   },
   ctnPopover: {
-    background: 'rgba(255,255,255,0.8)',
+    background: 'rgba(255,255,255,0.5)',
     zIndex: 20000,
+
     '& > .MuiPaper-root': {
       background: 'rgba(255,255,255,0)',
       borderRadius: '0',
-      boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.75)',
+      boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.5)',
+      overflow: 'hidden',
       '&::-webkit-scrollbar': {
         width: 0,
       },
