@@ -107,7 +107,7 @@ export default function AddCampaign({ content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
-  const [checkAudienceMulti, setCheckAudienceMulti] = useState(false);
+  const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -762,12 +762,20 @@ export default function AddCampaign({ content, params }) {
       // errorCollection: false,
       // errorAudienceNull: false,
       // errorAdvanced: false,
-      var a = isAudienceNull.length;
-      var b = pictureData[0].fe_id.length;
-      var c = audienceForm.length;
-      var pictureValid = pictureData.length == 1 ? a + b == c : true;
 
+      var adsNull = isAudienceNull.length;
+      var picData = pictureData[0].fe_id.length;
+      var adsForm = audienceForm.length;
+      var pictureValid = pictureData.length == 1 ? adsNull + picData == adsForm : true;
+      var checkAds = true;
+
+      if (pictureData && pictureData.length > 1 && adsNull > picData) {
+        setCheckAudienceMulti(false);
+        checkAds = false;
+      }
+      // if (pictureData.length == 0)
       if (
+        checkAds &&
         checkAudienceMulti &&
         pictureValid &&
         isAudienceValid.length > 0 &&
@@ -2394,7 +2402,8 @@ export default function AddCampaign({ content, params }) {
                         checkAudienceMultiAction(
                           (!isActive && item.optimized && !isAdsArrValid(content)) ||
                             (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
-                          index
+                          index,
+                          item
                         );
                         // if (!item.optimized) return;
 
@@ -2415,14 +2424,16 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    <div className={styles.ctnAudienceErrBox}>
-                      {renderErrorText(
-                        (!isActive && item.optimized && !isAdsArrValid(content)) ||
-                          (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
-                        null,
-                        'Audience'
-                      )}
-                    </div>
+                    {errorBox.errorAds ? (
+                      <div className={styles.ctnAudienceErrBox}>
+                        {renderErrorText(
+                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          null,
+                          'Audience'
+                        )}
+                      </div>
+                    ) : null}
 
                     {renderAdAudience(item)}
                   </div>
