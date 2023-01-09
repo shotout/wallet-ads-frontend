@@ -107,6 +107,7 @@ export default function AddCampaign({ content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  const [checkAudienceMulti, setCheckAudienceMulti] = useState(false);
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -605,6 +606,11 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
+  const checkAudienceMultiAction = (e, index) => {
+    if (e) setCheckAudienceMulti(true);
+    else if (e == false && index == 0) setCheckAudienceMulti(false);
+  };
+
   const addAdText = (index) => {
     const body = {
       id: makeId(),
@@ -762,6 +768,7 @@ export default function AddCampaign({ content, params }) {
       var pictureValid = pictureData.length == 1 ? a + b == c : true;
 
       if (
+        checkAudienceMulti &&
         pictureValid &&
         isAudienceValid.length > 0 &&
         isAdsValid &&
@@ -771,7 +778,7 @@ export default function AddCampaign({ content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
-        if (showCreditCard.sessionId && showCreditCard.campaignId) {
+        if ((showCreditCard.sessionId && showCreditCard.campaignId) || checkAudienceMulti) {
           setShowCreditCard({
             ...showCreditCard,
             isVisible: true,
@@ -790,7 +797,7 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (errorBox.errorAds || !isAudienceFormAdsValid) {
+        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
@@ -1730,7 +1737,7 @@ export default function AddCampaign({ content, params }) {
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
                   errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
-                  errorAdsBeforeSubmit={errorBox.errorAds}
+                  errorAdsBeforeSubmit={errorBox.errorAds || !checkAudienceMulti}
                 />
               </Grid>
             ))}
@@ -2384,6 +2391,11 @@ export default function AddCampaign({ content, params }) {
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
+                        checkAudienceMultiAction(
+                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          index
+                        );
                         // if (!item.optimized) return;
 
                         if (
