@@ -1730,6 +1730,7 @@ export default function AddCampaign({ content, params }) {
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
                   errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
+                  errorAdsBeforeSubmit={errorBox.errorAds}
                 />
               </Grid>
             ))}
@@ -2333,9 +2334,11 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
-          Please assign an at least 1 audience to this ad or delete this ad.
-        </div>
+        {errorBox.errorAds && !isAdsArrValid(content) ? (
+          <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+            Please assign an at least 1 audience to this ad or delete this ad.
+          </div>
+        ) : null}
         <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
@@ -2402,7 +2405,7 @@ export default function AddCampaign({ content, params }) {
                     </div>
                     <div className={styles.ctnAudienceErrBox}>
                       {renderErrorText(
-                        (item.optimized && !isAdsArrValid(content)) ||
+                        (!isActive && item.optimized && !isAdsArrValid(content)) ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
                         null,
                         'Audience'
@@ -2471,16 +2474,16 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderAddAudience() {
-    if (params.status === 'fail') {
-      return (
-        <div className={styles.btnCreateAd} onClick={handleAddAudience}>
-          <img src={addIcon} alt="addIcon" />
-          <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
-            Add more audiences
-          </Typography>
-        </div>
-      );
-    }
+    // if (params.status === 'fail') {
+    return (
+      <div className={styles.btnCreateAd} onClick={handleAddAudience}>
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
+          Add more audiences
+        </Typography>
+      </div>
+    );
+    // }
     return null;
   }
 
