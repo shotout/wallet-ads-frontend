@@ -301,7 +301,7 @@ export default function AddPaymentMethod({
             )}
           </div>
         </div>
-        {/* <LoadingPage show={isPaymentLoading || loading} /> */}
+        <LoadingPage show={isPaymentLoading || loading} />
       </Box>
     </Popover>
   );
