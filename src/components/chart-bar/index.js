@@ -25,6 +25,16 @@ export default function Index({ labels, datas, title }) {
   ];
 
   const options = {
+    scales: {
+      yAxis: {
+        ticks: {
+          callback: function (value, index, ticks) {
+            return value;
+          },
+        },
+      },
+    },
+
     plugins: {
       legend: {
         display: false,
@@ -48,6 +58,7 @@ export default function Index({ labels, datas, title }) {
       },
     },
   };
+
 
   const data = {
     labels: labels,
