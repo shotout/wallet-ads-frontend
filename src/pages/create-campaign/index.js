@@ -107,6 +107,7 @@ export default function AddCampaign({ content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -619,6 +620,11 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
+  const checkAudienceMultiAction = (e, index) => {
+    if (e) setCheckAudienceMulti(true);
+    else if (e == false && index == 0) setCheckAudienceMulti(false);
+  };
+
   const addAdText = (index) => {
     const body = {
       id: makeId(),
@@ -770,12 +776,21 @@ export default function AddCampaign({ content, params }) {
       // errorCollection: false,
       // errorAudienceNull: false,
       // errorAdvanced: false,
-      var a = isAudienceNull.length;
-      var b = pictureData[0].fe_id.length;
-      var c = audienceForm.length;
-      var pictureValid = pictureData.length == 1 ? a + b == c : true;
 
+      var adsNull = isAudienceNull.length;
+      var picData = pictureData[0].fe_id.length;
+      var adsForm = audienceForm.length;
+      var pictureValid = pictureData.length == 1 ? adsNull + picData == adsForm : true;
+      var checkAds = true;
+
+      if (pictureData && pictureData.length > 1 && adsNull > picData) {
+        setCheckAudienceMulti(false);
+        checkAds = false;
+      }
+      // if (pictureData.length == 0)
       if (
+        checkAds &&
+        checkAudienceMulti &&
         pictureValid &&
         isAudienceValid.length > 0 &&
         isAdsValid &&
@@ -785,7 +800,7 @@ export default function AddCampaign({ content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
-        if (showCreditCard.sessionId && showCreditCard.campaignId) {
+        if ((showCreditCard.sessionId && showCreditCard.campaignId) || checkAudienceMulti) {
           setShowCreditCard({
             ...showCreditCard,
             isVisible: true,
@@ -804,7 +819,7 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (errorBox.errorAds || !isAudienceFormAdsValid) {
+        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
@@ -1744,6 +1759,7 @@ export default function AddCampaign({ content, params }) {
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
                   errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
+                  errorAdsBeforeSubmit={errorBox.errorAds || !checkAudienceMulti}
                 />
               </Grid>
             ))}
@@ -2347,9 +2363,11 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
-          Please assign an at least 1 audience to this ad or delete this ad.
-        </div>
+        {errorBox.errorAds && !isAdsArrValid(content) ? (
+          <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+            Please assign an at least 1 audience to this ad or delete this ad.
+          </div>
+        ) : null}
         <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
@@ -2395,6 +2413,12 @@ export default function AddCampaign({ content, params }) {
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
+                        checkAudienceMultiAction(
+                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          index,
+                          item
+                        );
                         // if (!item.optimized) return;
 
                         if (
@@ -2414,14 +2438,16 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    <div className={styles.ctnAudienceErrBox}>
-                      {renderErrorText(
-                        (item.optimized && !isAdsArrValid(content)) ||
-                          (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
-                        null,
-                        'Audience'
-                      )}
-                    </div>
+                    {errorBox.errorAds ? (
+                      <div className={styles.ctnAudienceErrBox}>
+                        {renderErrorText(
+                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          null,
+                          'Audience'
+                        )}
+                      </div>
+                    ) : null}
 
                     {renderAdAudience(item)}
                   </div>
@@ -2485,17 +2511,17 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderAddAudience() {
-    if (params.status === 'fail') {
-      return (
-        <div className={styles.btnCreateAd} onClick={handleAddAudience}>
-          <img src={addIcon} alt="addIcon" />
-          <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
-            Add more audiences
-          </Typography>
-        </div>
-      );
-    }
-    return null;
+    // if (params.status === 'fail') {
+    return (
+      <div className={styles.btnCreateAd} onClick={handleAddAudience}>
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
+          Add more audiences
+        </Typography>
+      </div>
+    );
+    // }
+    // return null;
   }
 
   function renderCollectionPage() {

@@ -31,6 +31,7 @@ export default function CardAudience({
   readOnly,
   errorAds,
   index,
+  errorAdsBeforeSubmit,
 }) {
   React.useEffect(() => {});
 
@@ -320,7 +321,7 @@ export default function CardAudience({
               <Typography variant="span" textAlign={'center'} paragraph>
                 In this audience will receive airdrops
               </Typography>
-              {errorAds == true ? (
+              {errorAds == true && errorAdsBeforeSubmit ? (
                 <div onClick={onLink} className={styles.ctnError} style={{ cursor: 'pointer' }}>
                   <Typography variant="span" textAlign={'center'} paragraph>
                     Please assign at least 1 ad to this audience or delete this audience.
@@ -405,7 +406,11 @@ export default function CardAudience({
           data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
         }
         ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
-        ${isErrorAudienceNull || data.selectedCategory === 'optimized' && errorAds ? styles.ctnRedBorder : ''}`}
+        ${
+          isErrorAudienceNull || (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit)
+            ? styles.ctnRedBorder
+            : ''
+        }`}
         onClick={() => {
           if (!data.selectedCategory) {
             if (typeof onPressCard === 'function') onPressCard();
@@ -417,7 +422,11 @@ export default function CardAudience({
             data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
           }
           ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
-          ${isErrorAudienceNull || data.selectedCategory === 'optimized' && errorAds ? styles.borderTopError : ''}
+          ${
+            isErrorAudienceNull || (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit)
+              ? styles.borderTopError
+              : ''
+          }
           `}
         >
           <div className={styles.ctnWrapper}>
