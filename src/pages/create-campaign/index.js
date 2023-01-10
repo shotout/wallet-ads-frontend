@@ -646,6 +646,12 @@ export default function AddCampaign({ content, params }) {
     setPicture(newData);
   };
 
+  const isAdsArrValid2 = (ads) => {
+    if (ads.fe_id.length > 0) {
+      return true;
+    }
+  };
+
   const isAdsArrValid = (ads) => {
     console.log(ads);
     if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
@@ -804,8 +810,8 @@ export default function AddCampaign({ content, params }) {
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
         });
-
-        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAds) {
+        
+        if (!checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
@@ -831,7 +837,7 @@ export default function AddCampaign({ content, params }) {
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              window.location.href = `#ad-name-${errAudienceID[0]}`;
+              return window.location.href = `#ad-name-${errAudienceID[0]}`;
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
@@ -2349,7 +2355,7 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        {errorBox.errorAds && !isAdsArrValid(content) ? (
+        {!isAdsArrValid2(content) ? (
           <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
