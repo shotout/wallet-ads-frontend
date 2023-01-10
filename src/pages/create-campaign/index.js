@@ -805,7 +805,7 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAudienceMulti) {
+        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAds) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
@@ -2424,7 +2424,7 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {errorBox.errorAds ? (
+                    {!isActive && item.optimized ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && !isAdsArrValid(content)) ||
