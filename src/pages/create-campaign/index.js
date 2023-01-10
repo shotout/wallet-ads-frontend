@@ -54,7 +54,7 @@ const questionObj = {
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
-  errorAd: 'Another ad is already selected to be shown to this audience.',
+  errorAd: 'Please add more audience to check this field.',
   advanced_tracking: 'Optional: Add advanced settings for experienced users to fully customize your campaign.',
   token_tracker_name: 'Add the name of your token tracker.',
   token_symbol: 'Add the symbol of your token tracker.',
