@@ -748,6 +748,20 @@ export default function AddCampaign({ content, params }) {
 
       isAdTextValid = validationAdsText();
 
+      var duplicateValue = null
+      const findDuplicates = (arr) => {
+        let sorted_arr = arr.slice().sort();
+        let results = [];
+        for (let i = 0; i < sorted_arr.length - 1; i++) {
+          if (sorted_arr[i + 1] == sorted_arr[i]) {
+            results.push(sorted_arr[i]);
+          }
+        }
+        return results;
+      };
+
+      if (selectedAdsAudience.length > 0) duplicateValue = findDuplicates(selectedAdsAudience);
+
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
@@ -795,6 +809,7 @@ export default function AddCampaign({ content, params }) {
       }
       // if (pictureData.length == 0)
       if (
+        duplicateValue.length == 0 &&
         checkAds &&
         checkAudienceMulti &&
         pictureValid &&
@@ -2445,7 +2460,8 @@ export default function AddCampaign({ content, params }) {
                     {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
-                          (!isActive && item.optimized) || !checkIsAudienceAdsSelected(item.audienceId),
+                          (!isActive && item.optimized && isAdsArrValid(content)) ||
+                            !checkIsAudienceAdsSelected(item.audienceId),
                           null,
                           'Audience'
                         )}
