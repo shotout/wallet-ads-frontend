@@ -809,7 +809,7 @@ export default function AddCampaign({ content, params }) {
       }
       // if (pictureData.length == 0)
       if (
-        duplicateValue.length == 0 &&
+        duplicateValue && duplicateValue.length == 0 &&
         checkAds &&
         checkAudienceMulti &&
         pictureValid &&
