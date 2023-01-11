@@ -824,7 +824,7 @@ export default function AddCampaign({ content, params }) {
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
         });
-        
+
         if (!checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
@@ -851,7 +851,7 @@ export default function AddCampaign({ content, params }) {
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              return window.location.href = `#ad-name-${errAudienceID[0]}`;
+              return (window.location.href = `#ad-name-${errAudienceID[0]}`);
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
@@ -2447,7 +2447,7 @@ export default function AddCampaign({ content, params }) {
                     {!isActive && item.optimized ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
-                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                          (!isActive && item.optimized && isAdsArrValid(content)) ||
                             (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
                           null,
                           'Audience'
