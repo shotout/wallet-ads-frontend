@@ -806,7 +806,7 @@ export default function AddCampaign({ content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
-        if ((showCreditCard.sessionId && showCreditCard.campaignId) || checkAudienceMulti) {
+        if ((showCreditCard.sessionId && showCreditCard.campaignId)) {
           setShowCreditCard({
             ...showCreditCard,
             isVisible: true,
@@ -2369,7 +2369,7 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        {!isAdsArrValid2(content) ? (
+        {!isAdsArrValid2(content) && errorBox.errorAds ? (
           <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
@@ -2391,8 +2391,6 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
-              // const isActive2 = pictureData[0].fe_id.length == content.fe_id.length
-              // console.log('44', pictureData[0].fe_id.length == content.fe_id.length, item)
 
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
@@ -2444,7 +2442,7 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {!isActive && item.optimized ? (
+                    {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && isAdsArrValid(content)) ||
