@@ -54,7 +54,7 @@ const questionObj = {
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
-  errorAd: 'Another ad is already selected to be shown to this audience.',
+  errorAd: 'Please add more audience to check this field.',
   advanced_tracking: 'Optional: Add advanced settings for experienced users to fully customize your campaign.',
   token_tracker_name: 'Add the name of your token tracker.',
   token_symbol: 'Add the symbol of your token tracker.',
@@ -660,6 +660,12 @@ export default function AddCampaign({ content, params }) {
     setPicture(newData);
   };
 
+  const isAdsArrValid2 = (ads) => {
+    if (ads.fe_id.length > 0) {
+      return true;
+    }
+  };
+
   const isAdsArrValid = (ads) => {
     console.log(ads);
     if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
@@ -818,8 +824,8 @@ export default function AddCampaign({ content, params }) {
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
         });
-
-        if (errorBox.errorAds || !isAudienceFormAdsValid || !checkAudienceMulti) {
+        
+        if (!checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
@@ -845,7 +851,7 @@ export default function AddCampaign({ content, params }) {
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              window.location.href = `#ad-name-${errAudienceID[0]}`;
+              return window.location.href = `#ad-name-${errAudienceID[0]}`;
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
@@ -2363,7 +2369,7 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        {errorBox.errorAds && !isAdsArrValid(content) ? (
+        {!isAdsArrValid2(content) ? (
           <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
@@ -2438,7 +2444,7 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {errorBox.errorAds ? (
+                    {!isActive && item.optimized ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && !isAdsArrValid(content)) ||
