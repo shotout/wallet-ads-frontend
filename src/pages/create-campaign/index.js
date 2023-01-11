@@ -806,7 +806,7 @@ export default function AddCampaign({ content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
-        if ((showCreditCard.sessionId && showCreditCard.campaignId)) {
+        if (showCreditCard.sessionId && showCreditCard.campaignId) {
           setShowCreditCard({
             ...showCreditCard,
             isVisible: true,
@@ -2445,8 +2445,7 @@ export default function AddCampaign({ content, params }) {
                     {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
-                          (!isActive && item.optimized && isAdsArrValid(content)) ||
-                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          (!isActive && item.optimized) || !checkIsAudienceAdsSelected(item.audienceId),
                           null,
                           'Audience'
                         )}
