@@ -810,7 +810,7 @@ export default function AddCampaign({ content, params }) {
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
         });
-        
+
         if (!checkAudienceMulti) {
           return (window.location.href = '#card-audience');
         }
@@ -837,7 +837,7 @@ export default function AddCampaign({ content, params }) {
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              return window.location.href = `#ad-name-${errAudienceID[0]}`;
+              return (window.location.href = `#ad-name-${errAudienceID[0]}`);
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
@@ -2377,8 +2377,6 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
-              // const isActive2 = pictureData[0].fe_id.length == content.fe_id.length
-              // console.log('44', pictureData[0].fe_id.length == content.fe_id.length, item)
 
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
               return (
@@ -2430,7 +2428,7 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {!isActive && item.optimized ? (
+                    {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && !isAdsArrValid(content)) ||
