@@ -748,19 +748,44 @@ export default function AddCampaign({ content, params }) {
 
       isAdTextValid = validationAdsText();
 
-      var duplicateValue = null
-      const findDuplicates = (arr) => {
-        let sorted_arr = arr.slice().sort();
-        let results = [];
-        for (let i = 0; i < sorted_arr.length - 1; i++) {
-          if (sorted_arr[i + 1] == sorted_arr[i]) {
-            results.push(sorted_arr[i]);
-          }
-        }
-        return results;
-      };
+      // pictureData.forEach(itemPic => {
+      //   console.log('22', itemPic.fe_id.length,itemPic)
+      //   // itemPic.fe_id.forEach(itemFE => {
+      //   //   console.log('22', itemFE)
+      //   // })
+      //   if (itemPic.fe_id.length < pictureData.length) {
+      //     const findDuplicates = (arr) => {
+      //       let sorted_arr = arr.slice().sort();
+      //       let results = [];
+      //       for (let i = 0; i < sorted_arr.length - 1; i++) {
+      //         if (sorted_arr[i + 1] == sorted_arr[i]) {
+      //           results.push(sorted_arr[i]);
+      //         }
+      //       }
+      //       return results;
+      //     };
 
-      if (selectedAdsAudience.length > 0) duplicateValue = findDuplicates(selectedAdsAudience);
+      //     if (selectedAdsAudience.length > 0) duplicateValue = findDuplicates(selectedAdsAudience);
+      //   }
+      // })
+      // pictureData.forEach(itemPic => {
+      //   if (itemPic.fe_id.length == pictureData.length) duplicateValue = []
+      // })
+      var duplicateValue = false;
+      var set1 = [];
+      var set2 = [];
+      audienceForm.forEach((b) => {
+        selectedAdsAudience.forEach((a) => {
+          if (a == b.audienceId && b.optimized) {
+            if (!set1.includes(a)) set1.push(a);
+          }
+        });
+        if (b.optimized) {
+          set2.push(b.audienceId);
+        }
+      });
+      if (set1.length == set2.length) duplicateValue = true;
+      else duplicateValue = false;
 
       isAdsValid = arrValid.length === pictureData.length;
       const isAudienceFormAdsValid =
@@ -809,7 +834,20 @@ export default function AddCampaign({ content, params }) {
       }
       // if (pictureData.length == 0)
       if (
-        duplicateValue && duplicateValue.length == 0 &&
+        duplicateValue &&
+        pictureValid &&
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isBudgetValid &&
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0 &&
+        isAdvancedSettingValid
+      ) {
+        return handleSubmit();
+      }
+      if (
+        duplicateValue &&
         checkAds &&
         checkAudienceMulti &&
         pictureValid &&
