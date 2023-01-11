@@ -792,7 +792,7 @@ export default function AddCampaign({ content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
-        if ((showCreditCard.sessionId && showCreditCard.campaignId) || checkAudienceMulti) {
+        if ((showCreditCard.sessionId && showCreditCard.campaignId)) {
           setShowCreditCard({
             ...showCreditCard,
             isVisible: true,
@@ -2355,7 +2355,7 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        {!isAdsArrValid2(content) ? (
+        {!isAdsArrValid2(content) && errorBox.errorAds ? (
           <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
