@@ -2422,7 +2422,7 @@ export default function AddCampaign({ content, params }) {
                         }
                       }}
                     >
-                      {renderPopoverError('Audience', questionObj.errorAd)}
+                      {/* {renderPopoverError('Audience', questionObj.errorAd)} */}
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
