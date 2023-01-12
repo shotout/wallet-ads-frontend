@@ -878,7 +878,7 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (!checkAudienceMulti || !checkAds) {
+        if (!checkAudienceMulti || !duplicateValue) {
           return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
