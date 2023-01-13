@@ -878,11 +878,12 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (!checkAds || !duplicateValue) {
+        var requiredCard = document.getElementById('requiredCard');
+        if (!duplicateValue) {
           if (!duplicateValue == false && isAvailabilityValid) {
-            return window.location.href = '#availability-section';
+            return (window.location.href = '#availability-section');
           }
-          return (window.location.href = '#card-audience');
+          if ((requiredCard && requiredCard.innerHTML.length) > 0) return (window.location.href = '#card-audience');
         }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
