@@ -23,9 +23,6 @@ export default makeStyles((theme) => ({
       padding: 12,
       borderRadius: 12,
     },
-    ctnTitle: {
-      marginBottom: 20,
-    },
     ctnInput: {
       maxWidth: 420,
       width: '100%',
