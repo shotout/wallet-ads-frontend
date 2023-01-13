@@ -878,7 +878,7 @@ export default function AddCampaign({ content, params }) {
           errorAdvanced: !isAdvancedSettingValid,
         });
 
-        if (!duplicateValue) {
+        if (!checkAds || !duplicateValue) {
           if (!duplicateValue == false && isAvailabilityValid) {
             return window.location.href = '#availability-section';
           }
