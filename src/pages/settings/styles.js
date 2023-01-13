@@ -29,7 +29,7 @@ export default makeStyles((theme) => ({
       boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
       borderRadius: 28,
       padding: 20,
-      background: '#E4E6FA',
+      background: '#fff',
       marginBottom: 80,
     },
     ctnOption: {
