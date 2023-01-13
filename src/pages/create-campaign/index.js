@@ -688,7 +688,7 @@ export default function AddCampaign({ content, params }) {
         !formValues.campaign_end_date_type ||
         (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
 
-      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability ) {
+      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability) {
         setErrorInput(errorObj);
         inputValid = false;
       }

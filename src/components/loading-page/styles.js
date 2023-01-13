@@ -18,6 +18,7 @@ export default makeStyles((theme) => ({
   ctnPopover: {
     background: 'rgba(255,255,255,0.95)',
     zIndex: 20000,
+
     '& > .MuiPaper-root': {
       background: 'rgba(255,255,255,0)',
       borderRadius: '0',
