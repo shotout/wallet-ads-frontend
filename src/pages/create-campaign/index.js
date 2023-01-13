@@ -239,6 +239,7 @@ export default function AddCampaign({ content, params }) {
     if (content && params.status === 'fail') {
       cancelCreateCampaignId(content.id);
       window.scrollTo(0, document.body.scrollHeight);
+      let sample = JSON.parse(content.sample_address);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
@@ -320,6 +321,11 @@ export default function AddCampaign({ content, params }) {
       //   });
       //   setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
       // }
+      sampleAds.forEach((itemAds, indexAds) => {
+        sample[0].forEach((sampleAds, indexSample) => {
+          if (indexAds == indexSample) itemAds.sampleAd = sampleAds
+        })
+      })
     }
   }, []);
 
