@@ -2,6 +2,39 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 export default makeStyles((theme) => ({
+    ctnLogo: {
+      marginBottom: 30,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      '& > img': {
+        width: '30%',
+        objectFit: 'contain',
+      },
+    },
+    ctnLink: {
+      color: '#7089FF',
+      textDecoration: 'underline',
+      cursor: 'pointer',
+    },
+    ctnGreenBox: {
+      marginBottom: 20,
+      background: '#1FCB96',
+      padding: 12,
+      borderRadius: 12,
+    },
+    ctnTitle: {
+      marginBottom: 20,
+    },
+    ctnInput: {
+      maxWidth: 420,
+      width: '100%',
+      boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
+      borderRadius: 28,
+      padding: 20,
+      background: '#E4E6FA',
+      marginBottom: 80,
+    },
     ctnOption: {
       width: 30,
       height: 30,

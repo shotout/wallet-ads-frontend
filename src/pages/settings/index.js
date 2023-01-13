@@ -1,5 +1,5 @@
 import { Grid, IconButton, InputAdornment, InputLabel, TextField, Typography, Popover, Box } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DefaultButton from '../../components/default-button';
 import AvatarPicker from '../../components/avatar-picker';
 import HeaderUser from '../../components/header-user';
@@ -10,7 +10,9 @@ import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile } from '../../utils/requests';
+import { requestResetPassword } from '../../utils/requests';
 
+const mailSuccess = '/assets/svg/mail_success.svg';
 const trashIcon = '/assets/trash.png';
 const deleteIcon = '/assets/delete_icon.png';
 const editIcon = '/assets/edit_icon.png';
@@ -42,6 +44,7 @@ const defaultState = {
   photo: { url: null },
 };
 
+var conditionER = false;
 var conditionDPM = false;
 var conditionSCP = false;
 var conditionFP = false;
@@ -52,6 +55,10 @@ var conditionAPM = false;
 export default function SettingUser({ userData }) {
   const styles = useStyles();
 
+  const [timer, setTimer] = useState(0);
+  const [sent, setSent] = useState(false);
+  const [count, setCount] = useState(false);
+  const [ERCondition, setERCondition] = useState(false);
   const [DPMCondition, setDPMCondition] = useState(false);
   const [msgAddPayment, setMsgAddPayment] = useState(false);
   const [SCPCondition, setSCPCondition] = useState(false);
@@ -64,6 +71,14 @@ export default function SettingUser({ userData }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(defaultState);
+
+  useEffect(() => {
+    if (timer > 0) {
+      setTimeout(() => setTimer(timer - 1), 1000);
+    } else {
+      setCount(false);
+    }
+  }, [timer]);
 
   const handleChangePicture = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -92,6 +107,35 @@ export default function SettingUser({ userData }) {
       ...values,
       photo: { url: null },
     });
+  };
+
+  const handleSubmitER = async () => {
+    try {
+      setErrorMessage({
+        email: null,
+      });
+      setValues({ ...values, isLoading: true });
+      const body = {
+        email: values.email,
+      };
+      const res = await requestResetPassword(body);
+      res.status === 'success' && setSent(true);
+      setValues({ ...values, isLoading: false });
+      setFPCondition(false);
+      setERCondition(true);
+    } catch (err) {
+      if (err.data) {
+        if (err.data.errors) {
+          setErrorMessage(responseValidatorObj(err.data.errors));
+        }
+        if (err.data.message && !err.data.errors) {
+          setErrorMessage({
+            email: null,
+          });
+        }
+      }
+      setValues({ ...values, isLoading: false });
+    }
   };
 
   const handleSubmit = async () => {
@@ -134,6 +178,12 @@ export default function SettingUser({ userData }) {
     }
   };
 
+  function resendEmail() {
+    handleSubmitER();
+    setCount(true);
+    setTimer(45);
+  }
+
   const resetStateDPM = (e) => {
     conditionDPM = !conditionDPM;
     setDPMCondition(conditionDPM);
@@ -146,6 +196,11 @@ export default function SettingUser({ userData }) {
     }
     conditionSCP = !conditionSCP;
     setSCPCondition(conditionSCP);
+  };
+
+  const resetStateER = () => {
+    conditionER = !conditionER;
+    setERCondition(conditionER);
   };
 
   const resetStateFP = () => {
@@ -329,6 +384,89 @@ export default function SettingUser({ userData }) {
     );
   }
 
+  function popupEmailReset() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={ERCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateER}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnInput}>
+            <div className={styles.header}>
+              <div style={{ width: '99%' }}>
+                <Typography
+                  variant="h4"
+                  sx={{ color: '#000' }}
+                  fontWeight="800"
+                  marginLeft={4}
+                  textAlign="center"
+                  width={'100%'}
+                >
+                  Email has been sent!
+                </Typography>
+              </div>
+
+              <Iconify
+                icon={'ant-design:close-outlined'}
+                onClick={resetStateER}
+                width={28}
+                height={28}
+                marginLeft={4}
+                className={styles.ctnClose}
+              />
+            </div>
+            <div className={styles.ctnLogo}>
+              <img src={mailSuccess} alt="wallet-ads" />
+            </div>
+            <div className={styles.ctnGreenBox}>
+              <Typography variant="body1" color="#fff" textAlign={'center'}>
+                We have sent an email with a password recovery link to your email inbox. Please follow the instructions
+                in the email to reset your password.
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="subtitle1" color="#000" textAlign={'center'}>
+                {count ? (
+                  <>
+                    You did not receive the email? Check your spam folder or wait{' '}
+                    <span className={styles.ctnTimer}>
+                      {timer} {timer > 1 ? 'seconds' : 'second'}{' '}
+                    </span>
+                    to resend the recovery email.
+                  </>
+                ) : (
+                  <>
+                    You did not receive the email? Check your spam folder or{' '}
+                    <span onClick={resendEmail} className={styles.ctnLink}>
+                      resend email.
+                    </span>
+                  </>
+                )}
+              </Typography>
+            </div>
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
+
   function popupForgotPasword() {
     return (
       <Popover
@@ -379,7 +517,7 @@ export default function SettingUser({ userData }) {
                 />
               </div>
             </div>
-            <Grid item width={300} md={6} xs={12}>
+            <Grid item width={300} md={6} xs={12} lg={12}>
               <Typography fontWeight="800" textAlign="center" width={'100%'} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
@@ -396,8 +534,8 @@ export default function SettingUser({ userData }) {
               eventName={'ResetPassword'}
               ctnBtnStyle={styles.btnSave}
               label={'Reset Password'}
-              isLoading={isLoading}
-              onClick={resetStateFP}
+              isLoading={values.isLoading}
+              onClick={handleSubmitER}
             />
           </div>
         </Box>
@@ -714,7 +852,7 @@ export default function SettingUser({ userData }) {
                 />
               </div>
             </div>
-            <Grid item md={6} xs={12}>
+            <Grid item md={6} xs={12} lg={12}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Current Password</InputLabel>
                 <TextField
@@ -733,7 +871,7 @@ export default function SettingUser({ userData }) {
                 </Typography>
               </div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item md={6} xs={12} lg={12}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>New Password</InputLabel>
                 <TextField
@@ -747,7 +885,7 @@ export default function SettingUser({ userData }) {
                 />
               </div>
             </Grid>
-            <Grid item md={6} xs={12}>
+            <Grid item md={6} xs={12} lg={12}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Confirm New Password</InputLabel>
                 <TextField
@@ -1053,6 +1191,7 @@ export default function SettingUser({ userData }) {
           {popupForgotPasword()}
           {popupSaveChangePasword()}
           {popupDeletePM()}
+          {popupEmailReset()}
         </div>
       </div>
     );
