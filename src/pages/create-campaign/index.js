@@ -1873,7 +1873,7 @@ export default function AddCampaign({ content, params }) {
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
                   errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
-                  errorAdsBeforeSubmit={errorBox.errorAds || !checkAudienceMulti}
+                  errorAdsBeforeSubmit={errorBox.errorAds || !checkAudienceMulti || test}
                 />
               </Grid>
             ))}
