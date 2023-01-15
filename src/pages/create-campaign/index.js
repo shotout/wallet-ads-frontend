@@ -988,7 +988,7 @@ export default function AddCampaign({ content, params }) {
           }
         } else if (!isAdTextValid.isAdTextValid) {
           window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
-        } else if (!isAudienceFormAdsValid) {
+        } else if (!isAudienceFormAdsValid && !duplicateValue) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
