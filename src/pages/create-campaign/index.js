@@ -196,7 +196,7 @@ export default function AddCampaign({ content, params }) {
     errorCollection: false,
     errorAudienceNull: false,
     errorAdvanced: false,
-    errorFirstAds: false
+    errorFirstAds: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -324,9 +324,9 @@ export default function AddCampaign({ content, params }) {
       // }
       sampleAds.forEach((itemAds, indexAds) => {
         sample[0].forEach((sampleAds, indexSample) => {
-          if (indexAds == indexSample) itemAds.sampleAd = sampleAds
-        })
-      })
+          if (indexAds == indexSample) itemAds.sampleAd = sampleAds;
+        });
+      });
     }
   }, []);
 
@@ -680,21 +680,12 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
-  const test = (ads, index) => {
-    if (ads == 'firstValidate') {
-      let a =  true
-      pictureData.forEach(item => {
-        console.log('66', item)
-        if (item.fe_id.length == 0) a = false
-      })
-      console.log('66.1', a)
-      return a
-    }
+  const checkAudienceSelect = (ads, index) => {
     let selectedAdsAudience = [];
-    var duplicateValue = false;
-    var set1 = [];
-    var set2 = [];
-    
+    let duplicateValue = false;
+    let set1 = [];
+    let set2 = [];
+
     pictureData.forEach((ads) => {
       if (isAdsArrValid(ads)) {
         ads.fe_id.forEach((feId) => {
@@ -713,11 +704,10 @@ export default function AddCampaign({ content, params }) {
         set2.push(b.audienceId);
       }
     });
-      if (set1.length == set2.length) duplicateValue = true;
-      else duplicateValue = false;
-      
-    console.log('ads',index, ads, audienceForm, pictureData, selectedAdsAudience, duplicateValue, index);
-    return duplicateValue
+    if (set1.length == set2.length) duplicateValue = true;
+    else duplicateValue = false;
+
+    return duplicateValue;
   };
 
   const validateSubmit = () => {
@@ -795,29 +785,6 @@ export default function AddCampaign({ content, params }) {
 
       isAdTextValid = validationAdsText();
 
-      // pictureData.forEach(itemPic => {
-      //   console.log('22', itemPic.fe_id.length,itemPic)
-      //   // itemPic.fe_id.forEach(itemFE => {
-      //   //   console.log('22', itemFE)
-      //   // })
-      //   if (itemPic.fe_id.length < pictureData.length) {
-      //     const findDuplicates = (arr) => {
-      //       let sorted_arr = arr.slice().sort();
-      //       let results = [];
-      //       for (let i = 0; i < sorted_arr.length - 1; i++) {
-      //         if (sorted_arr[i + 1] == sorted_arr[i]) {
-      //           results.push(sorted_arr[i]);
-      //         }
-      //       }
-      //       return results;
-      //     };
-
-      //     if (selectedAdsAudience.length > 0) duplicateValue = findDuplicates(selectedAdsAudience);
-      //   }
-      // })
-      // pictureData.forEach(itemPic => {
-      //   if (itemPic.fe_id.length == pictureData.length) duplicateValue = []
-      // })
       var duplicateValue = false;
       var set1 = [];
       var set2 = [];
@@ -840,8 +807,6 @@ export default function AddCampaign({ content, params }) {
           ? true
           : false;
       // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
-      // console.log('is arr valid', isAudienceFormAdsValidCP);
-      // console.log(selectedAdsAudience);
 
       // Cek token symbol
       let isAdvancedSettingValid = true;
@@ -923,7 +888,7 @@ export default function AddCampaign({ content, params }) {
           errorCollection: !isCollectionSection,
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
-          errorFirstAds: true
+          errorFirstAds: true,
         });
 
         var requiredCard = document.getElementById('requiredCard');
@@ -1216,7 +1181,6 @@ export default function AddCampaign({ content, params }) {
         }
         return pict;
       });
-      console.log('1.1', pictureData, restructureData)
       setPicture(restructureData);
     }
   };
@@ -1873,7 +1837,7 @@ export default function AddCampaign({ content, params }) {
                   label={`Audience ${index + 1}:`}
                   index={index + 1}
                   errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
-                  errorAdsBeforeSubmit={test && errorBox.errorFirstAds}
+                  errorAdsBeforeSubmit={checkAudienceSelect && errorBox.errorFirstAds}
                 />
               </Grid>
             ))}
@@ -2500,9 +2464,7 @@ export default function AddCampaign({ content, params }) {
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
-              console.log('11', errorBox)
 
-              // console.log('11',item, !isActive, item.optimized, item.selectedCategory == 'optimized', errorBox.errorAds, audienceForm, audienceIndex)
               return (
                 <Grid
                   id={`checkbox-${item.audienceId}`}
@@ -2553,7 +2515,10 @@ export default function AddCampaign({ content, params }) {
                       </Typography>
                     </div>
                     {/* {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? ( */}
-                    {!test(item, audienceIndex) && item.optimized && !checkIsAudienceAdsSelected(item.audienceId) && errorBox.errorFirstAds ? (
+                    {!checkAudienceSelect(item, audienceIndex) &&
+                    item.optimized &&
+                    !checkIsAudienceAdsSelected(item.audienceId) &&
+                    errorBox.errorFirstAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && isAdsArrValid(content)) ||
