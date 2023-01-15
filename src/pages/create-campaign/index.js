@@ -931,7 +931,7 @@ export default function AddCampaign({ content, params }) {
           if (!duplicateValue == false && isAvailabilityValid) {
             return (window.location.href = '#availability-section');
           }
-          if ((requiredCard && requiredCard.innerHTML.length) > 0 || checkAds) {
+          if ((requiredCard && requiredCard.innerHTML.length) > 0) {
             return (window.location.href = '#card-audience');
           }
         }
