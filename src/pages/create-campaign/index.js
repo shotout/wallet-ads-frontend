@@ -196,6 +196,7 @@ export default function AddCampaign({ content, params }) {
     errorCollection: false,
     errorAudienceNull: false,
     errorAdvanced: false,
+    errorFirstAds: false
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -679,6 +680,46 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
+  const test = (ads, index) => {
+    if (ads == 'firstValidate') {
+      let a =  true
+      pictureData.forEach(item => {
+        console.log('66', item)
+        if (item.fe_id.length == 0) a = false
+      })
+      console.log('66.1', a)
+      return a
+    }
+    let selectedAdsAudience = [];
+    var duplicateValue = false;
+    var set1 = [];
+    var set2 = [];
+    
+    pictureData.forEach((ads) => {
+      if (isAdsArrValid(ads)) {
+        ads.fe_id.forEach((feId) => {
+          selectedAdsAudience.push(feId);
+        });
+      }
+    });
+
+    audienceForm.forEach((b) => {
+      selectedAdsAudience.forEach((a) => {
+        if (a == b.audienceId && b.optimized) {
+          if (!set1.includes(a)) set1.push(a);
+        }
+      });
+      if (b.optimized) {
+        set2.push(b.audienceId);
+      }
+    });
+      if (set1.length == set2.length) duplicateValue = true;
+      else duplicateValue = false;
+      
+    console.log('ads',index, ads, audienceForm, pictureData, selectedAdsAudience, duplicateValue, index);
+    return duplicateValue
+  };
+
   const validateSubmit = () => {
     try {
       let isBudgetValid = true;
@@ -882,14 +923,17 @@ export default function AddCampaign({ content, params }) {
           errorCollection: !isCollectionSection,
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
+          errorFirstAds: true
         });
 
         var requiredCard = document.getElementById('requiredCard');
-        if (!duplicateValue) {
+        if (checkAds || !duplicateValue) {
           if (!duplicateValue == false && isAvailabilityValid) {
             return (window.location.href = '#availability-section');
           }
-          if ((requiredCard && requiredCard.innerHTML.length) > 0) return (window.location.href = '#card-audience');
+          if ((requiredCard && requiredCard.innerHTML.length) > 0 || checkAds) {
+            return (window.location.href = '#card-audience');
+          }
         }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
@@ -1172,6 +1216,7 @@ export default function AddCampaign({ content, params }) {
         }
         return pict;
       });
+      console.log('1.1', pictureData, restructureData)
       setPicture(restructureData);
     }
   };
@@ -2454,8 +2499,10 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
-
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
+              console.log('11', errorBox)
+
+              // console.log('11',item, !isActive, item.optimized, item.selectedCategory == 'optimized', errorBox.errorAds, audienceForm, audienceIndex)
               return (
                 <Grid
                   id={`checkbox-${item.audienceId}`}
@@ -2505,7 +2552,8 @@ export default function AddCampaign({ content, params }) {
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? (
+                    {/* {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? ( */}
+                    {!test(item, audienceIndex) && item.optimized && !checkIsAudienceAdsSelected(item.audienceId) && errorBox.errorFirstAds ? (
                       <div className={styles.ctnAudienceErrBox}>
                         {renderErrorText(
                           (!isActive && item.optimized && isAdsArrValid(content)) ||
