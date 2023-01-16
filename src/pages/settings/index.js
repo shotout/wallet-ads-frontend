@@ -42,6 +42,9 @@ const defaultState = {
   password: '',
   password_confirmation: '',
   photo: { url: null },
+  currentPassword: '',
+  newPassword: '',
+  confirmNewPassword: ''
 };
 
 var conditionER = false;
@@ -366,7 +369,7 @@ export default function SettingUser({ userData }) {
             <Grid container justifyContent="center" alignItems="center">
               <img src={cardLock} alt="Lock" />
             </Grid>
-            <Grid item width={300} md={6} xs={12}>
+            <Grid item width={300} md={6} xs={12} lg={12}>
               <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
                 Your password has been updated.
               </Typography>
@@ -856,10 +859,10 @@ export default function SettingUser({ userData }) {
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Current Password</InputLabel>
                 <TextField
-                  value={values.first_name}
-                  onChange={handleChange('first_name')}
-                  error={errorMessage.first_name}
-                  helperText={errorMessage.first_name}
+                  value={values.currentPassword}
+                  onChange={handleChange('currentPassword')}
+                  error={errorMessage.currentPassword}
+                  helperText={errorMessage.currentPassword}
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
@@ -875,10 +878,10 @@ export default function SettingUser({ userData }) {
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>New Password</InputLabel>
                 <TextField
-                  value={values.first_name}
-                  onChange={handleChange('first_name')}
-                  error={errorMessage.first_name}
-                  helperText={errorMessage.first_name}
+                  value={values.newPassword}
+                  onChange={handleChange('newPassword')}
+                  error={errorMessage.newPassword}
+                  helperText={errorMessage.newPassword}
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
@@ -889,10 +892,10 @@ export default function SettingUser({ userData }) {
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Confirm New Password</InputLabel>
                 <TextField
-                  value={values.first_name}
-                  onChange={handleChange('first_name')}
-                  error={errorMessage.first_name}
-                  helperText={errorMessage.first_name}
+                  value={values.confirmNewPassword}
+                  onChange={handleChange('confirmNewPassword')}
+                  error={errorMessage.confirmNewPassword}
+                  helperText={errorMessage.confirmNewPassword}
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
