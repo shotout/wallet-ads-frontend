@@ -891,14 +891,16 @@ export default function AddCampaign({ content, params }) {
           errorFirstAds: true,
         });
 
-        var requiredCard = document.getElementById('requiredCard');
         if (checkAds || !duplicateValue) {
           if (!duplicateValue == false && isAvailabilityValid) {
             return (window.location.href = '#availability-section');
           }
-          if ((requiredCard && requiredCard.innerHTML.length) > 0) {
-            return (window.location.href = '#card-audience');
-          }
+          setTimeout(() => {
+            var requiredCard = document.getElementById('requiredCard');
+            if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
+              return (window.location.href = '#card-audience');
+            }
+          }, 100)
         }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';

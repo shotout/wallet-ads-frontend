@@ -289,7 +289,7 @@ export default function CardAudience({
         </div>
       );
     }
-    if (data.selectedCategory === 'optimized') {
+    if (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload') {
       return (
         <div className={styles.ctnDescAudience}>
           <div className={styles.ctnDefaultContentWrapper}>
@@ -407,7 +407,7 @@ export default function CardAudience({
         }
         ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
         ${
-          isErrorAudienceNull || (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit)
+          isErrorAudienceNull || (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
             ? styles.ctnRedBorder
             : ''
         }`}
@@ -423,7 +423,7 @@ export default function CardAudience({
           }
           ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
           ${
-            isErrorAudienceNull || (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit)
+            isErrorAudienceNull || (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
               ? styles.borderTopError
               : ''
           }
