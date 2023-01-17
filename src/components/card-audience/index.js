@@ -407,7 +407,9 @@ export default function CardAudience({
         }
         ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
         ${
-          isErrorAudienceNull || (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
+          isErrorAudienceNull ||
+          (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit) ||
+          (data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
             ? styles.ctnRedBorder
             : ''
         }`}
@@ -423,7 +425,9 @@ export default function CardAudience({
           }
           ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
           ${
-            isErrorAudienceNull || (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
+            isErrorAudienceNull ||
+            (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit) ||
+            (data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
               ? styles.borderTopError
               : ''
           }
