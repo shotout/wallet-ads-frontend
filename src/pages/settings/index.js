@@ -44,7 +44,10 @@ const defaultState = {
   photo: { url: null },
   currentPassword: '',
   newPassword: '',
-  confirmNewPassword: ''
+  confirmNewPassword: '',
+  cardNumber: '',
+  expiration: '',
+  cvc: '',
 };
 
 var conditionER = false;
@@ -179,6 +182,7 @@ export default function SettingUser({ userData }) {
       }
       setLoading(false);
     }
+    setAPMCondition(false)
   };
 
   function resendEmail() {
@@ -637,10 +641,10 @@ export default function SettingUser({ userData }) {
 
                   <InputLabel shrink>Card Number</InputLabel>
                   <TextField
-                    value={values.first_name}
-                    onChange={handleChange('first_name')}
-                    error={errorMessage.first_name}
-                    helperText={errorMessage.first_name}
+                    value={values.cardNumber}
+                    onChange={handleChange('cardNumber')}
+                    error={errorMessage.cardNumber}
+                    helperText={errorMessage.cardNumber}
                     size="small"
                     fullWidth
                   />
@@ -650,10 +654,10 @@ export default function SettingUser({ userData }) {
                 <div className={styles.inputWrapper}>
                   <InputLabel shrink>Expiration</InputLabel>
                   <TextField
-                    value={values.first_name}
-                    onChange={handleChange('first_name')}
-                    error={errorMessage.first_name}
-                    helperText={errorMessage.first_name}
+                    value={values.expiration}
+                    onChange={handleChange('expiration')}
+                    error={errorMessage.expiration}
+                    helperText={errorMessage.expiration}
                     size="small"
                     fullWidth
                   />
@@ -663,10 +667,10 @@ export default function SettingUser({ userData }) {
                 <div className={styles.inputWrapper}>
                   <InputLabel shrink>CVC</InputLabel>
                   <TextField
-                    value={values.first_name}
-                    onChange={handleChange('first_name')}
-                    error={errorMessage.first_name}
-                    helperText={errorMessage.first_name}
+                    value={values.cvc}
+                    onChange={handleChange('cvc')}
+                    error={errorMessage.cvc}
+                    helperText={errorMessage.cvc}
                     size="small"
                     fullWidth
                   />
@@ -679,10 +683,10 @@ export default function SettingUser({ userData }) {
                 <div className={styles.inputWrapper}>
                   <InputLabel shrink>Country</InputLabel>
                   <TextField
-                    value={values.first_name}
-                    onChange={handleChange('first_name')}
-                    error={errorMessage.first_name}
-                    helperText={errorMessage.first_name}
+                    value={values.country}
+                    onChange={handleChange('country')}
+                    error={errorMessage.country}
+                    helperText={errorMessage.country}
                     size="small"
                     fullWidth
                   />
