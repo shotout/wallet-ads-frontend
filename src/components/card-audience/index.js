@@ -292,21 +292,40 @@ export default function CardAudience({
     if (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload') {
       return (
         <div className={styles.ctnDescAudience}>
-          <div className={styles.ctnDefaultContentWrapper}>
-            <Typography
-              variant="body1"
-              className={styles.desctTitle}
-              fontWeight="800"
-              color="#000"
-              textAlign={'center'}
-            >
-              <b>+</b>
-              Optimized Targeting:
-            </Typography>
-            <Typography variant="span" textAlign={'center'}>
-              The audience consists of a broad mix of users, optimized by our algorithm.
-            </Typography>
-          </div>
+          {data.audienceFile ? (
+            <div className={styles.ctnDefaultContentWrapper2}>
+              <Typography
+                variant="body1"
+                className={styles.desctTitle}
+                fontWeight="800"
+                color="#000"
+                textAlign={'center'}
+              >
+                <b>+</b>
+                Your own audience:
+              </Typography>
+              <Typography variant="span" textAlign={'center'}>
+                {data.audienceFile.path}
+              </Typography>
+            </div>
+          ) : (
+            <div className={styles.ctnDefaultContentWrapper}>
+              <Typography
+                variant="body1"
+                className={styles.desctTitle}
+                fontWeight="800"
+                color="#000"
+                textAlign={'center'}
+              >
+                <b>+</b>
+                Optimized Targeting:
+              </Typography>
+              <Typography variant="span" textAlign={'center'}>
+                The audience consists of a broad mix of users, optimized by our algorithm.
+              </Typography>
+            </div>
+          )}
+
           {renderPrice()}
           {!isEdit && (
             <Typography variant="span" textAlign={'center'} paragraph>
