@@ -29,6 +29,7 @@ SettingUser.getLayout = function getLayout(page) {
 };
 
 const defaultState = {
+  countryFirst: '',
   country: '',
   company_name: '',
   tax_id: '',
@@ -688,10 +689,10 @@ export default function SettingUser({ userData }) {
                 <div className={styles.inputWrapper}>
                   <InputLabel shrink>Country</InputLabel>
                   <TextField
-                    value={values.country}
-                    onChange={handleChange('country')}
-                    error={errorMessage.country}
-                    helperText={errorMessage.country}
+                    value={values.countryFirst}
+                    onChange={handleChange('countryFirst')}
+                    error={errorMessage.countryFirst}
+                    helperText={errorMessage.countryFirst}
                     size="small"
                     fullWidth
                   />
