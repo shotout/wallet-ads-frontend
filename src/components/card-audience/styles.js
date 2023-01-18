@@ -204,6 +204,15 @@ export default makeStyles((theme) => ({
     height: 140,
     flexDirection: 'column',
   },
+  ctnDefaultContentWrapper2: {
+    // overflow: 'scroll',
+    height: 100,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    display: 'flex',
+    marginBottom: 46,
+  },
   ctnDefaultContentWrapper: {
     // overflow: 'scroll',
     height: 140,
