@@ -48,6 +48,7 @@ const defaultState = {
   cardNumber: '',
   expiration: '',
   cvc: '',
+  forgotEmail: ''
 };
 
 var conditionER = false;
@@ -530,10 +531,10 @@ export default function SettingUser({ userData }) {
               </Typography>
             </Grid>
             <TextField
-              value={values.email}
-              onChange={handleChange('email')}
-              error={errorMessage.email}
-              helperText={errorMessage.email}
+              value={values.forgotEmail}
+              onChange={handleChange('forgotEmail')}
+              error={errorMessage.forgotEmail}
+              helperText={errorMessage.forgotEmail}
               size="small"
               fullWidth
             />
