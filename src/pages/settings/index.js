@@ -182,7 +182,7 @@ export default function SettingUser({ userData }) {
       }
       setLoading(false);
     }
-    setSCPCondition(false);
+    setSCPCondition(true);
     setAPMCondition(false);
   };
 
