@@ -39,16 +39,15 @@ const defaultState = {
   city: '',
   phone: '',
   email: '',
+  passwordFirst: '',
   password: '',
   password_confirmation: '',
   photo: { url: null },
-  currentPassword: '',
   newPassword: '',
-  confirmNewPassword: '',
   cardNumber: '',
   expiration: '',
   cvc: '',
-  forgotEmail: ''
+  forgotEmail: '',
 };
 
 var conditionER = false;
@@ -183,7 +182,8 @@ export default function SettingUser({ userData }) {
       }
       setLoading(false);
     }
-    setAPMCondition(false)
+    setSCPCondition(false);
+    setAPMCondition(false);
   };
 
   function resendEmail() {
@@ -235,6 +235,10 @@ export default function SettingUser({ userData }) {
   const resetStateCP = () => {
     conditionCP = !conditionCP;
     setCPCondition(conditionCP);
+    values.password = '';
+    values.newPassword = '';
+    values.password_confirmation = '';
+    errorMessage.password = '';
   };
 
   function popupDeletePM() {
@@ -864,10 +868,10 @@ export default function SettingUser({ userData }) {
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Current Password</InputLabel>
                 <TextField
-                  value={values.currentPassword}
-                  onChange={handleChange('currentPassword')}
-                  error={errorMessage.currentPassword}
-                  helperText={errorMessage.currentPassword}
+                  value={values.password}
+                  onChange={handleChange('password')}
+                  error={errorMessage.password}
+                  helperText={errorMessage.password}
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
@@ -897,10 +901,10 @@ export default function SettingUser({ userData }) {
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Confirm New Password</InputLabel>
                 <TextField
-                  value={values.confirmNewPassword}
-                  onChange={handleChange('confirmNewPassword')}
-                  error={errorMessage.confirmNewPassword}
-                  helperText={errorMessage.confirmNewPassword}
+                  value={values.password_confirmation}
+                  onChange={handleChange('password_confirmation')}
+                  error={errorMessage.password_confirmation}
+                  helperText={errorMessage.password_confirmation}
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
@@ -912,7 +916,7 @@ export default function SettingUser({ userData }) {
               ctnBtnStyle={styles.btnSave}
               label={'Save'}
               isLoading={isLoading}
-              onClick={resetStateSCP}
+              onClick={handleSubmit}
             />
           </div>
         </Box>
@@ -1110,10 +1114,10 @@ export default function SettingUser({ userData }) {
             <div className={styles.inputWrapper}>
               <InputLabel shrink>Password</InputLabel>
               <TextField
-                value={values.password}
-                onChange={handleChange('password')}
-                error={errorMessage.password}
-                helperText={errorMessage.password}
+                value={values.passwordFirst}
+                onChange={handleChange('passwordFirst')}
+                error={errorMessage.passwordFirst}
+                helperText={errorMessage.passwordFirst}
                 size="small"
                 fullWidth
                 type={showPassword ? 'text' : 'password'}
