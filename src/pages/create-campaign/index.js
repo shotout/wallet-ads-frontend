@@ -2443,8 +2443,8 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
-        {!isAdsArrValid2(content) && errorBox.errorAds ? (
-          <div className={`${errorBox.errorAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+        {!isAdsArrValid2(content) ? (
+          <div className={`${!isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
         ) : null}
