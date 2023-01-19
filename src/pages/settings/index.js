@@ -9,7 +9,7 @@ import Layout from '../../layouts';
 import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import { handleUpdateProfile } from '../../utils/requests';
+import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 
 const mailSuccess = '/assets/svg/mail_success.svg';
@@ -169,7 +169,7 @@ export default function SettingUser({ userData }) {
         avatarSource && form.append('photo', avatarSource);
       }
       form.append('_method', 'PATCH');
-      const res = await handleUpdateProfile(form);
+      const res = await handleUpdatePassword(form);
       setAuthorizationCookie({
         ...userData,
         data: res.data,
@@ -815,6 +815,54 @@ export default function SettingUser({ userData }) {
   }
 
   function popupChangePassword() {
+    const hanldeSubmitChangePassword = async () => {
+      if (values.newPassword !== values.password_confirmation) {
+        if (values.newPassword.length < 8) {
+          setErrorMessage({
+            ...errorMessage,
+            newPassword: 'Your password must be at least 8 characters',
+            password_confirmation: '',
+            password: '',
+          });
+        } else {
+          setErrorMessage({
+            ...errorMessage,
+            password_confirmation: 'Password not match',
+            password: '',
+          });
+        }
+      } else {
+        setErrorMessage({
+          ...errorMessage,
+          password_confirmation: '',
+        });
+        try {
+          const form = new FormData();
+          form.append('email', values.email);
+          form.append('password', values.password);
+          form.append('new_password', values.newPassword);
+
+          const res = await handleUpdatePassword(form);
+          setAuthorizationCookie({
+            ...userData,
+            data: res.data,
+          });
+          setLoading(false);
+          setErrorMessage({
+            ...errorMessage,
+            newPassword: '',
+            password_confirmation: '',
+            password: '',
+          });
+        } catch (err) {
+          setErrorMessage({
+            ...errorMessage,
+            password: 'The current password is incorrect',
+          });
+        }
+      }
+    };
+
     return (
       <Popover
         id={'success-campaign'}
@@ -917,7 +965,7 @@ export default function SettingUser({ userData }) {
               ctnBtnStyle={styles.btnSave}
               label={'Save'}
               isLoading={isLoading}
-              onClick={handleSubmit}
+              onClick={hanldeSubmitChangePassword}
             />
           </div>
         </Box>
@@ -1116,12 +1164,13 @@ export default function SettingUser({ userData }) {
               <InputLabel shrink>Password</InputLabel>
               <TextField
                 value={values.passwordFirst}
+                placeholder="********"
                 onChange={handleChange('passwordFirst')}
                 error={errorMessage.passwordFirst}
                 helperText={errorMessage.passwordFirst}
                 size="small"
                 fullWidth
-                type={showPassword ? 'text' : 'password'}
+                type="password"
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">

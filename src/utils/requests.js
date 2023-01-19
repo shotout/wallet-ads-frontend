@@ -53,6 +53,16 @@ export const handleUpdateProfile = (data) =>
     },
   });
 
+export const handleUpdatePassword = (data) =>
+  axios({
+    url: '/auth/change-password',
+    method: 'POST',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
 export const handleAddCampaign = (data) =>
   axios({
     url: '/campaigns',
