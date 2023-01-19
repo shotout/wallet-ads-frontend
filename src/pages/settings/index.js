@@ -843,6 +843,9 @@ export default function SettingUser({ userData }) {
           form.append('new_password', values.newPassword);
 
           const res = await handleUpdatePassword(form);
+          resetStateCP();
+          setSCPCondition(true);
+          setAPMCondition(false);
           setAuthorizationCookie({
             ...userData,
             data: res.data,
