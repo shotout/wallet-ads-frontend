@@ -1166,7 +1166,7 @@ export default function SettingUser({ userData }) {
             <div className={styles.inputWrapper}>
               <InputLabel shrink>Password</InputLabel>
               <TextField
-                value={values.passwordFirst}
+                value={'password'}
                 placeholder="********"
                 onChange={handleChange('passwordFirst')}
                 error={errorMessage.passwordFirst}
