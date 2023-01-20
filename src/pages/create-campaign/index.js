@@ -900,7 +900,7 @@ export default function AddCampaign({ content, params }) {
             if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
               return (window.location.href = '#card-audience');
             }
-          }, 100);
+          }, 5);
         }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
@@ -922,7 +922,6 @@ export default function AddCampaign({ content, params }) {
           let errCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
           let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
-       
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
@@ -969,7 +968,6 @@ export default function AddCampaign({ content, params }) {
   };
 
   const validationAdsText = () => {
-    
     let adTextToSend = [];
     let arrFeIdNotValid = [];
     let arrFeID = [];
@@ -985,7 +983,7 @@ export default function AddCampaign({ content, params }) {
         }
       });
     });
-    
+
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
