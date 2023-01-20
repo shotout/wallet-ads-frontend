@@ -946,7 +946,7 @@ export default function AddCampaign({ content, params }) {
               }
             } else {
               console.log(isAudienceFormAdsValid);
-              if (isAudienceFormAdsValid === false) {
+              if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
                 window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
