@@ -900,7 +900,7 @@ export default function AddCampaign({ content, params }) {
             if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
               return (window.location.href = '#card-audience');
             }
-          }, 5);
+          }, 10);
         }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
