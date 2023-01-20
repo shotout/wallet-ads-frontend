@@ -892,9 +892,9 @@ export default function AddCampaign({ content, params }) {
         });
 
         if (checkAds || !duplicateValue) {
-          if (!duplicateValue == false && isAvailabilityValid) {
-            return (window.location.href = '#availability-section');
-          }
+          // if (!duplicateValue == false && isAvailabilityValid) {
+          //   return (window.location.href = '#availability-section');
+          // }
           setTimeout(() => {
             var requiredCard = document.getElementById('requiredCard');
             if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
