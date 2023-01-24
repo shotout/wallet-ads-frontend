@@ -11,7 +11,11 @@ import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
+import CheckoutForm from 'src/components/checkout-form';
 
+const stripePromise = loadStripe('pk_live_51LcRhPDKJFuPZhC4e8vwI5EGotJV9L07hZA5D3qqOmJjSDWK1PRv447YubnDP2Rt3Hm6rUhmEPfMaoFR9zcN5ajY00OcQS3hZj');
 const mailSuccess = '/assets/svg/mail_success.svg';
 const trashIcon = '/assets/trash.png';
 const deleteIcon = '/assets/delete_icon.png';
@@ -23,6 +27,10 @@ const cardMC = '/assets/mastercard.png';
 const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
+const options = {
+  // passing the client secret obtained from the server
+  clientSecret: 'pi_123_secret_123',
+};
 
 SettingUser.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -325,6 +333,14 @@ export default function SettingUser({ userData }) {
       </Popover>
     );
   }
+
+  // const CheckoutForm = () => {
+  //   return (
+  //     <form>
+  //       <button>Submit</button>
+  //     </form>
+  //   );
+  // };
 
   function popupSaveChangePasword() {
     return (
@@ -1200,6 +1216,11 @@ export default function SettingUser({ userData }) {
         </Grid>
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2}>
+          <Grid>
+          <Elements stripe={stripePromise} options={options}>
+            <CheckoutForm/>
+          </Elements>
+          </Grid>
           <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
