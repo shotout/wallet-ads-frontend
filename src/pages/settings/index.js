@@ -11,7 +11,7 @@ import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
-// import { Elements } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 // import CheckoutForm from 'src/components/checkout-form';
 
@@ -616,9 +616,9 @@ export default function SettingUser({ userData }) {
             {msgAddPayment ? (
               <Grid spacing={2}>
                 <Grid item md={12} xs={12} lg={12}>
-                  {/* <Elements stripe={stripePromise} options={options}>
-                    <CheckoutForm />
-                  </Elements> */}
+                  <Elements stripe={stripePromise} options={options}>
+                    {/* <CheckoutForm /> */}
+                  </Elements>
                 </Grid>
               </Grid>
             ) : (
