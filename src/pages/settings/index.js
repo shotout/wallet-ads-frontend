@@ -616,9 +616,9 @@ export default function SettingUser({ userData }) {
             {msgAddPayment ? (
               <Grid spacing={2}>
                 <Grid item md={12} xs={12} lg={12}>
-                  <Elements stripe={stripePromise} options={options}>
+                  {/* <Elements stripe={stripePromise} options={options}>
                     <CheckoutForm />
-                  </Elements>
+                  </Elements> */}
                 </Grid>
               </Grid>
             ) : (
