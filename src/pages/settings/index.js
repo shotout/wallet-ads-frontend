@@ -11,9 +11,9 @@ import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
-import { Elements } from '@stripe/react-stripe-js';
+// import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import CheckoutForm from 'src/components/checkout-form';
+// import CheckoutForm from 'src/components/checkout-form';
 
 const stripePromise = loadStripe(
   'pk_test_51Kj7bFIIpTIg11XJtvE76RnimbYycRpo2k8sXpjmKln27syw2XrJInmFJDC3QITWhbZYsQ8xtz5f24qHS1UTd7u600zZqhHYxF'
