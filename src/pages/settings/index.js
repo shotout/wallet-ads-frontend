@@ -13,7 +13,7 @@ import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests'
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-// import CheckoutForm from 'src/components/checkout-form';
+import CheckoutForm from '../../components/checkout-form';
 
 const stripePromise = loadStripe(
   'pk_test_51Kj7bFIIpTIg11XJtvE76RnimbYycRpo2k8sXpjmKln27syw2XrJInmFJDC3QITWhbZYsQ8xtz5f24qHS1UTd7u600zZqhHYxF'
@@ -617,7 +617,7 @@ export default function SettingUser({ userData }) {
               <Grid spacing={2}>
                 <Grid item md={12} xs={12} lg={12}>
                   <Elements stripe={stripePromise} options={options}>
-                    {/* <CheckoutForm /> */}
+                    <CheckoutForm />
                   </Elements>
                 </Grid>
               </Grid>
