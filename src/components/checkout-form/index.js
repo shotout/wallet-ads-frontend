@@ -4,7 +4,7 @@ import {PaymentElement} from '@stripe/react-stripe-js';
 const CheckoutForm = () => (
     <form>
       <PaymentElement />
-      <button>Submit</button>
+      {/* <button>Submit</button> */}
     </form>
   );
 

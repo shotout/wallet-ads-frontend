@@ -11,11 +11,14 @@ import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
 import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from 'src/components/checkout-form';
 
-const stripePromise = loadStripe('pk_live_51LcRhPDKJFuPZhC4e8vwI5EGotJV9L07hZA5D3qqOmJjSDWK1PRv447YubnDP2Rt3Hm6rUhmEPfMaoFR9zcN5ajY00OcQS3hZj');
+const stripePromise = loadStripe(
+  'pk_test_51Kj7bFIIpTIg11XJtvE76RnimbYycRpo2k8sXpjmKln27syw2XrJInmFJDC3QITWhbZYsQ8xtz5f24qHS1UTd7u600zZqhHYxF'
+);
+const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
 const mailSuccess = '/assets/svg/mail_success.svg';
 const trashIcon = '/assets/trash.png';
 const deleteIcon = '/assets/delete_icon.png';
@@ -27,10 +30,6 @@ const cardMC = '/assets/mastercard.png';
 const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
-const options = {
-  // passing the client secret obtained from the server
-  clientSecret: 'pi_123_secret_123',
-};
 
 SettingUser.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
@@ -334,14 +333,6 @@ export default function SettingUser({ userData }) {
     );
   }
 
-  // const CheckoutForm = () => {
-  //   return (
-  //     <form>
-  //       <button>Submit</button>
-  //     </form>
-  //   );
-  // };
-
   function popupSaveChangePasword() {
     return (
       <Popover
@@ -622,106 +613,104 @@ export default function SettingUser({ userData }) {
                 />
               </div>
             </div>
-            <Grid container spacing={2}>
-              <Grid item md={12} xs={12}>
-                <div className={styles.inputWrapper}>
-                  {msgAddPayment ? (
-                    <Grid
-                      container
-                      spacing={-36}
-                      marginTop={0.5}
-                      justifyContent="center"
-                      alignItems="center"
-                      className={styles.ctnCardSet}
-                    >
-                      <Grid item sm={4} md={1} xs={12}>
-                        <img src={cardMC} alt="MasterCard" />
+            {msgAddPayment ? (
+              <Grid spacing={2}>
+                <Grid item md={12} xs={12} lg={12}>
+                  <Elements stripe={stripePromise} options={options}>
+                    <CheckoutForm />
+                  </Elements>
+                </Grid>
+              </Grid>
+            ) : (
+              <Grid container spacing={2}>
+                <Grid item md={12} xs={12}>
+                  <div className={styles.inputWrapper}>
+                    {msgAddPayment ? null : (
+                      <Grid
+                        container
+                        spacing={-20}
+                        justifyContent="center"
+                        alignItems="center"
+                        className={styles.ctnCardSet}
+                      >
+                        <Grid item sm={4} md={1} xs={12}>
+                          <img src={cardVisa} alt="Visa" />
+                        </Grid>
+                        <Grid item sm={4} md={1} xs={12}>
+                          <img src={cardMC} alt="MasterCard" />
+                        </Grid>
+                        <Grid item sm={4} md={1} xs={12}>
+                          <img src={cardAE} alt="AmericanExpress" />
+                        </Grid>
+                        <Grid item sm={4} md={1} xs={12}>
+                          <img src={cardUP} alt="Unionpay" />
+                        </Grid>
                       </Grid>
-                    </Grid>
-                  ) : (
-                    <Grid
-                      container
-                      spacing={-20}
-                      justifyContent="center"
-                      alignItems="center"
-                      className={styles.ctnCardSet}
-                    >
-                      <Grid item sm={4} md={1} xs={12}>
-                        <img src={cardVisa} alt="Visa" />
-                      </Grid>
-                      <Grid item sm={4} md={1} xs={12}>
-                        <img src={cardMC} alt="MasterCard" />
-                      </Grid>
-                      <Grid item sm={4} md={1} xs={12}>
-                        <img src={cardAE} alt="AmericanExpress" />
-                      </Grid>
-                      <Grid item sm={4} md={1} xs={12}>
-                        <img src={cardUP} alt="Unionpay" />
-                      </Grid>
-                    </Grid>
-                  )}
+                    )}
 
-                  <InputLabel shrink>Card Number</InputLabel>
-                  <TextField
-                    value={values.cardNumber}
-                    onChange={handleChange('cardNumber')}
-                    error={errorMessage.cardNumber}
-                    helperText={errorMessage.cardNumber}
-                    size="small"
-                    fullWidth
-                  />
+                    <InputLabel shrink>Card Number</InputLabel>
+                    <TextField
+                      value={values.cardNumber}
+                      onChange={handleChange('cardNumber')}
+                      error={errorMessage.cardNumber}
+                      helperText={errorMessage.cardNumber}
+                      size="small"
+                      fullWidth
+                    />
+                  </div>
+                </Grid>
+                <Grid item md={5.4} xs={12}>
+                  <div className={styles.inputWrapper}>
+                    <InputLabel shrink>Expiration</InputLabel>
+                    <TextField
+                      value={values.expiration}
+                      onChange={handleChange('expiration')}
+                      error={errorMessage.expiration}
+                      helperText={errorMessage.expiration}
+                      size="small"
+                      fullWidth
+                    />
+                  </div>
+                </Grid>
+                <Grid item md={5.4} xs={12}>
+                  <div className={styles.inputWrapper}>
+                    <InputLabel shrink>CVC</InputLabel>
+                    <TextField
+                      value={values.cvc}
+                      onChange={handleChange('cvc')}
+                      error={errorMessage.cvc}
+                      helperText={errorMessage.cvc}
+                      size="small"
+                      fullWidth
+                    />
+                  </div>
+                </Grid>
+                <Grid item md={1.2} xs={12}>
+                  <img src={cardCVC} className={styles.ctnCvc} alt="Visa" />
+                </Grid>
+                <Grid item md={12} xs={12}>
+                  <div className={styles.inputWrapper}>
+                    <InputLabel shrink>Country</InputLabel>
+                    <TextField
+                      value={values.countryFirst}
+                      onChange={handleChange('countryFirst')}
+                      error={errorMessage.countryFirst}
+                      helperText={errorMessage.countryFirst}
+                      size="small"
+                      fullWidth
+                    />
+                  </div>
+                </Grid>
+                <div style={{ width: '99%', marginLeft: 16 }}>
+                  <Typography variant="body5" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
+                    {msgAddPayment
+                      ? 'By providing your card details, you consent to WALLETADS charging your card for future payments in accordance with its terms.'
+                      : ''}
+                  </Typography>
                 </div>
               </Grid>
-              <Grid item md={5.4} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Expiration</InputLabel>
-                  <TextField
-                    value={values.expiration}
-                    onChange={handleChange('expiration')}
-                    error={errorMessage.expiration}
-                    helperText={errorMessage.expiration}
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </Grid>
-              <Grid item md={5.4} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>CVC</InputLabel>
-                  <TextField
-                    value={values.cvc}
-                    onChange={handleChange('cvc')}
-                    error={errorMessage.cvc}
-                    helperText={errorMessage.cvc}
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </Grid>
-              <Grid item md={1.2} xs={12}>
-                <img src={cardCVC} className={styles.ctnCvc} alt="Visa" />
-              </Grid>
-              <Grid item md={12} xs={12}>
-                <div className={styles.inputWrapper}>
-                  <InputLabel shrink>Country</InputLabel>
-                  <TextField
-                    value={values.countryFirst}
-                    onChange={handleChange('countryFirst')}
-                    error={errorMessage.countryFirst}
-                    helperText={errorMessage.countryFirst}
-                    size="small"
-                    fullWidth
-                  />
-                </div>
-              </Grid>
-              <div style={{ width: '99%', marginLeft: 16 }}>
-                <Typography variant="body5" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
-                  {msgAddPayment
-                    ? 'By providing your card details, you consent to WALLETADS charging your card for future payments in accordance with its terms.'
-                    : ''}
-                </Typography>
-              </div>
-            </Grid>
+            )}
+
             <Grid container spacing={4} justifyContent="center" alignItems="center">
               <Grid item sm={6} md={6} xs={12}>
                 <DefaultButton
@@ -729,7 +718,7 @@ export default function SettingUser({ userData }) {
                   ctnBtnStyle={styles.btnSave}
                   label={msgAddPayment ? 'Update' : 'Save'}
                   isLoading={isLoading}
-                  onClick={handleSubmit}
+                  onClick={() => setAPMCondition(false)}
                 />
               </Grid>
             </Grid>
@@ -1216,11 +1205,6 @@ export default function SettingUser({ userData }) {
         </Grid>
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2}>
-          <Grid>
-          <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm/>
-          </Elements>
-          </Grid>
           <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
