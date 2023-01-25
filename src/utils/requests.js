@@ -1,6 +1,19 @@
 import moment from 'moment';
 import axios from './axios';
 
+export const savePaymentCC = (data) =>
+  axios({
+    url: '/payment',
+    method: 'POST',
+    data,
+  });
+
+export const getPaymentCC = () =>
+  axios({
+    url: '/payment/add-card',
+    method: 'GET',
+  });
+
 export const verifyAccount = (token, ctx) =>
   axios({
     url: `/auth/verify/${token}`,

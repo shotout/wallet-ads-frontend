@@ -9,15 +9,13 @@ import Layout from '../../layouts';
 import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import { handleUpdateProfile, handleUpdatePassword } from '../../utils/requests';
+import { handleUpdateProfile, handleUpdatePassword, getPaymentCC, savePaymentCC } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
 
-const stripePromise = loadStripe(
-  'pk_test_51Kj7bFIIpTIg11XJtvE76RnimbYycRpo2k8sXpjmKln27syw2XrJInmFJDC3QITWhbZYsQ8xtz5f24qHS1UTd7u600zZqhHYxF'
-);
+const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
 const mailSuccess = '/assets/svg/mail_success.svg';
 const trashIcon = '/assets/trash.png';
@@ -152,6 +150,17 @@ export default function SettingUser({ userData }) {
     }
   };
 
+  const handleSubmitAPM = async () => {
+    try {
+      setLoading(true);
+      await savePaymentCC();
+      setLoading(false);
+      setAPMCondition(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
@@ -225,13 +234,23 @@ export default function SettingUser({ userData }) {
   };
 
   const resetStateAPM = async (e) => {
+    if (e == 'api') {
+      try {
+        setLoading(true);
+        const res = await getPaymentCC();
+        setLoading(false);
+        options.clientSecret = res[0].data[0].client_secret;
+      } catch (err) {
+        console.log(err);
+      }
+    }
     setTimeout(() => {
       setPMCondition(false);
     }, 200);
     conditionAPM = !conditionAPM;
     setAPMCondition(conditionAPM);
 
-    if (e) setMsgAddPayment(true);
+    if (e == true) setMsgAddPayment(true);
     else setMsgAddPayment(false);
   };
 
@@ -613,7 +632,14 @@ export default function SettingUser({ userData }) {
                 />
               </div>
             </div>
-            {msgAddPayment ? (
+            <Grid spacing={2}>
+              <Grid item md={12} xs={12} lg={12}>
+                <Elements stripe={stripePromise} options={options}>
+                  <CheckoutForm />
+                </Elements>
+              </Grid>
+            </Grid>
+            {/* {msgAddPayment ? (
               <Grid spacing={2}>
                 <Grid item md={12} xs={12} lg={12}>
                   <Elements stripe={stripePromise} options={options}>
@@ -709,7 +735,7 @@ export default function SettingUser({ userData }) {
                   </Typography>
                 </div>
               </Grid>
-            )}
+            )} */}
 
             <Grid container spacing={4} justifyContent="center" alignItems="center">
               <Grid item sm={6} md={6} xs={12}>
@@ -718,7 +744,7 @@ export default function SettingUser({ userData }) {
                   ctnBtnStyle={styles.btnSave}
                   label={msgAddPayment ? 'Update' : 'Save'}
                   isLoading={isLoading}
-                  onClick={() => setAPMCondition(false)}
+                  onClick={() => handleSubmitAPM()}
                 />
               </Grid>
             </Grid>
@@ -798,9 +824,10 @@ export default function SettingUser({ userData }) {
                 </Grid>
                 <Grid item sm={6} md={6} xs={12}>
                   <DefaultButton
-                    onClick={() => resetStateAPM()}
+                    onClick={() => resetStateAPM('api')}
                     ctnBtnStyle={styles.btnStyle}
                     label={'Add credit card'}
+                    isLoading={isLoading}
                     eventName={'Pay with stripe'}
                   />
                 </Grid>
@@ -1205,7 +1232,8 @@ export default function SettingUser({ userData }) {
         </Grid>
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2}>
-          <Grid item md={9} sm={12}>
+          <Grid item md={9} sm={12}></Grid>
+          {/* <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
@@ -1234,10 +1262,10 @@ export default function SettingUser({ userData }) {
                 Expires on {'[MM/YY]'}
               </Typography>
             </Grid>
-            {/* <Typography variant="body4" textAlign={'left'}>
-              No payment method selected
-            </Typography> */}
-          </Grid>
+          </Grid> */}
+          {/* <Typography variant="body4" textAlign={'left'}>
+            No payment method selected
+          </Typography> */}
           <div className={styles.ctnGridRadius}>
             <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
               {/* Add Payment Method */}
