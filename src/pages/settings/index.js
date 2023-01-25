@@ -16,6 +16,7 @@ import {
   savePaymentCC,
   checkPaymentType,
   getPaymentDetails,
+  updatePaymentCC,
 } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
@@ -111,11 +112,20 @@ export default function SettingUser({ userData, params }) {
   }, []);
 
   const savePaymentType = async (type) => {
+    console.log(paymentType);
     const form = new FormData();
     form.append('payment_data', type);
-    await savePaymentCC(form);
+    if (typeof paymentType !== 'undefined') {
+      console.log('CREATE');
+      await savePaymentCC(form);
+    } else {
+      console.log('UPDATE');
+      form.append('_method', 'PATCH');
+      await updatePaymentCC(form);
+    }
     const paymentType = await checkPaymentType();
     setPaymentType(paymentType);
+    checkPayment();
   };
 
   const checkPayment = async () => {
@@ -872,6 +882,7 @@ export default function SettingUser({ userData, params }) {
                     ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
                     label={'I would like to pay using cryptocurrencies'}
                     eventName={'Pay with crypto'}
+                    onClick={() => savePaymentType('0')}
                   />
                 </Grid>
               </Grid>
@@ -1273,31 +1284,38 @@ export default function SettingUser({ userData, params }) {
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
-            <Grid container justifyContent="left" alignItems="center">
-              <Grid onClick={() => resetStateAPM()} item sm={3} md={0.5} xs={12}>
-                <img src={cardMC} alt="MasterCard" />
-              </Grid>
-              <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
-                <Typography fontWeight="900" variant="h6" textAlign={'left'}>
-                  {paymentDetails?.card.brand} {paymentDetails?.card.last4}
-                </Typography>
-              </Grid>
-              <Grid item md={2} sm={4} marginLeft={-10}>
-                <div onClick={() => resetStateAPM(true)} className={styles.ctnOption}>
-                  <img src={editIcon} alt="edit" />
-                </div>
-              </Grid>
-              <Grid item md={2} sm={4} marginLeft={-14}>
-                <div onClick={resetStateDPM} className={styles.ctnOption}>
-                  <img src={deleteIcon} alt="delete" />
-                </div>
-              </Grid>
-            </Grid>
-            <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
-              <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
-                Expires on {paymentDetails?.card.exp_month} / {paymentDetails?.card.exp_year}
-              </Typography>
-            </Grid>
+
+            {paymentType?.payment_data === '0' ? (
+              'using crypto'
+            ) : (
+              <>
+                <Grid container justifyContent="left" alignItems="center">
+                  <Grid onClick={() => resetStateAPM()} item sm={3} md={0.5} xs={12}>
+                    <img src={cardMC} alt="MasterCard" />
+                  </Grid>
+                  <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
+                    <Typography fontWeight="900" variant="h6" textAlign={'left'}>
+                      {paymentDetails?.card.brand} {paymentDetails?.card.last4}
+                    </Typography>
+                  </Grid>
+                  <Grid item md={2} sm={4} marginLeft={-10}>
+                    <div onClick={() => resetStateAPM(true)} className={styles.ctnOption}>
+                      <img src={editIcon} alt="edit" />
+                    </div>
+                  </Grid>
+                  <Grid item md={2} sm={4} marginLeft={-14}>
+                    <div onClick={resetStateDPM} className={styles.ctnOption}>
+                      <img src={deleteIcon} alt="delete" />
+                    </div>
+                  </Grid>
+                </Grid>
+                <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
+                  <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
+                    Expires on {paymentDetails?.card.exp_month} / {paymentDetails?.card.exp_year}
+                  </Typography>
+                </Grid>
+              </>
+            )}
           </Grid>
           {/* <Typography variant="body4" textAlign={'left'}>
             No payment method selected

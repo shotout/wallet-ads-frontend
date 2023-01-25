@@ -8,6 +8,13 @@ export const savePaymentCC = (data) =>
     data,
   });
 
+export const updatePaymentCC = (data) =>
+  axios({
+    url: '/payment/update',
+    method: 'POST',
+    data,
+  });
+
 export const getPaymentCC = () =>
   axios({
     url: '/payment/add-card',
