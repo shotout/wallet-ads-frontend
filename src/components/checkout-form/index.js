@@ -4,7 +4,7 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 const SetupForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-
+  const baseUrl = window.location.origin;
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (event) => {
@@ -22,7 +22,7 @@ const SetupForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3001/settings',
+        return_url: `${baseUrl}/settings`,
       },
     });
 
