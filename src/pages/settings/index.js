@@ -14,6 +14,7 @@ import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
+import { fi } from 'date-fns/locale';
 
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
@@ -64,7 +65,7 @@ var conditionCP = false;
 var conditionPM = false;
 var conditionAPM = false;
 
-export default function SettingUser({ userData }) {
+export default function SettingUser({ userData, params }) {
   const styles = useStyles();
 
   const [timer, setTimer] = useState(0);
@@ -91,6 +92,19 @@ export default function SettingUser({ userData }) {
       setCount(false);
     }
   }, [timer]);
+
+  useEffect(() => {
+    if (params.setup_intent_client_secret) {
+      savePaymentType('1');
+    }
+  }, []);
+
+  const savePaymentType = async (type) => {
+    const form = new FormData();
+    form.append('payment_data', type);
+    const saveType = await savePaymentCC(form);
+    console.log(saveType);
+  };
 
   const handleChangePicture = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -1232,7 +1246,7 @@ export default function SettingUser({ userData }) {
         </Grid>
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2}>
-          <Grid item md={9} sm={12}></Grid>
+          {/* <Grid item md={9} sm={12}></Grid> */}
           {/* <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
@@ -1315,8 +1329,6 @@ export async function getServerSideProps(context) {
     let params = {};
     if (context.query) {
       params = context.query;
-      console.log(params);
-      //call api untuk simpan metode pembayaran disini dalam case ini cc = 1
     }
 
     if (isMobile) {
@@ -1330,6 +1342,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         userData,
+        params,
       }, // will be passed to the page component as props
     };
   } catch (err) {
