@@ -9,7 +9,14 @@ import Layout from '../../layouts';
 import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
-import { handleUpdateProfile, handleUpdatePassword, getPaymentCC, savePaymentCC } from '../../utils/requests';
+import {
+  handleUpdateProfile,
+  handleUpdatePassword,
+  getPaymentCC,
+  savePaymentCC,
+  checkPaymentType,
+  getPaymentDetails,
+} from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -84,6 +91,8 @@ export default function SettingUser({ userData, params }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(defaultState);
+  const [paymentType, setPaymentType] = useState(null);
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
   useEffect(() => {
     if (timer > 0) {
@@ -96,14 +105,27 @@ export default function SettingUser({ userData, params }) {
   useEffect(() => {
     if (params.setup_intent_client_secret) {
       savePaymentType('1');
+    } else {
+      checkPayment();
     }
   }, []);
 
   const savePaymentType = async (type) => {
     const form = new FormData();
     form.append('payment_data', type);
-    const saveType = await savePaymentCC(form);
-    console.log(saveType);
+    await savePaymentCC(form);
+    const paymentType = await checkPaymentType();
+    setPaymentType(paymentType);
+  };
+
+  const checkPayment = async () => {
+    const paymentType = await checkPaymentType();
+    setPaymentType(paymentType);
+    if (paymentType?.payment_data === '1') {
+      const paymentDetails = await getPaymentDetails();
+      console.log(paymentDetails[0].data[0]);
+      setPaymentDetails(paymentDetails[0].data[0]);
+    }
   };
 
   const handleChangePicture = (acceptedFiles) => {
@@ -1247,7 +1269,7 @@ export default function SettingUser({ userData, params }) {
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2}>
           {/* <Grid item md={9} sm={12}></Grid> */}
-          {/* <Grid item md={9} sm={12}>
+          <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
@@ -1257,7 +1279,7 @@ export default function SettingUser({ userData, params }) {
               </Grid>
               <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
                 <Typography fontWeight="900" variant="h6" textAlign={'left'}>
-                  MasterCard . {'[LAST 4 CARD DIGITS]'}
+                  {paymentDetails?.card.brand} {paymentDetails?.card.last4}
                 </Typography>
               </Grid>
               <Grid item md={2} sm={4} marginLeft={-10}>
@@ -1273,10 +1295,10 @@ export default function SettingUser({ userData, params }) {
             </Grid>
             <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
               <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
-                Expires on {'[MM/YY]'}
+                Expires on {paymentDetails?.card.exp_month} / {paymentDetails?.card.exp_year}
               </Typography>
             </Grid>
-          </Grid> */}
+          </Grid>
           {/* <Typography variant="body4" textAlign={'left'}>
             No payment method selected
           </Typography> */}

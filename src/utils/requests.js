@@ -14,6 +14,18 @@ export const getPaymentCC = () =>
     method: 'GET',
   });
 
+export const checkPaymentType = () =>
+  axios({
+    url: '/payment/get-payment-type',
+    method: 'GET',
+  });
+
+export const getPaymentDetails = () =>
+  axios({
+    url: '/payment/retrive-card',
+    method: 'GET',
+  });
+
 export const verifyAccount = (token, ctx) =>
   axios({
     url: `/auth/verify/${token}`,
