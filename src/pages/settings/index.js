@@ -38,6 +38,11 @@ const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
 
+const imageObj = {
+  visa: cardVisa,
+  //
+};
+
 SettingUser.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
@@ -1288,8 +1293,8 @@ export default function SettingUser({ userData, params }) {
             ) : (
               <>
                 <Grid container justifyContent="left" alignItems="center">
-                  <Grid onClick={() => resetStateAPM()} item sm={3} md={0.5} xs={12}>
-                    <img src={cardMC} alt="MasterCard" />
+                  <Grid onClick={() => resetStateAPM()} item sm={2} md={1} xs={12}>
+                    <img src={imageObj[paymentDetails?.card.brand] ?? cardAE} alt="MasterCard" />
                   </Grid>
                   <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
                     <Typography fontWeight="900" variant="h6" textAlign={'left'}>
