@@ -112,16 +112,14 @@ export default function SettingUser({ userData, params }) {
   }, []);
 
   const savePaymentType = async (type) => {
-    console.log(paymentType);
     const form = new FormData();
     form.append('payment_data', type);
     if (typeof paymentType !== 'undefined') {
-      console.log('CREATE');
       await savePaymentCC(form);
     } else {
-      console.log('UPDATE');
       form.append('_method', 'PATCH');
       await updatePaymentCC(form);
+      setPMCondition(false);
     }
     const paymentType = await checkPaymentType();
     setPaymentType(paymentType);
