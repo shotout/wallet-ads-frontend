@@ -1312,6 +1312,13 @@ export async function getServerSideProps(context) {
     const userData = getUserData(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
+    let params = {};
+    if (context.query) {
+      params = context.query;
+      console.log(params);
+      //call api untuk simpan metode pembayaran disini dalam case ini cc = 1
+    }
+
     if (isMobile) {
       return {
         redirect: {
