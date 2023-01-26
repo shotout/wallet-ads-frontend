@@ -1300,15 +1300,15 @@ export default function SettingUser({ userData, params }) {
         <div className={styles.ctnGridBottom} />
         <Grid container spacing={2} display={'flex'} flexDirection={'row'}>
           {/* <Grid item md={9} sm={12}></Grid> */}
-          <Grid item md={8} sm={12}>
+          <Grid item md={9} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
 
             {paymentType?.payment_data === '0' && (
               <Box display={'flex'} flexDirection={'row'} paddingY={2}>
-                <img src={crypto} alt="crypto"/>
-                <Typography marginLeft={2} fontWeight={'bold'} >
+                <img src={crypto} alt="crypto" />
+                <Typography marginLeft={2} fontWeight={'bold'}>
                   Payment in cryptocurrencies
                 </Typography>
               </Box>
@@ -1344,7 +1344,7 @@ export default function SettingUser({ userData, params }) {
           {/* <Typography variant="body4" textAlign={'left'}>
             No payment method selected
           </Typography> */}
-          <Grid item md={4} sm={12}>
+          <Grid item md={3} sm={12}>
             <div className={styles.ctnGridRadius}>
               <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
                 {/* Add Payment Method */}
