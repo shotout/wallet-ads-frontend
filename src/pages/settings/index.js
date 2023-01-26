@@ -1364,7 +1364,7 @@ export default function SettingUser({ userData, params }) {
                     alignItems={'center'}
                   >
                     <Typography
-                      marginLeft={4}
+                      marginLeft={4.5}
                       fontWeight="500"
                       variant="body"
                       fontFamily={'Public Sans,sans-serif'}
