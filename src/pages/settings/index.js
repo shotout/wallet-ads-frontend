@@ -803,7 +803,7 @@ export default function SettingUser({ userData, params }) {
               </Grid>
             )} */}
 
-            <Grid container spacing={4} justifyContent="center" alignItems="center">
+            {/* <Grid container spacing={4} justifyContent="center" alignItems="center">
               <Grid item sm={6} md={6} xs={12}>
                 <DefaultButton
                   eventName={'Save'}
@@ -813,7 +813,7 @@ export default function SettingUser({ userData, params }) {
                   onClick={() => handleSubmitAPM()}
                 />
               </Grid>
-            </Grid>
+            </Grid> */}
           </div>
         </Box>
       </Popover>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import useStyles from './styles';
 
 const SetupForm = () => {
+  const styles = useStyles();
   const stripe = useStripe();
   const elements = useElements();
   const baseUrl = window.location.origin;
@@ -32,7 +34,6 @@ const SetupForm = () => {
       // details incomplete)
       setErrorMessage(error.message);
     } else {
-      console.log('sukses');
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
@@ -42,7 +43,9 @@ const SetupForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button disabled={!stripe}>Submit</button>
+      <button className={`${styles.ctnBtn}`} disabled={!stripe}>
+        Save
+      </button>
       {/* Show error message to your customers */}
       {errorMessage && <div>{errorMessage}</div>}
     </form>
