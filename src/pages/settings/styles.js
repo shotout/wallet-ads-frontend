@@ -35,6 +35,7 @@ export default makeStyles((theme) => ({
   ctnOption: {
     width: 30,
     height: 30,
+    marginRight: 10,
     cursor: 'pointer',
   },
   ctnCvc: {
