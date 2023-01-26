@@ -144,10 +144,10 @@ export default function SettingUser({ userData, params }) {
   const checkPayment = async () => {
     const paymentType = await checkPaymentType();
     setPaymentType(paymentType);
-    if (paymentType?.payment_data === '1') {
+    if (paymentType?.payment_method === '1') {
       const paymentDetails = await getPaymentDetails();
-      console.log(paymentDetails[0].data[0]);
-      setPaymentDetails(paymentDetails[0].data[0]);
+      console.log(paymentDetails);
+      setPaymentDetails(paymentDetails);
     }
   };
 
@@ -902,7 +902,7 @@ export default function SettingUser({ userData, params }) {
                     ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
                     label={'I would like to pay using cryptocurrencies'}
                     eventName={'Pay with crypto'}
-                    onClick={() => savePaymentType('0')}
+                    onClick={() => savePaymentType('2')}
                   />
                 </Grid>
               </Grid>
@@ -1305,7 +1305,7 @@ export default function SettingUser({ userData, params }) {
               Payment Method
             </Typography>
 
-            {paymentType?.payment_data === '0' && (
+            {paymentType?.payment_method === '2' && (
               <Box display={'flex'} flexDirection={'row'} paddingY={2}>
                 <img src={crypto} alt="crypto" />
                 <Typography marginLeft={2} fontWeight={'bold'}>
@@ -1313,15 +1313,15 @@ export default function SettingUser({ userData, params }) {
                 </Typography>
               </Box>
             )}
-            {paymentType?.payment_data === '1' && (
+            {paymentType?.payment_method === '1' && (
               <>
                 <Grid container justifyContent="left" alignItems="center">
                   <Grid onClick={() => resetStateAPM()} item sm={2} md={1} xs={12}>
-                    <img src={imageObj[paymentDetails?.card.brand] ?? cardAE} alt="MasterCard" />
+                    <img src={imageObj[paymentDetails?.card_type] ?? cardAE} alt="MasterCard" />
                   </Grid>
                   <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
                     <Typography fontWeight="900" variant="h6" textAlign={'left'}>
-                      {strObj[paymentDetails?.card.brand]} - {paymentDetails?.card.last4}
+                      {strObj[paymentDetails?.card_type]} - {paymentDetails?.card_last4}
                     </Typography>
                   </Grid>
                   <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
@@ -1335,7 +1335,7 @@ export default function SettingUser({ userData, params }) {
                 </Grid>
                 <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
                   <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
-                    Expires on {paymentDetails?.card.exp_month} / {paymentDetails?.card.exp_year}
+                    Expires on {paymentDetails?.card_exp_month} / {paymentDetails?.card_exp_year}
                   </Typography>
                 </Grid>
               </>
