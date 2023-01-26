@@ -23,7 +23,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
 
-
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
 const mailSuccess = '/assets/svg/mail_success.svg';
@@ -37,10 +36,20 @@ const cardMC = '/assets/mastercard.png';
 const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
+const crypto = '/assets/crypto.png';
 
 const imageObj = {
   visa: cardVisa,
-  //
+  mastercard: cardMC,
+  amex: cardAE,
+  unionpay: cardUP,
+};
+
+const strObj = {
+  visa: 'Visa',
+  mastercard: 'Mastercard',
+  amex: 'American Express',
+  unionpay: 'Union Pay',
 };
 
 SettingUser.getLayout = function getLayout(page) {
@@ -96,6 +105,7 @@ export default function SettingUser({ userData, params }) {
   const [values, setValues] = useState(userData.data);
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
+  const [isLoadingCC, setLoadingCC] = useState(false);
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [paymentType, setPaymentType] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -263,6 +273,13 @@ export default function SettingUser({ userData, params }) {
     setDPMCondition(conditionDPM);
   };
 
+  const deletePaymentState = () => {
+    setPaymentType(null);
+    setPaymentDetails(null);
+    savePaymentType('-');
+    resetStateDPM();
+  };
+
   const resetStateSCP = (e) => {
     if (e) {
       setCPCondition(false);
@@ -285,9 +302,9 @@ export default function SettingUser({ userData, params }) {
   const resetStateAPM = async (e) => {
     if (e == 'api') {
       try {
-        setLoading(true);
+        setLoadingCC(true);
         const res = await getPaymentCC();
-        setLoading(false);
+        setLoadingCC(false);
         options.clientSecret = res[0].data[0].client_secret;
       } catch (err) {
         console.log(err);
@@ -382,7 +399,7 @@ export default function SettingUser({ userData, params }) {
                   ctnBtnStyle={styles.btnSave}
                   label={'Yes'}
                   isLoading={isLoading}
-                  onClick={resetStateDPM}
+                  onClick={deletePaymentState}
                 />
               </Grid>
               <Grid item md={5.4} xs={12}>
@@ -876,7 +893,7 @@ export default function SettingUser({ userData, params }) {
                     onClick={() => resetStateAPM('api')}
                     ctnBtnStyle={styles.btnStyle}
                     label={'Add credit card'}
-                    isLoading={isLoading}
+                    isLoading={isLoadingCC}
                     eventName={'Pay with stripe'}
                   />
                 </Grid>
@@ -1281,16 +1298,22 @@ export default function SettingUser({ userData, params }) {
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-        <Grid container spacing={2}>
+        <Grid container spacing={2} display={'flex'} flexDirection={'row'}>
           {/* <Grid item md={9} sm={12}></Grid> */}
-          <Grid item md={9} sm={12}>
+          <Grid item md={8} sm={12}>
             <Typography variant="h6" textAlign={'left'}>
               Payment Method
             </Typography>
 
-            {paymentType?.payment_data === '0' ? (
-              'using crypto'
-            ) : (
+            {paymentType?.payment_data === '0' && (
+              <Box display={'flex'} flexDirection={'row'} paddingY={2}>
+                <img src={crypto} alt="crypto"/>
+                <Typography marginLeft={2} fontWeight={'bold'} >
+                  Payment in cryptocurrencies
+                </Typography>
+              </Box>
+            )}
+            {paymentType?.payment_data === '1' && (
               <>
                 <Grid container justifyContent="left" alignItems="center">
                   <Grid onClick={() => resetStateAPM()} item sm={2} md={1} xs={12}>
@@ -1298,15 +1321,13 @@ export default function SettingUser({ userData, params }) {
                   </Grid>
                   <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
                     <Typography fontWeight="900" variant="h6" textAlign={'left'}>
-                      {paymentDetails?.card.brand} {paymentDetails?.card.last4}
+                      {strObj[paymentDetails?.card.brand]} - {paymentDetails?.card.last4}
                     </Typography>
                   </Grid>
-                  <Grid item md={2} sm={4} marginLeft={-10}>
-                    <div onClick={() => resetStateAPM(true)} className={styles.ctnOption}>
+                  <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
+                    <div onClick={() => resetStateAPM('api')} className={styles.ctnOption}>
                       <img src={editIcon} alt="edit" />
                     </div>
-                  </Grid>
-                  <Grid item md={2} sm={4} marginLeft={-14}>
                     <div onClick={resetStateDPM} className={styles.ctnOption}>
                       <img src={deleteIcon} alt="delete" />
                     </div>
@@ -1323,12 +1344,14 @@ export default function SettingUser({ userData, params }) {
           {/* <Typography variant="body4" textAlign={'left'}>
             No payment method selected
           </Typography> */}
-          <div className={styles.ctnGridRadius}>
-            <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
-              {/* Add Payment Method */}
-              Change payment method
-            </Typography>
-          </div>
+          <Grid item md={4} sm={12}>
+            <div className={styles.ctnGridRadius}>
+              <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
+                {/* Add Payment Method */}
+                Change payment method
+              </Typography>
+            </div>
+          </Grid>
         </Grid>
       </div>
     );
