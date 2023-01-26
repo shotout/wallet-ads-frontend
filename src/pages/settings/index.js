@@ -1302,12 +1302,18 @@ export default function SettingUser({ userData, params }) {
         <Grid container spacing={2} display={'flex'} flexDirection={'row'}>
           {/* <Grid item md={9} sm={12}></Grid> */}
           <Grid item md={9} sm={12}>
-            <Typography variant="h6" textAlign={'left'}>
+            <Typography variant="h6" textAlign={'left'} marginBottom={2}>
               Payment Method
             </Typography>
 
+            {paymentType?.payment_method === '-' && (
+              <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
+                No payment method selected
+              </Typography>
+            )}
+
             {paymentType?.payment_method === '2' && (
-              <Box display={'flex'} flexDirection={'row'} paddingY={2}>
+              <Box display={'flex'} flexDirection={'row'}>
                 <img src={crypto} alt="crypto" />
                 <Typography marginLeft={2} fontWeight={'bold'}>
                   Payment in cryptocurrencies
@@ -1317,12 +1323,21 @@ export default function SettingUser({ userData, params }) {
             {paymentType?.payment_method === '1' && (
               <>
                 <Grid container justifyContent="left" alignItems="center">
-                  <Grid onClick={() => resetStateAPM()} item sm={2} md={1} xs={12}>
-                    <img src={imageObj[paymentDetails?.card_type] ?? cardAE} alt="MasterCard" />
+                  <Grid
+                    onClick={() => resetStateAPM()}
+                    item
+                    sm={2}
+                    md={1}
+                    xs={12}
+                    display={'flex'}
+                    justifyContent={'flex-start'}
+                    alignItems={'center'}
+                  >
+                    <img src={imageObj[paymentDetails?.card_type] ?? cardCVC} alt="MasterCard" style={{ width: 200 }} />
                   </Grid>
-                  <Grid onClick={() => resetStateAPM()} item md={6} sm={12}>
-                    <Typography fontWeight="900" variant="h6" textAlign={'left'}>
-                      {strObj[paymentDetails?.card_type]} - {paymentDetails?.card_last4}
+                  <Grid item md={6} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
+                    <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
+                      {strObj[paymentDetails?.card_type]} <span>&bull;</span> {paymentDetails?.card_last4}
                     </Typography>
                   </Grid>
                   <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
@@ -1334,10 +1349,30 @@ export default function SettingUser({ userData, params }) {
                     </div>
                   </Grid>
                 </Grid>
-                <Grid onClick={() => resetStateAPM()} item md={9} sm={12}>
-                  <Typography marginLeft={5} fontWeight="900" variant="body4" textAlign={'left'}>
-                    Expires on {paymentDetails?.card_exp_month} / {paymentDetails?.card_exp_year}
-                  </Typography>
+
+                <Grid container md={9} sm={12}>
+                  <Grid item sm={2} md={1} xs={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
+                    {/* <img src={imageObj[paymentDetails?.card_type] ?? cardCVC} alt="MasterCard" style={{ width: 200 }} /> */}
+                  </Grid>
+                  <Grid
+                    item
+                    sm={10}
+                    md={10}
+                    xs={12}
+                    display={'flex'}
+                    justifyContent={'flex-start'}
+                    alignItems={'center'}
+                  >
+                    <Typography
+                      marginLeft={4}
+                      fontWeight="500"
+                      variant="body"
+                      fontFamily={'Public Sans,sans-serif'}
+                      color={'grey'}
+                    >
+                      Expires on {paymentDetails?.card_exp_month} / {paymentDetails?.card_exp_year}
+                    </Typography>
+                  </Grid>
                 </Grid>
               </>
             )}
@@ -1346,8 +1381,8 @@ export default function SettingUser({ userData, params }) {
             No payment method selected
           </Typography> */}
           <Grid item md={3} sm={12}>
-            <div className={styles.ctnGridRadius}>
-              <Typography onClick={resetStatePM} variant="body5" textAlign={'center'}>
+            <div className={styles.ctnGridRadius} onClick={resetStatePM}>
+              <Typography variant="body5" textAlign={'center'}>
                 {/* Add Payment Method */}
                 Change payment method
               </Typography>

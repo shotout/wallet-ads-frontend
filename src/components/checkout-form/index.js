@@ -7,9 +7,11 @@ const SetupForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const baseUrl = window.location.origin;
+  const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const handleSubmit = async (event) => {
+    setIsLoading(!isLoading);
     // We don't want to let default form submission happen here,
     // which would refresh the page.
     event.preventDefault();
@@ -29,11 +31,13 @@ const SetupForm = () => {
     });
 
     if (error) {
+      setIsLoading(false);
       // This point will only be reached if there is an immediate error when
       // confirming the payment. Show error to your customer (for example, payment
       // details incomplete)
       setErrorMessage(error.message);
     } else {
+      setIsLoading(false);
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
@@ -43,8 +47,8 @@ const SetupForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button className={`${styles.ctnBtn}`} disabled={!stripe}>
-        Save
+      <button className={`${styles.ctnBtn}`} disabled={isLoading}>
+        {isLoading ? 'Loading' : 'Save'}
       </button>
       {/* Show error message to your customers */}
       {errorMessage && <div>{errorMessage}</div>}
