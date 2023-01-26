@@ -987,8 +987,8 @@ export default function AddCampaign({ content, params }) {
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
-  const deactivateErrorCampaign = () => {
-    if (errorBox.errorAds) {
+  const deactivateErrorCampaign = (e) => {
+    if (errorBox.errorAds || e.target.value) {
       setErrorBox({
         ...errorBox,
         errorBoxCampaignName: false,
@@ -1423,7 +1423,7 @@ export default function AddCampaign({ content, params }) {
               type="text"
               onChange={(event) => {
                 handleChangeValues(event, 'campaign_name');
-                deactivateErrorCampaign();
+                deactivateErrorCampaign(event);
               }}
               value={formValues.campaign_name}
             />
