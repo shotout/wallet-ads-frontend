@@ -1045,12 +1045,12 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const deactivateErrorBoxAds = () => {
-    if (errorBox.errorAds) {
-      setErrorBox({
-        ...errorBox,
-        errorAds: false,
-      });
-    }
+    // if (errorBox.errorAds) {
+    //   setErrorBox({
+    //     ...errorBox,
+    //     errorAds: false,
+    //   });
+    // }
   };
 
   const handleHoverOpen = (event, popoverName) => {
@@ -2536,13 +2536,13 @@ export default function AddCampaign({ userData, content, params }) {
                           index,
                           item
                         );
-                        // if (!item.optimized) return;
+                        if (!item.optimized) return;
 
                         if (
                           item.optimized ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
-                          deactivateErrorBoxAds();
+                          // deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
                         } else {
                           !emptyAudience && handleAlertErrorOpen(event, 'Audience');
