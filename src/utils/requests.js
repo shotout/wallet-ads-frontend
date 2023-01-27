@@ -1,6 +1,13 @@
 import moment from 'moment';
 import axios from './axios';
 
+export const paymentChargeCard = (data) =>
+  axios({
+    url: '/payment/charge-card',
+    method: 'POST',
+    data,
+  });
+
 export const savePaymentCC = (data) =>
   axios({
     url: '/payment',

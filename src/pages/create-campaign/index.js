@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
+import { Box, Divider, Grid, Popover, Typography, Collapse, Alert } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { getUserData } from '../../helpers/auth';
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
 import {
@@ -28,6 +29,7 @@ import {
   handleEditCampaign,
   getProfilUser,
   cancelStripe,
+  paymentChargeCard,
 } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
@@ -97,7 +99,7 @@ const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
 const iconPlus = '/assets/icon-plus.png';
 
-export default function AddCampaign({ content, params }) {
+export default function AddCampaign({ userData, content, params }) {
   const styles = useStyles();
   const initDecription = [
     {
@@ -107,6 +109,8 @@ export default function AddCampaign({ content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+
+  const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
@@ -437,6 +441,27 @@ export default function AddCampaign({ content, params }) {
   };
 
   const directStripe = async (params) => {
+    if (userData.data && userData.data.customer_id) {
+      try {
+        const res = await paymentChargeCard({ total_budget: 1000, campaign_name: 'Test campaign' });
+        setShowCreditCard({
+          ...showCreditCard,
+          isVisible: false,
+        });
+        setTimeout(() => {
+          setModalSuccess('cryptocurrency');
+        }, 300);
+        if (res) {
+          setTimeout(() => {
+            window.open(res.receipt_url, '_blank');
+          }, 1200);
+        }
+      } catch (err) {
+        Alert('Sorry, Payment Failed !');
+      }
+      return;
+    }
+
     setShowCreditCard({
       ...showCreditCard,
       isPaymentLoading: true,
@@ -2708,6 +2733,7 @@ export default function AddCampaign({ content, params }) {
 
 export async function getServerSideProps(context) {
   try {
+    const userData = getUserData(context);
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
@@ -2730,6 +2756,7 @@ export async function getServerSideProps(context) {
     }
     return {
       props: {
+        userData,
         content,
         params,
       }, // will be passed to the page component as props
