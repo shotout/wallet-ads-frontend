@@ -143,13 +143,21 @@ export default function SettingUser({ userData, params }) {
   };
 
   const checkPayment = async () => {
+    console.log('CEK');
     const paymentType = await checkPaymentType();
+    console.log(paymentType);
     setPaymentType(paymentType);
     if (paymentType?.payment_method === '1') {
       const paymentDetails = await getPaymentDetails();
       console.log(paymentDetails);
       setPaymentDetails(paymentDetails);
     }
+  };
+
+  const deletePaymentType = async () => {
+    await deletePaymentmethod();
+    // checkPayment();
+    window.location.href = '/settings';
   };
 
   const handleChangePicture = (acceptedFiles) => {
@@ -277,7 +285,7 @@ export default function SettingUser({ userData, params }) {
   const deletePaymentState = () => {
     setPaymentType(null);
     setPaymentDetails(null);
-    deletePaymentmethod();
+    deletePaymentType();
     resetStateDPM();
   };
 
