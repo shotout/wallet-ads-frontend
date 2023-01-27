@@ -317,20 +317,25 @@ export default function AddCampaign({ userData, content, params }) {
         ads_page_token_symbol: adsPage.token_symbol,
       });
 
-      // const sampleAds = JSON.parse(content.sample_address);
+      const sampleAds = JSON.parse(content.sample_address);
+      console.log('TYPE', sampleAds[0]);
 
-      // if (content.sample_address) {
-      //   setSampleAds([]); // reset ads to null
-      //   sampleAds[0]?.map((v) => {
-      //     setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
-      //   });
-      //   setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
-      // }
-      sampleAds.forEach((itemAds, indexAds) => {
-        sample[0].forEach((sampleAds, indexSample) => {
-          if (indexAds == indexSample) itemAds.sampleAd = sampleAds;
+      if (typeof sampleAds === 'object' && sampleAds[0] !== null) {
+        setSampleAds([]); // reset ads to null
+        sampleAds[0]?.map((v) => {
+          setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
         });
-      });
+        setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
+      }
+      // console.log('TYPE', typeof sampleAds);
+      // if (typeof sampleAds === 'object') {
+      //   sampleAds.forEach((itemAds, indexAds) => {
+      //     itemAds.forEach((sampleAds, indexSample) => {
+      //       console.log(sampleAds);
+      //       if (indexAds == indexSample) itemAds.sampleAd = sampleAds;
+      //     });
+      //   });
+      // }
     }
   }, []);
 
@@ -441,8 +446,10 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const directStripe = async (params) => {
+    const checkUser = await getProfilUser();
+
     const campaign = await createCampaignId();
-    if (userData.data && userData.data.customer_id) {
+    if (checkUser.data.customer_id) {
       try {
         const res = await paymentChargeCard({
           total_budget: getTotalBudget(audienceForm) * 100,
@@ -450,21 +457,30 @@ export default function AddCampaign({ userData, content, params }) {
         });
         setShowCreditCard({
           ...showCreditCard,
-          isVisible: false,
+          isPaymentLoading: true,
         });
-        setTimeout(() => {
-          setModalSuccess('cryptocurrency');
-        }, 300);
+
         if (res) {
+          // setModalSuccess('cryptocurrency');
+          // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
           setTimeout(() => {
             window.open(res.receipt_url, '_blank');
-          }, 1200);
+          }, 5000);
+
+          setTimeout(() => {
+            setShowCreditCard({ ...showCreditCard, isVisible: false });
+            setModalSuccess('cryptocurrency');
+          }, 4000);
         }
       } catch (err) {
-        Alert('Sorry, Payment Failed !');
+        alert('Sorry, Payment Failed !');
       }
       return;
     } else {
+      setShowCreditCard({
+        ...showCreditCard,
+        isPaymentLoading: true,
+      });
       const session = await createSession({
         promo: params,
         campaign_id: campaign.data.id,
@@ -475,11 +491,6 @@ export default function AddCampaign({ userData, content, params }) {
       setShowCreditCard({ ...showCreditCard });
       window.location.href = session?.url;
     }
-
-    setShowCreditCard({
-      ...showCreditCard,
-      isPaymentLoading: true,
-    });
   };
 
   const getAudienceArr = () => {
@@ -2721,14 +2732,6 @@ export default function AddCampaign({ userData, content, params }) {
           createCampaignID={createCampaignId}
         />
         <LoadingPage show={showCreditCard.isPaymentLoading} />
-        {/* <CreditCard
-          callbackSuccess={(modalType) => {
-            handleSubmit(modalType)
-          }}
-          totalBudget={getTotalBudget(audienceForm)}
-          isVisible={showCreditCard}
-          // isVisible
-          handleHoverClose={() => { setShowCreditCard(null)}} /> */}
       </div>
     </Page>
   );

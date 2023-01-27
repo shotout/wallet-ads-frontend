@@ -17,6 +17,7 @@ import {
   checkPaymentType,
   getPaymentDetails,
   updatePaymentCC,
+  deletePaymentmethod,
 } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
@@ -276,7 +277,7 @@ export default function SettingUser({ userData, params }) {
   const deletePaymentState = () => {
     setPaymentType(null);
     setPaymentDetails(null);
-    savePaymentType('-');
+    deletePaymentmethod();
     resetStateDPM();
   };
 
@@ -1306,7 +1307,7 @@ export default function SettingUser({ userData, params }) {
               Payment Method
             </Typography>
 
-            {paymentType?.payment_method === '-' && (
+            {paymentType?.payment_method === '0' && (
               <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
                 No payment method selected
               </Typography>

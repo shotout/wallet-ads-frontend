@@ -15,6 +15,12 @@ export const savePaymentCC = (data) =>
     data,
   });
 
+export const deletePaymentmethod = () =>
+  axios({
+    url: '/payment/delete-payment',
+    method: 'GET',
+  });
+
 export const updatePaymentCC = (data) =>
   axios({
     url: '/payment/update',
