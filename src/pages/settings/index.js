@@ -390,7 +390,7 @@ export default function SettingUser({ userData, params }) {
             </Grid>
             <Grid item width={300} md={6} xs={12}>
               <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
-                Are you want to delete this payment method?
+                Are you sure want to delete this payment method?
               </Typography>
             </Grid>
             <Grid container>
@@ -1385,7 +1385,7 @@ export default function SettingUser({ userData, params }) {
             <div className={styles.ctnGridRadius} onClick={resetStatePM}>
               <Typography variant="body5" textAlign={'center'}>
                 {/* Add Payment Method */}
-                Change payment method
+                {paymentType?.payment_method === '0' ? 'Add payment method' : 'Change payment method'}
               </Typography>
             </div>
           </Grid>
