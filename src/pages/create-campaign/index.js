@@ -441,9 +441,13 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const directStripe = async (params) => {
+    const campaign = await createCampaignId();
     if (userData.data && userData.data.customer_id) {
       try {
-        const res = await paymentChargeCard({ total_budget: 1000, campaign_name: 'Test campaign' });
+        const res = await paymentChargeCard({
+          total_budget: getTotalBudget(audienceForm) * 100,
+          campaign_name: campaign.data.name,
+        });
         setShowCreditCard({
           ...showCreditCard,
           isVisible: false,
@@ -460,23 +464,22 @@ export default function AddCampaign({ userData, content, params }) {
         Alert('Sorry, Payment Failed !');
       }
       return;
+    } else {
+      const session = await createSession({
+        promo: params,
+        campaign_id: campaign.data.id,
+        campaign_name: campaign.data.name,
+        total_budget: getTotalBudget(audienceForm) * 100,
+      });
+      trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+      setShowCreditCard({ ...showCreditCard });
+      window.location.href = session?.url;
     }
 
     setShowCreditCard({
       ...showCreditCard,
       isPaymentLoading: true,
     });
-
-    const campaign = await createCampaignId();
-    const session = await createSession({
-      promo: params,
-      campaign_id: campaign.data.id,
-      campaign_name: campaign.data.name,
-      total_budget: getTotalBudget(audienceForm) * 100,
-    });
-    trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
-    setShowCreditCard({ ...showCreditCard });
-    window.location.href = session?.url;
   };
 
   const getAudienceArr = () => {
