@@ -2593,6 +2593,8 @@ export default function AddCampaign({ userData, content, params }) {
               className={styles.ctnIconDeletAds}
               onClick={() => {
                 setPicture(pictureData.filter((ads) => ads.adsId !== content.adsId));
+                deactivateErrorBoxAds();
+                setErrorBox({errorFirstAds: false});
               }}
             >
               <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
@@ -2628,6 +2630,8 @@ export default function AddCampaign({ userData, content, params }) {
           const currentArr = [...pictureData];
           currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
           setPicture(currentArr);
+          deactivateErrorBoxAds();
+          setErrorBox({errorFirstAds: false});
         }}
       >
         <img src={addIcon} alt="addIcon" />
