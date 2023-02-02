@@ -43,6 +43,7 @@ import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
 import SvgIconStyle from '../../components/SvgIconStyle';
 import { trackGoal, GTMTracker } from '../../utils/tracker';
+// import * as yup from 'yup';
 
 const questionObj = {
   collection_page_text: 'Add a text for your collection page to describe what it is about.',
@@ -109,7 +110,7 @@ export default function AddCampaign({ userData, content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
-
+  // const [errors, setErrors] = useState({});
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
@@ -749,7 +750,24 @@ export default function AddCampaign({ userData, content, params }) {
     return duplicateValue;
   };
 
-  const validateSubmit = () => {
+  const validateSubmit = async() => {
+    // const schema = yup.object().shape({
+    //   campaign_name: yup.string().required(),
+    // });
+
+    // try {
+    //   await schema.validate(formValues, {abortEarly: false});
+    //   setErrors({})
+    // } catch (error) {
+    //   const validationErrors = {};
+    //   error.inner.forEach(err => {
+    //     validationErrors[err.path] = err.message;
+    //   });
+    //   setErrors(validationErrors);
+    //   console.log('err', validationErrors, errors)
+    //   return error.errors;
+    // }
+    // return 
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1138,6 +1156,8 @@ export default function AddCampaign({ userData, content, params }) {
     setAudienceForm(restructureData);
     setSelectedAudience(null);
     setEmptyAudience(false);
+    deactivateErrorBoxAds();
+    setErrorBox({errorFirstAds: false});
   };
 
   const handleAddAudience = () => {
@@ -1444,6 +1464,7 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   function renderCampaignName() {
+    // className={`${styles.ctnSection} ${errors.campaign_name ? styles.ctnRedBorder : ''}`}
     return (
       <div
         className={`${styles.ctnSection} ${errorBox.errorBoxCampaignName ? styles.ctnRedBorder : ''}`}
@@ -1872,6 +1893,8 @@ export default function AddCampaign({ userData, content, params }) {
                     }));
                     setPicture(fixingAds);
                     setAudienceForm(fixingData);
+                    deactivateErrorBoxAds();
+                    setErrorBox({errorFirstAds: false});
                   }}
                   selectedAudience={selectedAudience}
                   selectedPage={selectedAudience === index}
@@ -2584,6 +2607,8 @@ export default function AddCampaign({ userData, content, params }) {
               className={styles.ctnIconDeletAds}
               onClick={() => {
                 setPicture(pictureData.filter((ads) => ads.adsId !== content.adsId));
+                deactivateErrorBoxAds();
+                setErrorBox({errorFirstAds: false});
               }}
             >
               <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
@@ -2619,6 +2644,8 @@ export default function AddCampaign({ userData, content, params }) {
           const currentArr = [...pictureData];
           currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
           setPicture(currentArr);
+          deactivateErrorBoxAds();
+          setErrorBox({errorFirstAds: false});
         }}
       >
         <img src={addIcon} alt="addIcon" />
