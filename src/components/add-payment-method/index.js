@@ -269,7 +269,7 @@ export default function AddPaymentMethod({
                   onClick={() => handlePaymentChoose('crypto')}
                   label={'I would like to pay using cryptocurrencies'}
                   eventName={'Pay with crypto'}
-                  isLoading={loading || loadingBtn}
+                  isLoading={loading}
                   disabled={loading || isPaymentLoading}
                 />
               </Grid>
