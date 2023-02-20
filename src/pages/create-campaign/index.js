@@ -2775,7 +2775,7 @@ export default function AddCampaign({ userData, content, params }) {
         className={styles.btnCreateAd}
         onClick={() => {
           const currentArr = [...pictureData];
-          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() });
           setPicture(currentArr);
           deactivateErrorBoxAds();
           setErrorBox({ errorFirstAds: false });
