@@ -1,6 +1,21 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
+  btnLogo: {
+    display: 'flex',
+    border: '1px solid #808080',
+    padding: 8
+  },
+  ctnLogo: {
+    background: '#D9D9D9',
+    width: 100,
+    height: 100,
+    marginLeft: 20,
+    // position: 'absolute',
+    // bottom: -90,
+    borderRadius: 10,
+    border: '4px solid #fff',
+  },
   ctnBanner: {
     position: 'relative',
     cursor: 'pointer',

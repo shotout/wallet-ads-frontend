@@ -718,6 +718,27 @@ const useStyles = makeStyles((theme) => ({
       marginRight: 10,
     },
   },
+  addAdButton2: {
+    border: 0,
+    height: 44,
+    width: '100%',
+    background: '#F1F1F1',
+    borderRadius: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontFamily: 'Public Sans,sans-serif',
+    paddingTop: 20,
+    marginTop: 44,
+    paddingBottom: 20,
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 25,
+      marginRight: 10,
+    },
+  },
 }));
 
 export default useStyles;

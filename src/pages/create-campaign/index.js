@@ -750,7 +750,7 @@ export default function AddCampaign({ userData, content, params }) {
     return duplicateValue;
   };
 
-  const validateSubmit = async() => {
+  const validateSubmit = async () => {
     // const schema = yup.object().shape({
     //   campaign_name: yup.string().required(),
     // });
@@ -767,7 +767,7 @@ export default function AddCampaign({ userData, content, params }) {
     //   console.log('err', validationErrors, errors)
     //   return error.errors;
     // }
-    // return 
+    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1157,7 +1157,7 @@ export default function AddCampaign({ userData, content, params }) {
     setSelectedAudience(null);
     setEmptyAudience(false);
     deactivateErrorBoxAds();
-    setErrorBox({errorFirstAds: false});
+    setErrorBox({ errorFirstAds: false });
   };
 
   const handleAddAudience = () => {
@@ -1894,7 +1894,7 @@ export default function AddCampaign({ userData, content, params }) {
                     setPicture(fixingAds);
                     setAudienceForm(fixingData);
                     deactivateErrorBoxAds();
-                    setErrorBox({errorFirstAds: false});
+                    setErrorBox({ errorFirstAds: false });
                   }}
                   selectedAudience={selectedAudience}
                   selectedPage={selectedAudience === index}
@@ -1941,35 +1941,6 @@ export default function AddCampaign({ userData, content, params }) {
       <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitleBetween}>
-              <div className={styles.leftTitle}>
-                <Typography variant="h6">Ad name </Typography>
-                <img
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'ad_name');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                  src={askIcon}
-                  alt="ask"
-                />
-                {renderPopover('ad_name', questionObj.ad_name)}
-              </div>
-            </div>
-          </div>
-          <div className={styles.inputCollectionWrapper}>
-            <input
-              value={content.name}
-              onChange={(event) => {
-                handleChangePicture(event, 'name', index);
-              }}
-              placeholder="Add your ad name here"
-              type="text"
-            />
-            {renderErrorText(errorBox.errorAds && !content.name)}
-          </div>
-        </Grid>
-        <Grid md={6} sm={6} xl={6} addingLeft={5}>
-          <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
               <Typography variant="h6">Media</Typography>
               <img
@@ -1987,6 +1958,7 @@ export default function AddCampaign({ userData, content, params }) {
             </Typography> */}
           </div>
           <BannerPicker
+            onlyButton={true}
             typeScreen="logo"
             label={'Add media'}
             file={content.image}
@@ -2024,6 +1996,86 @@ export default function AddCampaign({ userData, content, params }) {
             }}
           />
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
+        </Grid>
+        <Grid md={6} sm={6} xl={6} paddingTop={4}>
+          <BannerPicker
+            onlyLogo={true}
+            typeScreen="logo"
+            label={'Add media'}
+            file={content.image}
+            imageProps={content.imageProps}
+            acceptAllFile={true}
+            // accept={{
+            //   'image/png': ['.png'],
+            //   'image/jpeg': ['.jpeg'],
+            //   'image/jpg': ['.jpg'],
+            //   'image/gif': ['.gif'],
+            //   'image/svg+xml': ['.svg'],
+            //   'video/mp4': ['.mp4', '.MP4'],
+            //   'video/webm': ['.webm'],
+            //   'audio/mpeg': ['.mp3'],
+            //   'audio/mp4': ['.mp4'],
+            //   'audio/ogg': ['.oga'],
+            //   'video/ogg': ['.ogv']
+            // }}
+            maxFileSize={5 * 1000000}
+            callbackError={() => {
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
+              });
+            }}
+            onDelete={() => {
+              removePictureAdCreation(index);
+            }}
+            onDrop={(value) => {
+              handleChangePicture(value, 'image', index, true);
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: null,
+              });
+            }}
+          />
+          {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
+        </Grid>
+
+        <Grid md={6} sm={6} xl={6} paddingRight={5} paddingTop={5}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitleBetween}>
+              <div className={styles.leftTitle}>
+                <Typography variant="h6">Ad headlines </Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_name');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_name', questionObj.ad_name)}
+              </div>
+            </div>
+          </div>
+          <div className={styles.inputCollectionWrapper}>
+            <input
+              value={content.name}
+              onChange={(event) => {
+                handleChangePicture(event, 'name', index);
+              }}
+              placeholder="Add your ad name here"
+              type="text"
+            />
+            {renderErrorText(errorBox.errorAds && !content.name)}
+          </div>
+        </Grid>
+        <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+          <div className={styles.adtextTitleContainer}>{''}</div>
+          <div className={styles.addAdButton2} onClick={() => addAdText(index)}>
+            <img src={addAdIcon} />
+            <Typography fontSize={16} fontWeight={600} color={'#808080'}>
+              Add ad headlines
+            </Typography>
+          </div>
         </Grid>
       </Grid>
     );
@@ -2608,7 +2660,7 @@ export default function AddCampaign({ userData, content, params }) {
               onClick={() => {
                 setPicture(pictureData.filter((ads) => ads.adsId !== content.adsId));
                 deactivateErrorBoxAds();
-                setErrorBox({errorFirstAds: false});
+                setErrorBox({ errorFirstAds: false });
               }}
             >
               <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
@@ -2645,7 +2697,7 @@ export default function AddCampaign({ userData, content, params }) {
           currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
           setPicture(currentArr);
           deactivateErrorBoxAds();
-          setErrorBox({errorFirstAds: false});
+          setErrorBox({ errorFirstAds: false });
         }}
       >
         <img src={addIcon} alt="addIcon" />

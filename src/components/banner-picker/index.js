@@ -10,6 +10,8 @@ const editIcon = '/assets/edit_icon.png';
 const fileIcon = '/assets/file_red.png';
 
 export default function BannerPicker({
+  onlyLogo,
+  onlyButton,
   label,
   file,
   typeScreen,
@@ -105,7 +107,7 @@ export default function BannerPicker({
   }
 
   function renderContent() {
-    if (file && typeScreen === 'logo') {
+    if (file && typeScreen === 'logo' && !onlyButton) {
       return (
         <div className={styles.ctnRowLogo}>
           {renderLeftContent()}
@@ -139,6 +141,16 @@ export default function BannerPicker({
               </div>
             </div>
           </div>
+        </div>
+      );
+    }
+    if (!file && onlyLogo) {
+      return (
+        <div className={styles.btnLogo}>
+          <div className={styles.ctnLogo} />
+          <Typography variant="subtitle1" color={'#555'} paddingTop={5} paddingLeft={4}>
+            Image Preview
+          </Typography>
         </div>
       );
     }
