@@ -22,9 +22,26 @@ const useStyles = makeStyles((theme) => ({
   },
   btnPicker: {
     backgroundColor: '#7089FF',
+    marginTop: 40,
     height: 44,
     borderRadius: 12,
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 26,
+      height: 26,
+      objectFit: 'contain',
+      marginRight: 12,
+    },
+  },
+  btnPickerDisable: {
+    backgroundColor: '#bdc3c7',
+    marginTop: 40,
+    height: 44,
+    borderRadius: 12,
+    display: 'flex',
+    cursor: 'not-allowed',
     justifyContent: 'center',
     alignItems: 'center',
     '& > img': {

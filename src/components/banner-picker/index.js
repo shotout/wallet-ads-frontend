@@ -154,6 +154,17 @@ export default function BannerPicker({
         </div>
       );
     }
+    if (file) {
+      return (
+        <div className={styles.btnPickerDisable}>
+          <input {...getInputProps()} />
+          <img src={whiteCameraIcon} alt="camera" />
+          <Typography variant="subtitle1" color={'#fff'}>
+            {label}
+          </Typography>
+        </div>
+      );
+    }
     return (
       <div className={styles.btnPicker} {...getRootProps()}>
         <input {...getInputProps()} />
