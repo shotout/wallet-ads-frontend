@@ -1264,6 +1264,19 @@ export default function AddCampaign({ userData, content, params }) {
               ...pict,
               [stateName]: newArrDesc,
             };
+          } else if (stateName === 'headlines') {
+            let newArrDesc = [...pict.headlines];
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
+
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
           }
 
           return {
@@ -2121,9 +2134,10 @@ export default function AddCampaign({ userData, content, params }) {
 
                   <div className={styles.inputCollectionWrapper}>
                     <input
-                      value={content.name}
+                      id={`ad-text-area-${v.id}`}
+                      value={v.adtext}
                       onChange={(event) => {
-                        handleChangePicture(event, 'name', index);
+                        handleChangePicture(event, 'headlines', index, false, i);
                       }}
                       placeholder="Add your ad name here"
                       type="text"
