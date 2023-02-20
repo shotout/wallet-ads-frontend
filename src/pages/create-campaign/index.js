@@ -745,8 +745,7 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    console.log(ads);
-    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
+    if (ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
   };
@@ -782,23 +781,6 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const validateSubmit = async () => {
-    // const schema = yup.object().shape({
-    //   campaign_name: yup.string().required(),
-    // });
-
-    // try {
-    //   await schema.validate(formValues, {abortEarly: false});
-    //   setErrors({})
-    // } catch (error) {
-    //   const validationErrors = {};
-    //   error.inner.forEach(err => {
-    //     validationErrors[err.path] = err.message;
-    //   });
-    //   setErrors(validationErrors);
-    //   console.log('err', validationErrors, errors)
-    //   return error.errors;
-    // }
-    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1037,7 +1019,12 @@ export default function AddCampaign({ userData, content, params }) {
               if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
-                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                pictureData[addTextErr].headlines.forEach((heads) => {
+                  let indexHeads = isAdTextValid.arrFeIdNotValid.findIndex((i) => i === heads.id);
+                  if (heads.isErr)
+                    return (window.location.href = `#ad-text-headlines-${isAdTextValid.arrFeIdNotValid[indexHeads]}`);
+                  window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                });
               }
             }
           }
@@ -1067,6 +1054,15 @@ export default function AddCampaign({ userData, content, params }) {
           arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+          isAdTextValid = false;
+        }
+      });
+      picData.headlines.map((heads, descIndex) => {
+        if (heads.adtext === '') {
+          arrFeIdNotValid.push(heads.id);
+          arrFeID.push(picData.fe_id);
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
+          handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
           isAdTextValid = false;
         }
       });
@@ -1253,6 +1249,7 @@ export default function AddCampaign({ userData, content, params }) {
             // console.log(adText);
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
+
             if (acceptedFiles) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
@@ -1266,6 +1263,7 @@ export default function AddCampaign({ userData, content, params }) {
             };
           } else if (stateName === 'headlines') {
             let newArrDesc = [...pict.headlines];
+
             if (acceptedFiles) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
@@ -2134,7 +2132,7 @@ export default function AddCampaign({ userData, content, params }) {
 
                   <div className={styles.inputCollectionWrapper}>
                     <input
-                      id={`ad-text-area-${v.id}`}
+                      id={`ad-text-headlines-${v.id}`}
                       value={v.adtext}
                       onChange={(event) => {
                         handleChangePicture(event, 'headlines', index, false, i);
@@ -2142,7 +2140,7 @@ export default function AddCampaign({ userData, content, params }) {
                       placeholder="Add your ad name here"
                       type="text"
                     />
-                    {renderErrorText(errorBox.errorAds && !content.name)}
+                    {renderErrorText(errorBox.errorAds && v.isErr)}
                   </div>
                 </Grid>
               ))
@@ -2775,7 +2773,14 @@ export default function AddCampaign({ userData, content, params }) {
         className={styles.btnCreateAd}
         onClick={() => {
           const currentArr = [...pictureData];
-          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() });
+          currentArr.push({
+            image: null,
+            fe_id: [],
+            name: '',
+            description: initDecription,
+            headlines: initHeadlines,
+            adsId: makeId(),
+          });
           setPicture(currentArr);
           deactivateErrorBoxAds();
           setErrorBox({ errorFirstAds: false });
