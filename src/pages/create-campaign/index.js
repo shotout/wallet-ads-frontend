@@ -109,7 +109,16 @@ export default function AddCampaign({ userData, content, params }) {
       isErr: false,
     },
   ];
-  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  const initHeadlines = [
+    {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    },
+  ];
+  const initialPicture = [
+    { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
+  ];
   // const [errors, setErrors] = useState({});
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
@@ -672,7 +681,7 @@ export default function AddCampaign({ userData, content, params }) {
     else if (e == false && index == 0) setCheckAudienceMulti(false);
   };
 
-  const addAdText = (index) => {
+  const addAdText = (index, string) => {
     const body = {
       id: makeId(),
       adtext: '',
@@ -681,9 +690,31 @@ export default function AddCampaign({ userData, content, params }) {
 
     const newData = pictureData.map((v, i) => {
       if (i === index) {
+        if (string == 'headlines') {
+          return {
+            ...v,
+            headlines: [...v.headlines, body],
+          };
+        } else {
+          return {
+            ...v,
+            description: [...v.description, body],
+          };
+        }
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
+  const removeAdText = (id, index, string) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
         return {
           ...v,
-          description: [...v.description, body],
+          description: filterDesc,
         };
       } else {
         return v;
@@ -692,13 +723,13 @@ export default function AddCampaign({ userData, content, params }) {
     setPicture(newData);
   };
 
-  const removeAdText = (id, index) => {
-    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+  const removeAdTextHeadlines = (id, index) => {
+    const filterDesc = pictureData[index].headlines.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
         return {
           ...v,
-          description: filterDesc,
+          headlines: filterDesc,
         };
       } else {
         return v;
@@ -2039,7 +2070,7 @@ export default function AddCampaign({ userData, content, params }) {
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
         </Grid>
 
-        <Grid md={6} sm={6} xl={6} paddingRight={5} paddingTop={5}>
+        <Grid md={12} sm={12} xl={12} paddingTop={5}>
           <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitleBetween}>
               <div className={styles.leftTitle}>
@@ -2056,26 +2087,62 @@ export default function AddCampaign({ userData, content, params }) {
               </div>
             </div>
           </div>
-          <div className={styles.inputCollectionWrapper}>
-            <input
-              value={content.name}
-              onChange={(event) => {
-                handleChangePicture(event, 'name', index);
-              }}
-              placeholder="Add your ad name here"
-              type="text"
-            />
-            {renderErrorText(errorBox.errorAds && !content.name)}
-          </div>
-        </Grid>
-        <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
-          <div className={styles.adtextTitleContainer}>{''}</div>
-          <div className={styles.addAdButton2} onClick={() => addAdText(index)}>
-            <img src={addAdIcon} />
-            <Typography fontSize={16} fontWeight={600} color={'#808080'}>
-              Add ad headlines
-            </Typography>
-          </div>
+          <Grid container>
+            {typeof content.headlines === 'string' ? (
+              <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
+                <div className={styles.inputCollectionWrapper}>
+                  <input
+                    value={content.name}
+                    onChange={(event) => {
+                      handleChangePicture(event, 'name', index);
+                    }}
+                    placeholder="Add your ad name here"
+                    type="text"
+                  />
+                  {renderErrorText(errorBox.errorAds && !content.name)}
+                </div>
+              </Grid>
+            ) : (
+              content.headlines?.map((v, i) => (
+                <Grid
+                  key={`adtext-${i}`}
+                  md={6}
+                  sm={6}
+                  xl={6}
+                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+                  marginBottom={1}
+                >
+                  <div className={styles.adtextTitleContainer}>
+                    <Typography variant={'body2'} className={styles.adTextTitle}>
+                      {`Headline ${i + 1}`}
+                    </Typography>
+                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdTextHeadlines(v.id, index)} />}
+                  </div>
+
+                  <div className={styles.inputCollectionWrapper}>
+                    <input
+                      value={content.name}
+                      onChange={(event) => {
+                        handleChangePicture(event, 'name', index);
+                      }}
+                      placeholder="Add your ad name here"
+                      type="text"
+                    />
+                    {renderErrorText(errorBox.errorAds && !content.name)}
+                  </div>
+                </Grid>
+              ))
+            )}
+            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+              <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
+              <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
+                <img src={addAdIcon} />
+                <Typography fontSize={16} fontWeight={600} color={'#808080'}>
+                  Add ad headlines
+                </Typography>
+              </div>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     );

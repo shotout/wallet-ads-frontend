@@ -694,6 +694,18 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 7,
     },
   },
+  adtextTitleContainerHeadlines: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 2,
+    marginTop: 4,
+    marginBottom: 4,
+    '& > img': {
+      cursor: 'pointer',
+      marginLeft: 7,
+    },
+  },
   adTextTitle: {
     fontFamily: 'Public Sans, sans-serif',
     color: '#808080',
