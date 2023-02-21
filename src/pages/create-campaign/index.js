@@ -1053,6 +1053,15 @@ export default function AddCampaign({ userData, content, params }) {
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
+  const deactivateErrorCampaign = (e) => {
+    if (errorBox.errorAds || e.target.value) {
+      setErrorBox({
+        ...errorBox,
+        errorBoxCampaignName: false,
+      });
+    }
+  };
+
   const deactivateErrorBoxAvailability = () => {
     if (errorBox.errorBoxAvailability) {
       setErrorBox({
