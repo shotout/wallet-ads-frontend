@@ -2010,9 +2010,25 @@ export default function AddCampaign({ userData, content, params }) {
             {renderErrorText(errorBox.errorAds && !content.name)}
           </div>
         </Grid>
-        <Grid md={6} sm={6} xl={6} paddingTop={4}>
+        <Grid md={6} sm={6} xl={6} addingLeft={5}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitle}>
+              <Typography variant="h6">Media</Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'media');
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
+              {renderPopover('media', questionObj.media)}
+            </div>
+            {/* <Typography variant="body2"  color='#808080'>
+              Recommended size 350x350px 
+            </Typography> */}
+          </div>
           <BannerPicker
-            onlyLogo={true}
             typeScreen="logo"
             label={'Add media'}
             file={content.image}
@@ -2050,82 +2066,6 @@ export default function AddCampaign({ userData, content, params }) {
             }}
           />
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
-        </Grid>
-
-        <Grid md={12} sm={12} xl={12} paddingTop={5}>
-          <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitleBetween}>
-              <div className={styles.leftTitle}>
-                <Typography variant="h6">Ad headlines </Typography>
-                <img
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'ad_name');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                  src={askIcon}
-                  alt="ask"
-                />
-                {renderPopover('ad_name', questionObj.ad_name)}
-              </div>
-            </div>
-          </div>
-          <Grid container>
-            {typeof content.headlines === 'string' ? (
-              <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
-                <div className={styles.inputCollectionWrapper}>
-                  <input
-                    value={content.name}
-                    onChange={(event) => {
-                      handleChangePicture(event, 'name', index);
-                    }}
-                    placeholder="Add your ad name here"
-                    type="text"
-                  />
-                  {renderErrorText(errorBox.errorAds && !content.name)}
-                </div>
-              </Grid>
-            ) : (
-              content.headlines?.map((v, i) => (
-                <Grid
-                  key={`adtext-${i}`}
-                  md={6}
-                  sm={6}
-                  xl={6}
-                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
-                  marginBottom={1}
-                >
-                  <div className={styles.adtextTitleContainer}>
-                    <Typography variant={'body2'} className={styles.adTextTitle}>
-                      {`Headline ${i + 1}`}
-                    </Typography>
-                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdTextHeadlines(v.id, index)} />}
-                  </div>
-
-                  <div className={styles.inputCollectionWrapper}>
-                    <input
-                      id={`ad-text-headlines-${v.id}`}
-                      value={v.adtext}
-                      onChange={(event) => {
-                        handleChangePicture(event, 'headlines', index, false, i);
-                      }}
-                      placeholder="Add your ad name here"
-                      type="text"
-                    />
-                    {renderErrorText(errorBox.errorAds && v.isErr)}
-                  </div>
-                </Grid>
-              ))
-            )}
-            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
-              <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
-              <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
-                <img src={addAdIcon} />
-                <Typography fontSize={16} fontWeight={600} color={'#808080'}>
-                  Add ad headlines
-                </Typography>
-              </div>
-            </Grid>
-          </Grid>
         </Grid>
       </Grid>
     );
