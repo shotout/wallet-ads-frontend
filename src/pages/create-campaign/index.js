@@ -2081,24 +2081,22 @@ export default function AddCampaign({ userData, content, params }) {
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
         </Grid>
 
-        <Grid md={12} sm={12} xl={12} paddingTop={5}>
+        <Grid md={12} sm={12} xl={12}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitleBetween}>
-              <div className={styles.leftTitle}>
-                <Typography variant="h6">Ad headlines </Typography>
-                <img
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'ad_name');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                  src={askIcon}
-                  alt="ask"
-                />
-                {renderPopover('ad_name', questionObj.ad_name)}
-              </div>
+            <div className={styles.leftTitleAdText}>
+              <Typography variant="h6">Ad headlines </Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'ad_name');
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
+              {renderPopover('ad_name', questionObj.ad_name)}
             </div>
           </div>
-          <Grid container>
+          <Grid container marginTop={5}>
             {typeof content.headlines === 'string' ? (
               <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
                 <div className={styles.inputCollectionWrapper}>
@@ -2123,7 +2121,7 @@ export default function AddCampaign({ userData, content, params }) {
                   style={i % 2 === 0 ? { paddingRight: 40 } : {}}
                   marginBottom={1}
                 >
-                  <div className={styles.adtextTitleContainer}>
+                  <div className={styles.adtextTitleContainer2}>
                     <Typography variant={'body2'} className={styles.adTextTitle}>
                       {`Headline ${i + 1}`}
                     </Typography>
@@ -2145,7 +2143,12 @@ export default function AddCampaign({ userData, content, params }) {
                 </Grid>
               ))
             )}
-            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+            <Grid
+              md={6}
+              sm={6}
+              xl={6}
+              style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}
+            >
               <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
               <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
                 <img src={addAdIcon} />
@@ -2390,7 +2393,7 @@ export default function AddCampaign({ userData, content, params }) {
             {renderPopover('ad_text', questionObj.ad_text)}
           </div>
         </div>
-        <Grid container>
+        <Grid container marginTop={5}>
           {typeof content.description === 'string' ? (
             <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
               <div className={styles.textAreaCollection}>
@@ -2414,7 +2417,7 @@ export default function AddCampaign({ userData, content, params }) {
                 style={i % 2 === 0 ? { paddingRight: 40 } : {}}
                 marginBottom={1}
               >
-                <div className={styles.adtextTitleContainer}>
+                <div className={styles.adtextTitleContainer2}>
                   <Typography variant={'body2'} className={styles.adTextTitle}>
                     {`Ad text ${i + 1}`}
                   </Typography>
@@ -2435,8 +2438,14 @@ export default function AddCampaign({ userData, content, params }) {
               </Grid>
             ))
           )}
-          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
-            <div className={styles.adtextTitleContainer}>{''}</div>
+          <Grid
+            md={6}
+            sm={6}
+            xl={6}
+            style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}
+            paddingTop={content?.description?.length == 1 ? 1 : 0}
+          >
+            <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
               <Typography fontSize={16} fontWeight={600} color={'#808080'}>
