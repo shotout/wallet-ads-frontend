@@ -806,7 +806,7 @@ export default function AddCampaign({ userData, content, params }) {
         inputValid = false;
       }
       let isCollectionSection = false;
-      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -854,7 +854,7 @@ export default function AddCampaign({ userData, content, params }) {
       if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
         isAdvancedSettingValid = true;
         isCollectionSection =
-          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
       } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
         if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
           isAdvancedSettingValid = false;
@@ -863,7 +863,7 @@ export default function AddCampaign({ userData, content, params }) {
         } else {
           isAdvancedSettingValid = true;
           isCollectionSection =
-            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
         }
       }
       // : false,
