@@ -751,6 +751,23 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const validateSubmit = async () => {
+    // const schema = yup.object().shape({
+    //   campaign_name: yup.string().required(),
+    // });
+
+    // try {
+    //   await schema.validate(formValues, {abortEarly: false});
+    //   setErrors({})
+    // } catch (error) {
+    //   const validationErrors = {};
+    //   error.inner.forEach(err => {
+    //     validationErrors[err.path] = err.message;
+    //   });
+    //   setErrors(validationErrors);
+    //   console.log('err', validationErrors, errors)
+    //   return error.errors;
+    // }
+    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -989,12 +1006,7 @@ export default function AddCampaign({ userData, content, params }) {
               if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
-                pictureData[addTextErr].headlines.forEach((heads) => {
-                  let indexHeads = isAdTextValid.arrFeIdNotValid.findIndex((i) => i === heads.id);
-                  if (heads.isErr)
-                    return (window.location.href = `#ad-text-headlines-${isAdTextValid.arrFeIdNotValid[indexHeads]}`);
-                  window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
-                });
+                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
               }
             }
           }
@@ -1024,15 +1036,6 @@ export default function AddCampaign({ userData, content, params }) {
           arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
-          isAdTextValid = false;
-        }
-      });
-      picData.headlines.map((heads, descIndex) => {
-        if (heads.adtext === '') {
-          arrFeIdNotValid.push(heads.id);
-          arrFeID.push(picData.fe_id);
-          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
-          handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
           isAdTextValid = false;
         }
       });
