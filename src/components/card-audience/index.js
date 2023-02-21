@@ -29,6 +29,9 @@ export default function CardAudience({
   onChangeBudget = () => {},
   onRemove,
   readOnly,
+  errorAds,
+  index,
+  errorAdsBeforeSubmit,
 }) {
   React.useEffect(() => {});
 
@@ -64,6 +67,10 @@ export default function CardAudience({
     //   }, 100);
     // }
   }, []);
+
+  const onLink = () => {
+    window.location.href = '#card-ads';
+  };
 
   function renderPopover() {
     const open = Boolean(anchorEl);
@@ -282,24 +289,43 @@ export default function CardAudience({
         </div>
       );
     }
-    if (data.selectedCategory === 'optimized') {
+    if (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload') {
       return (
         <div className={styles.ctnDescAudience}>
-          <div className={styles.ctnDefaultContentWrapper}>
-            <Typography
-              variant="body1"
-              className={styles.desctTitle}
-              fontWeight="800"
-              color="#000"
-              textAlign={'center'}
-            >
-              <b>+</b>
-              Optimized Targeting:
-            </Typography>
-            <Typography variant="span" textAlign={'center'}>
-              The audience consists of a broad mix of users, optimized by our algorithm.
-            </Typography>
-          </div>
+          {data.audienceFile ? (
+            <div className={styles.ctnDefaultContentWrapper2}>
+              <Typography
+                variant="body1"
+                className={styles.desctTitle}
+                fontWeight="800"
+                color="#000"
+                textAlign={'center'}
+              >
+                <b>+</b>
+                Your own audience:
+              </Typography>
+              <Typography variant="span" textAlign={'center'}>
+                {data.audienceFile.path}
+              </Typography>
+            </div>
+          ) : (
+            <div className={styles.ctnDefaultContentWrapper}>
+              <Typography
+                variant="body1"
+                className={styles.desctTitle}
+                fontWeight="800"
+                color="#000"
+                textAlign={'center'}
+              >
+                <b>+</b>
+                Optimized Targeting:
+              </Typography>
+              <Typography variant="span" textAlign={'center'}>
+                The audience consists of a broad mix of users, optimized by our algorithm.
+              </Typography>
+            </div>
+          )}
+
           {renderPrice()}
           {!isEdit && (
             <Typography variant="span" textAlign={'center'} paragraph>
@@ -314,6 +340,13 @@ export default function CardAudience({
               <Typography variant="span" textAlign={'center'} paragraph>
                 In this audience will receive airdrops
               </Typography>
+              {errorAds == true && errorAdsBeforeSubmit ? (
+                <div id="requiredCard" onClick={onLink} className={styles.ctnError} style={{ cursor: 'pointer' }}>
+                  <Typography variant="span" textAlign={'center'} paragraph>
+                    Please assign at least 1 ad to this audience or delete this audience.
+                  </Typography>
+                </div>
+              ) : null}
             </div>
           )}
         </div>
@@ -392,7 +425,13 @@ export default function CardAudience({
           data.budgetAds === '' && data.selectedCategory !== null ? styles.ctnRedBorder : ''
         }
         ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.ctnRedBorder : ''}
-        ${isErrorAudienceNull ? styles.ctnRedBorder : ''}`}
+        ${
+          isErrorAudienceNull ||
+          (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit) ||
+          (data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
+            ? styles.ctnRedBorder
+            : ''
+        }`}
         onClick={() => {
           if (!data.selectedCategory) {
             if (typeof onPressCard === 'function') onPressCard();
@@ -404,7 +443,13 @@ export default function CardAudience({
             data.budgetAds === '' && data.selectedCategory !== null ? styles.borderTopError : ''
           }
           ${data.budgetAds < 500 && data.selectedCategory !== null ? styles.borderTopError : ''}
-          ${isErrorAudienceNull ? styles.borderTopError : ''}
+          ${
+            isErrorAudienceNull ||
+            (data.selectedCategory === 'optimized' && errorAds && errorAdsBeforeSubmit) ||
+            (data.selectedCategory === 'upload' && errorAds && errorAdsBeforeSubmit)
+              ? styles.borderTopError
+              : ''
+          }
           `}
         >
           <div className={styles.ctnWrapper}>

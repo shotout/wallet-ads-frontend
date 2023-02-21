@@ -2,6 +2,19 @@ import { makeStyles } from '@mui/styles';
 import { NAVBAR } from '../../config';
 
 const useStyles = makeStyles((theme) => ({
+  ctnAudienceErrBox: {
+    textAlign: 'center',
+    padding: 4
+  },
+  ctnAdsTitle: {
+    background: '#FFD8DF',
+    textAlign: 'center',
+    color: 'red',
+    borderRadius: 8,
+    width: '97%',
+    padding: 4,
+    marginBottom: 8
+  },
   ctnRoot: {
     position: 'relative',
     background: '#fff',
@@ -615,7 +628,7 @@ const useStyles = makeStyles((theme) => ({
   },
   ctnDeleteADs: {
     position: 'absolute',
-    top: 10,
+    top: 20,
     right: 20,
   },
   ctnIconDeletAds: {

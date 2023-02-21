@@ -28,6 +28,7 @@ export default function AddPaymentMethod({
 }) {
   const styles = useStyles();
   const [loading, setLoading] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState(null);
   const [isPromoAvail, setIsPromoAvail] = useState(false);
   const [errorMsg, setErrorMsg] = useState(defaultErr);
   const [values, setValues] = useState({
@@ -71,6 +72,7 @@ export default function AddPaymentMethod({
   };
 
   const handlePaymentChoose = async (type) => {
+    setLoadingBtn(type);
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
@@ -257,18 +259,18 @@ export default function AddPaymentMethod({
                   ctnBtnStyle={styles.btnStyle}
                   label={'Add credit card'}
                   eventName={'Pay with stripe'}
-                  isLoading={isPaymentLoading}
-                  disabled={isPaymentLoading || loading}
+                  isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                  disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
                 />
               </Grid>
               <Grid item sm={6} md={6} xs={12}>
                 <DefaultButton
-                  isLoading={loading}
                   ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
                   onClick={() => handlePaymentChoose('crypto')}
                   label={'I would like to pay using cryptocurrencies'}
                   eventName={'Pay with crypto'}
-                  disabled={loading || isPaymentLoading}
+                  isLoading={loading || loadingBtn == 'crypto'}
+                  disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
                 />
               </Grid>
             </Grid>

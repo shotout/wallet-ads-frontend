@@ -29,7 +29,16 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
     const adsPage = data?.ads_page;
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
-    const audienceArr = data?.audiences.map((item) => {
+
+    const newAudience = [];
+    data?.audiences.map((item) => {
+      const checkIfExist = newAudience.some((v) => v.selected_fe_id === item.selected_fe_id);
+      if (!checkIfExist) {
+        newAudience.push(item);
+      }
+    });
+
+    const audienceArr = newAudience.map((item) => {
       const targeting = item.detail_target;
       return {
         id: item.id,
@@ -38,18 +47,18 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
         selectedCategory: parsePriceToCategory(item.price_airdrop),
         budgetAds: (item.price || '').toString(),
         detailTargeting: {
-          availableCredit: normalizeInitialData(targeting.available_credit_wallet),
-          tradingVolume: normalizeInitialData(targeting.trading_volume),
-          transactionAmount: normalizeInitialData(targeting.amount_transaction),
-          amountDays: normalizeInitialData(targeting.amount_transaction_day),
-          creatorName: normalizeInitialData(targeting.nft_purchases),
+          availableCredit: normalizeInitialData(targeting?.available_credit_wallet),
+          tradingVolume: normalizeInitialData(targeting?.trading_volume),
+          transactionAmount: normalizeInitialData(targeting?.amount_transaction),
+          amountDays: normalizeInitialData(targeting?.amount_transaction_day),
+          creatorName: normalizeInitialData(targeting?.nft_purchases),
         },
         balancedTargeting: {
-          cryptoCurrency: normalizeInitialData(targeting.cryptocurrency_used),
-          year: normalizeInitialData(targeting.account_age_year),
-          months: normalizeInitialData(targeting.account_age_month),
-          day: normalizeInitialData(targeting.account_age_day),
-          airdropReceived: normalizeInitialData(targeting.airdrops_received),
+          cryptoCurrency: normalizeInitialData(targeting?.cryptocurrency_used),
+          year: normalizeInitialData(targeting?.account_age_year),
+          months: normalizeInitialData(targeting?.account_age_month),
+          day: normalizeInitialData(targeting?.account_age_day),
+          airdropReceived: normalizeInitialData(targeting?.airdrops_received),
         },
         audienceFile: item.file,
         name: item.name,
@@ -73,7 +82,7 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
       ads_page_token_symbol: adsPage?.token_symbol,
     });
 
-    const getTotalBudgetAds = sumArr(data?.audiences, 'price');
+    const getTotalBudgetAds = sumArr(newAudience, 'price');
 
     setTotalBudget(getTotalBudgetAds);
 
@@ -93,11 +102,13 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
   };
 
   const sumArr = (arr, val) => {
-    return data?.audiences
-      .map((item) => item[val])
-      .reduce((a, b) => {
-        return a + b;
-      });
+    if (arr.length > 0) {
+      return arr
+        .map((item) => item[val])
+        .reduce((a, b) => {
+          return a + b;
+        });
+    }
   };
 
   function normalizeInitialData(value) {

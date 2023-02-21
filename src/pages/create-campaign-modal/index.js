@@ -207,18 +207,18 @@ export default function AddCampaign({ content, params }) {
           selectedCategory: parsePriceToCategory(item.price_airdrop),
           budgetAds: (item.price || '').toString(),
           detailTargeting: {
-            availableCredit: normalizeInitialData(targeting.available_credit_wallet),
-            tradingVolume: normalizeInitialData(targeting.trading_volume),
-            transactionAmount: normalizeInitialData(targeting.amount_transaction),
-            amountDays: normalizeInitialData(targeting.amount_transaction_day),
-            creatorName: normalizeInitialData(targeting.nft_purchases),
+            availableCredit: normalizeInitialData(targeting?.available_credit_wallet),
+            tradingVolume: normalizeInitialData(targeting?.trading_volume),
+            transactionAmount: normalizeInitialData(targeting?.amount_transaction),
+            amountDays: normalizeInitialData(targeting?.amount_transaction_day),
+            creatorName: normalizeInitialData(targeting?.nft_purchases),
           },
           balancedTargeting: {
-            cryptoCurrency: normalizeInitialData(targeting.cryptocurrency_used),
-            year: normalizeInitialData(targeting.account_age_year),
-            months: normalizeInitialData(targeting.account_age_month),
-            day: normalizeInitialData(targeting.account_age_day),
-            airdropReceived: normalizeInitialData(targeting.airdrops_received),
+            cryptoCurrency: normalizeInitialData(targeting?.cryptocurrency_used),
+            year: normalizeInitialData(targeting?.account_age_year),
+            months: normalizeInitialData(targeting?.account_age_month),
+            day: normalizeInitialData(targeting?.account_age_day),
+            airdropReceived: normalizeInitialData(targeting?.airdrops_received),
           },
         };
       });

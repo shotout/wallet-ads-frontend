@@ -22,7 +22,8 @@ export default makeStyles((theme) => ({
     '& > .MuiPaper-root': {
       background: 'rgba(255,255,255,0)',
       borderRadius: '0',
-      boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.90)',
+      boxShadow: '0px 0px 0px 0px rgba(0,0,0,0.9)',
+      overflow: 'hidden',
       '&::-webkit-scrollbar': {
         width: 0,
       },

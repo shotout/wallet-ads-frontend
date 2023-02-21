@@ -1,6 +1,51 @@
 import moment from 'moment';
 import axios from './axios';
 
+export const paymentChargeCard = (data) =>
+  axios({
+    url: '/payment/charge-card',
+    method: 'POST',
+    data,
+  });
+
+export const savePaymentCC = (data) =>
+  axios({
+    url: '/payment',
+    method: 'POST',
+    data,
+  });
+
+export const deletePaymentmethod = () =>
+  axios({
+    url: '/payment/delete-payment',
+    method: 'GET',
+  });
+
+export const updatePaymentCC = (data) =>
+  axios({
+    url: '/payment/update',
+    method: 'POST',
+    data,
+  });
+
+export const getPaymentCC = () =>
+  axios({
+    url: '/payment/add-card',
+    method: 'GET',
+  });
+
+export const checkPaymentType = () =>
+  axios({
+    url: '/payment/get-payment-type',
+    method: 'GET',
+  });
+
+export const getPaymentDetails = () =>
+  axios({
+    url: '/payment/retrive-card',
+    method: 'GET',
+  });
+
 export const verifyAccount = (token, ctx) =>
   axios({
     url: `/auth/verify/${token}`,
@@ -46,6 +91,16 @@ export const handleResetPassword = (data) =>
 export const handleUpdateProfile = (data) =>
   axios({
     url: '/user',
+    method: 'POST',
+    data,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+export const handleUpdatePassword = (data) =>
+  axios({
+    url: '/auth/change-password',
     method: 'POST',
     data,
     headers: {

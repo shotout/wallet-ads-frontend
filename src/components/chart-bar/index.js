@@ -10,6 +10,9 @@ import {
   Legend,
 } from 'chart.js/auto';
 import { Bar, getElementsAtEvent, getElementAtEvent } from 'react-chartjs-2';
+import Moment from 'moment';
+import 'moment/locale/id';
+Moment.locale('id');
 
 ChartJS?.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 

@@ -1,6 +1,11 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
+  ctnError: {
+    color: '#E83155',
+    fontSize: 14,
+    textDecorationLine: 'underline'
+  },
   ctnAudience: {
     position: 'relative',
     // height: '97%',
@@ -198,6 +203,15 @@ export default makeStyles((theme) => ({
     overflow: 'scroll',
     height: 140,
     flexDirection: 'column',
+  },
+  ctnDefaultContentWrapper2: {
+    // overflow: 'scroll',
+    height: 100,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
+    display: 'flex',
+    marginBottom: 46,
   },
   ctnDefaultContentWrapper: {
     // overflow: 'scroll',

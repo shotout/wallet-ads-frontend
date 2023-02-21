@@ -1,11 +1,59 @@
-import React from 'react';
-import {PaymentElement} from '@stripe/react-stripe-js';
+import React, { useState } from 'react';
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import useStyles from './styles';
 
-const CheckoutForm = () => (
-    <form>
+const SetupForm = () => {
+  const styles = useStyles();
+  const stripe = useStripe();
+  const elements = useElements();
+  const baseUrl = window.location.origin;
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleSubmit = async (event) => {
+    setIsLoading(!isLoading);
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const { error } = await stripe.confirmSetup({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      confirmParams: {
+        return_url: `${baseUrl}/settings`,
+      },
+    });
+
+    if (error) {
+      setIsLoading(false);
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Show error to your customer (for example, payment
+      // details incomplete)
+      setErrorMessage(error.message);
+    } else {
+      setIsLoading(false);
+      // Your customer will be redirected to your `return_url`. For some payment
+      // methods like iDEAL, your customer will be redirected to an intermediate
+      // site first to authorize the payment, then redirected to the `return_url`.
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
       <PaymentElement />
-      <button>Submit</button>
+      <button className={`${styles.ctnBtn}`} disabled={isLoading}>
+        {isLoading ? 'Loading' : 'Save'}
+      </button>
+      {/* Show error message to your customers */}
+      {errorMessage && <div>{errorMessage}</div>}
     </form>
   );
+};
 
-export default CheckoutForm;
+export default SetupForm;
