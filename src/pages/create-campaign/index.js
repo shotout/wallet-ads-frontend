@@ -109,7 +109,16 @@ export default function AddCampaign({ userData, content, params }) {
       isErr: false,
     },
   ];
-  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  const initHeadlines = [
+    {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    },
+  ];
+  const initialPicture = [
+    { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
+  ];
   // const [errors, setErrors] = useState({});
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
@@ -672,7 +681,7 @@ export default function AddCampaign({ userData, content, params }) {
     else if (e == false && index == 0) setCheckAudienceMulti(false);
   };
 
-  const addAdText = (index) => {
+  const addAdText = (index, string) => {
     const body = {
       id: makeId(),
       adtext: '',
@@ -681,9 +690,31 @@ export default function AddCampaign({ userData, content, params }) {
 
     const newData = pictureData.map((v, i) => {
       if (i === index) {
+        if (string == 'headlines') {
+          return {
+            ...v,
+            headlines: [...v.headlines, body],
+          };
+        } else {
+          return {
+            ...v,
+            description: [...v.description, body],
+          };
+        }
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
+  const removeAdText = (id, index, string) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
         return {
           ...v,
-          description: [...v.description, body],
+          description: filterDesc,
         };
       } else {
         return v;
@@ -692,13 +723,13 @@ export default function AddCampaign({ userData, content, params }) {
     setPicture(newData);
   };
 
-  const removeAdText = (id, index) => {
-    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+  const removeAdTextHeadlines = (id, index) => {
+    const filterDesc = pictureData[index].headlines.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
         return {
           ...v,
-          description: filterDesc,
+          headlines: filterDesc,
         };
       } else {
         return v;
@@ -714,8 +745,7 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    console.log(ads);
-    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
+    if (ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
   };
@@ -751,23 +781,6 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const validateSubmit = async () => {
-    // const schema = yup.object().shape({
-    //   campaign_name: yup.string().required(),
-    // });
-
-    // try {
-    //   await schema.validate(formValues, {abortEarly: false});
-    //   setErrors({})
-    // } catch (error) {
-    //   const validationErrors = {};
-    //   error.inner.forEach(err => {
-    //     validationErrors[err.path] = err.message;
-    //   });
-    //   setErrors(validationErrors);
-    //   console.log('err', validationErrors, errors)
-    //   return error.errors;
-    // }
-    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -823,7 +836,7 @@ export default function AddCampaign({ userData, content, params }) {
         inputValid = false;
       }
       let isCollectionSection = false;
-      formValues.ads_page_name && formValues.ads_page_description && logoCollection;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -871,7 +884,7 @@ export default function AddCampaign({ userData, content, params }) {
       if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
         isAdvancedSettingValid = true;
         isCollectionSection =
-          formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
         if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
           isAdvancedSettingValid = false;
@@ -880,7 +893,7 @@ export default function AddCampaign({ userData, content, params }) {
         } else {
           isAdvancedSettingValid = true;
           isCollectionSection =
-            formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
         }
       }
       // : false,
@@ -1006,7 +1019,12 @@ export default function AddCampaign({ userData, content, params }) {
               if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
-                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                pictureData[addTextErr].headlines.forEach((heads) => {
+                  let indexHeads = isAdTextValid.arrFeIdNotValid.findIndex((i) => i === heads.id);
+                  if (heads.isErr)
+                    return (window.location.href = `#ad-text-headlines-${isAdTextValid.arrFeIdNotValid[indexHeads]}`);
+                  window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                });
               }
             }
           }
@@ -1036,6 +1054,15 @@ export default function AddCampaign({ userData, content, params }) {
           arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+          isAdTextValid = false;
+        }
+      });
+      picData.headlines.map((heads, descIndex) => {
+        if (heads.adtext === '') {
+          arrFeIdNotValid.push(heads.id);
+          arrFeID.push(picData.fe_id);
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
+          handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
           isAdTextValid = false;
         }
       });
@@ -1213,6 +1240,21 @@ export default function AddCampaign({ userData, content, params }) {
             // console.log(adText);
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
+
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
+
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
+          } else if (stateName === 'headlines') {
+            let newArrDesc = [...pict.headlines];
+
             if (acceptedFiles) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
@@ -2633,7 +2675,14 @@ export default function AddCampaign({ userData, content, params }) {
         className={styles.btnCreateAd}
         onClick={() => {
           const currentArr = [...pictureData];
-          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+          currentArr.push({
+            image: null,
+            fe_id: [],
+            name: '',
+            description: initDecription,
+            headlines: initHeadlines,
+            adsId: makeId(),
+          });
           setPicture(currentArr);
           deactivateErrorBoxAds();
           setErrorBox({ errorFirstAds: false });
