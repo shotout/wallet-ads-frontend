@@ -109,16 +109,7 @@ export default function AddCampaign({ userData, content, params }) {
       isErr: false,
     },
   ];
-  const initHeadlines = [
-    {
-      id: makeId(),
-      adtext: '',
-      isErr: false,
-    },
-  ];
-  const initialPicture = [
-    { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
-  ];
+  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
   // const [errors, setErrors] = useState({});
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
@@ -681,7 +672,7 @@ export default function AddCampaign({ userData, content, params }) {
     else if (e == false && index == 0) setCheckAudienceMulti(false);
   };
 
-  const addAdText = (index, string) => {
+  const addAdText = (index) => {
     const body = {
       id: makeId(),
       adtext: '',
@@ -690,31 +681,9 @@ export default function AddCampaign({ userData, content, params }) {
 
     const newData = pictureData.map((v, i) => {
       if (i === index) {
-        if (string == 'headlines') {
-          return {
-            ...v,
-            headlines: [...v.headlines, body],
-          };
-        } else {
-          return {
-            ...v,
-            description: [...v.description, body],
-          };
-        }
-      } else {
-        return v;
-      }
-    });
-    setPicture(newData);
-  };
-
-  const removeAdText = (id, index, string) => {
-    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
-    const newData = pictureData.map((v, i) => {
-      if (i === index) {
         return {
           ...v,
-          description: filterDesc,
+          description: [...v.description, body],
         };
       } else {
         return v;
@@ -723,13 +692,13 @@ export default function AddCampaign({ userData, content, params }) {
     setPicture(newData);
   };
 
-  const removeAdTextHeadlines = (id, index) => {
-    const filterDesc = pictureData[index].headlines.filter((desc) => desc.id !== id);
+  const removeAdText = (id, index) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
         return {
           ...v,
-          headlines: filterDesc,
+          description: filterDesc,
         };
       } else {
         return v;
@@ -745,7 +714,8 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    if (ads.image && ads.fe_id.length > 0 && ads.description) {
+    console.log(ads);
+    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
   };
@@ -1071,6 +1041,15 @@ export default function AddCampaign({ userData, content, params }) {
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
+  const deactivateErrorCampaign = (e) => {
+    if (errorBox.errorAds || e.target.value) {
+      setErrorBox({
+        ...errorBox,
+        errorBoxCampaignName: false,
+      });
+    }
+  };
+
   const deactivateErrorBoxAvailability = () => {
     if (errorBox.errorBoxAvailability) {
       setErrorBox({
@@ -1240,21 +1219,6 @@ export default function AddCampaign({ userData, content, params }) {
             // console.log(adText);
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
-
-            if (acceptedFiles) {
-              newArrDesc[descId].adtext = acceptedFiles.target.value;
-              newArrDesc[descId].isErr = false;
-            } else {
-              newArrDesc[descId].isErr = true;
-            }
-
-            return {
-              ...pict,
-              [stateName]: newArrDesc,
-            };
-          } else if (stateName === 'headlines') {
-            let newArrDesc = [...pict.headlines];
-
             if (acceptedFiles) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
@@ -2675,14 +2639,7 @@ export default function AddCampaign({ userData, content, params }) {
         className={styles.btnCreateAd}
         onClick={() => {
           const currentArr = [...pictureData];
-          currentArr.push({
-            image: null,
-            fe_id: [],
-            name: '',
-            description: initDecription,
-            headlines: initHeadlines,
-            adsId: makeId(),
-          });
+          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
           setPicture(currentArr);
           deactivateErrorBoxAds();
           setErrorBox({ errorFirstAds: false });
