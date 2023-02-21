@@ -1039,18 +1039,18 @@ export default function AddCampaign({ userData, content, params }) {
           isAdTextValid = false;
         }
       });
+      picData.headlines.map((heads, descIndex) => {
+        if (heads.adtext === '') {
+          arrFeIdNotValid.push(heads.id);
+          arrFeID.push(picData.fe_id);
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
+          handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
+          isAdTextValid = false;
+        }
+      });
     });
 
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
-  };
-
-  const deactivateErrorCampaign = (e) => {
-    if (errorBox.errorAds || e.target.value) {
-      setErrorBox({
-        ...errorBox,
-        errorBoxCampaignName: false,
-      });
-    }
   };
 
   const deactivateErrorBoxAvailability = () => {
