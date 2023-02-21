@@ -2417,7 +2417,7 @@ export default function AddCampaign({ userData, content, params }) {
                 style={i % 2 === 0 ? { paddingRight: 40 } : {}}
                 marginBottom={1}
               >
-                <div className={styles.adtextTitleContainer2}>
+                <div className={styles.adtextTitleContainer2} style={{ marginTop: 0 }}>
                   <Typography variant={'body2'} className={styles.adTextTitle}>
                     {`Ad text ${i + 1}`}
                   </Typography>
