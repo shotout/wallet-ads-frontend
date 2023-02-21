@@ -1983,61 +1983,32 @@ export default function AddCampaign({ userData, content, params }) {
       <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitle}>
-              <Typography variant="h6">Media</Typography>
-              <img
-                onMouseEnter={(event) => {
-                  handleHoverOpen(event, 'media');
-                }}
-                onMouseLeave={handleHoverClose}
-                src={askIcon}
-                alt="ask"
-              />
-              {renderPopover('media', questionObj.media)}
+            <div className={styles.leftTitleBetween}>
+              <div className={styles.leftTitle}>
+                <Typography variant="h6">Ad name </Typography>
+                <img
+                  onMouseEnter={(event) => {
+                    handleHoverOpen(event, 'ad_name');
+                  }}
+                  onMouseLeave={handleHoverClose}
+                  src={askIcon}
+                  alt="ask"
+                />
+                {renderPopover('ad_name', questionObj.ad_name)}
+              </div>
             </div>
-            {/* <Typography variant="body2"  color='#808080'>
-              Recommended size 350x350px 
-            </Typography> */}
           </div>
-          <BannerPicker
-            onlyButton={true}
-            typeScreen="logo"
-            label={'Add media'}
-            file={content.image}
-            imageProps={content.imageProps}
-            acceptAllFile={true}
-            // accept={{
-            //   'image/png': ['.png'],
-            //   'image/jpeg': ['.jpeg'],
-            //   'image/jpg': ['.jpg'],
-            //   'image/gif': ['.gif'],
-            //   'image/svg+xml': ['.svg'],
-            //   'video/mp4': ['.mp4', '.MP4'],
-            //   'video/webm': ['.webm'],
-            //   'audio/mpeg': ['.mp3'],
-            //   'audio/mp4': ['.mp4'],
-            //   'audio/ogg': ['.oga'],
-            //   'video/ogg': ['.ogv']
-            // }}
-            maxFileSize={5 * 1000000}
-            callbackError={() => {
-              setErrorBox({
-                ...errorBox,
-                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
-              });
-            }}
-            onDelete={() => {
-              removePictureAdCreation(index);
-            }}
-            onDrop={(value) => {
-              handleChangePicture(value, 'image', index, true);
-              setErrorBox({
-                ...errorBox,
-                errorFileSize: null,
-              });
-            }}
-          />
-          {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
+          <div className={styles.inputCollectionWrapper}>
+            <input
+              value={content.name}
+              onChange={(event) => {
+                handleChangePicture(event, 'name', index);
+              }}
+              placeholder="Add your ad name here"
+              type="text"
+            />
+            {renderErrorText(errorBox.errorAds && !content.name)}
+          </div>
         </Grid>
         <Grid md={6} sm={6} xl={6} paddingTop={4}>
           <BannerPicker
