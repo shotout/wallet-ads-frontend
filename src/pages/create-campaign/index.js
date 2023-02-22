@@ -109,7 +109,16 @@ export default function AddCampaign({ userData, content, params }) {
       isErr: false,
     },
   ];
-  const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  const initHeadlines = [
+    {
+      id: makeId(),
+      adtext: '',
+      isErr: false,
+    },
+  ];
+  const initialPicture = [
+    { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
+  ];
   // const [errors, setErrors] = useState({});
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
@@ -672,7 +681,7 @@ export default function AddCampaign({ userData, content, params }) {
     else if (e == false && index == 0) setCheckAudienceMulti(false);
   };
 
-  const addAdText = (index) => {
+  const addAdText = (index, string) => {
     const body = {
       id: makeId(),
       adtext: '',
@@ -681,9 +690,31 @@ export default function AddCampaign({ userData, content, params }) {
 
     const newData = pictureData.map((v, i) => {
       if (i === index) {
+        if (string == 'headlines') {
+          return {
+            ...v,
+            headlines: [...v.headlines, body],
+          };
+        } else {
+          return {
+            ...v,
+            description: [...v.description, body],
+          };
+        }
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
+  const removeAdText = (id, index, string) => {
+    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
         return {
           ...v,
-          description: [...v.description, body],
+          description: filterDesc,
         };
       } else {
         return v;
@@ -692,13 +723,13 @@ export default function AddCampaign({ userData, content, params }) {
     setPicture(newData);
   };
 
-  const removeAdText = (id, index) => {
-    const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
+  const removeAdTextHeadlines = (id, index) => {
+    const filterDesc = pictureData[index].headlines.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
       if (i === index) {
         return {
           ...v,
-          description: filterDesc,
+          headlines: filterDesc,
         };
       } else {
         return v;
@@ -714,8 +745,7 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const isAdsArrValid = (ads) => {
-    console.log(ads);
-    if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
+    if (ads.image && ads.fe_id.length > 0 && ads.description) {
       return true;
     }
   };
@@ -751,23 +781,6 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const validateSubmit = async () => {
-    // const schema = yup.object().shape({
-    //   campaign_name: yup.string().required(),
-    // });
-
-    // try {
-    //   await schema.validate(formValues, {abortEarly: false});
-    //   setErrors({})
-    // } catch (error) {
-    //   const validationErrors = {};
-    //   error.inner.forEach(err => {
-    //     validationErrors[err.path] = err.message;
-    //   });
-    //   setErrors(validationErrors);
-    //   console.log('err', validationErrors, errors)
-    //   return error.errors;
-    // }
-    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1006,7 +1019,12 @@ export default function AddCampaign({ userData, content, params }) {
               if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
-                window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                pictureData[addTextErr].headlines.forEach((heads) => {
+                  let indexHeads = isAdTextValid.arrFeIdNotValid.findIndex((i) => i === heads.id);
+                  if (heads.isErr)
+                    return (window.location.href = `#ad-text-headlines-${isAdTextValid.arrFeIdNotValid[indexHeads]}`);
+                  window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                });
               }
             }
           }
@@ -1036,6 +1054,15 @@ export default function AddCampaign({ userData, content, params }) {
           arrFeID.push(picData.fe_id);
           adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: desc.adtext });
           handleChangePicture(null, 'description', pictureIndex, false, descIndex);
+          isAdTextValid = false;
+        }
+      });
+      picData.headlines.map((heads, descIndex) => {
+        if (heads.adtext === '') {
+          arrFeIdNotValid.push(heads.id);
+          arrFeID.push(picData.fe_id);
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
+          handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
           isAdTextValid = false;
         }
       });
@@ -1222,6 +1249,21 @@ export default function AddCampaign({ userData, content, params }) {
             // console.log(adText);
             // console.log(arrDesc);
             let newArrDesc = [...pict.description];
+
+            if (acceptedFiles) {
+              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].isErr = false;
+            } else {
+              newArrDesc[descId].isErr = true;
+            }
+
+            return {
+              ...pict,
+              [stateName]: newArrDesc,
+            };
+          } else if (stateName === 'headlines') {
+            let newArrDesc = [...pict.headlines];
+
             if (acceptedFiles) {
               newArrDesc[descId].adtext = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
@@ -1941,35 +1983,6 @@ export default function AddCampaign({ userData, content, params }) {
       <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
           <div className={styles.rowTitleWrapper}>
-            <div className={styles.leftTitleBetween}>
-              <div className={styles.leftTitle}>
-                <Typography variant="h6">Ad name </Typography>
-                <img
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'ad_name');
-                  }}
-                  onMouseLeave={handleHoverClose}
-                  src={askIcon}
-                  alt="ask"
-                />
-                {renderPopover('ad_name', questionObj.ad_name)}
-              </div>
-            </div>
-          </div>
-          <div className={styles.inputCollectionWrapper}>
-            <input
-              value={content.name}
-              onChange={(event) => {
-                handleChangePicture(event, 'name', index);
-              }}
-              placeholder="Add your ad name here"
-              type="text"
-            />
-            {renderErrorText(errorBox.errorAds && !content.name)}
-          </div>
-        </Grid>
-        <Grid md={6} sm={6} xl={6} addingLeft={5}>
-          <div className={styles.rowTitleWrapper}>
             <div className={styles.leftTitle}>
               <Typography variant="h6">Media</Typography>
               <img
@@ -1987,6 +2000,7 @@ export default function AddCampaign({ userData, content, params }) {
             </Typography> */}
           </div>
           <BannerPicker
+            onlyButton={true}
             typeScreen="logo"
             label={'Add media'}
             file={content.image}
@@ -2024,6 +2038,121 @@ export default function AddCampaign({ userData, content, params }) {
             }}
           />
           {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
+        </Grid>
+        <Grid md={6} sm={6} xl={6} paddingTop={4}>
+          <BannerPicker
+            onlyLogo={true}
+            typeScreen="logo"
+            label={'Add media'}
+            file={content.image}
+            imageProps={content.imageProps}
+            acceptAllFile={true}
+            // accept={{
+            //   'image/png': ['.png'],
+            //   'image/jpeg': ['.jpeg'],
+            //   'image/jpg': ['.jpg'],
+            //   'image/gif': ['.gif'],
+            //   'image/svg+xml': ['.svg'],
+            //   'video/mp4': ['.mp4', '.MP4'],
+            //   'video/webm': ['.webm'],
+            //   'audio/mpeg': ['.mp3'],
+            //   'audio/mp4': ['.mp4'],
+            //   'audio/ogg': ['.oga'],
+            //   'video/ogg': ['.ogv']
+            // }}
+            maxFileSize={5 * 1000000}
+            callbackError={() => {
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: 'The file exceeds the maximum filesize of 5 MB.',
+              });
+            }}
+            onDelete={() => {
+              removePictureAdCreation(index);
+            }}
+            onDrop={(value) => {
+              handleChangePicture(value, 'image', index, true);
+              setErrorBox({
+                ...errorBox,
+                errorFileSize: null,
+              });
+            }}
+          />
+          {renderErrorText((errorBox.errorAds || errorBox.errorFileSize) && !content.image, errorBox.errorFileSize)}
+        </Grid>
+
+        <Grid md={12} sm={12} xl={12}>
+          <div className={styles.rowTitleWrapper}>
+            <div className={styles.leftTitleAdText}>
+              <Typography variant="h6">Ad headlines </Typography>
+              <img
+                onMouseEnter={(event) => {
+                  handleHoverOpen(event, 'ad_name');
+                }}
+                onMouseLeave={handleHoverClose}
+                src={askIcon}
+                alt="ask"
+              />
+              {renderPopover('ad_name', questionObj.ad_name)}
+            </div>
+          </div>
+          <Grid container marginTop={5}>
+            {typeof content.headlines === 'string' ? (
+              <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
+                <div className={styles.inputCollectionWrapper}>
+                  <input
+                    value={content.name}
+                    onChange={(event) => {
+                      handleChangePicture(event, 'name', index);
+                    }}
+                    placeholder="Add your ad name here"
+                    type="text"
+                  />
+                  {renderErrorText(errorBox.errorAds && !content.name)}
+                </div>
+              </Grid>
+            ) : (
+              content.headlines?.map((v, i) => (
+                <Grid
+                  key={`adtext-${i}`}
+                  md={6}
+                  sm={6}
+                  xl={6}
+                  style={i % 2 === 0 ? { paddingRight: 40 } : {}}
+                  marginBottom={1}
+                >
+                  <div className={styles.adtextTitleContainer2}>
+                    <Typography variant={'body2'} className={styles.adTextTitle}>
+                      {`Headline ${i + 1}`}
+                    </Typography>
+                    {i !== 0 && <img src={rubishIcon} onClick={() => removeAdTextHeadlines(v.id, index)} />}
+                  </div>
+
+                  <div className={styles.inputCollectionWrapper}>
+                    <input
+                      id={`ad-text-headlines-${v.id}`}
+                      value={v.adtext}
+                      onChange={(event) => {
+                        handleChangePicture(event, 'headlines', index, false, i);
+                      }}
+                      placeholder="Add your ad name here"
+                      type="text"
+                    />
+                    {renderErrorText(errorBox.errorAds && v.isErr)}
+                  </div>
+                </Grid>
+              ))
+            )}
+            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
+              <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
+              <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
+                <img src={addAdIcon} />
+                <Typography fontSize={16} fontWeight={600} color={'#808080'}>
+                  Add ad headlines
+                </Typography>
+              </div>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -2259,7 +2388,7 @@ export default function AddCampaign({ userData, content, params }) {
             {renderPopover('ad_text', questionObj.ad_text)}
           </div>
         </div>
-        <Grid container>
+        <Grid container marginTop={5}>
           {typeof content.description === 'string' ? (
             <Grid md={6} sm={6} xl={6} marginBottom={1} style={{ paddingRight: 40 }}>
               <div className={styles.textAreaCollection}>
@@ -2283,7 +2412,7 @@ export default function AddCampaign({ userData, content, params }) {
                 style={i % 2 === 0 ? { paddingRight: 40 } : {}}
                 marginBottom={1}
               >
-                <div className={styles.adtextTitleContainer}>
+                <div className={styles.adtextTitleContainer2} style={{ marginTop: 0 }}>
                   <Typography variant={'body2'} className={styles.adTextTitle}>
                     {`Ad text ${i + 1}`}
                   </Typography>
@@ -2304,8 +2433,14 @@ export default function AddCampaign({ userData, content, params }) {
               </Grid>
             ))
           )}
-          <Grid md={6} sm={6} xl={6} style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
-            <div className={styles.adtextTitleContainer}>{''}</div>
+          <Grid
+            md={6}
+            sm={6}
+            xl={6}
+            style={content?.description?.length % 2 === 0 ? { paddingRight: 40 } : {}}
+            paddingTop={content?.description?.length == 1 ? 1 : 0}
+          >
+            <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
             <div className={styles.addAdButton} onClick={() => addAdText(index)}>
               <img src={addAdIcon} />
               <Typography fontSize={16} fontWeight={600} color={'#808080'}>
@@ -2642,7 +2777,14 @@ export default function AddCampaign({ userData, content, params }) {
         className={styles.btnCreateAd}
         onClick={() => {
           const currentArr = [...pictureData];
-          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+          currentArr.push({
+            image: null,
+            fe_id: [],
+            name: '',
+            description: initDecription,
+            headlines: initHeadlines,
+            adsId: makeId(),
+          });
           setPicture(currentArr);
           deactivateErrorBoxAds();
           setErrorBox({ errorFirstAds: false });

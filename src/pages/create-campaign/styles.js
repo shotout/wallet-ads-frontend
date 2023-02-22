@@ -4,7 +4,7 @@ import { NAVBAR } from '../../config';
 const useStyles = makeStyles((theme) => ({
   ctnAudienceErrBox: {
     textAlign: 'center',
-    padding: 4
+    padding: 4,
   },
   ctnAdsTitle: {
     background: '#FFD8DF',
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 8,
     width: '97%',
     padding: 4,
-    marginBottom: 8
+    marginBottom: 8,
   },
   ctnRoot: {
     position: 'relative',
@@ -694,6 +694,30 @@ const useStyles = makeStyles((theme) => ({
       marginLeft: 7,
     },
   },
+  adtextTitleContainer2: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 0,
+    marginTop: 6,
+    marginBottom: 12,
+    '& > img': {
+      cursor: 'pointer',
+      marginLeft: 7,
+    },
+  },
+  adtextTitleContainerHeadlines: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    height: 2,
+    marginTop: 4,
+    marginBottom: 4,
+    '& > img': {
+      cursor: 'pointer',
+      marginLeft: 7,
+    },
+  },
   adTextTitle: {
     fontFamily: 'Public Sans, sans-serif',
     color: '#808080',
@@ -708,6 +732,27 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: 12,
     fontFamily: 'Public Sans,sans-serif',
     paddingTop: 20,
+    paddingBottom: 20,
+    cursor: 'pointer',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 25,
+      marginRight: 10,
+    },
+  },
+  addAdButton2: {
+    border: 0,
+    height: 44,
+    width: '100%',
+    background: '#F1F1F1',
+    borderRadius: 8,
+    paddingLeft: 12,
+    paddingRight: 12,
+    fontFamily: 'Public Sans,sans-serif',
+    paddingTop: 20,
+    marginTop: 10,
     paddingBottom: 20,
     cursor: 'pointer',
     display: 'flex',

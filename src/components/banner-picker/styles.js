@@ -1,15 +1,44 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
+  btnLogo: {
+    display: 'flex',
+    padding: 8
+  },
+  ctnLogo: {
+    background: '#D9D9D9',
+    width: 100,
+    height: 100,
+    marginLeft: 20,
+    borderRadius: 10,
+    border: '4px solid #fff',
+  },
   ctnBanner: {
     position: 'relative',
     cursor: 'pointer',
   },
   btnPicker: {
     backgroundColor: '#7089FF',
+    marginTop: 40,
     height: 44,
     borderRadius: 12,
     display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    '& > img': {
+      width: 26,
+      height: 26,
+      objectFit: 'contain',
+      marginRight: 12,
+    },
+  },
+  btnPickerDisable: {
+    backgroundColor: '#bdc3c7',
+    marginTop: 40,
+    height: 44,
+    borderRadius: 12,
+    display: 'flex',
+    cursor: 'not-allowed',
     justifyContent: 'center',
     alignItems: 'center',
     '& > img': {
