@@ -3,7 +3,7 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
   btnLogo: {
     display: 'flex',
-    padding: 8
+    padding: 8,
   },
   ctnLogo: {
     background: '#D9D9D9',
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btnPicker: {
     backgroundColor: '#7089FF',
-    marginTop: 40,
+    // marginTop: 40,
     height: 44,
     borderRadius: 12,
     display: 'flex',

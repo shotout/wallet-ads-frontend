@@ -750,7 +750,7 @@ export default function AddCampaign({ userData, content, params }) {
     return duplicateValue;
   };
 
-  const validateSubmit = async() => {
+  const validateSubmit = async () => {
     // const schema = yup.object().shape({
     //   campaign_name: yup.string().required(),
     // });
@@ -767,7 +767,7 @@ export default function AddCampaign({ userData, content, params }) {
     //   console.log('err', validationErrors, errors)
     //   return error.errors;
     // }
-    // return 
+    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1157,7 +1157,7 @@ export default function AddCampaign({ userData, content, params }) {
     setSelectedAudience(null);
     setEmptyAudience(false);
     deactivateErrorBoxAds();
-    setErrorBox({errorFirstAds: false});
+    setErrorBox({ errorFirstAds: false });
   };
 
   const handleAddAudience = () => {
@@ -1894,7 +1894,7 @@ export default function AddCampaign({ userData, content, params }) {
                     setPicture(fixingAds);
                     setAudienceForm(fixingData);
                     deactivateErrorBoxAds();
-                    setErrorBox({errorFirstAds: false});
+                    setErrorBox({ errorFirstAds: false });
                   }}
                   selectedAudience={selectedAudience}
                   selectedPage={selectedAudience === index}
@@ -2608,7 +2608,7 @@ export default function AddCampaign({ userData, content, params }) {
               onClick={() => {
                 setPicture(pictureData.filter((ads) => ads.adsId !== content.adsId));
                 deactivateErrorBoxAds();
-                setErrorBox({errorFirstAds: false});
+                setErrorBox({ errorFirstAds: false });
               }}
             >
               <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
@@ -2645,7 +2645,7 @@ export default function AddCampaign({ userData, content, params }) {
           currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
           setPicture(currentArr);
           deactivateErrorBoxAds();
-          setErrorBox({errorFirstAds: false});
+          setErrorBox({ errorFirstAds: false });
         }}
       >
         <img src={addIcon} alt="addIcon" />
