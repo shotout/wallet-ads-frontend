@@ -3,13 +3,13 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
   btnLogo: {
     display: 'flex',
-    padding: 8
+    padding: 8,
   },
   ctnLogo: {
     background: '#D9D9D9',
-    width: 100,
-    height: 100,
-    marginLeft: 20,
+    width: 120,
+    height: 120,
+    // marginLeft: -5,
     borderRadius: 10,
     border: '4px solid #fff',
   },
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   btnPicker: {
     backgroundColor: '#7089FF',
-    marginTop: 40,
+    marginTop: 50,
     height: 44,
     borderRadius: 12,
     display: 'flex',

@@ -112,7 +112,7 @@ export default function AddCampaign({ userData, content, params }) {
   const initHeadlines = [
     {
       id: makeId(),
-      adtext: '',
+      adname: '',
       isErr: false,
     },
   ];
@@ -571,10 +571,12 @@ export default function AddCampaign({ userData, content, params }) {
           formRes.append(`wallet_address[${index}]`, sample.sampleAd);
         }
       });
-
+      console.log('TES');
+      console.log(pictureData);
       pictureData.forEach((ads, adsIndex) => {
+        console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
+        if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][name]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
 
@@ -1058,10 +1060,10 @@ export default function AddCampaign({ userData, content, params }) {
         }
       });
       picData.headlines.map((heads, descIndex) => {
-        if (heads.adtext === '') {
+        if (heads.adname === '') {
           arrFeIdNotValid.push(heads.id);
           arrFeID.push(picData.fe_id);
-          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adtext: heads.adtext });
+          adTextToSend.push({ title: `Ad Text ${descIndex + 1}`, adname: heads.adname });
           handleChangePicture(null, 'headlines', pictureIndex, false, descIndex);
           isAdTextValid = false;
         }
@@ -1265,7 +1267,7 @@ export default function AddCampaign({ userData, content, params }) {
             let newArrDesc = [...pict.headlines];
 
             if (acceptedFiles) {
-              newArrDesc[descId].adtext = acceptedFiles.target.value;
+              newArrDesc[descId].adname = acceptedFiles.target.value;
               newArrDesc[descId].isErr = false;
             } else {
               newArrDesc[descId].isErr = true;
@@ -2131,7 +2133,7 @@ export default function AddCampaign({ userData, content, params }) {
                   <div className={styles.inputCollectionWrapper}>
                     <input
                       id={`ad-text-headlines-${v.id}`}
-                      value={v.adtext}
+                      value={v.adname}
                       onChange={(event) => {
                         handleChangePicture(event, 'headlines', index, false, i);
                       }}
@@ -2143,12 +2145,7 @@ export default function AddCampaign({ userData, content, params }) {
                 </Grid>
               ))
             )}
-            <Grid
-              md={6}
-              sm={6}
-              xl={6}
-              style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}
-            >
+            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
               <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
               <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
                 <img src={addAdIcon} />
