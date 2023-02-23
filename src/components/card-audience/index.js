@@ -313,10 +313,9 @@ export default function CardAudience({
               </Typography>
               <Typography variant="span" textAlign={'center'}>
                 {shortString(
-                  data.audienceFile.original_name,
+                  data.audienceFile.original_name ?? data.audienceFile.path,
                   18,
-                  fileTypeData[data.audienceFile?.type] ??
-                    shortString(data.audienceFile.path, 18, fileTypeData[data.audienceFile?.type])
+                  fileTypeData[data.audienceFile?.type]
                 )}
                 {/* {data.audienceFile.original_name ?? data.audienceFile.path} */}
               </Typography>
