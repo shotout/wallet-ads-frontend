@@ -14,70 +14,50 @@ const SetupForm = (e) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [showModalSuccess, setModalSuccess] = useState(true);
 
-  // const handleSubmit = async (event) => {
-  //   // setModalSuccess(false);
-  //   // setIsLoading(!isLoading);
-  //   // // We don't want to let default form submission happen here,
-  //   // // which would refresh the page.
-  //   // event.preventDefault();
+  const handleSubmit = async (event) => {
+    setModalSuccess(false);
+    setIsLoading(!isLoading);
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
 
-  //   // if (!stripe || !elements) {
-  //   //   // Stripe.js has not yet loaded.
-  //   //   // Make sure to disable form submission until Stripe.js has loaded.
-  //   //   return;
-  //   // }
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
 
-  //   // const { error } = await stripe.confirmSetup({
-  //   //   //`Elements` instance that was used to create the Payment Element
-  //   //   elements,
-  //   //   confirmParams: {
-  //   //     return_url: `${baseUrl}/settings`,
-  //   //   },
-  //   // });
+    const { error } = await stripe.confirmSetup({
+      //`Elements` instance that was used to create the Payment Element
+      elements,
+      confirmParams: {
+        return_url: `${baseUrl}/settings`,
+      },
+    });
 
-  //   // if (error) {
-  //   //   setIsLoading(false);
-  //   //   // This point will only be reached if there is an immediate error when
-  //   //   // confirming the payment. Show error to your customer (for example, payment
-  //   //   // details incomplete)
-  //   //   setErrorMessage(error.message);
-  //   // } else {
-  //   //   setIsLoading(false);
-  //   //   // Your customer will be redirected to your `return_url`. For some payment
-  //   //   // methods like iDEAL, your customer will be redirected to an intermediate
-  //   //   // site first to authorize the payment, then redirected to the `return_url`.
-  //   // }
-  // };
+    if (error) {
+      setIsLoading(false);
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Show error to your customer (for example, payment
+      // details incomplete)
+      setErrorMessage(error.message);
+    } else {
+      setIsLoading(false);
+      // Your customer will be redirected to your `return_url`. For some payment
+      // methods like iDEAL, your customer will be redirected to an intermediate
+      // site first to authorize the payment, then redirected to the `return_url`.
+    }
+  };
 
   return (
-    <div>
-      {showModalSuccess ? (
-        <form onSubmit={setModalSuccess(false)}>
-          <PaymentElement />
-          <Grid
-            item
-            sm={12}
-            md={12}
-            xs={12}
-            width={e && e.addCard ? '50%' : null}
-            marginLeft={e && e.addCard ? '25%' : null}
-          >
-            <button className={`${styles.ctnBtn}`} disabled={isLoading}>
-              {isLoading ? 'Loading' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
-            </button>
-          </Grid>
-          {/* Show error message to your customers */}
-          {errorMessage && <div>{errorMessage}</div>}
-        </form>
-      ) : (
-        <SuccessAddCampaign
-          isVisible={true}
-          handleHoverClose={() => {
-            window.location.href = routes.createCampaign;
-          }}
-        />
-      )}
-    </div>
+    <form onSubmit={handleSubmit}>
+      <PaymentElement />
+      <button className={`${styles.ctnBtn}`} disabled={isLoading}>
+        {isLoading ? 'Loading' : 'Save'}
+      </button>
+      {/* Show error message to your customers */}
+      {errorMessage && <div>{errorMessage}</div>}
+    </form>
   );
 };
 
