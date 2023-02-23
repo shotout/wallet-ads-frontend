@@ -357,7 +357,7 @@ export default function AddPaymentMethod({
                     textAlign="right"
                     width={'100%'}
                   >
-                    {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`}
+                    {/* {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`} */}
                   </Typography>
                 </Grid>
                 <Grid item sm={12} md={12} xs={12}>
