@@ -305,7 +305,7 @@ export default function CardAudience({
                 Your own audience:
               </Typography>
               <Typography variant="span" textAlign={'center'}>
-                {data.audienceFile.path}
+                {data.audienceFile.original_name ?? data.audienceFile.path}
               </Typography>
             </div>
           ) : (

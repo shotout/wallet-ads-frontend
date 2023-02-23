@@ -236,6 +236,7 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(() => {
+    console.log(content);
     if (params && params.status === 'success') {
       GTMTracker({
         event: 'campaign-creation-success',
@@ -303,6 +304,7 @@ export default function AddCampaign({ userData, content, params }) {
       });
       setPicture(adCreation);
       setAudienceForm(audienceArr);
+      console.log(audienceArr);
       setFormValues({
         campaign_name: content.name,
         campaign_start_date: content.start_date ? new Date(content.start_date) : new Date(getFutureDate(2)),
@@ -565,7 +567,7 @@ export default function AddCampaign({ userData, content, params }) {
 
       pictureData.forEach((ads, adsIndex) => {
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, JSON.stringify(ads.name));
+        if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
 
