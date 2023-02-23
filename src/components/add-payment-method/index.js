@@ -222,7 +222,7 @@ export default function AddPaymentMethod({
         className={styles.tr}
         style={{ '&::WebkitScrollbar': { display: 'none' } }}
       >
-        <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+        {/* <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
           <div className="content">
             <div className={styles.header}>
               <div style={{ width: '99%' }}>
@@ -313,8 +313,8 @@ export default function AddPaymentMethod({
               </>
             )}
           </div>
-        </div>
-        {/* {condLay1 && condLay2 ? (
+        </div> */}
+        <div>
           <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
               <div className={styles.header}>
@@ -421,106 +421,7 @@ export default function AddPaymentMethod({
               )}
             </div>
           </div>
-        ) : (
-          <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
-            <div className="content">
-              <div className={styles.header}>
-                <div style={{ width: '99%' }}>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: '#000' }}
-                    marginLeft={4}
-                    fontWeight="800"
-                    textAlign="center"
-                    width={'100%'}
-                  >
-                    Confirm payment
-                  </Typography>
-                </div>
-
-                <Iconify
-                  icon={'ant-design:close-outlined'}
-                  onClick={resetState}
-                  width={28}
-                  height={28}
-                  className={styles.ctnClose}
-                />
-              </div>
-              <Grid container spacing={4} className={styles.gridAvailability}>
-                <Grid item sm={6} md={6} xs={12}>
-                  <Typography variant="h4" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
-                    Summary
-                  </Typography>
-                  <Typography variant="h5" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
-                    {dataForm.campaign_name}
-                  </Typography>
-                </Grid>
-                <Grid item sm={6} md={6} xs={12}>
-                  <Typography
-                    variant="h2"
-                    sx={{ color: '#000' }}
-                    marginRight={10}
-                    fontWeight="700"
-                    textAlign="right"
-                    width={'100%'}
-                  >
-                    {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`}
-                  </Typography>
-                </Grid>
-                <Grid item sm={12} md={12} xs={12}>
-                  <div style={{ borderTop: '1px solid #C9D3D8' }}></div>
-                </Grid>
-                <Grid item sm={12} md={12} xs={12}>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: '#000' }}
-                    marginRight={10}
-                    fontWeight="700"
-                    textAlign="center"
-                    width={'100%'}
-                  >
-                    Add a Card
-                  </Typography>
-                </Grid>
-                <Grid item sm={12} md={11.8} xs={12} marginLeft={1.8} marginRight={1.8}>
-                  <Elements stripe={stripePromise} options={{ clientSecret: dataPayment }}>
-                    <CheckoutForm addCard={true} />
-                  </Elements>
-                </Grid>
-              </Grid>
-            </div>
-            <div
-              className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
-                values.isApplied && styles.ctnBackgroundSuccess
-              }`}
-            >
-              {!values.isApplied ? (
-                isPromoAvail ? (
-                  renderFormPromoCode()
-                ) : (
-                  <Typography variant="body1" color="#000" textAlign={'center'} className={styles.ctnPromoText}>
-                    Do you have a promo code?{' '}
-                    <span onClick={() => setIsPromoAvail(!isPromoAvail)} className={styles.ctnLink}>
-                      Click here.
-                    </span>
-                  </Typography>
-                )
-              ) : (
-                <>
-                  <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                    <span className={styles.ctnBold}>
-                      {' '}
-                      {`Promo code ${values.promoCode} was successfully applied!`}
-                    </span>
-                  </Typography>
-                  <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
-                    Your discount of <span className={styles.ctnBold}>USD500</span> will be shown on the invoice.
-                  </Typography>
-                </>
-              )}
-            </div>
-          </div>
-        )} */}
+        </div>
         <LoadingPage show={isPaymentLoading || loading} />
       </Box>
     </Popover>
