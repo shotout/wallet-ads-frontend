@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/alt-text */
-import { Box, Divider, Grid, Popover, Typography, Collapse } from '@mui/material';
+import { Box, Divider, Grid, Popover, Typography, Collapse, Alert } from '@mui/material';
 import useStyles from './styles';
 import BannerPicker from '../../components/banner-picker';
 import CollectionPreview from '../../components/collection-preview';
@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
+import { getUserData } from '../../helpers/auth';
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
 import {
@@ -28,6 +29,7 @@ import {
   handleEditCampaign,
   getProfilUser,
   cancelStripe,
+  paymentChargeCard,
 } from '../../utils/requests';
 import DefaultButton from '../../components/default-button';
 import moment from 'moment';
@@ -41,6 +43,7 @@ import { routes } from '../../helpers/routes';
 import { makeId } from '../../utils/general';
 import SvgIconStyle from '../../components/SvgIconStyle';
 import { trackGoal, GTMTracker } from '../../utils/tracker';
+// import * as yup from 'yup';
 
 const questionObj = {
   collection_page_text: 'Add a text for your collection page to describe what it is about.',
@@ -54,7 +57,7 @@ const questionObj = {
     'Name of the Collection page under which your ad will be listed. This could be your brand name or artist name.',
   logo_text: 'Upload a logo for the collection page. Recommended size: 350x350px',
   logo_text_banner: 'Upload a banner for the collection page. Recommended size: 1400x350px',
-  errorAd: 'Another ad is already selected to be shown to this audience.',
+  errorAd: 'Please add more audience to check this field.',
   advanced_tracking: 'Optional: Add advanced settings for experienced users to fully customize your campaign.',
   token_tracker_name: 'Add the name of your token tracker.',
   token_symbol: 'Add the symbol of your token tracker.',
@@ -97,7 +100,7 @@ const rubishIcon = '/icons/ic_rubish.svg';
 const addAdIcon = '/icons/ic_add.svg';
 const iconPlus = '/assets/icon-plus.png';
 
-export default function AddCampaign({ content, params }) {
+export default function AddCampaign({ userData, content, params }) {
   const styles = useStyles();
   const initDecription = [
     {
@@ -107,6 +110,9 @@ export default function AddCampaign({ content, params }) {
     },
   ];
   const initialPicture = [{ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() }];
+  // const [errors, setErrors] = useState({});
+  const [values, setValues] = useState(userData.data);
+  const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
   const [errAlert, setErrorAlert] = useState(null);
   const [activePopover, setActivePopover] = useState(null);
@@ -195,6 +201,7 @@ export default function AddCampaign({ content, params }) {
     errorCollection: false,
     errorAudienceNull: false,
     errorAdvanced: false,
+    errorFirstAds: false,
   });
   const [showCreditCard, setShowCreditCard] = useState({
     isVisible: false,
@@ -239,6 +246,7 @@ export default function AddCampaign({ content, params }) {
     if (content && params.status === 'fail') {
       cancelCreateCampaignId(content.id);
       window.scrollTo(0, document.body.scrollHeight);
+      let sample = JSON.parse(content.sample_address);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
       const adsBanner = adsPage.images.find((item) => item.type === 'ads_banner');
@@ -260,7 +268,15 @@ export default function AddCampaign({ content, params }) {
         adsId: makeId(),
       }));
 
-      const audienceArr = content.audiences.map((item) => {
+      const newAudience = [];
+      content.audiences.map((item) => {
+        const checkIfExist = newAudience.some((v) => v.selected_fe_id === item.selected_fe_id);
+        if (!checkIfExist) {
+          newAudience.push(item);
+        }
+      });
+
+      const audienceArr = newAudience.map((item) => {
         const targeting = item.detail_target;
         return {
           id: item.id,
@@ -303,6 +319,26 @@ export default function AddCampaign({ content, params }) {
         ads_page_token_name: adsPage.token_name,
         ads_page_token_symbol: adsPage.token_symbol,
       });
+
+      const sampleAds = JSON.parse(content.sample_address);
+      console.log('TYPE', sampleAds[0]);
+
+      if (typeof sampleAds === 'object' && sampleAds[0] !== null) {
+        setSampleAds([]); // reset ads to null
+        sampleAds[0]?.map((v) => {
+          setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: v }]);
+        });
+        setSampleAds((sampleAds) => [...sampleAds, { id: makeId(), sampleAd: '' }]);
+      }
+      // console.log('TYPE', typeof sampleAds);
+      // if (typeof sampleAds === 'object') {
+      //   sampleAds.forEach((itemAds, indexAds) => {
+      //     itemAds.forEach((sampleAds, indexSample) => {
+      //       console.log(sampleAds);
+      //       if (indexAds == indexSample) itemAds.sampleAd = sampleAds;
+      //     });
+      //   });
+      // }
     }
   }, []);
 
@@ -413,21 +449,51 @@ export default function AddCampaign({ content, params }) {
   };
 
   const directStripe = async (params) => {
-    setShowCreditCard({
-      ...showCreditCard,
-      isPaymentLoading: true,
-    });
+    const checkUser = await getProfilUser();
 
     const campaign = await createCampaignId();
-    const session = await createSession({
-      promo: params,
-      campaign_id: campaign.data.id,
-      campaign_name: campaign.data.name,
-      total_budget: getTotalBudget(audienceForm) * 100,
-    });
-    trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
-    setShowCreditCard({ ...showCreditCard });
-    window.location.href = session?.url;
+    if (checkUser.data.customer_id) {
+      try {
+        const res = await paymentChargeCard({
+          total_budget: getTotalBudget(audienceForm) * 100,
+          campaign_name: campaign.data.name,
+        });
+        setShowCreditCard({
+          ...showCreditCard,
+          isPaymentLoading: true,
+        });
+
+        if (res) {
+          // setModalSuccess('cryptocurrency');
+          // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
+          setTimeout(() => {
+            window.open(res.receipt_url, '_blank');
+          }, 5000);
+
+          setTimeout(() => {
+            setShowCreditCard({ ...showCreditCard, isVisible: false });
+            setModalSuccess('cryptocurrency');
+          }, 4000);
+        }
+      } catch (err) {
+        alert('Sorry, Payment Failed !');
+      }
+      return;
+    } else {
+      setShowCreditCard({
+        ...showCreditCard,
+        isPaymentLoading: true,
+      });
+      const session = await createSession({
+        promo: params,
+        campaign_id: campaign.data.id,
+        campaign_name: campaign.data.name,
+        total_budget: getTotalBudget(audienceForm) * 100,
+      });
+      trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+      setShowCreditCard({ ...showCreditCard });
+      window.location.href = session?.url;
+    }
   };
 
   const getAudienceArr = () => {
@@ -514,6 +580,12 @@ export default function AddCampaign({ content, params }) {
           });
         }
 
+        if (ads.fe_id.length > 0) {
+          ads.fe_id.forEach((feId, feIndex) => {
+            formRes.append(`campaign_ads[${adsIndex}][audience_id][${feIndex}]`, feId);
+          });
+        }
+
         if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
       });
 
@@ -597,6 +669,11 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
+  const checkAudienceMultiAction = (e, index) => {
+    if (e) setCheckAudienceMulti(true);
+    else if (e == false && index == 0) setCheckAudienceMulti(false);
+  };
+
   const addAdText = (index) => {
     const body = {
       id: makeId(),
@@ -632,6 +709,12 @@ export default function AddCampaign({ content, params }) {
     setPicture(newData);
   };
 
+  const isAdsArrValid2 = (ads) => {
+    if (ads.fe_id.length > 0) {
+      return true;
+    }
+  };
+
   const isAdsArrValid = (ads) => {
     console.log(ads);
     if (ads.name !== '' && ads.image && ads.fe_id.length > 0 && ads.description) {
@@ -639,7 +722,54 @@ export default function AddCampaign({ content, params }) {
     }
   };
 
-  const validateSubmit = () => {
+  const checkAudienceSelect = (ads, index) => {
+    let selectedAdsAudience = [];
+    let duplicateValue = false;
+    let set1 = [];
+    let set2 = [];
+
+    pictureData.forEach((ads) => {
+      if (isAdsArrValid(ads)) {
+        ads.fe_id.forEach((feId) => {
+          selectedAdsAudience.push(feId);
+        });
+      }
+    });
+
+    audienceForm.forEach((b) => {
+      selectedAdsAudience.forEach((a) => {
+        if (a == b.audienceId && b.optimized) {
+          if (!set1.includes(a)) set1.push(a);
+        }
+      });
+      if (b.optimized) {
+        set2.push(b.audienceId);
+      }
+    });
+    if (set1.length == set2.length) duplicateValue = true;
+    else duplicateValue = false;
+
+    return duplicateValue;
+  };
+
+  const validateSubmit = async () => {
+    // const schema = yup.object().shape({
+    //   campaign_name: yup.string().required(),
+    // });
+
+    // try {
+    //   await schema.validate(formValues, {abortEarly: false});
+    //   setErrors({})
+    // } catch (error) {
+    //   const validationErrors = {};
+    //   error.inner.forEach(err => {
+    //     validationErrors[err.path] = err.message;
+    //   });
+    //   setErrors(validationErrors);
+    //   console.log('err', validationErrors, errors)
+    //   return error.errors;
+    // }
+    // return
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -695,7 +825,7 @@ export default function AddCampaign({ content, params }) {
         inputValid = false;
       }
       let isCollectionSection = false;
-      formValues.ads_page_name && formValues.ads_page_description && logoCollection;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       const arrValid = [];
       const arrNotValid = [];
       const errAudienceID = [];
@@ -714,14 +844,28 @@ export default function AddCampaign({ content, params }) {
 
       isAdTextValid = validationAdsText();
 
-      isAdsValid = arrValid.length === pictureData.length;
+      var duplicateValue = false;
+      var set1 = [];
+      var set2 = [];
+      audienceForm.forEach((b) => {
+        selectedAdsAudience.forEach((a) => {
+          if (a == b.audienceId && b.optimized) {
+            if (!set1.includes(a)) set1.push(a);
+          }
+        });
+        if (b.optimized) {
+          set2.push(b.audienceId);
+        }
+      });
+      if (set1.length == set2.length) duplicateValue = true;
+      else duplicateValue = false;
+
+      isAdsValid = arrValid.length === pictureData.length && isAdTextValid.isAdTextValid === true;
       const isAudienceFormAdsValid =
         selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
           ? true
           : false;
       // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
-      // console.log('is arr valid', isAudienceFormAdsValidCP);
-      // console.log(selectedAdsAudience);
 
       // Cek token symbol
       let isAdvancedSettingValid = true;
@@ -729,7 +873,7 @@ export default function AddCampaign({ content, params }) {
       if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
         isAdvancedSettingValid = true;
         isCollectionSection =
-          formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
       } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
         if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
           isAdvancedSettingValid = false;
@@ -738,19 +882,52 @@ export default function AddCampaign({ content, params }) {
         } else {
           isAdvancedSettingValid = true;
           isCollectionSection =
-            formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
         }
       }
+      // : false,
+      // errorAds: false,
+      // errorBoxCampaignName: false,
+      // errorBoxAvailability: false,
+      // errorCollection: false,
+      // errorAudienceNull: false,
+      // errorAdvanced: false,
 
+      var adsNull = isAudienceNull.length;
+      var picData = pictureData[0].fe_id.length;
+      var adsForm = audienceForm.length;
+      var pictureValid = pictureData.length == 1 ? adsNull + picData == adsForm : true;
+      var checkAds = true;
+
+      if (pictureData && pictureData.length > 1 && adsNull > picData) {
+        setCheckAudienceMulti(false);
+        checkAds = false;
+      }
+      // if (pictureData.length == 0)
       if (
+        duplicateValue &&
+        pictureValid &&
         isAudienceValid.length > 0 &&
         isAdsValid &&
         inputValid &&
-        isAudienceFormAdsValid &&
         isBudgetValid &&
         !isAvailabilityValid &&
         isAudienceUnderMinimum.length === 0 &&
-        isAdTextValid.isAdTextValid &&
+        isAdvancedSettingValid
+      ) {
+        return handleSubmit();
+      }
+      if (
+        duplicateValue &&
+        checkAds &&
+        checkAudienceMulti &&
+        pictureValid &&
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isBudgetValid &&
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
         if (showCreditCard.sessionId && showCreditCard.campaignId) {
@@ -770,7 +947,20 @@ export default function AddCampaign({ content, params }) {
           errorCollection: !isCollectionSection,
           errorAudienceNull: audienceForm.length === isAudienceNull.length,
           errorAdvanced: !isAdvancedSettingValid,
+          errorFirstAds: true,
         });
+
+        if (checkAds || !duplicateValue) {
+          // if (!duplicateValue == false && isAvailabilityValid) {
+          //   return (window.location.href = '#availability-section');
+          // }
+          setTimeout(() => {
+            var requiredCard = document.getElementById('requiredCard');
+            if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
+              return (window.location.href = '#card-audience');
+            }
+          }, 10);
+        }
         if (isCampaignNameValid) {
           window.location.href = '#campaign-name';
         } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
@@ -794,7 +984,7 @@ export default function AddCampaign({ content, params }) {
 
           if (errCard >= addTextErr) {
             if (!pictureData[validCard].name || !pictureData[validCard].image) {
-              window.location.href = `#ad-name-${errAudienceID[0]}`;
+              return (window.location.href = `#ad-name-${errAudienceID[0]}`);
             } else {
               window.location.href = `#checkbox-container-${errAudienceID[0]}`;
             }
@@ -815,7 +1005,7 @@ export default function AddCampaign({ content, params }) {
               }
             } else {
               console.log(isAudienceFormAdsValid);
-              if (isAudienceFormAdsValid === false) {
+              if (isAudienceFormAdsValid === false && duplicateValue === false) {
                 window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
               } else {
                 window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
@@ -824,7 +1014,7 @@ export default function AddCampaign({ content, params }) {
           }
         } else if (!isAdTextValid.isAdTextValid) {
           window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
-        } else if (!isAudienceFormAdsValid) {
+        } else if (!isAudienceFormAdsValid && !duplicateValue) {
           window.location.href = `#card-ads-err-0`;
         } else if (isAvailabilityValid) {
           window.location.href = '#availability-section';
@@ -856,8 +1046,8 @@ export default function AddCampaign({ content, params }) {
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
   };
 
-  const deactivateErrorCampaign = () => {
-    if (errorBox.errorAds) {
+  const deactivateErrorCampaign = (e) => {
+    if (errorBox.errorAds || e.target.value) {
       setErrorBox({
         ...errorBox,
         errorBoxCampaignName: false,
@@ -875,12 +1065,12 @@ export default function AddCampaign({ content, params }) {
   };
 
   const deactivateErrorBoxAds = () => {
-    if (errorBox.errorAds) {
-      setErrorBox({
-        ...errorBox,
-        errorAds: false,
-      });
-    }
+    // if (errorBox.errorAds) {
+    //   setErrorBox({
+    //     ...errorBox,
+    //     errorAds: false,
+    //   });
+    // }
   };
 
   const handleHoverOpen = (event, popoverName) => {
@@ -968,34 +1158,12 @@ export default function AddCampaign({ content, params }) {
     setAudienceForm(restructureData);
     setSelectedAudience(null);
     setEmptyAudience(false);
+    deactivateErrorBoxAds();
+    setErrorBox({ errorFirstAds: false });
   };
 
   const handleAddAudience = () => {
     const addData = [
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
-      {
-        audienceId: makeId(),
-        optimized: false,
-        selectedCategory: null,
-        budgetAds: '',
-        detailTargeting: { amountDays: '' },
-        balancedTargeting: { cryptoCurrency: null, year: null, months: null, day: null, airdropReceived: null },
-      },
       {
         audienceId: makeId(),
         optimized: false,
@@ -1226,11 +1394,15 @@ export default function AddCampaign({ content, params }) {
     );
   }
 
-  function renderErrorText(isShow, errorMessage) {
+  function renderErrorText(isShow, errorMessage, field) {
     if (isShow) {
       return (
         <div className={styles.ctnError}>
-          <span>{errorMessage || 'Please check this field.'}</span>
+          <span>
+            {field == 'Audience'
+              ? 'Please assign at least 1 ad to this audience or delete this audience'
+              : errorMessage || 'Please check this field'}
+          </span>
         </div>
       );
     }
@@ -1294,6 +1466,7 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCampaignName() {
+    // className={`${styles.ctnSection} ${errors.campaign_name ? styles.ctnRedBorder : ''}`}
     return (
       <div
         className={`${styles.ctnSection} ${errorBox.errorBoxCampaignName ? styles.ctnRedBorder : ''}`}
@@ -1312,7 +1485,7 @@ export default function AddCampaign({ content, params }) {
               type="text"
               onChange={(event) => {
                 handleChangeValues(event, 'campaign_name');
-                deactivateErrorCampaign();
+                deactivateErrorCampaign(event);
               }}
               value={formValues.campaign_name}
             />
@@ -1722,10 +1895,15 @@ export default function AddCampaign({ content, params }) {
                     }));
                     setPicture(fixingAds);
                     setAudienceForm(fixingData);
+                    deactivateErrorBoxAds();
+                    setErrorBox({ errorFirstAds: false });
                   }}
                   selectedAudience={selectedAudience}
                   selectedPage={selectedAudience === index}
                   label={`Audience ${index + 1}:`}
+                  index={index + 1}
+                  errorAds={!checkIsAudienceAdsSelected(item.audienceId)}
+                  errorAdsBeforeSubmit={checkAudienceSelect && errorBox.errorFirstAds}
                 />
               </Grid>
             ))}
@@ -2329,12 +2507,17 @@ export default function AddCampaign({ content, params }) {
         ${errorBox.errorAds && content.description.some((desc) => desc.isErr) ? styles.ctnRedBorder : ''}`}
         key={content.adsId}
       >
+        {!isAdsArrValid2(content) && errorBox.errorFirstAds ? (
+          <div className={`${errorBox.errorFirstAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+            Please assign an at least 1 audience to this ad or delete this ad.
+          </div>
+        ) : null}
         <div id={`card-ads-err-${index}`}> </div>
         {/* <div className={styles.ctnInputCollectionPageWrapper}> */}
         {renderTopAdCreation(content, index)}
         {renderRightAdCreation(content, index)}
         {/* </div> */}
-        <div className={styles.ctnSelectAudience}>
+        <div className={styles.ctnSelectAudience} id={'card-ads'}>
           <div className={styles.ctnInputCollection}>
             <div className={styles.rowTitleWrapper}>
               <div className={styles.leftTitle}>
@@ -2346,8 +2529,8 @@ export default function AddCampaign({ content, params }) {
           <Grid container spacing={2} id={`checkbox-container-${content.adsId}`}>
             {audienceForm.map((item, audienceIndex) => {
               const isActive = content.fe_id.includes(item.audienceId);
-
               const isEditable = isActive && checkIsAudienceAdsSelected(item.audienceId);
+
               return (
                 <Grid
                   id={`checkbox-${item.audienceId}`}
@@ -2362,34 +2545,56 @@ export default function AddCampaign({ content, params }) {
                     <div
                       className={`${styles.ctnAudienceItem} ${content.capaign_id ? styles.ctnDisable : {}} ${
                         !isActive && checkIsAudienceAdsSelected(item.audienceId)
-                          ? styles.ctnDisable
+                          ? styles.ctnAudienceItem
                           : !item.optimized
                           ? styles.ctnDisable
+                          : errorBox.errorAds
+                          ? !checkIsAudienceAdsSelected(item.audienceId)
+                            ? styles.ctnRedBorder
+                            : null
                           : styles.ctnAudienceItem
                       }`}
                       onClick={(event) => {
-                        // if (!item.optimized) return;
+                        checkAudienceMultiAction(
+                          (!isActive && item.optimized && !isAdsArrValid(content)) ||
+                            (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)),
+                          index,
+                          item
+                        );
+                        if (!item.optimized) return;
 
                         if (
-                          (item.optimized && isEditable) ||
+                          item.optimized ||
                           (!isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId))
                         ) {
-                          deactivateErrorBoxAds();
+                          // deactivateErrorBoxAds();
                           handleChangePicture(item.audienceId, 'fe_id', index);
                         } else {
                           !emptyAudience && handleAlertErrorOpen(event, 'Audience');
                         }
                       }}
                     >
-                      {renderPopoverError('Audience', questionObj.errorAd)}
+                      {/* {renderPopoverError('Audience', questionObj.errorAd)} */}
                       <CheckboxAds isActive={isActive} />
                       <Typography variant="subtitle1" color="#808080">
                         {`Audience ${audienceIndex + 1}`}
                       </Typography>
                     </div>
-                    {renderErrorText(
-                      errorBox.errorAds && !isActive && item.optimized && !checkIsAudienceAdsSelected(item.audienceId)
-                    )}
+                    {/* {!isActive && item.optimized && item.selectedCategory == 'optimized' && errorBox.errorAds ? ( */}
+                    {!checkAudienceSelect(item, audienceIndex) &&
+                    item.optimized &&
+                    !checkIsAudienceAdsSelected(item.audienceId) &&
+                    errorBox.errorFirstAds ? (
+                      <div className={styles.ctnAudienceErrBox}>
+                        {renderErrorText(
+                          (!isActive && item.optimized && isAdsArrValid(content)) ||
+                            !checkIsAudienceAdsSelected(item.audienceId),
+                          null,
+                          'Audience'
+                        )}
+                      </div>
+                    ) : null}
+
                     {renderAdAudience(item)}
                   </div>
                 </Grid>
@@ -2404,6 +2609,8 @@ export default function AddCampaign({ content, params }) {
               className={styles.ctnIconDeletAds}
               onClick={() => {
                 setPicture(pictureData.filter((ads) => ads.adsId !== content.adsId));
+                deactivateErrorBoxAds();
+                setErrorBox({ errorFirstAds: false });
               }}
             >
               <SvgIconStyle src={deleteIcon} sx={{ width: 1, height: 1, bgcolor: '#fff', marginBottom: 1 }} />
@@ -2431,38 +2638,40 @@ export default function AddCampaign({ content, params }) {
   }
 
   function renderCreateAnotherAd() {
-    if (pictureData.length < audienceForm.filter((item) => item.selectedCategory !== null).length) {
-      return (
-        <div
-          className={styles.btnCreateAd}
-          onClick={() => {
-            const currentArr = [...pictureData];
-            currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
-            setPicture(currentArr);
-          }}
-        >
-          <img src={addIcon} alt="addIcon" />
-          <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
-            Create another ad
-          </Typography>
-        </div>
-      );
-    }
-    return null;
+    // if (pictureData.length < audienceForm.filter((item) => item.selectedCategory !== null).length) {
+    return (
+      <div
+        className={styles.btnCreateAd}
+        onClick={() => {
+          const currentArr = [...pictureData];
+          currentArr.push({ image: null, fe_id: [], name: '', description: initDecription, adsId: makeId() });
+          setPicture(currentArr);
+          deactivateErrorBoxAds();
+          setErrorBox({ errorFirstAds: false });
+        }}
+      >
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
+          Create another ad
+        </Typography>
+      </div>
+    );
+    // }
+    // return null;
   }
 
   function renderAddAudience() {
-    if (checkIsFormMax(audienceForm)) {
-      return (
-        <div className={styles.btnCreateAd} onClick={handleAddAudience}>
-          <img src={addIcon} alt="addIcon" />
-          <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
-            Add more audiences
-          </Typography>
-        </div>
-      );
-    }
-    return null;
+    // if (params.status === 'fail') {
+    return (
+      <div className={styles.btnCreateAd} onClick={handleAddAudience}>
+        <img src={addIcon} alt="addIcon" />
+        <Typography variant="h6" color={'#B3B3B3'} fontWeight="bold">
+          Add more audiences
+        </Typography>
+      </div>
+    );
+    // }
+    // return null;
   }
 
   function renderCollectionPage() {
@@ -2551,15 +2760,7 @@ export default function AddCampaign({ content, params }) {
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
         />
-        {/* <LoadingPage show={showCreditCard.isPaymentLoading} /> */}
-        {/* <CreditCard
-          callbackSuccess={(modalType) => {
-            handleSubmit(modalType)
-          }}
-          totalBudget={getTotalBudget(audienceForm)}
-          isVisible={showCreditCard}
-          // isVisible
-          handleHoverClose={() => { setShowCreditCard(null)}} /> */}
+        <LoadingPage show={showCreditCard.isPaymentLoading} />
       </div>
     </Page>
   );
@@ -2567,6 +2768,7 @@ export default function AddCampaign({ content, params }) {
 
 export async function getServerSideProps(context) {
   try {
+    const userData = getUserData(context);
     await getProfilUser(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
@@ -2589,6 +2791,7 @@ export async function getServerSideProps(context) {
     }
     return {
       props: {
+        userData,
         content,
         params,
       }, // will be passed to the page component as props
