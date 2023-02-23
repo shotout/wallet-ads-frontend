@@ -15,38 +15,38 @@ const SetupForm = (e) => {
   const [showModalSuccess, setModalSuccess] = useState(true);
 
   const handleSubmit = async (event) => {
-    return setModalSuccess(false);
-    setIsLoading(!isLoading);
-    // We don't want to let default form submission happen here,
-    // which would refresh the page.
-    event.preventDefault();
+    setModalSuccess(false);
+    // setIsLoading(!isLoading);
+    // // We don't want to let default form submission happen here,
+    // // which would refresh the page.
+    // event.preventDefault();
 
-    if (!stripe || !elements) {
-      // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
-      return;
-    }
+    // if (!stripe || !elements) {
+    //   // Stripe.js has not yet loaded.
+    //   // Make sure to disable form submission until Stripe.js has loaded.
+    //   return;
+    // }
 
-    const { error } = await stripe.confirmSetup({
-      //`Elements` instance that was used to create the Payment Element
-      elements,
-      confirmParams: {
-        return_url: `${baseUrl}/settings`,
-      },
-    });
+    // const { error } = await stripe.confirmSetup({
+    //   //`Elements` instance that was used to create the Payment Element
+    //   elements,
+    //   confirmParams: {
+    //     return_url: `${baseUrl}/settings`,
+    //   },
+    // });
 
-    if (error) {
-      setIsLoading(false);
-      // This point will only be reached if there is an immediate error when
-      // confirming the payment. Show error to your customer (for example, payment
-      // details incomplete)
-      setErrorMessage(error.message);
-    } else {
-      setIsLoading(false);
-      // Your customer will be redirected to your `return_url`. For some payment
-      // methods like iDEAL, your customer will be redirected to an intermediate
-      // site first to authorize the payment, then redirected to the `return_url`.
-    }
+    // if (error) {
+    //   setIsLoading(false);
+    //   // This point will only be reached if there is an immediate error when
+    //   // confirming the payment. Show error to your customer (for example, payment
+    //   // details incomplete)
+    //   setErrorMessage(error.message);
+    // } else {
+    //   setIsLoading(false);
+    //   // Your customer will be redirected to your `return_url`. For some payment
+    //   // methods like iDEAL, your customer will be redirected to an intermediate
+    //   // site first to authorize the payment, then redirected to the `return_url`.
+    // }
   };
 
   return (
