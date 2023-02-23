@@ -23,6 +23,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import {
+  getPaymentCC,
   createSession,
   handleAddCampaign,
   getCampaignDetail,
@@ -120,6 +121,8 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [cost, setCost] = useState(null);
+  const [dataPaymentCC, setDataPaymentCC] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
@@ -927,6 +930,9 @@ export default function AddCampaign({ userData, content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
+        setCost(getTotalBudget(audienceForm));
+        const res = await getPaymentCC();
+        setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
       }
       if (
@@ -2144,12 +2150,7 @@ export default function AddCampaign({ userData, content, params }) {
                 </Grid>
               ))
             )}
-            <Grid
-              md={6}
-              sm={6}
-              xl={6}
-              style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}
-            >
+            <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
               <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
               <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
                 <img src={addAdIcon} />
@@ -2889,6 +2890,9 @@ export default function AddCampaign({ userData, content, params }) {
           }}
         />
         <AddPaymentMethod
+          dataCost={cost}
+          dataPayment={dataPaymentCC}
+          dataForm={formValues}
           callbackSuccess={(modalType) => {
             GTMTracker({
               event: 'campaign-creation-success',

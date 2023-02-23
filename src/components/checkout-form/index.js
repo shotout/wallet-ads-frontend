@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import useStyles from './styles';
+import SuccessAddCampaign from '../../components/success-add-campaign';
+import { routes } from '../../helpers/routes';
 
-const SetupForm = () => {
+const SetupForm = (e) => {
   const styles = useStyles();
   const stripe = useStripe();
   const elements = useElements();
   const baseUrl = window.location.origin;
   const [isLoading, setIsLoading] = React.useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showModalSuccess, setModalSuccess] = useState(true);
 
   const handleSubmit = async (event) => {
+    return setModalSuccess(false);
     setIsLoading(!isLoading);
     // We don't want to let default form submission happen here,
     // which would refresh the page.
@@ -45,14 +50,34 @@ const SetupForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      <button className={`${styles.ctnBtn}`} disabled={isLoading}>
-        {isLoading ? 'Loading' : 'Save'}
-      </button>
-      {/* Show error message to your customers */}
-      {errorMessage && <div>{errorMessage}</div>}
-    </form>
+    <div>
+      {showModalSuccess ? (
+        <form onSubmit={handleSubmit}>
+          <PaymentElement />
+          <Grid
+            item
+            sm={12}
+            md={12}
+            xs={12}
+            width={e && e.addCard ? '50%' : null}
+            marginLeft={e && e.addCard ? '25%' : null}
+          >
+            <button className={`${styles.ctnBtn}`} disabled={isLoading}>
+              {isLoading ? 'Loading' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
+            </button>
+          </Grid>
+          {/* Show error message to your customers */}
+          {errorMessage && <div>{errorMessage}</div>}
+        </form>
+      ) : (
+        <SuccessAddCampaign
+          isVisible={true}
+          handleHoverClose={() => {
+            window.location.href = routes.createCampaign;
+          }}
+        />
+      )}
+    </div>
   );
 };
 
