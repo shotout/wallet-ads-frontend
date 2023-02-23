@@ -345,7 +345,7 @@ export default function AddPaymentMethod({
                     Summary
                   </Typography>
                   <Typography variant="h5" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
-                    {dataForm.campaign_name}
+                    {/* {dataForm.campaign_name} */}
                   </Typography>
                 </Grid>
                 <Grid item sm={6} md={6} xs={12}>
