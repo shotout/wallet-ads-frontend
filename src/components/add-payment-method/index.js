@@ -222,7 +222,7 @@ export default function AddPaymentMethod({
         className={styles.tr}
         style={{ '&::WebkitScrollbar': { display: 'none' } }}
       >
-        {/* <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+        <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
           <div className="content">
             <div className={styles.header}>
               <div style={{ width: '99%' }}>
@@ -313,7 +313,7 @@ export default function AddPaymentMethod({
               </>
             )}
           </div>
-        </div> */}
+        </div>
         <div>
           <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
@@ -360,9 +360,9 @@ export default function AddPaymentMethod({
                     {/* {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`} */}
                   </Typography>
                 </Grid>
-                <Grid item sm={12} md={12} xs={12}>
+                {/* <Grid item sm={12} md={12} xs={12}>
                   <div style={{ borderTop: '1px solid #C9D3D8' }}></div>
-                </Grid>
+                </Grid> */}
                 <Grid item sm={12} md={12} xs={12}>
                   <Typography variant="h7" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
                     Please Choose your preferred payment method for this campaign.
