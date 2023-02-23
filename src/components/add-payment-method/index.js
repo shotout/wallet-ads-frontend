@@ -370,7 +370,6 @@ export default function AddPaymentMethod({
                 </Grid>
                 <Grid item sm={6} md={6} xs={12}>
                   <DefaultButton
-                    onClick={() => setCondLay2(false)}
                     ctnBtnStyle={styles.btnStyle}
                     label={'Add credit card'}
                     eventName={'Pay with stripe'}
