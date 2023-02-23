@@ -290,10 +290,17 @@ export default function CardAudience({
       );
     }
     if (data.selectedCategory === 'optimized' || data.selectedCategory === 'upload') {
+      const fileTypeData = {
+        'text/csv': 'csv',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'file/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.ms-excel': '.xls',
+        'file/vnd.ms-excel': '.xls',
+      };
       return (
         <div className={styles.ctnDescAudience}>
           {data.audienceFile ? (
-            <div className={styles.ctnDefaultContentWrapper2}>
+            <div className={styles.ctnDefaultContentWrapper2} sytle={{ paddingTop: 15, margin: 10 }}>
               <Typography
                 variant="body1"
                 className={styles.desctTitle}
@@ -305,7 +312,13 @@ export default function CardAudience({
                 Your own audience:
               </Typography>
               <Typography variant="span" textAlign={'center'}>
-                {data.audienceFile.original_name ?? data.audienceFile.path}
+                {shortString(
+                  data.audienceFile.original_name,
+                  18,
+                  fileTypeData[data.audienceFile?.type] ??
+                    shortString(data.audienceFile.path, 18, fileTypeData[data.audienceFile?.type])
+                )}
+                {/* {data.audienceFile.original_name ?? data.audienceFile.path} */}
               </Typography>
             </div>
           ) : (
