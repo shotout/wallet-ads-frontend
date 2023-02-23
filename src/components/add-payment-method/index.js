@@ -362,7 +362,7 @@ export default function AddPaymentMethod({
                     </Typography>
                   </Grid>
                   <Grid item sm={12} md={12} xs={12}>
-                    <div style={{ borderTop: '1px solid #C9D3D8' }}></div>
+                    <div style={{ borderTop: '1px solid #C9D3D8' }}>.</div>
                   </Grid>
                   <Grid item sm={12} md={12} xs={12}>
                     <Typography variant="h7" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
@@ -411,7 +411,6 @@ export default function AddPaymentMethod({
                   <>
                     <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
                       <span className={styles.ctnBold}>
-                        {' '}
                         {`Promo code ${values.promoCode} was successfully applied!`}
                       </span>
                     </Typography>
@@ -510,7 +509,6 @@ export default function AddPaymentMethod({
                   <>
                     <Typography variant="subtitle1" color="#fff" textAlign={'center'}>
                       <span className={styles.ctnBold}>
-                        {' '}
                         {`Promo code ${values.promoCode} was successfully applied!`}
                       </span>
                     </Typography>
