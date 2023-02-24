@@ -362,9 +362,9 @@ export default function AddPaymentMethod({
                     </Typography>
                   </Grid>
                   <Grid item sm={12} md={12} xs={12}>
-                    <div style={{ borderTop: '1px solid #C9D3D8' }}>.</div>
+                    <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12}>
+                  <Grid item sm={12} md={12} xs={12} marginY={-2}>
                     <Typography variant="h7" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
                       Please Choose your preferred payment method for this campaign.
                     </Typography>
