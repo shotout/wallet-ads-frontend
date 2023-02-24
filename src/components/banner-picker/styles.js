@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     background: '#D9D9D9',
     width: 120,
     height: 120,
-    // marginLeft: -5,
+    marginLeft: -10,
     borderRadius: 10,
     border: '4px solid #fff',
   },
