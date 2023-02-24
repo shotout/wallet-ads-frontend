@@ -23,6 +23,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import {
+  getPaymentCC,
   createSession,
   handleAddCampaign,
   getCampaignDetail,
@@ -120,6 +121,8 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [cost, setCost] = useState(null);
+  const [dataPaymentCC, setDataPaymentCC] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
   const [hover, setHover] = useState(null);
@@ -576,7 +579,8 @@ export default function AddCampaign({ userData, content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][name]`, JSON.stringify(ads.headlines));
+        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
+        if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
 
@@ -928,6 +932,9 @@ export default function AddCampaign({ userData, content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
+        setCost(getTotalBudget(audienceForm));
+        const res = await getPaymentCC();
+        setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
       }
       if (
@@ -2885,6 +2892,9 @@ export default function AddCampaign({ userData, content, params }) {
           }}
         />
         <AddPaymentMethod
+          dataCost={cost}
+          dataPayment={dataPaymentCC}
+          dataForm={formValues}
           callbackSuccess={(modalType) => {
             GTMTracker({
               event: 'campaign-creation-success',

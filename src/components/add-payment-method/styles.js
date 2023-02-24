@@ -7,7 +7,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: 50,
-    borderRadius: 10,
+    borderRadius: 20,
     '& > .content': {
       padding: 30,
     },
