@@ -465,7 +465,7 @@ export default function AddCampaign({ userData, content, params }) {
     if (checkUser.data.customer_id) {
       try {
         const res = await paymentChargeCard({
-          total_budget: getTotalBudget(audienceForm) * 100,
+          total_budget: getTotalBudget(audienceForm),
           campaign_name: campaign.data.name,
         });
         setShowCreditCard({
@@ -486,7 +486,8 @@ export default function AddCampaign({ userData, content, params }) {
           }, 4000);
         }
       } catch (err) {
-        alert('Sorry, Payment Failed !');
+        console.log(err);
+        // alert('Sorry, Payment Failed !');
       }
       return;
     } else {
