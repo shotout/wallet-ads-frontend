@@ -22,6 +22,7 @@ const defaultErr = {
   promoCodeErr: null,
   errorValidation: null,
 };
+
 // const cardVisa = '/assets/visa.png';
 // const cardMC = '/assets/mastercard.png';
 // const cardAE = '/assets/americanexpress.png';
@@ -440,7 +441,7 @@ export default function AddPaymentMethod({
                       </Grid>
                     )}
                   </Grid> */}
-                  <Grid container marginLeft={4}>
+                  {/* <Grid container marginLeft={4}>
                     <Grid
                       onClick={() => resetStateAPM()}
                       item
@@ -480,7 +481,7 @@ export default function AddPaymentMethod({
                         Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
                       </Typography>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </div>
               <div
