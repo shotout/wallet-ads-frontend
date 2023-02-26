@@ -415,6 +415,29 @@ export default function AddPaymentMethod({
                         />
                       </Grid>
                     </Grid>
+                  ) : dataPaymentDetails == 'paymentDetailsNull' ? (
+                    <Grid item container spacing={4} sm={12} md={12} xs={12}>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          onClick={() => setCondLay2(false)}
+                          ctnBtnStyle={styles.btnStyle}
+                          label={'Add credit card'}
+                          eventName={'Pay with stripe'}
+                          isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                          disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
+                        />
+                      </Grid>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                          onClick={() => handlePaymentChoose('crypto')}
+                          label={'I would like to pay using cryptocurrencies'}
+                          eventName={'Pay with crypto'}
+                          isLoading={loading || loadingBtn == 'crypto'}
+                          disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
+                        />
+                      </Grid>
+                    </Grid>
                   ) : (
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
@@ -437,48 +460,48 @@ export default function AddPaymentMethod({
                           disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
                         />
                       </Grid>
+                      <Grid container marginLeft={4}>
+                        <Grid
+                          item
+                          sm={2}
+                          md={1}
+                          xs={12}
+                          display={'flex'}
+                          justifyContent={'flex-start'}
+                          alignItems={'center'}
+                        >
+                          <img
+                            src={imageObj[dataPaymentDetails?.card_type] ?? cardCVC}
+                            alt="MasterCard"
+                            style={{ width: 200 }}
+                          />
+                        </Grid>
+                        <Grid item md={4} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
+                          <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
+                            {strObj[dataPaymentDetails?.card_type]} <span>&bull;</span> {dataPaymentDetails?.card_last4}
+                          </Typography>
+                        </Grid>
+                        <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
+                          <div onClick={() => setCondLay2(false)} className={styles.ctnOption}>
+                            <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12 }} />
+                          </div>
+                        </Grid>
+                      </Grid>
+                      <Grid container md={9} sm={12}>
+                        <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
+                          <Typography
+                            marginLeft={4.5}
+                            fontWeight="500"
+                            variant="body"
+                            fontFamily={'Public Sans,sans-serif'}
+                            color={'grey'}
+                          >
+                            Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
+                          </Typography>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   )}
-                  <Grid container marginLeft={4}>
-                    <Grid
-                      item
-                      sm={2}
-                      md={1}
-                      xs={12}
-                      display={'flex'}
-                      justifyContent={'flex-start'}
-                      alignItems={'center'}
-                    >
-                      <img
-                        src={imageObj[dataPaymentDetails?.card_type] ?? cardCVC}
-                        alt="MasterCard"
-                        style={{ width: 200 }}
-                      />
-                    </Grid>
-                    <Grid item md={4} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
-                      <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
-                        {strObj[dataPaymentDetails?.card_type]} <span>&bull;</span> {dataPaymentDetails?.card_last4}
-                      </Typography>
-                    </Grid>
-                    <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                      <div onClick={() => setCondLay2(false)} className={styles.ctnOption}>
-                        <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12 }} />
-                      </div>
-                    </Grid>
-                  </Grid>
-                  <Grid container md={9} sm={12}>
-                    <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
-                      <Typography
-                        marginLeft={4.5}
-                        fontWeight="500"
-                        variant="body"
-                        fontFamily={'Public Sans,sans-serif'}
-                        color={'grey'}
-                      >
-                        Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
-                      </Typography>
-                    </Grid>
-                  </Grid>
                 </Grid>
               </div>
               <div

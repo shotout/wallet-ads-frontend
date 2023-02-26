@@ -937,11 +937,15 @@ export default function AddCampaign({ userData, content, params }) {
         isAdvancedSettingValid
       ) {
         const checkUser = await getProfilUser();
-        const paymentDetails = await getPaymentDetails();
-        if (checkUser.data.payment.payment_method == 1) {
-          setPaymentDetails(paymentDetails);
+        try {
+          const paymentDetails = await getPaymentDetails();
+          if (checkUser.data.payment.payment_method == 1) {
+            setPaymentDetails(paymentDetails);
+          }
+        } catch (err) {
+          setPaymentDetails('paymentDetailsNull');
         }
-        setPaymentMethod(checkUser.data.payment.payment_method)
+        setPaymentMethod(checkUser.data.payment.payment_method);
         setCost(getTotalBudget(audienceForm));
         const res = await getPaymentCC();
         setDataPaymentCC(res[0].data[0].client_secret);
