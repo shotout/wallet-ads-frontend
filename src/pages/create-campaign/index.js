@@ -23,6 +23,7 @@ import Page from '../../components/Page';
 import Layout from '../../layouts';
 import HeaderUser from '../../components/header-user';
 import {
+  getPaymentDetails,
   getPaymentCC,
   createSession,
   handleAddCampaign,
@@ -121,6 +122,8 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [paymentDetails, setPaymentDetails] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState(null);
   const [cost, setCost] = useState(null);
   const [dataPaymentCC, setDataPaymentCC] = useState(null);
   const [values, setValues] = useState(userData.data);
@@ -933,6 +936,10 @@ export default function AddCampaign({ userData, content, params }) {
         isAudienceUnderMinimum.length === 0 &&
         isAdvancedSettingValid
       ) {
+        const checkUser = await getProfilUser();
+        const paymentDetails = await getPaymentDetails();
+        if (checkUser.data.payment.payment_method == 1) setPaymentDetails(paymentDetails);
+        setPaymentMethod(checkUser.data.payment.payment_method)
         setCost(getTotalBudget(audienceForm));
         const res = await getPaymentCC();
         setDataPaymentCC(res[0].data[0].client_secret);
@@ -2893,6 +2900,8 @@ export default function AddCampaign({ userData, content, params }) {
           }}
         />
         <AddPaymentMethod
+          dataPaymentDetails={paymentDetails}
+          dataPaymentMethod={paymentMethod}
           dataCost={cost}
           dataPayment={dataPaymentCC}
           dataForm={formValues}
