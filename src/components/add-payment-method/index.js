@@ -439,7 +439,7 @@ export default function AddPaymentMethod({
                       </Grid>
                     </Grid>
                   )}
-                  {/* <Grid container marginLeft={4}>
+                  <Grid container marginLeft={4}>
                     <Grid
                       item
                       sm={2}
@@ -462,10 +462,10 @@ export default function AddPaymentMethod({
                     </Grid>
                     <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
                       <div onClick={() => setCondLay2(false)} className={styles.ctnOption}>
-                        <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12, cursor: 'pointer' }} />
+                        <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12 }} />
                       </div>
                     </Grid>
-                  </Grid> */}
+                  </Grid>
                   <Grid container md={9} sm={12}>
                     <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
                       <Typography
