@@ -938,7 +938,9 @@ export default function AddCampaign({ userData, content, params }) {
       ) {
         const checkUser = await getProfilUser();
         const paymentDetails = await getPaymentDetails();
-        if (checkUser.data.payment.payment_method == 1) setPaymentDetails(paymentDetails);
+        if (checkUser.data.payment.payment_method == 1) {
+          setPaymentDetails(paymentDetails);
+        }
         setPaymentMethod(checkUser.data.payment.payment_method)
         setCost(getTotalBudget(audienceForm));
         const res = await getPaymentCC();
