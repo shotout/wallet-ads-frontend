@@ -23,26 +23,26 @@ const defaultErr = {
   errorValidation: null,
 };
 
-// const cardVisa = '/assets/visa.png';
-// const cardMC = '/assets/mastercard.png';
-// const cardAE = '/assets/americanexpress.png';
-// const cardUP = '/assets/unionpay.png';
-// const cardCVC = '/assets/cvc.jpg';
-// const editIcon = '/assets/edit_icon.png';
+const cardVisa = '/assets/visa.png';
+const cardMC = '/assets/mastercard.png';
+const cardAE = '/assets/americanexpress.png';
+const cardUP = '/assets/unionpay.png';
+const cardCVC = '/assets/cvc.jpg';
+const editIcon = '/assets/edit_icon.png';
 
-// const imageObj = {
-//   visa: cardVisa,
-//   mastercard: cardMC,
-//   amex: cardAE,
-//   unionpay: cardUP,
-// };
+const imageObj = {
+  visa: cardVisa,
+  mastercard: cardMC,
+  amex: cardAE,
+  unionpay: cardUP,
+};
 
-// const strObj = {
-//   visa: 'Visa',
-//   mastercard: 'Mastercard',
-//   amex: 'American Express',
-//   unionpay: 'Union Pay',
-// };
+const strObj = {
+  visa: 'Visa',
+  mastercard: 'Mastercard',
+  amex: 'American Express',
+  unionpay: 'Union Pay',
+};
 
 export default function AddPaymentMethod({
   dataPaymentDetails,
@@ -441,7 +441,7 @@ export default function AddPaymentMethod({
                       </Grid>
                     )}
                   </Grid> */}
-                  <Grid container marginLeft={4}>
+                  {/* <Grid container marginLeft={4}>
                     <Grid
                       item
                       sm={2}
@@ -467,7 +467,7 @@ export default function AddPaymentMethod({
                         <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12, cursor: 'pointer' }} />
                       </div>
                     </Grid>
-                  </Grid>
+                  </Grid> */}
                   <Grid container md={9} sm={12}>
                     <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
                       <Typography
