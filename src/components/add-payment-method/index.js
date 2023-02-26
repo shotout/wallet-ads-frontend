@@ -441,9 +441,8 @@ export default function AddPaymentMethod({
                       </Grid>
                     )}
                   </Grid> */}
-                  {/* <Grid container marginLeft={4}>
+                  <Grid container marginLeft={4}>
                     <Grid
-                      onClick={() => resetStateAPM()}
                       item
                       sm={2}
                       md={1}
@@ -481,7 +480,7 @@ export default function AddPaymentMethod({
                         Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
                       </Typography>
                     </Grid>
-                  </Grid> */}
+                  </Grid>
                 </Grid>
               </div>
               <div
