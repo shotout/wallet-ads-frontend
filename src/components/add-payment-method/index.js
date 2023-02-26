@@ -391,7 +391,7 @@ export default function AddPaymentMethod({
                       Please Choose your preferred payment method for this campaign.
                     </Typography>
                   </Grid>
-                  <div>
+                  {/* <Grid>
                     {dataPaymentMethod == 2 ? (
                       <Grid item container spacing={4} sm={12} md={12} xs={12}>
                         <Grid item sm={6} md={6} xs={12}>
@@ -439,7 +439,7 @@ export default function AddPaymentMethod({
                         </Grid>
                       </Grid>
                     )}
-                  </div>
+                  </Grid> */}
                   <Grid container marginLeft={4}>
                     <Grid
                       onClick={() => resetStateAPM()}
