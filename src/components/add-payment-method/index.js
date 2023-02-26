@@ -22,8 +22,30 @@ const defaultErr = {
   promoCodeErr: null,
   errorValidation: null,
 };
+const cardVisa = '/assets/visa.png';
+const cardMC = '/assets/mastercard.png';
+const cardAE = '/assets/americanexpress.png';
+const cardUP = '/assets/unionpay.png';
+const cardCVC = '/assets/cvc.jpg';
+const editIcon = '/assets/edit_icon.png';
+
+const imageObj = {
+  visa: cardVisa,
+  mastercard: cardMC,
+  amex: cardAE,
+  unionpay: cardUP,
+};
+
+const strObj = {
+  visa: 'Visa',
+  mastercard: 'Mastercard',
+  amex: 'American Express',
+  unionpay: 'Union Pay',
+};
 
 export default function AddPaymentMethod({
+  dataPaymentDetails,
+  dataPaymentMethod,
   dataCost,
   dataPayment,
   dataForm,
@@ -369,25 +391,95 @@ export default function AddPaymentMethod({
                       Please Choose your preferred payment method for this campaign.
                     </Typography>
                   </Grid>
-                  <Grid item sm={6} md={6} xs={12}>
-                    <DefaultButton
-                      onClick={() => setCondLay2(false)}
-                      ctnBtnStyle={styles.btnStyle}
-                      label={'Add credit card'}
-                      eventName={'Pay with stripe'}
-                      isLoading={isPaymentLoading || loadingBtn == 'cc'}
-                      disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
-                    />
+                  <div>
+                    {dataPaymentMethod == 2 ? (
+                      <Grid item container spacing={4} sm={12} md={12} xs={12}>
+                        <Grid item sm={6} md={6} xs={12}>
+                          <DefaultButton
+                            ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                            onClick={() => handlePaymentChoose('crypto')}
+                            label={'I would like to pay using cryptocurrencies'}
+                            eventName={'Pay with crypto'}
+                            isLoading={loading || loadingBtn == 'crypto'}
+                            disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
+                          />
+                        </Grid>
+                        <Grid item sm={6} md={6} xs={12}>
+                          <DefaultButton
+                            onClick={() => setCondLay2(false)}
+                            ctnBtnStyle={styles.btnStyle}
+                            label={'Add credit card'}
+                            eventName={'Pay with stripe'}
+                            isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                            disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
+                          />
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      <Grid item container spacing={4} sm={12} md={12} xs={12}>
+                        <Grid item sm={6} md={6} xs={12}>
+                          <DefaultButton
+                            onClick={() => handlePaymentChoose('cc')}
+                            ctnBtnStyle={styles.btnStyle}
+                            label={'Pay With Credit Card'}
+                            eventName={'Pay with stripe'}
+                            isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                            disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
+                          />
+                        </Grid>
+                        <Grid item sm={6} md={6} xs={12}>
+                          <DefaultButton
+                            ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                            onClick={() => handlePaymentChoose('crypto')}
+                            label={'I would like to pay using cryptocurrencies'}
+                            eventName={'Pay with crypto'}
+                            isLoading={loading || loadingBtn == 'crypto'}
+                            disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
+                          />
+                        </Grid>
+                      </Grid>
+                    )}
+                  </div>
+                  <Grid container marginLeft={4}>
+                    <Grid
+                      onClick={() => resetStateAPM()}
+                      item
+                      sm={2}
+                      md={1}
+                      xs={12}
+                      display={'flex'}
+                      justifyContent={'flex-start'}
+                      alignItems={'center'}
+                    >
+                      <img
+                        src={imageObj[dataPaymentDetails?.card_type] ?? cardCVC}
+                        alt="MasterCard"
+                        style={{ width: 200 }}
+                      />
+                    </Grid>
+                    <Grid item md={4} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
+                      <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
+                        {strObj[dataPaymentDetails?.card_type]} <span>&bull;</span> {dataPaymentDetails?.card_last4}
+                      </Typography>
+                    </Grid>
+                    <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
+                      <div onClick={() => setCondLay2(false)} className={styles.ctnOption}>
+                        <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12, cursor: 'pointer' }} />
+                      </div>
+                    </Grid>
                   </Grid>
-                  <Grid item sm={6} md={6} xs={12}>
-                    <DefaultButton
-                      ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
-                      onClick={() => handlePaymentChoose('crypto')}
-                      label={'I would like to pay using cryptocurrencies'}
-                      eventName={'Pay with crypto'}
-                      isLoading={loading || loadingBtn == 'crypto'}
-                      disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
-                    />
+                  <Grid container md={9} sm={12}>
+                    <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
+                      <Typography
+                        marginLeft={4.5}
+                        fontWeight="500"
+                        variant="body"
+                        fontFamily={'Public Sans,sans-serif'}
+                        color={'grey'}
+                      >
+                        Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
               </div>
