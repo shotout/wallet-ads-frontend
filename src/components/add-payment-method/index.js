@@ -22,26 +22,26 @@ const defaultErr = {
   promoCodeErr: null,
   errorValidation: null,
 };
-const cardVisa = '/assets/visa.png';
-const cardMC = '/assets/mastercard.png';
-const cardAE = '/assets/americanexpress.png';
-const cardUP = '/assets/unionpay.png';
-const cardCVC = '/assets/cvc.jpg';
-const editIcon = '/assets/edit_icon.png';
+// const cardVisa = '/assets/visa.png';
+// const cardMC = '/assets/mastercard.png';
+// const cardAE = '/assets/americanexpress.png';
+// const cardUP = '/assets/unionpay.png';
+// const cardCVC = '/assets/cvc.jpg';
+// const editIcon = '/assets/edit_icon.png';
 
-const imageObj = {
-  visa: cardVisa,
-  mastercard: cardMC,
-  amex: cardAE,
-  unionpay: cardUP,
-};
+// const imageObj = {
+//   visa: cardVisa,
+//   mastercard: cardMC,
+//   amex: cardAE,
+//   unionpay: cardUP,
+// };
 
-const strObj = {
-  visa: 'Visa',
-  mastercard: 'Mastercard',
-  amex: 'American Express',
-  unionpay: 'Union Pay',
-};
+// const strObj = {
+//   visa: 'Visa',
+//   mastercard: 'Mastercard',
+//   amex: 'American Express',
+//   unionpay: 'Union Pay',
+// };
 
 export default function AddPaymentMethod({
   dataPaymentDetails,
