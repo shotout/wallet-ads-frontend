@@ -259,7 +259,7 @@ export default function AddPaymentMethod({
                   ctnBtnStyle={styles.btnStyle}
                   label={'Add credit card'}
                   eventName={'Pay with stripe'}
-                  isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                  // isLoading={isPaymentLoading || loadingBtn == 'cc'}
                   disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
                 />
               </Grid>
@@ -269,7 +269,7 @@ export default function AddPaymentMethod({
                   onClick={() => handlePaymentChoose('crypto')}
                   label={'I would like to pay using cryptocurrencies'}
                   eventName={'Pay with crypto'}
-                  isLoading={loading || loadingBtn == 'crypto'}
+                  // isLoading={loading || loadingBtn == 'crypto'}
                   disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
                 />
               </Grid>
