@@ -415,30 +415,7 @@ export default function AddPaymentMethod({
                         />
                       </Grid>
                     </Grid>
-                  ) : dataPaymentDetails == 'paymentDetailsNull' ? (
-                    <Grid item container spacing={4} sm={12} md={12} xs={12}>
-                      <Grid item sm={6} md={6} xs={12}>
-                        <DefaultButton
-                          onClick={() => setCondLay2(false)}
-                          ctnBtnStyle={styles.btnStyle}
-                          label={'Add credit card'}
-                          eventName={'Pay with stripe'}
-                          isLoading={isPaymentLoading || loadingBtn == 'cc'}
-                          disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
-                        />
-                      </Grid>
-                      <Grid item sm={6} md={6} xs={12}>
-                        <DefaultButton
-                          ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
-                          onClick={() => handlePaymentChoose('crypto')}
-                          label={'I would like to pay using cryptocurrencies'}
-                          eventName={'Pay with crypto'}
-                          isLoading={loading || loadingBtn == 'crypto'}
-                          disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
-                        />
-                      </Grid>
-                    </Grid>
-                  ) : (
+                  ) : dataPaymentDetails == 1 ? (
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
                         <DefaultButton
@@ -499,6 +476,29 @@ export default function AddPaymentMethod({
                             Expires on {dataPaymentDetails?.card_exp_month} / {dataPaymentDetails?.card_exp_year}
                           </Typography>
                         </Grid>
+                      </Grid>
+                    </Grid>
+                  ) : (
+                    <Grid item container spacing={4} sm={12} md={12} xs={12}>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          onClick={() => setCondLay2(false)}
+                          ctnBtnStyle={styles.btnStyle}
+                          label={'Add credit card'}
+                          eventName={'Pay with stripe'}
+                          isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                          disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
+                        />
+                      </Grid>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                          onClick={() => handlePaymentChoose('crypto')}
+                          label={'I would like to pay using cryptocurrencies'}
+                          eventName={'Pay with crypto'}
+                          isLoading={loading || loadingBtn == 'crypto'}
+                          disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
+                        />
                       </Grid>
                     </Grid>
                   )}
