@@ -10,6 +10,7 @@ export default makeStyles((theme) => ({
     borderRadius: 20,
     '& > .content': {
       padding: 30,
+      marginBottom: -20,
     },
   },
   ctnPopover: {

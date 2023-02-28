@@ -365,16 +365,16 @@ export default function AddPaymentMethod({
                 </div>
                 <Grid container spacing={4} className={styles.gridAvailability}>
                   <Grid item sm={6} md={6} xs={12}>
-                    <Typography variant="h4" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
+                    <Typography variant="h5" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
                       Summary
                     </Typography>
-                    <Typography variant="h5" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
+                    <Typography variant="h6" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
                       {dataForm.campaign_name}
                     </Typography>
                   </Grid>
                   <Grid item sm={6} md={6} xs={12}>
                     <Typography
-                      variant="h2"
+                      variant="h3"
                       sx={{ color: '#000' }}
                       marginRight={10}
                       fontWeight="700"
@@ -384,7 +384,7 @@ export default function AddPaymentMethod({
                       {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`}
                     </Typography>
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12}>
+                  <Grid item sm={12} md={12} xs={12} marginTop={-2}>
                     <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} marginY={-2}>

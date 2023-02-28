@@ -937,12 +937,14 @@ export default function AddCampaign({ userData, content, params }) {
         isAdvancedSettingValid
       ) {
         const checkUser = await getProfilUser();
-        if (checkUser.data.customer_id) {
-          console.log('tes');
+        if (checkUser.data.payment_method == 1) {
+          setPaymentDetails(paymentDetails);
         }
+        setPaymentMethod(checkUser.data.payment.payment_method);
+        setCost(getTotalBudget(audienceForm));
         // DISINI ADADA
         // try {
-        //   const paymentDetails = await getPaymentDetails();
+        // const paymentDetails = await getPaymentDetails();
 
         //   if (checkUser.data.payment.payment_method == 1) {
         //     setPaymentDetails(paymentDetails);
@@ -952,7 +954,7 @@ export default function AddCampaign({ userData, content, params }) {
         // }
         // setPaymentMethod(checkUser.data.payment.payment_method);
         // setCost(getTotalBudget(audienceForm));
-        // const res = await getPaymentCC();
+        //const res = await getPaymentCC();
         // setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
       }
