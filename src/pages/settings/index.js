@@ -143,7 +143,6 @@ export default function SettingUser({ userData, params }) {
   };
 
   const checkPayment = async () => {
-    console.log('CEK');
     const paymentType = await checkPaymentType();
     console.log(paymentType);
     setPaymentType(paymentType);
