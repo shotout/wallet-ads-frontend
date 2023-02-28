@@ -415,7 +415,7 @@ export default function AddPaymentMethod({
                         />
                       </Grid>
                     </Grid>
-                  ) : dataPaymentDetails == 1 ? (
+                  ) : dataPaymentMethod == 1 ? (
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
                         <DefaultButton
