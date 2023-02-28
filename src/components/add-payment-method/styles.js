@@ -3,7 +3,8 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   ctnWrapper: {
     overflow: 'hidden',
-    width: '100%',
+    width: '80%',
+    marginLeft: '14%',
     justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: 50,

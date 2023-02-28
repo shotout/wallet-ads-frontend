@@ -358,8 +358,8 @@ export default function AddPaymentMethod({
                   <Iconify
                     icon={'ant-design:close-outlined'}
                     onClick={resetState}
-                    width={28}
-                    height={28}
+                    width={20}
+                    height={20}
                     className={styles.ctnClose}
                   />
                 </div>
@@ -554,12 +554,12 @@ export default function AddPaymentMethod({
                   <Iconify
                     icon={'ant-design:close-outlined'}
                     onClick={resetState}
-                    width={28}
-                    height={28}
+                    width={20}
+                    height={20}
                     className={styles.ctnClose}
                   />
                 </div>
-                <Grid container spacing={4} className={styles.gridAvailability}>
+                <Grid container spacing={0} className={styles.gridAvailability}>
                   <Grid item sm={6} md={6} xs={12}>
                     <Typography variant="h4" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
                       Summary
@@ -581,7 +581,7 @@ export default function AddPaymentMethod({
                     </Typography>
                   </Grid>
                   <Grid item sm={12} md={12} xs={12}>
-                    <div style={{ borderTop: '1px solid #C9D3D8' }}>.</div>
+                    <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
                   <Grid item sm={12} md={12} xs={12}>
                     <Typography
