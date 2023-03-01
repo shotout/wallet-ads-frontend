@@ -344,7 +344,7 @@ export default function AddPaymentMethod({
                 <div className={styles.header}>
                   <div style={{ width: '99%' }}>
                     <Typography
-                      variant="h4"
+                      variant="h5"
                       sx={{ color: '#000' }}
                       marginLeft={4}
                       fontWeight="800"
@@ -358,12 +358,12 @@ export default function AddPaymentMethod({
                   <Iconify
                     icon={'ant-design:close-outlined'}
                     onClick={resetState}
-                    width={28}
-                    height={28}
+                    width={20}
+                    height={20}
                     className={styles.ctnClose}
                   />
                 </div>
-                <Grid container spacing={4} className={styles.gridAvailability}>
+                <Grid container spacing={1} className={styles.gridAvailability}>
                   <Grid item sm={6} md={6} xs={12}>
                     <Typography variant="h5" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
                       Summary
@@ -387,8 +387,8 @@ export default function AddPaymentMethod({
                   <Grid item sm={12} md={12} xs={12} marginTop={-2}>
                     <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12} marginY={-2}>
-                    <Typography variant="h7" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
+                  <Grid item sm={12} md={12} xs={12} marginY={-2} marginBottom={0}>
+                    <Typography variant="h7" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
                       Please Choose your preferred payment method for this campaign.
                     </Typography>
                   </Grid>
@@ -415,30 +415,7 @@ export default function AddPaymentMethod({
                         />
                       </Grid>
                     </Grid>
-                  ) : dataPaymentDetails == 'paymentDetailsNull' ? (
-                    <Grid item container spacing={4} sm={12} md={12} xs={12}>
-                      <Grid item sm={6} md={6} xs={12}>
-                        <DefaultButton
-                          onClick={() => setCondLay2(false)}
-                          ctnBtnStyle={styles.btnStyle}
-                          label={'Add credit card'}
-                          eventName={'Pay with stripe'}
-                          isLoading={isPaymentLoading || loadingBtn == 'cc'}
-                          disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
-                        />
-                      </Grid>
-                      <Grid item sm={6} md={6} xs={12}>
-                        <DefaultButton
-                          ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
-                          onClick={() => handlePaymentChoose('crypto')}
-                          label={'I would like to pay using cryptocurrencies'}
-                          eventName={'Pay with crypto'}
-                          isLoading={loading || loadingBtn == 'crypto'}
-                          disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
-                        />
-                      </Grid>
-                    </Grid>
-                  ) : (
+                  ) : dataPaymentMethod == 1 ? (
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
                         <DefaultButton
@@ -501,6 +478,29 @@ export default function AddPaymentMethod({
                         </Grid>
                       </Grid>
                     </Grid>
+                  ) : (
+                    <Grid item container spacing={4} sm={12} md={12} xs={12}>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          onClick={() => setCondLay2(false)}
+                          ctnBtnStyle={styles.btnStyle}
+                          label={'Add credit card'}
+                          eventName={'Pay with stripe'}
+                          isLoading={isPaymentLoading || loadingBtn == 'cc'}
+                          disabled={isPaymentLoading || loading || loadingBtn == 'crypto'}
+                        />
+                      </Grid>
+                      <Grid item sm={6} md={6} xs={12}>
+                        <DefaultButton
+                          ctnBtnStyle={`${styles.btnStyle} ${styles.btnBlack}`}
+                          onClick={() => handlePaymentChoose('crypto')}
+                          label={'I would like to pay using cryptocurrencies'}
+                          eventName={'Pay with crypto'}
+                          isLoading={loading || loadingBtn == 'crypto'}
+                          disabled={loading || isPaymentLoading || loadingBtn == 'cc'}
+                        />
+                      </Grid>
+                    </Grid>
                   )}
                 </Grid>
               </div>
@@ -540,7 +540,7 @@ export default function AddPaymentMethod({
                 <div className={styles.header}>
                   <div style={{ width: '99%' }}>
                     <Typography
-                      variant="h4"
+                      variant="h5"
                       sx={{ color: '#000' }}
                       marginLeft={4}
                       fontWeight="800"
@@ -554,14 +554,14 @@ export default function AddPaymentMethod({
                   <Iconify
                     icon={'ant-design:close-outlined'}
                     onClick={resetState}
-                    width={28}
-                    height={28}
+                    width={20}
+                    height={20}
                     className={styles.ctnClose}
                   />
                 </div>
-                <Grid container spacing={4} className={styles.gridAvailability}>
+                <Grid container spacing={0} className={styles.gridAvailability}>
                   <Grid item sm={6} md={6} xs={12}>
-                    <Typography variant="h4" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
+                    <Typography variant="h5" sx={{ color: '#000' }} fontWeight="700" width={'100%'}>
                       Summary
                     </Typography>
                     <Typography variant="h5" sx={{ color: '#000' }} fontWeight="400" width={'100%'}>
@@ -570,7 +570,7 @@ export default function AddPaymentMethod({
                   </Grid>
                   <Grid item sm={6} md={6} xs={12}>
                     <Typography
-                      variant="h2"
+                      variant="h3"
                       sx={{ color: '#000' }}
                       marginRight={10}
                       fontWeight="700"
@@ -580,12 +580,12 @@ export default function AddPaymentMethod({
                       {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`}
                     </Typography>
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12}>
-                    <div style={{ borderTop: '1px solid #C9D3D8' }}>.</div>
+                  <Grid item sm={12} md={12} xs={12} marginTop={1}>
+                    <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12}>
+                  <Grid item sm={12} md={12} xs={12} marginBottom={1} marginTop={1}>
                     <Typography
-                      variant="h4"
+                      variant="h5"
                       sx={{ color: '#000' }}
                       marginRight={10}
                       fontWeight="700"

@@ -109,6 +109,7 @@ const SetupForm = (e) => {
             xs={12}
             width={e && e.addCard ? '50%' : null}
             marginLeft={e && e.addCard ? '25%' : null}
+            marginTop={e && e.addCard ? 2 : null}
           >
             <button className={`${styles.ctnBtn}`} disabled={isLoading}>
               {isLoading ? 'Loading' : e && e.addCard ? 'Save Card & Pay' : 'Save'}

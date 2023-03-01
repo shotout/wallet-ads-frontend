@@ -3,7 +3,8 @@ import { makeStyles } from '@mui/styles';
 export default makeStyles((theme) => ({
   ctnWrapper: {
     overflow: 'hidden',
-    width: '100%',
+    width: '80%',
+    marginLeft: '14%',
     justifyContent: 'center',
     backgroundColor: 'white',
     marginBottom: 50,
@@ -34,7 +35,7 @@ export default makeStyles((theme) => ({
     width: '100%',
     alignItems: 'center',
     flexDirection: 'row',
-    padding: '30px 40px 30px 40px',
+    padding: '0px 40px 20px 40px',
     [theme.breakpoints.down('md')]: {
       padding: '10px 40px 0px 40px',
       marginTop: -10,
@@ -71,7 +72,7 @@ export default makeStyles((theme) => ({
     marginTop: 12,
     height: 80,
     '& > span': {
-      fontSize: 20,
+      fontSize: 16,
     },
     [theme.breakpoints.down('md')]: {
       marginTop: 0,
