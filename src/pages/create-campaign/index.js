@@ -2760,7 +2760,7 @@ export default function AddCampaign({ userData, content, params }) {
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
         />
-        <LoadingPage show={showCreditCard.isPaymentLoading} />
+        {/* <LoadingPage show={showCreditCard.isPaymentLoading} /> */}
       </div>
     </Page>
   );
