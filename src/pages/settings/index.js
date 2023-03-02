@@ -1282,20 +1282,21 @@ export default function SettingUser({ userData, params }) {
                 helperText={errorMessage.passwordFirst}
                 size="small"
                 fullWidth
+                disabled
                 type="password"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                        {showPassword ? (
-                          <Iconify icon="eva:eye-fill" width={24} height={24} />
-                        ) : (
-                          <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                // InputProps={{
+                //   endAdornment: (
+                //     <InputAdornment position="end">
+                //       <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                //         {showPassword ? (
+                //           <Iconify icon="eva:eye-fill" width={24} height={24} />
+                //         ) : (
+                //           <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                //         )}
+                //       </IconButton>
+                //     </InputAdornment>
+                //   ),
+                // }}
               />
             </div>
           </Grid>

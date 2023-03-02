@@ -126,7 +126,7 @@ export default makeStyles((theme) => ({
   changePassword: {
     paddingTop: 32,
     position: 'absolute',
-    left: '42%',
+    left: '38%',
     cursor: 'pointer',
   },
   ctnRoot: {
