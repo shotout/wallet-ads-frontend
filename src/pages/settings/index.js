@@ -1064,7 +1064,7 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
-                <Typography variant="body3" fontWeight="800" marginLeft={30} textAlign="right" width={'100%'}>
+                <Typography variant="body3" fontWeight="400" marginLeft={30} textAlign="right" width={'100%'}>
                   Forgot password
                 </Typography>
               </div>
