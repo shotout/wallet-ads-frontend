@@ -996,7 +996,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          className={styles.tr}
+          className={styles.trChangePassword}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
@@ -1036,6 +1036,19 @@ export default function SettingUser({ userData, params }) {
                   size="small"
                   fullWidth
                   type={showPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                          {showPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
@@ -1282,20 +1295,6 @@ export default function SettingUser({ userData, params }) {
                 helperText={errorMessage.passwordFirst}
                 size="small"
                 fullWidth
-                type="password"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                        {showPassword ? (
-                          <Iconify icon="eva:eye-fill" width={24} height={24} />
-                        ) : (
-                          <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
               />
             </div>
           </Grid>

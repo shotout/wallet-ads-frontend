@@ -75,6 +75,11 @@ export default makeStyles((theme) => ({
     height: '100vh',
     overflowY: 'hidden',
   },
+  trChangePassword: {
+    position: 'relative',
+    height: '80vh',
+    overflowY: 'hidden',
+  },
   ctnWrapperPopup: {
     maxWidth: '1366px',
     margin: 'auto',
