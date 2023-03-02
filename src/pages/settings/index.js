@@ -463,7 +463,7 @@ export default function SettingUser({ userData, params }) {
                     textAlign="center"
                     width={'100%'}
                   >
-                    Change Password
+                    Password changed
                   </Typography>
                 </div>
 
@@ -1039,12 +1039,20 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
-                <Typography variant="body3" fontWeight="800" marginLeft={30} textAlign="right" width={'100%'}>
-                  Forgot password
+                <Typography
+                  variant="body3"
+                  fontWeight="400"
+                  fontSize={15}
+                  marginLeft={30}
+                  textAlign="right"
+                  width={'100%'}
+                  color="#0085F2"
+                >
+                  Forgot password?
                 </Typography>
               </div>
             </Grid>
-            <Grid item md={6} xs={12} lg={12}>
+            <Grid item md={6} xs={12} lg={12} marginTop={2}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>New Password</InputLabel>
                 <TextField
@@ -1058,7 +1066,7 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
             </Grid>
-            <Grid item md={6} xs={12} lg={12}>
+            <Grid item md={6} xs={12} lg={12} marginTop={2}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Confirm New Password</InputLabel>
                 <TextField
