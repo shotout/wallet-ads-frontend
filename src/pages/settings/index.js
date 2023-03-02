@@ -110,6 +110,9 @@ export default function SettingUser({ userData, params }) {
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [paymentType, setPaymentType] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
+  const [currentPassword, setCurrentPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (timer > 0) {
@@ -1035,7 +1038,24 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.password}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={currentPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setCurrentPassword(!currentPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {currentPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
@@ -1062,7 +1082,24 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.newPassword}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={newPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setNewPassword(!newPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {newPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
             </Grid>
@@ -1076,7 +1113,24 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.password_confirmation}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={confirmPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setConfirmPassword(!confirmPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {confirmPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
             </Grid>
