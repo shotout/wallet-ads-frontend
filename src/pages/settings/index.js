@@ -104,7 +104,9 @@ export default function SettingUser({ userData, params }) {
   const [APMCondition, setAPMCondition] = useState(false);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
-  const [showPassword, setShowPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
+  const [confirmNewPassword, setConfirmNewPassword] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [isLoadingCC, setLoadingCC] = useState(false);
   const [errorMessage, setErrorMessage] = useState(defaultState);
@@ -173,8 +175,14 @@ export default function SettingUser({ userData, params }) {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleClickShowPassword = (e) => {
+    if (e == 'currentPassword') {
+      setCurrentPassword(!currentPassword);
+    } else if (e == 'newPassword') {
+      setNewPassword(!newPassword);
+    } else if (e == 'confirmNewPassword') {
+      setConfirmNewPassword(!confirmNewPassword);
+    }
   };
 
   const handleMouseDownPassword = (event) => {
@@ -632,7 +640,7 @@ export default function SettingUser({ userData, params }) {
               </div>
             </div>
             <Grid item width={300} md={6} xs={12} lg={12}>
-              <Typography fontWeight="800" textAlign="center" width={'100%'} marginBottom={2}>
+              <Typography fontWeight="400" textAlign="center" width={'100%'} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
@@ -1035,12 +1043,16 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.password}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={currentPassword ? 'text' : 'password'}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                          {showPassword ? (
+                        <IconButton
+                          onClick={() => handleClickShowPassword('currentPassword')}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {currentPassword ? (
                             <Iconify icon="eva:eye-fill" width={24} height={24} />
                           ) : (
                             <Iconify icon="eva:eye-off-fill" width={24} height={24} />
@@ -1067,7 +1079,24 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.newPassword}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={newPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => handleClickShowPassword('newPassword')}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {newPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
             </Grid>
@@ -1081,7 +1110,24 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.password_confirmation}
                   size="small"
                   fullWidth
-                  type={showPassword ? 'text' : 'password'}
+                  type={confirmNewPassword ? 'text' : 'password'}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => handleClickShowPassword('confirmNewPassword')}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {confirmNewPassword ? (
+                            <Iconify icon="eva:eye-fill" width={24} height={24} />
+                          ) : (
+                            <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </div>
             </Grid>
@@ -1298,11 +1344,9 @@ export default function SettingUser({ userData, params }) {
               />
             </div>
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item md={6} xs={12} position={'relative'}>
             <div onClick={resetStateCP} className={styles.changePassword}>
-              <Typography variant="body3" textAlign={'left'}>
-                Change Password
-              </Typography>
+              <Typography variant="body3">Change Password</Typography>
             </div>
           </Grid>
         </Grid>
