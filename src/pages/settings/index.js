@@ -620,7 +620,7 @@ export default function SettingUser({ userData, params }) {
                     textAlign="center"
                     width={'100%'}
                   >
-                    Forgot Password?
+                    Forgot password?
                   </Typography>
                 </div>
 
