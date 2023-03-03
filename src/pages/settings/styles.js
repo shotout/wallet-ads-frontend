@@ -80,7 +80,7 @@ export default makeStyles((theme) => ({
     margin: 'auto',
     backgroundColor: 'white',
     padding: 20,
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 20,
     borderRadius: 20,
     marginLeft: 20,
