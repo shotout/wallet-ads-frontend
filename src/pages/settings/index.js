@@ -461,7 +461,7 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
@@ -615,7 +615,7 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
@@ -1009,7 +1009,7 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
