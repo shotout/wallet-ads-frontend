@@ -606,6 +606,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
+          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
@@ -635,7 +636,7 @@ export default function SettingUser({ userData, params }) {
               </div>
             </div>
             <Grid item width={300} md={6} xs={12} lg={12}>
-              <Typography fontWeight="800" textAlign="center" width={'100%'} marginBottom={2}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
