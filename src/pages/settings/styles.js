@@ -75,6 +75,11 @@ export default makeStyles((theme) => ({
     height: '100vh',
     overflowY: 'hidden',
   },
+  trChangePassword: {
+    position: 'relative',
+    height: '80vh',
+    overflowY: 'hidden',
+  },
   ctnWrapperPopup: {
     maxWidth: '1366px',
     margin: 'auto',
@@ -126,7 +131,7 @@ export default makeStyles((theme) => ({
   changePassword: {
     paddingTop: 32,
     position: 'absolute',
-    left: '42%',
+    left: '2.2%',
     cursor: 'pointer',
   },
   ctnRoot: {
