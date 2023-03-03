@@ -211,4 +211,7 @@ export default makeStyles((theme) => ({
     paddingLeft: 20,
     width: '100%',
   },
+  ctnTimer: {
+    color: '#7089FF',
+  },
 }));
