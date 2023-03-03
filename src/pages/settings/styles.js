@@ -101,7 +101,7 @@ export default makeStyles((theme) => ({
   },
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
-    height: '100%',
+    height: '100vh',
     '& > .MuiPaper-root': {
       maxWidth: 680,
       background: 'rgba(0,0,0,0.0)',
