@@ -1333,42 +1333,47 @@ export default function SettingUser({ userData, params }) {
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-        <Grid container spacing={42}>
-          <Grid item md={6} xs={12}>
-            <div className={styles.inputWrapper}>
-              <InputLabel shrink>Password</InputLabel>
-              <TextField
-                value={'password'}
-                placeholder="********"
-                onChange={handleChange('passwordFirst')}
-                error={errorMessage.passwordFirst}
-                helperText={errorMessage.passwordFirst}
-                size="small"
-                fullWidth
-                disabled
-                type="password"
-                // InputProps={{
-                //   endAdornment: (
-                //     <InputAdornment position="end">
-                //       <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
-                //         {showPassword ? (
-                //           <Iconify icon="eva:eye-fill" width={24} height={24} />
-                //         ) : (
-                //           <Iconify icon="eva:eye-off-fill" width={24} height={24} />
-                //         )}
-                //       </IconButton>
-                //     </InputAdornment>
-                //   ),
-                // }}
-              />
-            </div>
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <div onClick={resetStateCP} className={styles.changePassword}>
-              <Typography variant="body3" textAlign={'left'}>
-                Change Password
-              </Typography>
-            </div>
+
+        <Grid container spacing={6}>
+          <Grid item md={9} sm={12}>
+            <Grid container spacing={2}>
+              <Grid item md={6} xs={12}>
+                <div className={styles.inputWrapper}>
+                  <InputLabel shrink>Password</InputLabel>
+                  <TextField
+                    value={'password'}
+                    placeholder="********"
+                    onChange={handleChange('passwordFirst')}
+                    error={errorMessage.passwordFirst}
+                    helperText={errorMessage.passwordFirst}
+                    size="small"
+                    fullWidth
+                    disabled
+                    type="password"
+                    // InputProps={{
+                    //   endAdornment: (
+                    //     <InputAdornment position="end">
+                    //       <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                    //         {showPassword ? (
+                    //           <Iconify icon="eva:eye-fill" width={24} height={24} />
+                    //         ) : (
+                    //           <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                    //         )}
+                    //       </IconButton>
+                    //     </InputAdornment>
+                    //   ),
+                    // }}
+                  />
+                </div>
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <div onClick={resetStateCP} className={styles.changePassword}>
+                  <Typography variant="body3" textAlign={'left'}>
+                    Change Password
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>
