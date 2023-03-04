@@ -104,9 +104,9 @@ export default makeStyles((theme) => ({
     height: '100vh',
     '& > .MuiPaper-root': {
       maxWidth: 680,
-      background: 'rgba(0,0,0,0.0)',
-
+      background: 'rgba(0,0,0,0.004)',
       overflowY: 'hidden',
+      boxShadow: 'none',
       '&::-webkit-scrollbar': {
         width: 0,
       },
