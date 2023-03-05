@@ -46,6 +46,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: 40,
+    paddingTop: 20,
     width: '100%',
   },
   ctnInput: {
