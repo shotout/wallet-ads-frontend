@@ -45,7 +45,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 40,
+    // height: 40,
     paddingTop: 20,
     width: '100%',
   },
@@ -63,7 +63,8 @@ export default makeStyles((theme) => ({
     },
   },
   ctnApply: {
-    height: '100%',
+    // height: '100%',
+    height: 40,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     width: '40%',
