@@ -1,6 +1,6 @@
 import { Grid, Popover, Typography, FormGroup, TextField, Box } from '@mui/material';
 import { useState } from 'react';
-import { handleSubmitPromo, payCyrptoCurrency } from '../../utils/requests';
+import { handleSubmitPromo, payCyrptoCurrency, savePaymentCC } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
@@ -59,6 +59,7 @@ export default function AddPaymentMethod({
   createCampaignID,
   totalBudget,
   isPaymentLoading,
+  resetClientSecret,
 }) {
   const styles = useStyles();
   const [condLay1, setCondLay1] = useState(true);
@@ -124,6 +125,7 @@ export default function AddPaymentMethod({
 
   const handleChooseCrypto = async () => {
     const campaign = await createCampaignID();
+    // savePaymentCC('2')
     payCyrptoCurrency({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
@@ -218,6 +220,11 @@ export default function AddPaymentMethod({
       <div className={styles.ctnErrTextWrapper}>{renderRedBox()}</div>
     </>
   );
+
+  const resetClientSecretThis = async () => {
+    await resetClientSecret();
+    setCondLay2(false);
+  };
 
   return (
     <Popover
@@ -459,7 +466,7 @@ export default function AddPaymentMethod({
                           </Typography>
                         </Grid>
                         <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                          <div onClick={() => setCondLay2(false)} className={styles.ctnOption}>
+                          <div onClick={resetClientSecretThis} className={styles.ctnOption}>
                             <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12 }} />
                           </div>
                         </Grid>
