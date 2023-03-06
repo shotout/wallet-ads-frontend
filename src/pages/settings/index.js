@@ -235,6 +235,7 @@ export default function SettingUser({ userData, params }) {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      console.log(values);
       const form = new FormData();
       form.append('company_name', values.company_name);
       form.append('tax_id', values.tax_id);
@@ -246,17 +247,17 @@ export default function SettingUser({ userData, params }) {
       form.append('phone', values.phone);
       form.append('email', values.email);
       form.append('country', values.country);
-      {
-        values.password && form.append('password', values.password);
-      }
-      {
-        values.password_confirmation && form.append('password_confirmation', values.password_confirmation);
-      }
+      // {
+      //   values.password && form.append('password', values.password);
+      // }
+      // {
+      //   values.password_confirmation && form.append('password_confirmation', values.password_confirmation);
+      // }
       {
         avatarSource && form.append('photo', avatarSource);
       }
       form.append('_method', 'PATCH');
-      const res = await handleUpdatePassword(form);
+      const res = await handleUpdateProfile(form);
       setAuthorizationCookie({
         ...userData,
         data: res.data,
@@ -270,7 +271,7 @@ export default function SettingUser({ userData, params }) {
       }
       setLoading(false);
     }
-    setSCPCondition(true);
+    // setSCPCondition(true);
     setAPMCondition(false);
   };
 
