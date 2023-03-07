@@ -209,7 +209,7 @@ export default function AddPaymentMethod({
           onClick={handleSubmit}
           label={'Apply'}
         />
-        <Typography variant="body1" color="#000" textAlign={'center'}>
+        <Typography variant="body1" color="#000" textAlign={'center'} marginTop={6}>
           <span onClick={cancelPromo} className={styles.ctnCancel}>
             Cancel
           </span>
