@@ -38,6 +38,7 @@ const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
 const crypto = '/assets/crypto.png';
+const avatarDummy = '/assets/avatar_dummy.png';
 
 const imageObj = {
   visa: cardVisa,
@@ -98,6 +99,7 @@ export default function SettingUser({ userData, params }) {
   const [DPMCondition, setDPMCondition] = useState(false);
   const [msgAddPayment, setMsgAddPayment] = useState(false);
   const [SCPCondition, setSCPCondition] = useState(false);
+  const [SCCondition, setSCCondition] = useState(false);
   const [FPCondition, setFPCondition] = useState(false);
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
@@ -275,7 +277,7 @@ export default function SettingUser({ userData, params }) {
       }
       setLoading(false);
     }
-    setSCPCondition(true);
+    setSCCondition(true);
     setAPMCondition(false);
   };
 
@@ -295,6 +297,15 @@ export default function SettingUser({ userData, params }) {
     setPaymentDetails(null);
     deletePaymentType();
     resetStateDPM();
+  };
+
+  const resetStateSC = (e) => {
+    if (e) {
+      setCPCondition(false);
+      return setSCCondition(false);
+    }
+    conditionSC = !conditionSC;
+    setSCCondition(conditionSC);
   };
 
   const resetStateSCP = (e) => {
@@ -350,6 +361,77 @@ export default function SettingUser({ userData, params }) {
     values.password_confirmation = '';
     errorMessage.password = '';
   };
+
+  function popupSaveChange() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={SCCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateSC}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography
+                    variant="h4"
+                    sx={{ color: '#000' }}
+                    fontWeight="800"
+                    marginLeft={4}
+                    textAlign="center"
+                    width={'100%'}
+                  >
+                    Profile Updated
+                  </Typography>
+                </div>
+
+                <Iconify
+                  icon={'ant-design:close-outlined'}
+                  onClick={resetStateSC}
+                  width={28}
+                  height={28}
+                  marginLeft={4}
+                  className={styles.ctnClose}
+                />
+              </div>
+            </div>
+            <Grid container justifyContent="center" alignItems="center">
+              <img src={avatarSource ? avatarSource : avatarDummy} alt="avatar" />
+            </Grid>
+            <Grid item width={300} md={6} xs={12} lg={12}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
+                Your password has been updated.
+              </Typography>
+            </Grid>
+            <DefaultButton
+              eventName={'Close'}
+              ctnBtnStyle={styles.btnSave}
+              label={'Close'}
+              isLoading={isLoading}
+              onClick={() => resetStateSC(true)}
+            />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
 
   function popupDeletePM() {
     return (
@@ -1329,8 +1411,8 @@ export default function SettingUser({ userData, params }) {
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-        <Grid container spacing={42}>
-          <Grid item md={6} xs={12}>
+        <Grid container spacing={2}>
+          <Grid item md={4.4} xs={12}>
             <div className={styles.inputWrapper}>
               <InputLabel shrink>Password</InputLabel>
               <TextField
@@ -1344,7 +1426,7 @@ export default function SettingUser({ userData, params }) {
               />
             </div>
           </Grid>
-          <Grid item md={6} xs={12} position={'relative'}>
+          <Grid item md={6} xs={12} marginLeft={1}>
             <div onClick={resetStateCP} className={styles.changePassword}>
               <Typography variant="body3">Change Password</Typography>
             </div>
@@ -1449,6 +1531,7 @@ export default function SettingUser({ userData, params }) {
     return (
       <div className={styles.ctnContent}>
         <div className={styles.ctnCard}>
+          {popupSaveChange()}
           {renderTitle()}
           {renderForm()}
           {popupChangePassword()}

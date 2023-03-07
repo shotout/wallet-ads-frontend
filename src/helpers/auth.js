@@ -29,6 +29,14 @@ export const setAuthorizationCookie = (authorizationObj) => {
   setCookie(null, 'authorization', JSON.stringify(authorizationObj), options);
 };
 
+export const setAuthorizationCookie2 = (authorizationObj) => {
+  const options = {
+    maxAge: 200 * 24 * 60 * 60,
+    path: '/',
+  };
+  setCookie(null, 'authorization2', JSON.stringify(authorizationObj), options);
+};
+
 export const getAuthorizationHeader = (ctx = null) => {
   let authCookie = null;
   if (ctx) {
@@ -51,6 +59,19 @@ export const getUserData = (ctx) => {
     authCookie = nookies.get(ctx).authorization;
   } else {
     authCookie = parseCookies({}).authorization;
+  }
+  if (authCookie) {
+    return JSON.parse(authCookie);
+  }
+  return null;
+};
+
+export const getUserData2 = (ctx) => {
+  let authCookie = null;
+  if (ctx) {
+    authCookie = nookies.get(ctx).authorization2;
+  } else {
+    authCookie = parseCookies({}).authorization2;
   }
   if (authCookie) {
     return JSON.parse(authCookie);

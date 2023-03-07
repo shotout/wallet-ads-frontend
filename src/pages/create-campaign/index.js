@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { getUserData } from '../../helpers/auth';
+import { getUserData, getUserData2, setAuthorizationCookie2 } from '../../helpers/auth';
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
 import {
@@ -122,6 +122,7 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [entitiesData, setEntitiesData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [cost, setCost] = useState(null);
@@ -251,6 +252,24 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(() => {
+    // var getUserD = getUserData2()
+    // setFormValues({
+    //   campaign_name: getUserD.campaign_name,
+    //   campaign_start_date: getUserD.campaign_start_date ? new Date(getUserD.campaign_start_date) : new Date(getFutureDate(2)),
+    //   campaign_end_date_type: getUserD.campaign_end_date_type.toString(),
+    //   campaign_end_day: getUserD.campaign_end_date_day,
+      
+    //   ads_page_name: getUserD.ads_page_name,
+    //   ads_page_description: getUserD.ads_page_description,
+    //   ads_page_website: getUserD.ads_page_website,
+    //   ads_page_discord: getUserD.ads_page_discord,
+    //   ads_page_medium: getUserD.ads_page_medium,
+    //   ads_page_telegram: getUserD.ads_page_telegram,
+    //   ads_page_token_name: getUserD.ads_page_token_name,
+    //   ads_page_token_symbol: getUserD.ads_page_token_symbol,
+
+    // });
+    // console.log('22233', entitiesData, getUserData2(), audienceForm)
     if (params && params.status === 'success') {
       GTMTracker({
         event: 'campaign-creation-success',
@@ -671,8 +690,11 @@ export default function AddCampaign({ userData, content, params }) {
           });
         }
       });
-
-      // console.log(formRes);
+      // var a = []
+      // for (const entrie of formRes.entries()) {
+      //   a.push({[entrie[0]]: entrie[1]})
+      // }
+      // setAuthorizationCookie2(a[0])
       setFormResp(formRes);
 
       setShowCreditCard({
