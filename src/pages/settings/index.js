@@ -80,7 +80,7 @@ const defaultState = {
   cvc: '',
   forgotEmail: '',
 };
-
+var conditionSC = false;
 var conditionER = false;
 var conditionDPM = false;
 var conditionSCP = false;
