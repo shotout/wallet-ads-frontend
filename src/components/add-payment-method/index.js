@@ -191,17 +191,19 @@ export default function AddPaymentMethod({
   const renderFormPromoCode = () => (
     <>
       <div className={styles.ctnGroup}>
-        <TextField
-          fullWidth
-          className={styles.ctnInput}
-          size="small"
-          placeholder="Enter promo code"
-          variant="outlined"
-          onChange={handleChange('promoCode')}
-          value={values.promoCode}
-          error={errorMsg.promoCodeErr}
-          helperText={errorMsg.promoCodeErr}
-        />
+        <div style={{ marginTop: 50, width: '100%' }}>
+          <TextField
+            fullWidth
+            className={styles.ctnInput}
+            size="small"
+            placeholder="Enter promo code"
+            variant="outlined"
+            onChange={handleChange('promoCode')}
+            value={values.promoCode}
+            error={errorMsg.promoCodeErr}
+            helperText={errorMsg.promoCodeErr}
+          />
+        </div>
         {/* <input className={styles.ctnInput} /> */}
         <DefaultButton
           isLoading={values.isLoading}

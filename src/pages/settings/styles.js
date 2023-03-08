@@ -214,4 +214,12 @@ export default makeStyles((theme) => ({
     paddingLeft: 20,
     width: '100%',
   },
+
+  logoImage: {
+    width: 150,
+    height: 150,
+    marginLeft: 20,
+    bottom: -20,
+    borderRadius: 10,
+  },
 }));

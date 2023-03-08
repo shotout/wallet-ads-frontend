@@ -228,16 +228,16 @@ export default function SettingUser({ userData, params }) {
     }
   };
 
-  const handleSubmitAPM = async () => {
-    try {
-      setLoading(true);
-      await savePaymentCC();
-      setLoading(false);
-      setAPMCondition(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleSubmitAPM = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await savePaymentCC();
+  //     setLoading(false);
+  //     setAPMCondition(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -413,7 +413,7 @@ export default function SettingUser({ userData, params }) {
               </div>
             </div>
             <Grid container justifyContent="center" alignItems="center">
-              <img src={avatarSource ? avatarSource : avatarDummy} alt="avatar" />
+              <img src={avatarSource ? avatarSource.preview : avatarDummy} alt="avatar" className={styles.logoImage} />
             </Grid>
             <Grid item width={300} md={6} xs={12} lg={12}>
               <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
