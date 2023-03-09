@@ -252,39 +252,39 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(() => {
-    var getUserD = getDataAfterSave();
+    // var getUserD = getDataAfterSave();
     // if (getUserD) {
-      if (getUserD?.dataCampaign) {
-        setFormValues({
-          campaign_name: getUserD.dataCampaign.campaign_name,
-          campaign_start_date: getUserD.dataCampaign.campaign_start_date
-            ? new Date(getUserD.dataCampaign.campaign_start_date)
-            : new Date(getFutureDate(2)),
-          campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
-          campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
+      // if (getUserD?.dataCampaign) {
+      //   setFormValues({
+      //     campaign_name: getUserD.dataCampaign.campaign_name,
+      //     campaign_start_date: getUserD.dataCampaign.campaign_start_date
+      //       ? new Date(getUserD.dataCampaign.campaign_start_date)
+      //       : new Date(getFutureDate(2)),
+      //     campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
+      //     campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
 
-          ads_page_name: getUserD.dataCampaign.ads_page_name,
-          ads_page_description: getUserD.dataCampaign.ads_page_description,
-          ads_page_website: getUserD.dataCampaign.ads_page_website,
-          ads_page_discord: getUserD.dataCampaign.ads_page_discord,
-          ads_page_medium: getUserD.dataCampaign.ads_page_medium,
-          ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
-          ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
-          ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
-        });
-        // setLogoCollection({
-        //   preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
-        // });
-      }
-      if (getUserD?.dataAds) {
-        setAudienceForm(getUserD.dataAds);
-      }
-      if (getUserD?.dataPic) {
-        setPicture(getUserD.dataPic);
-      }
-      if (getUserD?.dataSample) {
-        setSampleAds(getUserD.dataSample);
-      }
+      //     ads_page_name: getUserD.dataCampaign.ads_page_name,
+      //     ads_page_description: getUserD.dataCampaign.ads_page_description,
+      //     ads_page_website: getUserD.dataCampaign.ads_page_website,
+      //     ads_page_discord: getUserD.dataCampaign.ads_page_discord,
+      //     ads_page_medium: getUserD.dataCampaign.ads_page_medium,
+      //     ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
+      //     ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
+      //     ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
+      //   });
+      //   // setLogoCollection({
+      //   //   preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
+      //   // });
+      // }
+      // if (getUserD?.dataAds) {
+      //   setAudienceForm(getUserD.dataAds);
+      // }
+      // if (getUserD?.dataPic) {
+      //   setPicture(getUserD.dataPic);
+      // }
+      // if (getUserD?.dataSample) {
+      //   setSampleAds(getUserD.dataSample);
+      // }
     // }
     if (params.redirect_status = 'succeeded') {
       localStorage.removeItem('dataAfterSave');
