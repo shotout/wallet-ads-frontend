@@ -27,7 +27,7 @@ export default function NavList({ data, depth, hasChildren, isCollapse = false }
     if (!hasChildren) {
       push(data.path);
     }
-    setOpen(!open);
+    setOpen(!open); 
     localStorage.removeItem('dataAfterSave');
   };
 
