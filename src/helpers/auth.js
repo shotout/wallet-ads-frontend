@@ -62,7 +62,7 @@ export const getUserData = (ctx) => {
   return null;
 };
 
-export const getDataAfterSave = (ctx) => {
+export const getDataAfterSave = () => {
   let authCookie = null;
   authCookie = localStorage.getItem('dataAfterSave');
   if (authCookie) {
