@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { getUserData, getUserData2, setAuthorizationCookie2 } from '../../helpers/auth';
+import { getUserData, getDataAfterSave, setDataAfterSaveCookie } from '../../helpers/auth';
 import DefineAudience from '../../components/define-audience';
 import CardAudience from '../../components/card-audience';
 import {
@@ -252,32 +252,43 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(() => {
-    var getUserD = getUserData2()
-    console.log('22', getUserD)
-    if (getUserD?.dataCampaign) {
-      setFormValues({
-        campaign_name: getUserD.dataCampaign.campaign_name,
-        campaign_start_date: getUserD.dataCampaign.campaign_start_date ? new Date(getUserD.dataCampaign.campaign_start_date) : new Date(getFutureDate(2)),
-        campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
-        campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
-        
-        ads_page_name: getUserD.dataCampaign.ads_page_name,
-        ads_page_description: getUserD.dataCampaign.ads_page_description,
-        ads_page_website: getUserD.dataCampaign.ads_page_website,
-        ads_page_discord: getUserD.dataCampaign.ads_page_discord,
-        ads_page_medium: getUserD.dataCampaign.ads_page_medium,
-        ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
-        ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
-        ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
-      });
+    let getUserD = getDataAfterSave();
+    if (getUserD) {
+      if (getUserD?.dataCampaign) {
+        setFormValues({
+          campaign_name: getUserD.dataCampaign.campaign_name,
+          campaign_start_date: getUserD.dataCampaign.campaign_start_date
+            ? new Date(getUserD.dataCampaign.campaign_start_date)
+            : new Date(getFutureDate(2)),
+          campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
+          campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
+
+          ads_page_name: getUserD.dataCampaign.ads_page_name,
+          ads_page_description: getUserD.dataCampaign.ads_page_description,
+          ads_page_website: getUserD.dataCampaign.ads_page_website,
+          ads_page_discord: getUserD.dataCampaign.ads_page_discord,
+          ads_page_medium: getUserD.dataCampaign.ads_page_medium,
+          ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
+          ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
+          ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
+        });
+        setLogoCollection({
+          preview: getUserD && getUserD.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
+        });
+      }
+      if (getUserD?.dataAds) {
+        setAudienceForm(getUserD.dataAds);
+      }
+      if (getUserD?.dataPic) {
+        setPicture(getUserD.dataPic);
+      }
+      if (getUserD?.dataSample) {
+        setSampleAds(getUserD.dataSample);
+      }
     }
-    if (getUserD?.dataAds) {
-      setAudienceForm(getUserD.dataAds)
+    if (params.redirect_status = 'succeeded') {
+      localStorage.removeItem('dataAfterSave');
     }
-    if (getUserD?.dataPic) {
-      setPicture(getUserD.dataPic)
-    }
-    console.log('22.1', audienceForm)
     if (params && params.status === 'success') {
       GTMTracker({
         event: 'campaign-creation-success',
@@ -504,6 +515,7 @@ export default function AddCampaign({ userData, content, params }) {
         });
 
         if (res) {
+          localStorage.removeItem('dataAfterSave');
           // setModalSuccess('cryptocurrency');
           // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
           setTimeout(() => {
@@ -698,17 +710,18 @@ export default function AddCampaign({ userData, content, params }) {
           });
         }
       });
-      let field1 = []
-      let field2 = []
+      let field1 = [];
+      let field2 = [];
       for (const entrie of formRes.entries()) {
-        field1.push({[entrie[0]]: entrie[1]})
+        field1.push({ [entrie[0]]: entrie[1] });
       }
       field2 = {
         dataCampaign: field1[0],
         dataAds: audienceForm,
-        dataPic: pictureData
-      }
-      setAuthorizationCookie2(field2)
+        dataPic: pictureData,
+        dataSample: sampleAds,
+      };
+      setDataAfterSaveCookie(field2);
       setFormResp(formRes);
 
       setShowCreditCard({

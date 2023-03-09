@@ -131,6 +131,7 @@ export default function AddPaymentMethod({
     trackGoal({ id: 4, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
+    localStorage.removeItem('dataAfterSave');
     setLoading(false);
   };
 
