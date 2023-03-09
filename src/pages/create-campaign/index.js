@@ -253,7 +253,7 @@ export default function AddCampaign({ userData, content, params }) {
 
   useEffect(() => {
     var getUserD = getDataAfterSave();
-    if (getUserD) {
+    // if (getUserD) {
       if (getUserD?.dataCampaign) {
         setFormValues({
           campaign_name: getUserD.dataCampaign.campaign_name,
@@ -285,7 +285,7 @@ export default function AddCampaign({ userData, content, params }) {
       if (getUserD?.dataSample) {
         setSampleAds(getUserD.dataSample);
       }
-    }
+    // }
     if (params.redirect_status = 'succeeded') {
       localStorage.removeItem('dataAfterSave');
     }
