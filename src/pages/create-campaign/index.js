@@ -710,18 +710,18 @@ export default function AddCampaign({ userData, content, params }) {
           });
         }
       });
-      let field1 = [];
-      let field2 = [];
-      for (const entrie of formRes.entries()) {
-        field1.push({ [entrie[0]]: entrie[1] });
-      }
-      field2 = {
-        dataCampaign: field1[0],
-        dataAds: audienceForm,
-        dataPic: pictureData,
-        dataSample: sampleAds,
-      };
-      setDataAfterSaveCookie(field2);
+      // let field1 = [];
+      // let field2 = [];
+      // for (const entrie of formRes.entries()) {
+      //   field1.push({ [entrie[0]]: entrie[1] });
+      // }
+      // field2 = {
+      //   dataCampaign: field1[0],
+      //   dataAds: audienceForm,
+      //   dataPic: pictureData,
+      //   dataSample: sampleAds,
+      // };
+      // setDataAfterSaveCookie(field2);
       setFormResp(formRes);
 
       setShowCreditCard({
