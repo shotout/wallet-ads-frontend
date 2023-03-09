@@ -252,7 +252,7 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(() => {
-    let getUserD = getDataAfterSave();
+    var getUserD = getDataAfterSave();
     if (getUserD) {
       if (getUserD?.dataCampaign) {
         setFormValues({
