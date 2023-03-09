@@ -273,7 +273,7 @@ export default function AddCampaign({ userData, content, params }) {
           ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
         });
         setLogoCollection({
-          preview: getUserD && getUserD.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
+          preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
         });
       }
       if (getUserD?.dataAds) {
