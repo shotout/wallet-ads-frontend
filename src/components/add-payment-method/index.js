@@ -132,6 +132,7 @@ export default function AddPaymentMethod({
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
     localStorage.removeItem('dataAfterSave');
+    sessionStorage.removeItem('dataAfterSave');
     setLoading(false);
   };
 

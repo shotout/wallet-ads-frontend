@@ -288,6 +288,7 @@ export default function AddCampaign({ userData, content, params }) {
     }
     if (params && params.redirect_status === 'succeeded') {
       localStorage.removeItem('dataAfterSave');
+      sessionStorage.removeItem('dataAfterSave');
     }
     if (params && params.status === 'success') {
       GTMTracker({
@@ -516,6 +517,7 @@ export default function AddCampaign({ userData, content, params }) {
 
         if (res) {
           localStorage.removeItem('dataAfterSave');
+          sessionStorage.removeItem('dataAfterSave');
           // setModalSuccess('cryptocurrency');
           // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
           setTimeout(() => {
