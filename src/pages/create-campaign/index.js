@@ -2267,7 +2267,7 @@ export default function AddCampaign({ userData, content, params }) {
               />
               <div className={styles.ctnCounter}>
                 <Typography variant="body2" color="#808080">
-                  {`${formValues.ads_page_description.length} characters`}
+                  {`${formValues?.ads_page_description.length} characters`}
                 </Typography>
                 <Typography variant="body2" color="#808080">
                   Maximum 1000 characters
