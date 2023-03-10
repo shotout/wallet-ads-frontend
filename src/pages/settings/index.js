@@ -102,6 +102,7 @@ export default function SettingUser({ userData, params }) {
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
   const [APMCondition, setAPMCondition] = useState(false);
+  const [successUpdateProfile, setSuccessUpdateProfile] = useState(false);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [showPassword, setShowPassword] = useState(false);
@@ -263,6 +264,10 @@ export default function SettingUser({ userData, params }) {
         data: res.data,
       });
       setLoading(false);
+      setSuccessUpdateProfile(true);
+      setTimeout(() => {
+        setSuccessUpdateProfile(false);
+      }, 2000);
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
@@ -659,6 +664,53 @@ export default function SettingUser({ userData, params }) {
               isLoading={values.isLoading}
               onClick={handleSubmitER}
             />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function popupSuccessUpdate() {
+    return (
+      <Popover
+        id={'success-save'}
+        open={successUpdateProfile}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        // onClose={resetStateFP}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          className={styles.tr}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div style={{ marginBottom: -20 }}>
+              <div className={styles.header}>
+                <div style={{ width: '99%' }}>
+                  <Typography variant="h4" sx={{ color: '#000' }} fontWeight="800" textAlign="center" width={'100%'}>
+                    Changes Saved
+                  </Typography>
+                </div>
+              </div>
+            </div>
+            <Grid item width={300} md={6} xs={12} lg={12} style={{ display: 'flex', flexDirection: 'col' }}>
+              <Iconify icon={'ant-design:check-circle-filled'} width={23} height={23} marginLeft={2} color="green" />
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginBottom={2}>
+                Your profile has been updated.
+              </Typography>
+            </Grid>
           </div>
         </Box>
       </Popover>
@@ -1397,6 +1449,7 @@ export default function SettingUser({ userData, params }) {
           {popupSaveChangePasword()}
           {popupDeletePM()}
           {popupEmailReset()}
+          {popupSuccessUpdate()}
         </div>
       </div>
     );
