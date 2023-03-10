@@ -29,6 +29,7 @@ export default function NavList({ data, depth, hasChildren, isCollapse = false }
     }
     setOpen(!open); 
     localStorage.removeItem('dataAfterSave');
+    sessionStorage.removeItem('dataAfterSave');
   };
 
   return (

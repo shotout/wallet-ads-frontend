@@ -31,6 +31,7 @@ export const setAuthorizationCookie = (authorizationObj) => {
 
 export const setDataAfterSaveCookie = (dataObj) => {
   localStorage.setItem('dataAfterSave', JSON.stringify(dataObj));
+  sessionStorage.setItem('dataAfterSave', JSON.stringify(dataObj));
 };
 
 export const getAuthorizationHeader = (ctx = null) => {
@@ -64,7 +65,7 @@ export const getUserData = (ctx) => {
 
 export const getDataAfterSave = () => {
   let authCookie = null;
-  authCookie = localStorage.getItem('dataAfterSave');
+  authCookie = localStorage.getItem('dataAfterSave') || sessionStorage.getItem('dataAfterSave')
   if (authCookie) {
     return JSON.parse(authCookie);
   }
