@@ -65,7 +65,7 @@ const SetupForm = (e) => {
       const { error } = await stripe.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
         elements,
-
+        // redirect: 'if_required',
         confirmParams: {
           return_url: `${baseUrl}/create-campaign`,
         },

@@ -133,6 +133,7 @@ export default function AddPaymentMethod({
     trackGoal({ id: 4, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
+    localStorage.removeItem('dataAfterSave');
     setLoading(false);
   };
 
@@ -193,17 +194,19 @@ export default function AddPaymentMethod({
   const renderFormPromoCode = () => (
     <>
       <div className={styles.ctnGroup}>
-        <TextField
-          fullWidth
-          className={styles.ctnInput}
-          size="small"
-          placeholder="Enter promo code"
-          variant="outlined"
-          onChange={handleChange('promoCode')}
-          value={values.promoCode}
-          error={errorMsg.promoCodeErr}
-          helperText={errorMsg.promoCodeErr}
-        />
+        <div style={{ marginTop: 50, width: '100%' }}>
+          <TextField
+            fullWidth
+            className={styles.ctnInput}
+            size="small"
+            placeholder="Enter promo code"
+            variant="outlined"
+            onChange={handleChange('promoCode')}
+            value={values.promoCode}
+            error={errorMsg.promoCodeErr}
+            helperText={errorMsg.promoCodeErr}
+          />
+        </div>
         {/* <input className={styles.ctnInput} /> */}
         <DefaultButton
           isLoading={values.isLoading}
@@ -211,7 +214,7 @@ export default function AddPaymentMethod({
           onClick={handleSubmit}
           label={'Apply'}
         />
-        <Typography variant="body1" color="#000" textAlign={'center'}>
+        <Typography variant="body1" color="#000" textAlign={'center'} marginTop={6}>
           <span onClick={cancelPromo} className={styles.ctnCancel}>
             Cancel
           </span>

@@ -130,8 +130,6 @@ export default makeStyles((theme) => ({
   },
   changePassword: {
     paddingTop: 32,
-    position: 'absolute',
-    left: '2.2%',
     cursor: 'pointer',
   },
   ctnRoot: {
@@ -215,5 +213,13 @@ export default makeStyles((theme) => ({
     borderTop: '1px solid #B3B3B3',
     paddingLeft: 20,
     width: '100%',
+  },
+
+  logoImage: {
+    width: 150,
+    height: 150,
+    marginLeft: 20,
+    bottom: -20,
+    borderRadius: 10,
   },
 }));

@@ -38,6 +38,8 @@ const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
 const crypto = '/assets/crypto.png';
+const checkIcon = '/assets/check.png';
+const avatarDummy = '/assets/avatar_dummy.png';
 
 const imageObj = {
   visa: cardVisa,
@@ -79,7 +81,7 @@ const defaultState = {
   cvc: '',
   forgotEmail: '',
 };
-
+var conditionSC = false;
 var conditionER = false;
 var conditionDPM = false;
 var conditionSCP = false;
@@ -98,6 +100,7 @@ export default function SettingUser({ userData, params }) {
   const [DPMCondition, setDPMCondition] = useState(false);
   const [msgAddPayment, setMsgAddPayment] = useState(false);
   const [SCPCondition, setSCPCondition] = useState(false);
+  const [SCCondition, setSCCondition] = useState(false);
   const [FPCondition, setFPCondition] = useState(false);
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
@@ -225,16 +228,16 @@ export default function SettingUser({ userData, params }) {
     }
   };
 
-  const handleSubmitAPM = async () => {
-    try {
-      setLoading(true);
-      await savePaymentCC();
-      setLoading(false);
-      setAPMCondition(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const handleSubmitAPM = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await savePaymentCC();
+  //     setLoading(false);
+  //     setAPMCondition(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -274,7 +277,10 @@ export default function SettingUser({ userData, params }) {
       }
       setLoading(false);
     }
-    setSCPCondition(true);
+    setSCCondition(true);
+    setTimeout(() => {
+      setSCCondition(false);
+    }, 2000);
     setAPMCondition(false);
   };
 
@@ -294,6 +300,15 @@ export default function SettingUser({ userData, params }) {
     setPaymentDetails(null);
     deletePaymentType();
     resetStateDPM();
+  };
+
+  const resetStateSC = (e) => {
+    if (e) {
+      setCPCondition(false);
+      return setSCCondition(false);
+    }
+    conditionSC = !conditionSC;
+    setSCCondition(conditionSC);
   };
 
   const resetStateSCP = (e) => {
@@ -349,6 +364,52 @@ export default function SettingUser({ userData, params }) {
     values.password_confirmation = '';
     errorMessage.password = '';
   };
+
+  function popupSaveChange() {
+    return (
+      <Popover
+        id={'success-campaign'}
+        open={SCCondition}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        onClose={resetStateSC}
+        className={styles.ctnPopover}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <div className="content">
+              <div style={{ width: '99%' }}>
+                <Typography variant="h4" sx={{ color: '#000' }} fontWeight="800" textAlign="center" width={'100%'}>
+                  Changes Saved
+                </Typography>
+              </div>
+            </div>
+            <Grid item width={300} md={6} xs={12} lg={12} display={'flex'}>
+              <div style={{ marginTop: 'auto' }}>
+                <img src={checkIcon} alt="Check" style={{ marginLeft: 14 }} />
+              </div>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={1} marginRight={1}>
+                Your profile has been updated.
+              </Typography>
+            </Grid>
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
 
   function popupDeletePM() {
     return (
@@ -1328,8 +1389,8 @@ export default function SettingUser({ userData, params }) {
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-        <Grid container spacing={42}>
-          <Grid item md={6} xs={12}>
+        <Grid container spacing={2}>
+          <Grid item md={4.4} xs={12}>
             <div className={styles.inputWrapper}>
               <InputLabel shrink>Password</InputLabel>
               <TextField
@@ -1343,7 +1404,7 @@ export default function SettingUser({ userData, params }) {
               />
             </div>
           </Grid>
-          <Grid item md={6} xs={12} position={'relative'}>
+          <Grid item md={6} xs={12} marginLeft={1}>
             <div onClick={resetStateCP} className={styles.changePassword}>
               <Typography variant="body3">Change Password</Typography>
             </div>
@@ -1448,6 +1509,7 @@ export default function SettingUser({ userData, params }) {
     return (
       <div className={styles.ctnContent}>
         <div className={styles.ctnCard}>
+          {popupSaveChange()}
           {renderTitle()}
           {renderForm()}
           {popupChangePassword()}
