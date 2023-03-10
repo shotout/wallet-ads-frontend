@@ -102,7 +102,7 @@ export default function SettingUser({ userData, params }) {
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
   const [APMCondition, setAPMCondition] = useState(false);
-  const [successUpdateProfile, setSuccessUpdateProfile] = useState(false);
+  const [successUpdateProfile, setSuccessUpdateProfile] = useState(true);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [showPassword, setShowPassword] = useState(false);
@@ -648,15 +648,17 @@ export default function SettingUser({ userData, params }) {
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
-            <TextField
-              value={values.email}
-              onChange={handleChange('forgotEmail')}
-              error={errorMessage.forgotEmail}
-              helperText={errorMessage.forgotEmail}
-              size="small"
-              disabled
-              fullWidth
-            />
+            <div className={styles.inputWrapper}>
+              <TextField
+                value={values.email}
+                onChange={handleChange('forgotEmail')}
+                error={errorMessage.forgotEmail}
+                helperText={errorMessage.forgotEmail}
+                size="small"
+                disabled
+                fullWidth
+              />
+            </div>
             <DefaultButton
               eventName={'ResetPassword'}
               ctnBtnStyle={styles.btnSave}
@@ -696,16 +698,31 @@ export default function SettingUser({ userData, params }) {
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
-            <div style={{ marginBottom: -20 }}>
+            {/* <div>
               <div className={styles.header}>
                 <div style={{ width: '99%' }}>
-                  <Typography variant="h4" sx={{ color: '#000' }} fontWeight="800" textAlign="center" width={'100%'}>
-                    Changes Saved
-                  </Typography>
+                 
                 </div>
               </div>
-            </div>
-            <Grid item width={300} md={6} xs={12} lg={12} style={{ display: 'flex', flexDirection: 'col' }}>
+            </div> */}
+            <Typography
+              variant="h4"
+              sx={{ color: '#000' }}
+              fontWeight="800"
+              textAlign="center"
+              width={'100%'}
+              marginBottom={4}
+            >
+              Changes Saved
+            </Typography>
+            <Grid
+              item
+              width={300}
+              md={6}
+              xs={12}
+              lg={12}
+              style={{ display: 'flex', flexDirection: 'col', marginTop: -20 }}
+            >
               <Iconify icon={'ant-design:check-circle-filled'} width={23} height={23} marginLeft={2} color="green" />
               <Typography fontWeight="500" textAlign="center" width={'100%'} marginBottom={2}>
                 Your profile has been updated.
