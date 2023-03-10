@@ -38,6 +38,7 @@ const cardAE = '/assets/americanexpress.png';
 const cardUP = '/assets/unionpay.png';
 const cardCVC = '/assets/cvc.jpg';
 const crypto = '/assets/crypto.png';
+const checkIcon = '/assets/check.png';
 const avatarDummy = '/assets/avatar_dummy.png';
 
 const imageObj = {
@@ -278,6 +279,9 @@ export default function SettingUser({ userData, params }) {
       setLoading(false);
     }
     setSCCondition(true);
+    setTimeout(() => {
+      setSCCondition(false);
+    }, 2000);
     setAPMCondition(false);
   };
 
@@ -388,45 +392,20 @@ export default function SettingUser({ userData, params }) {
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
-              <div className={styles.header}>
-                <div style={{ width: '99%' }}>
-                  <Typography
-                    variant="h4"
-                    sx={{ color: '#000' }}
-                    fontWeight="800"
-                    marginLeft={4}
-                    textAlign="center"
-                    width={'100%'}
-                  >
-                    Profile Updated
-                  </Typography>
-                </div>
-
-                <Iconify
-                  icon={'ant-design:close-outlined'}
-                  onClick={resetStateSC}
-                  width={28}
-                  height={28}
-                  marginLeft={4}
-                  className={styles.ctnClose}
-                />
+              <div style={{ width: '99%' }}>
+                <Typography variant="h4" sx={{ color: '#000' }} fontWeight="800" textAlign="center" width={'100%'}>
+                  Changes Saved
+                </Typography>
               </div>
             </div>
-            <Grid container justifyContent="center" alignItems="center">
-              <img src={avatarSource ? avatarSource.preview : avatarDummy} alt="avatar" className={styles.logoImage} />
-            </Grid>
-            <Grid item width={300} md={6} xs={12} lg={12}>
-              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
-                Your password has been updated.
+            <Grid item width={300} md={6} xs={12} lg={12} display={'flex'}>
+              <div style={{ marginTop: 'auto' }}>
+                <img src={checkIcon} alt="Check" style={{ marginLeft: 14 }} />
+              </div>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={1} marginRight={1}>
+                Your profile has been updated.
               </Typography>
             </Grid>
-            <DefaultButton
-              eventName={'Close'}
-              ctnBtnStyle={styles.btnSave}
-              label={'Close'}
-              isLoading={isLoading}
-              onClick={() => resetStateSC(true)}
-            />
           </div>
         </Box>
       </Popover>
