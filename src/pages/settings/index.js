@@ -644,11 +644,12 @@ export default function SettingUser({ userData, params }) {
               </Typography>
             </Grid>
             <TextField
-              value={values.forgotEmail}
+              value={values.email}
               onChange={handleChange('forgotEmail')}
               error={errorMessage.forgotEmail}
               helperText={errorMessage.forgotEmail}
               size="small"
+              disabled
               fullWidth
             />
             <DefaultButton
