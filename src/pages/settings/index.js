@@ -102,7 +102,7 @@ export default function SettingUser({ userData, params }) {
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
   const [APMCondition, setAPMCondition] = useState(false);
-  const [successUpdateProfile, setSuccessUpdateProfile] = useState(true);
+  const [successUpdateProfile, setSuccessUpdateProfile] = useState(false);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [showPassword, setShowPassword] = useState(false);
