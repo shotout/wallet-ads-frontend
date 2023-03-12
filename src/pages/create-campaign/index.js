@@ -607,7 +607,7 @@ export default function AddCampaign({ userData, content, params }) {
   const handleSubmit = async () => {
     try {
       let res = null;
-      // setLoadingSubmit(true);
+      setLoadingSubmit(true);
       const campaignData = getAudienceArr();
       const formRes = new FormData();
       formRes.append('campaign_name', formValues.campaign_name.toString());
