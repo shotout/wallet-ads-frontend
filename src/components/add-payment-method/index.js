@@ -118,6 +118,11 @@ export default function AddPaymentMethod({
         handleChooseCrypto();
       } else {
         directStripe(values.promoCode);
+        
+        const form = new FormData();
+        form.append('payment_data', 1);
+        form.append('_method', 'PATCH');
+        await updatePaymentCC(form);
       }
     }
   };
