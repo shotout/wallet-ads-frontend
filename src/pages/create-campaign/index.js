@@ -125,7 +125,6 @@ export default function AddCampaign({ userData, content, params }) {
   const [entitiesData, setEntitiesData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
-  const [cost, setCost] = useState(null);
   const [dataPaymentCC, setDataPaymentCC] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [checkAudienceMulti, setCheckAudienceMulti] = useState(true);
@@ -251,7 +250,7 @@ export default function AddCampaign({ userData, content, params }) {
     return adsIdArr;
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     var getUserD = getDataAfterSave();
     if (getUserD) {
       if (getUserD?.dataCampaign) {
@@ -274,6 +273,29 @@ export default function AddCampaign({ userData, content, params }) {
         });
         setLogoCollection({
           preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
+        });
+
+        const checkUser = await getProfilUser();
+        try {
+          const paymentDetails = await getPaymentDetails();
+          if (checkUser.data.payment.payment_method == 1) {
+            setPaymentDetails(paymentDetails);
+          }
+        } catch (err) {
+          setPaymentDetails('paymentDetailsNull');
+        }
+        setPaymentMethod(checkUser.data.payment.payment_method);
+        const res = await getPaymentCC();
+        setDataPaymentCC(res[0].data[0].client_secret);
+
+        setTimeout(() => {
+          setShowCreditCard(
+            {
+              ...showCreditCard,
+              isVisible: true,
+            },
+            1000
+          );
         });
       }
       if (getUserD?.dataAds) {
@@ -585,7 +607,7 @@ export default function AddCampaign({ userData, content, params }) {
   const handleSubmit = async () => {
     try {
       let res = null;
-      setLoadingSubmit(true);
+      // setLoadingSubmit(true);
       const campaignData = getAudienceArr();
       const formRes = new FormData();
       formRes.append('campaign_name', formValues.campaign_name.toString());
@@ -714,11 +736,9 @@ export default function AddCampaign({ userData, content, params }) {
       });
       let field1 = [];
       let field2 = [];
-      for (const entrie of formRes.entries()) {
-        field1.push({ [entrie[0]]: entrie[1] });
-      }
+      field1 = Object.fromEntries(formRes.entries());
       field2 = {
-        dataCampaign: field1[0],
+        dataCampaign: field1,
         dataAds: audienceForm,
         dataPic: pictureData,
         dataSample: sampleAds,
@@ -997,7 +1017,6 @@ export default function AddCampaign({ userData, content, params }) {
           setPaymentDetails('paymentDetailsNull');
         }
         setPaymentMethod(checkUser.data.payment.payment_method);
-        setCost(getTotalBudget(audienceForm));
         const res = await getPaymentCC();
         setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
@@ -2963,7 +2982,7 @@ export default function AddCampaign({ userData, content, params }) {
         <AddPaymentMethod
           dataPaymentDetails={paymentDetails}
           dataPaymentMethod={paymentMethod}
-          dataCost={cost}
+          dataCost={getTotalBudget(audienceForm)}
           dataPayment={dataPaymentCC}
           dataForm={formValues}
           callbackSuccess={(modalType) => {
