@@ -169,73 +169,75 @@ export default function Invoice({ content }) {
     return (
       <div className={styles.ctnItem}>
         <Grid container spacing={3}>
-          {listContent.content.map((item) => (
-            <Fragment key={item.id.toString()}>
-              <Grid item md={1.8} sm={12} display="flex">
-                <Typography variant="body1">{moment(item.invoice_date).format('MM/DD/YYYY')}</Typography>
-              </Grid>
-              <Grid item md={2.4} sm={12} position="relative">
-                <Typography variant="body1">
-                  <span
-                    onMouseEnter={(event) => {
-                      handleHoverOpen(event, `invoice_number${item.id}`);
-                    }}
-                    onMouseLeave={() => {
-                      if (activePopover === `invoice_number${item.id}`) {
-                        setHover(null);
-                        setActivePopover(null);
-                      }
-                    }}
-                  >
-                    {renderLimitText(item.invoice_number)}
-                    {/* {renderLimitText('202209213_MEOWNYANTKT')} */}
-                  </span>
-                </Typography>
-                {activePopover === `invoice_number${item.id}` &&
-                  renderPopover(`invoice_number${item.id}`, item.invoice_number)}
-              </Grid>
-              <Grid item md={2} sm={12}>
-                <Typography variant="body1" className={styles.txtCampaignName}>
-                  <span
-                    onMouseEnter={(event) => {
-                      handleHoverOpen(event, `campaign_name${item.id}`);
-                    }}
-                    onMouseLeave={() => {
-                      if (activePopover === `campaign_name${item.id}`) {
-                        setHover(null);
-                        setActivePopover(null);
-                      }
-                    }}
-                  >
-                    {item.campaign_name}
-                  </span>
-                </Typography>
-                {activePopover === `campaign_name${item.id}` &&
-                  renderPopover(`campaign_name${item.id}`, item.campaign_name)}
-              </Grid>
-              <Grid item md={1.8} sm={12}>
-                <Typography variant="body1">{item.payment_method}</Typography>
-              </Grid>
-              <Grid item md={2} sm={12}>
-                <Typography variant="body1">{`USD${reformatCurrency(item.amount)}`}</Typography>
-              </Grid>
-              <Grid item md={2} sm={12}>
-                <div className={styles.ctnStatusItem}>
-                  <div className={styles.leftStatusItem}>
-                    <div className={`${styles.ctnStatusDot} ${item.payment_status === 1 ? styles.greenBg : {}}`} />
-                    <Typography variant="body1">{item.payment_status ? 'Paid' : 'Unpaid'}</Typography>
-                  </div>
-                  <div className={styles.ctnDownload}>
-                    <Link href={`${BACKEND_URL}${item.invoice_url}`}>
-                      <a target={'_blank'}>
-                        <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: '#7589FA' }} />
-                      </a>
-                    </Link>
-                  </div>
-                </div>
-              </Grid>
-            </Fragment>
-          ))}
+          {listContent?.content !== undefined ||
+            (listContent?.content.length === 0 &&
+              listContent?.content?.map((item) => (
+                <Fragment key={item.id.toString()}>
+                  <Grid item md={1.8} sm={12} display="flex">
+                    <Typography variant="body1">{moment(item.invoice_date).format('MM/DD/YYYY')}</Typography>
+                  </Grid>
+                  <Grid item md={2.4} sm={12} position="relative">
+                    <Typography variant="body1">
+                      <span
+                        onMouseEnter={(event) => {
+                          handleHoverOpen(event, `invoice_number${item.id}`);
+                        }}
+                        onMouseLeave={() => {
+                          if (activePopover === `invoice_number${item.id}`) {
+                            setHover(null);
+                            setActivePopover(null);
+                          }
+                        }}
+                      >
+                        {renderLimitText(item.invoice_number)}
+                        {/* {renderLimitText('202209213_MEOWNYANTKT')} */}
+                      </span>
+                    </Typography>
+                    {activePopover === `invoice_number${item.id}` &&
+                      renderPopover(`invoice_number${item.id}`, item.invoice_number)}
+                  </Grid>
+                  <Grid item md={2} sm={12}>
+                    <Typography variant="body1" className={styles.txtCampaignName}>
+                      <span
+                        onMouseEnter={(event) => {
+                          handleHoverOpen(event, `campaign_name${item.id}`);
+                        }}
+                        onMouseLeave={() => {
+                          if (activePopover === `campaign_name${item.id}`) {
+                            setHover(null);
+                            setActivePopover(null);
+                          }
+                        }}
+                      >
+                        {item.campaign_name}
+                      </span>
+                    </Typography>
+                    {activePopover === `campaign_name${item.id}` &&
+                      renderPopover(`campaign_name${item.id}`, item.campaign_name)}
+                  </Grid>
+                  <Grid item md={1.8} sm={12}>
+                    <Typography variant="body1">{item.payment_method}</Typography>
+                  </Grid>
+                  <Grid item md={2} sm={12}>
+                    <Typography variant="body1">{`USD${reformatCurrency(item.amount)}`}</Typography>
+                  </Grid>
+                  <Grid item md={2} sm={12}>
+                    <div className={styles.ctnStatusItem}>
+                      <div className={styles.leftStatusItem}>
+                        <div className={`${styles.ctnStatusDot} ${item.payment_status === 1 ? styles.greenBg : {}}`} />
+                        <Typography variant="body1">{item.payment_status ? 'Paid' : 'Unpaid'}</Typography>
+                      </div>
+                      <div className={styles.ctnDownload}>
+                        <Link href={`${BACKEND_URL}${item.invoice_url}`}>
+                          <a target={'_blank'}>
+                            <SvgIconStyle src={downloadIcon} sx={{ width: 1, height: 1, bgcolor: '#7589FA' }} />
+                          </a>
+                        </Link>
+                      </div>
+                    </div>
+                  </Grid>
+                </Fragment>
+              )))}
         </Grid>
       </div>
     );
