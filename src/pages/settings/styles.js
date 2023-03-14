@@ -112,6 +112,19 @@ export default makeStyles((theme) => ({
       },
     },
   },
+  ctnPopover2: {
+    background: 'rgba(0,0,0,0.3)',
+    height: '100vh',
+    '& > .MuiPaper-root': {
+      maxWidth: 650,
+      background: 'rgba(0,0,0,0.004)',
+      overflowY: 'hidden',
+      boxShadow: 'none',
+      '&::-webkit-scrollbar': {
+        width: 0,
+      },
+    },
+  },
   ctnGridRadius: {
     display: 'flex',
     justifyContent: 'center',

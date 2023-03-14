@@ -18,6 +18,7 @@ import {
   getPaymentDetails,
   updatePaymentCC,
   deletePaymentmethod,
+  getProfilUser,
 } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
@@ -687,7 +688,7 @@ export default function SettingUser({ userData, params }) {
           horizontal: 'center',
         }}
         // onClose={resetStateFP}
-        className={styles.ctnPopover}
+        className={styles.ctnPopover2}
         style={{ '&::WebkitScrollbar': { display: 'none' } }}
       >
         <Box
@@ -717,7 +718,14 @@ export default function SettingUser({ userData, params }) {
               lg={12}
               style={{ display: 'flex', flexDirection: 'col', marginTop: -30 }}
             >
-              <Iconify icon={'ant-design:check-circle-filled'} width={23} height={23} marginLeft={2} color="#1FCB96" />
+              <Iconify
+                icon={'ant-design:check-circle-filled'}
+                width={23}
+                height={23}
+                marginLeft={2}
+                marginRight={-2}
+                color="#1FCB96"
+              />
               <Typography fontWeight="500" textAlign="center" width={'100%'}>
                 Your profile has been updated.
               </Typography>
@@ -1480,6 +1488,7 @@ export default function SettingUser({ userData, params }) {
 
 export async function getServerSideProps(context) {
   try {
+    await getProfilUser(context);
     const userData = getUserData(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
