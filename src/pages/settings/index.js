@@ -175,6 +175,7 @@ export default function SettingUser({ userData, params }) {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    setErrorMessage({ ...errorMessage, [prop]: '' });
   };
 
   const handleClickShowPassword = () => {
