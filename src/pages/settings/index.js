@@ -698,13 +698,6 @@ export default function SettingUser({ userData, params }) {
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
-            {/* <div>
-              <div className={styles.header}>
-                <div style={{ width: '99%' }}>
-                 
-                </div>
-              </div>
-            </div> */}
             <Typography
               variant="h4"
               sx={{ color: '#000' }}
@@ -721,10 +714,10 @@ export default function SettingUser({ userData, params }) {
               md={6}
               xs={12}
               lg={12}
-              style={{ display: 'flex', flexDirection: 'col', marginTop: -20 }}
+              style={{ display: 'flex', flexDirection: 'col', marginTop: -30 }}
             >
-              <Iconify icon={'ant-design:check-circle-filled'} width={23} height={23} marginLeft={2} color="green" />
-              <Typography fontWeight="500" textAlign="center" width={'100%'} marginBottom={2}>
+              <Iconify icon={'ant-design:check-circle-filled'} width={23} height={23} marginLeft={2} color="#1FCB96" />
+              <Typography fontWeight="500" textAlign="center" width={'100%'}>
                 Your profile has been updated.
               </Typography>
             </Grid>
