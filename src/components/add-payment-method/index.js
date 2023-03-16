@@ -1,6 +1,6 @@
 import { Grid, Popover, Typography, FormGroup, TextField, Box } from '@mui/material';
 import { useState } from 'react';
-import { handleSubmitPromo, payCyrptoCurrency, savePaymentCC } from '../../utils/requests';
+import { handleSubmitPromo, payCyrptoCurrency, updatePaymentCC } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
@@ -119,6 +119,11 @@ export default function AddPaymentMethod({
         handleChooseCrypto();
       } else {
         directStripe(values.promoCode);
+
+        const form = new FormData();
+        form.append('payment_data', 1);
+        form.append('_method', 'PATCH');
+        await updatePaymentCC(form);
       }
     }
   };
@@ -130,6 +135,12 @@ export default function AddPaymentMethod({
       promo: values.promoCode,
       campaign_id: values.campaignId ?? campaign.data.id,
     });
+
+    const form = new FormData();
+    form.append('payment_data', 2);
+    form.append('_method', 'PATCH');
+    await updatePaymentCC(form);
+
     trackGoal({ id: 4, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
