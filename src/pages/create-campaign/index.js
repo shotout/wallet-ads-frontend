@@ -1008,17 +1008,19 @@ export default function AddCampaign({ userData, content, params }) {
         isAdvancedSettingValid
       ) {
         const checkUser = await getProfilUser();
-        try {
-          const paymentDetails = await getPaymentDetails();
-          if (checkUser.data.payment.payment_method == 1) {
-            setPaymentDetails(paymentDetails);
+        if (checkUser?.data.payment.payment_method === '1') {
+          try {
+            const paymentDetails = await getPaymentDetails();
+            if (checkUser?.data.payment.payment_method == 1) {
+              setPaymentDetails(paymentDetails);
+            }
+          } catch (err) {
+            setPaymentDetails('paymentDetailsNull');
           }
-        } catch (err) {
-          setPaymentDetails('paymentDetailsNull');
+        } else {
+          resetClientSecret();
         }
         setPaymentMethod(checkUser.data.payment.payment_method);
-        // const res = await getPaymentCC();
-        // setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
       }
       if (
@@ -2960,6 +2962,15 @@ export default function AddCampaign({ userData, content, params }) {
     });
   };
 
+  const resetClientSecret = async () => {
+    console.log('reset');
+    const res = await getPaymentCC();
+    console.log(res[0].data[0].client_secret);
+    setDataPaymentCC(res[0].data[0].client_secret);
+    // const paymentDetails = await getPaymentDetails();
+    // setPaymentDetails(paymentDetails);
+  };
+
   return (
     <Page title="Campaign Creation" description="Create your campaign on WALLETADS now!">
       <div className={styles.ctnRoot}>
@@ -3001,6 +3012,7 @@ export default function AddCampaign({ userData, content, params }) {
           isPaymentLoading={showCreditCard.isPaymentLoading}
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
+          resetClientSecret={() => resetClientSecret()}
         />
         <LoadingPage show={showCreditCard.isPaymentLoading} />
       </div>
