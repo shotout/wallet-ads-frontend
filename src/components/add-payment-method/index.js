@@ -11,7 +11,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
 import { normalizeCurrency } from '../../helpers/currency';
-import { getTotalBudget } from '../../helpers/calculator';
 
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
