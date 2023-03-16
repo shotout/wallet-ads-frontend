@@ -285,8 +285,6 @@ export default function AddCampaign({ userData, content, params }) {
           setPaymentDetails('paymentDetailsNull');
         }
         setPaymentMethod(checkUser.data.payment.payment_method);
-        const res = await getPaymentCC();
-        setDataPaymentCC(res[0].data[0].client_secret);
 
         setTimeout(() => {
           setShowCreditCard(
