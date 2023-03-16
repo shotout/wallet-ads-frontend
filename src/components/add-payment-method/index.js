@@ -152,13 +152,9 @@ export default function AddPaymentMethod({
 
     const form = new FormData();
     form.append('payment_data', 2);
-
-    if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
-      await savePaymentCC(form);
-    } else {
-      form.append('_method', 'PATCH');
-      await updatePaymentCC(form);
-    }
+    form.append('_method', 'PATCH');
+    await updatePaymentCC(form);
+    
     trackGoal({ id: 4, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
