@@ -1531,7 +1531,9 @@ function SettingUser({ userData, params, classes }) {
             <div className={styles.ctnGridRadius} onClick={resetStatePM}>
               <Typography variant="body5" textAlign={'center'}>
                 {/* Add Payment Method */}
-                {paymentType?.payment_method === '0' ? 'Add payment method' : 'Change payment method'}
+                {paymentType?.payment_method === '0' || paymentType === '0'
+                  ? 'Add payment method'
+                  : 'Change payment method'}
               </Typography>
             </div>
           </Grid>
