@@ -1074,7 +1074,7 @@ function SettingUser({ userData, params, classes }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          className={styles.trChangePassword}
+          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
