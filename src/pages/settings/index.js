@@ -267,7 +267,7 @@ function SettingUser({ userData, params, classes }) {
         avatarSource && form.append('photo', avatarSource);
       }
       form.append('_method', 'PATCH');
-      const res = await handleUpdatePassword(form);
+      const res = await handleUpdateProfile(form);
       setAuthorizationCookie({
         ...userData,
         data: res.data,
