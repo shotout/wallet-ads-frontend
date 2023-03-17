@@ -1,6 +1,6 @@
 import { Grid, Popover, Typography, FormGroup, TextField, Box } from '@mui/material';
 import { useState } from 'react';
-import { handleSubmitPromo, payCyrptoCurrency, updatePaymentCC } from '../../utils/requests';
+import { handleSubmitPromo, payCyrptoCurrency, updatePaymentCC, savePaymentCC } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
 import useStyles from './styles';
@@ -11,7 +11,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
 import { normalizeCurrency } from '../../helpers/currency';
-import { getTotalBudget } from '../../helpers/calculator';
 
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
@@ -109,6 +108,17 @@ export default function AddPaymentMethod({
     });
   };
 
+  const setConLay2Action = async (stype) => {
+    setCondLay2(false);
+    const form = new FormData();
+    form.append('payment_data', 1);
+    form.append('_method', 'PATCH');
+    await updatePaymentCC(form);
+    // if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
+    //   await savePaymentCC(form);
+    // }
+  };
+
   const handlePaymentChoose = async (type) => {
     setLoadingBtn(type);
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
@@ -122,8 +132,12 @@ export default function AddPaymentMethod({
 
         const form = new FormData();
         form.append('payment_data', 1);
-        form.append('_method', 'PATCH');
-        await updatePaymentCC(form);
+        if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
+          await savePaymentCC(form);
+        } else {
+          form.append('_method', 'PATCH');
+          await updatePaymentCC(form);
+        }
       }
     }
   };
@@ -203,6 +217,11 @@ export default function AddPaymentMethod({
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const resetClientSecretThis = async () => {
+    await resetClientSecret();
+    setCondLay2(false);
+  };
+
   const renderFormPromoCode = () => (
     <>
       <div className={styles.ctnGroup}>
@@ -236,10 +255,10 @@ export default function AddPaymentMethod({
     </>
   );
 
-  const resetClientSecretThis = async () => {
-    await resetClientSecret();
-    setCondLay2(false);
-  };
+  // const resetClientSecretThis = async () => {
+  //   await resetClientSecret();
+  //   setCondLay2(false);
+  // };
 
   return (
     <Popover
@@ -481,7 +500,7 @@ export default function AddPaymentMethod({
                           </Typography>
                         </Grid>
                         <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                          <div onClick={resetClientSecretThis} className={styles.ctnOption}>
+                          <div onClick={() => resetClientSecretThis()} className={styles.ctnOption}>
                             <img src={editIcon} alt="edit" style={{ width: 30, marginTop: 12 }} />
                           </div>
                         </Grid>
@@ -504,7 +523,7 @@ export default function AddPaymentMethod({
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
                         <DefaultButton
-                          onClick={() => setCondLay2(false)}
+                          onClick={() => setConLay2Action()}
                           ctnBtnStyle={styles.btnStyle}
                           label={'Add credit card'}
                           eventName={'Pay with stripe'}

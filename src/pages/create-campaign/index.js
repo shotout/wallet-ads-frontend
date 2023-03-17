@@ -285,8 +285,6 @@ export default function AddCampaign({ userData, content, params }) {
           setPaymentDetails('paymentDetailsNull');
         }
         setPaymentMethod(checkUser.data.payment.payment_method);
-        const res = await getPaymentCC();
-        setDataPaymentCC(res[0].data[0].client_secret);
 
         setTimeout(() => {
           setShowCreditCard(
@@ -1008,7 +1006,6 @@ export default function AddCampaign({ userData, content, params }) {
         isAdvancedSettingValid
       ) {
         const checkUser = await getProfilUser();
-
         if (checkUser?.data.payment.payment_method === '1') {
           try {
             const paymentDetails = await getPaymentDetails();
@@ -1023,10 +1020,6 @@ export default function AddCampaign({ userData, content, params }) {
         }
 
         setPaymentMethod(checkUser.data.payment.payment_method);
-        // setCost(getTotalBudget(audienceForm));
-
-        const res = await getPaymentCC();
-        setDataPaymentCC(res[0].data[0].client_secret);
         return handleSubmit();
       }
       if (
