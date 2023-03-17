@@ -149,7 +149,7 @@ export default function BannerPicker({
         <div className={styles.btnLogo}>
           <div className={styles.ctnLogo} />
           <Typography variant="subtitle1" color={'#555'} paddingTop={5} paddingLeft={4}>
-            Image Preview
+            File Preview
           </Typography>
         </div>
       );
