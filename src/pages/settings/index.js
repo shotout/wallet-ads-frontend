@@ -176,6 +176,7 @@ export default function SettingUser({ userData, params }) {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    delete errorMessage[prop];
   };
 
   const handleClickShowPassword = (e) => {
@@ -264,12 +265,17 @@ export default function SettingUser({ userData, params }) {
         avatarSource && form.append('photo', avatarSource);
       }
       form.append('_method', 'PATCH');
-      const res = await handleUpdatePassword(form);
+      const res = await handleUpdateProfile(form);
       setAuthorizationCookie({
         ...userData,
         data: res.data,
       });
       setLoading(false);
+      setSCCondition(true);
+      setTimeout(() => {
+        setSCCondition(false);
+      }, 2000);
+      setAPMCondition(false);
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
@@ -278,11 +284,6 @@ export default function SettingUser({ userData, params }) {
       }
       setLoading(false);
     }
-    setSCCondition(true);
-    setTimeout(() => {
-      setSCCondition(false);
-    }, 2000);
-    setAPMCondition(false);
   };
 
   function resendEmail() {
