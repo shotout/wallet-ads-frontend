@@ -9,6 +9,7 @@ import Layout from '../../layouts';
 import Iconify from '../../components/Iconify';
 import { getUserData, setAuthorizationCookie } from '../../helpers/auth';
 import responseValidatorObj from '../../helpers/responseValidatorObj';
+import { withStyles } from '@material-ui/core/styles';
 import {
   handleUpdateProfile,
   handleUpdatePassword,
@@ -91,7 +92,7 @@ var conditionCP = false;
 var conditionPM = false;
 var conditionAPM = false;
 
-export default function SettingUser({ userData, params }) {
+function SettingUser({ userData, params, classes }) {
   const styles = useStyles();
 
   const [timer, setTimer] = useState(0);
@@ -1338,6 +1339,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.company_name}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1351,6 +1353,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.tax_id}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1364,6 +1367,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.first_name}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1377,6 +1381,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.last_name}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1390,6 +1395,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.email}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1404,6 +1410,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.phone}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1417,6 +1424,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.street}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1432,6 +1440,7 @@ export default function SettingUser({ userData, params }) {
                         helperText={errorMessage.post_code}
                         size="small"
                         fullWidth
+                        inputProps={{ className: classes.input }}
                       />
                     </div>
                   </Grid>
@@ -1445,6 +1454,7 @@ export default function SettingUser({ userData, params }) {
                         helperText={errorMessage.city}
                         size="small"
                         fullWidth
+                        inputProps={{ className: classes.input }}
                       />
                     </div>
                   </Grid>
@@ -1461,6 +1471,7 @@ export default function SettingUser({ userData, params }) {
                     helperText={errorMessage.country}
                     size="small"
                     fullWidth
+                    inputProps={{ className: classes.input }}
                   />
                 </div>
               </Grid>
@@ -1490,6 +1501,7 @@ export default function SettingUser({ userData, params }) {
                     fullWidth
                     disabled
                     type="password"
+                    inputProps={{ className: classes.input }}
                     // InputProps={{
                     //   endAdornment: (
                     //     <InputAdornment position="end">
@@ -1586,3 +1598,13 @@ export async function getServerSideProps(context) {
     };
   }
 }
+
+const styles = {
+  input: {
+    '&:-webkit-autofill': {
+      WebkitBoxShadow: '0 0 0 1000px #F1F1F1 inset',
+    },
+  },
+};
+
+export default withStyles(styles)(SettingUser);
