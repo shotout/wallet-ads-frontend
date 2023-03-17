@@ -85,7 +85,7 @@ export default makeStyles((theme) => ({
     margin: 'auto',
     backgroundColor: 'white',
     padding: 20,
-    marginTop: 20,
+    marginTop: 0,
     marginBottom: 20,
     borderRadius: 20,
     marginLeft: 20,
@@ -106,10 +106,25 @@ export default makeStyles((theme) => ({
   },
   ctnPopover: {
     background: 'rgba(0,0,0,0.3)',
+    height: '100vh',
     '& > .MuiPaper-root': {
       maxWidth: 680,
-      background: 'rgba(0,0,0,0.0)',
+      background: 'rgba(0,0,0,0.004)',
       overflowY: 'hidden',
+      boxShadow: 'none',
+      '&::-webkit-scrollbar': {
+        width: 0,
+      },
+    },
+  },
+  ctnPopover2: {
+    background: 'rgba(0,0,0,0.3)',
+    height: '100vh',
+    '& > .MuiPaper-root': {
+      maxWidth: 650,
+      background: 'rgba(0,0,0,0.004)',
+      overflowY: 'hidden',
+      boxShadow: 'none',
       '&::-webkit-scrollbar': {
         width: 0,
       },
@@ -130,6 +145,8 @@ export default makeStyles((theme) => ({
   },
   changePassword: {
     paddingTop: 32,
+    position: 'absolute',
+    // left: '43%',
     cursor: 'pointer',
   },
   ctnRoot: {
@@ -214,12 +231,7 @@ export default makeStyles((theme) => ({
     paddingLeft: 20,
     width: '100%',
   },
-
-  logoImage: {
-    width: 150,
-    height: 150,
-    marginLeft: 20,
-    bottom: -20,
-    borderRadius: 10,
+  ctnTimer: {
+    color: '#7089FF',
   },
 }));

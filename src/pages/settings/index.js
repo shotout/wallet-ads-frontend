@@ -18,6 +18,7 @@ import {
   getPaymentDetails,
   updatePaymentCC,
   deletePaymentmethod,
+  getProfilUser,
 } from '../../utils/requests';
 import { requestResetPassword } from '../../utils/requests';
 import { Elements } from '@stripe/react-stripe-js';
@@ -105,6 +106,7 @@ export default function SettingUser({ userData, params }) {
   const [CPCondition, setCPCondition] = useState(false);
   const [PMCondition, setPMCondition] = useState(false);
   const [APMCondition, setAPMCondition] = useState(false);
+  const [successUpdateProfile, setSuccessUpdateProfile] = useState(false);
   const [avatarSource, setAvatarSource] = useState(null);
   const [values, setValues] = useState(userData.data);
   const [currentPassword, setCurrentPassword] = useState(false);
@@ -115,6 +117,9 @@ export default function SettingUser({ userData, params }) {
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [paymentType, setPaymentType] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
+  const [currentPassword, setCurrentPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (timer > 0) {
@@ -175,6 +180,7 @@ export default function SettingUser({ userData, params }) {
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+    setErrorMessage({ ...errorMessage, [prop]: '' });
   };
 
   const handleClickShowPassword = (e) => {
@@ -242,6 +248,7 @@ export default function SettingUser({ userData, params }) {
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      console.log(values);
       const form = new FormData();
       form.append('company_name', values.company_name);
       form.append('tax_id', values.tax_id);
@@ -253,22 +260,26 @@ export default function SettingUser({ userData, params }) {
       form.append('phone', values.phone);
       form.append('email', values.email);
       form.append('country', values.country);
-      {
-        values.password && form.append('password', values.password);
-      }
-      {
-        values.password_confirmation && form.append('password_confirmation', values.password_confirmation);
-      }
+      // {
+      //   values.password && form.append('password', values.password);
+      // }
+      // {
+      //   values.password_confirmation && form.append('password_confirmation', values.password_confirmation);
+      // }
       {
         avatarSource && form.append('photo', avatarSource);
       }
       form.append('_method', 'PATCH');
-      const res = await handleUpdatePassword(form);
+      const res = await handleUpdateProfile(form);
       setAuthorizationCookie({
         ...userData,
         data: res.data,
       });
       setLoading(false);
+      setSuccessUpdateProfile(true);
+      setTimeout(() => {
+        setSuccessUpdateProfile(false);
+      }, 2000);
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
@@ -277,10 +288,7 @@ export default function SettingUser({ userData, params }) {
       }
       setLoading(false);
     }
-    setSCCondition(true);
-    setTimeout(() => {
-      setSCCondition(false);
-    }, 2000);
+    // setSCPCondition(true);
     setAPMCondition(false);
   };
 
@@ -517,6 +525,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
+          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
@@ -526,12 +535,12 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
                   >
-                    Change Password
+                    Password changed
                   </Typography>
                 </div>
 
@@ -588,6 +597,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
+          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnInput}>
@@ -671,6 +681,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
+          className={styles.tr}
           style={{ '&::WebkitScrollbar': { display: 'none' } }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
@@ -680,12 +691,12 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
                   >
-                    Forgot Password?
+                    Forgot password?
                   </Typography>
                 </div>
 
@@ -700,18 +711,21 @@ export default function SettingUser({ userData, params }) {
               </div>
             </div>
             <Grid item width={300} md={6} xs={12} lg={12}>
-              <Typography fontWeight="400" textAlign="center" width={'100%'} marginBottom={2}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
-            <TextField
-              value={values.forgotEmail}
-              onChange={handleChange('forgotEmail')}
-              error={errorMessage.forgotEmail}
-              helperText={errorMessage.forgotEmail}
-              size="small"
-              fullWidth
-            />
+            <div className={styles.inputWrapper}>
+              <TextField
+                value={values.email}
+                onChange={handleChange('forgotEmail')}
+                error={errorMessage.forgotEmail}
+                helperText={errorMessage.forgotEmail}
+                size="small"
+                disabled
+                fullWidth
+              />
+            </div>
             <DefaultButton
               eventName={'ResetPassword'}
               ctnBtnStyle={styles.btnSave}
@@ -719,6 +733,68 @@ export default function SettingUser({ userData, params }) {
               isLoading={values.isLoading}
               onClick={handleSubmitER}
             />
+          </div>
+        </Box>
+      </Popover>
+    );
+  }
+
+  function popupSuccessUpdate() {
+    return (
+      <Popover
+        id={'success-save'}
+        open={successUpdateProfile}
+        anchorOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'center',
+          horizontal: 'center',
+        }}
+        // onClose={resetStateFP}
+        className={styles.ctnPopover2}
+        style={{ '&::WebkitScrollbar': { display: 'none' } }}
+      >
+        <Box
+          display={'flex'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          overflow={'hidden'}
+          className={styles.tr}
+          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+        >
+          <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
+            <Typography
+              variant="h4"
+              sx={{ color: '#000' }}
+              fontWeight="800"
+              textAlign="center"
+              width={'100%'}
+              marginBottom={4}
+            >
+              Changes Saved
+            </Typography>
+            <Grid
+              item
+              width={300}
+              md={6}
+              xs={12}
+              lg={12}
+              style={{ display: 'flex', flexDirection: 'col', marginTop: -30 }}
+            >
+              <Iconify
+                icon={'ant-design:check-circle-filled'}
+                width={23}
+                height={23}
+                marginLeft={2}
+                marginRight={-2}
+                color="#1FCB96"
+              />
+              <Typography fontWeight="500" textAlign="center" width={'100%'}>
+                Your profile has been updated.
+              </Typography>
+            </Grid>
           </div>
         </Box>
       </Popover>
@@ -1074,7 +1150,7 @@ export default function SettingUser({ userData, params }) {
                   <Typography
                     variant="h4"
                     sx={{ color: '#000' }}
-                    fontWeight="800"
+                    fontWeight="700"
                     marginLeft={4}
                     textAlign="center"
                     width={'100%'}
@@ -1108,7 +1184,7 @@ export default function SettingUser({ userData, params }) {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={() => handleClickShowPassword('currentPassword')}
+                          onClick={() => setCurrentPassword(!currentPassword)}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
@@ -1124,12 +1200,20 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
-                <Typography variant="body3" fontWeight="400" marginLeft={30} textAlign="right" width={'100%'}>
-                  Forgot password
+                <Typography
+                  variant="body3"
+                  fontWeight="400"
+                  fontSize={15}
+                  marginLeft={30}
+                  textAlign="right"
+                  width={'100%'}
+                  color="#0085F2"
+                >
+                  Forgot password?
                 </Typography>
               </div>
             </Grid>
-            <Grid item md={6} xs={12} lg={12}>
+            <Grid item md={6} xs={12} lg={12} marginTop={2}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>New Password</InputLabel>
                 <TextField
@@ -1144,7 +1228,7 @@ export default function SettingUser({ userData, params }) {
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={() => handleClickShowPassword('newPassword')}
+                          onClick={() => setNewPassword(!newPassword)}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
@@ -1160,7 +1244,7 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
             </Grid>
-            <Grid item md={6} xs={12} lg={12}>
+            <Grid item md={6} xs={12} lg={12} marginTop={2}>
               <div className={styles.inputWrapper}>
                 <InputLabel shrink>Confirm New Password</InputLabel>
                 <TextField
@@ -1170,16 +1254,16 @@ export default function SettingUser({ userData, params }) {
                   helperText={errorMessage.password_confirmation}
                   size="small"
                   fullWidth
-                  type={confirmNewPassword ? 'text' : 'password'}
+                  type={confirmPassword ? 'text' : 'password'}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={() => handleClickShowPassword('confirmNewPassword')}
+                          onClick={() => setConfirmPassword(!confirmPassword)}
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {confirmNewPassword ? (
+                          {confirmPassword ? (
                             <Iconify icon="eva:eye-fill" width={24} height={24} />
                           ) : (
                             <Iconify icon="eva:eye-off-fill" width={24} height={24} />
@@ -1389,116 +1473,47 @@ export default function SettingUser({ userData, params }) {
           </Grid>
         </Grid>
         <div className={styles.ctnGridBottom} />
-        <Grid container spacing={2}>
-          <Grid item md={4.4} xs={12}>
-            <div className={styles.inputWrapper}>
-              <InputLabel shrink>Password</InputLabel>
-              <TextField
-                value={'password'}
-                placeholder="********"
-                onChange={handleChange('passwordFirst')}
-                error={errorMessage.passwordFirst}
-                helperText={errorMessage.passwordFirst}
-                size="small"
-                fullWidth
-              />
-            </div>
-          </Grid>
-          <Grid item md={6} xs={12} marginLeft={1}>
-            <div onClick={resetStateCP} className={styles.changePassword}>
-              <Typography variant="body3">Change Password</Typography>
-            </div>
-          </Grid>
-        </Grid>
-        <div className={styles.ctnGridBottom} />
-        <Grid container spacing={2} display={'flex'} flexDirection={'row'}>
-          {/* <Grid item md={9} sm={12}></Grid> */}
+
+        <Grid container spacing={6}>
           <Grid item md={9} sm={12}>
-            <Typography variant="h6" textAlign={'left'} marginBottom={2}>
-              Payment Method
-            </Typography>
-
-            {paymentType?.payment_method === '0' && (
-              <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
-                No payment method selected
-              </Typography>
-            )}
-
-            {paymentType?.payment_method === '2' && (
-              <Box display={'flex'} flexDirection={'row'}>
-                <img src={crypto} alt="crypto" />
-                <Typography marginLeft={2} fontWeight={'bold'}>
-                  Payment in cryptocurrencies
-                </Typography>
-              </Box>
-            )}
-            {paymentType?.payment_method === '1' && (
-              <>
-                <Grid container justifyContent="left" alignItems="center">
-                  <Grid
-                    onClick={() => resetStateAPM()}
-                    item
-                    sm={2}
-                    md={1}
-                    xs={12}
-                    display={'flex'}
-                    justifyContent={'flex-start'}
-                    alignItems={'center'}
-                  >
-                    <img src={imageObj[paymentDetails?.card_type] ?? cardCVC} alt="MasterCard" style={{ width: 200 }} />
-                  </Grid>
-                  <Grid item md={6} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
-                    <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
-                      {strObj[paymentDetails?.card_type]} <span>&bull;</span> {paymentDetails?.card_last4}
-                    </Typography>
-                  </Grid>
-                  <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                    <div onClick={() => resetStateAPM('api')} className={styles.ctnOption}>
-                      <img src={editIcon} alt="edit" />
-                    </div>
-                    <div onClick={resetStateDPM} className={styles.ctnOption}>
-                      <img src={deleteIcon} alt="delete" />
-                    </div>
-                  </Grid>
-                </Grid>
-
-                <Grid container md={9} sm={12}>
-                  <Grid item sm={2} md={1} xs={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
-                    {/* <img src={imageObj[paymentDetails?.card_type] ?? cardCVC} alt="MasterCard" style={{ width: 200 }} /> */}
-                  </Grid>
-                  <Grid
-                    item
-                    sm={10}
-                    md={10}
-                    xs={12}
-                    display={'flex'}
-                    justifyContent={'flex-start'}
-                    alignItems={'center'}
-                  >
-                    <Typography
-                      marginLeft={4.5}
-                      fontWeight="500"
-                      variant="body"
-                      fontFamily={'Public Sans,sans-serif'}
-                      color={'grey'}
-                    >
-                      Expires on {paymentDetails?.card_exp_month} / {paymentDetails?.card_exp_year}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </>
-            )}
-          </Grid>
-          {/* <Typography variant="body4" textAlign={'left'}>
-            No payment method selected
-          </Typography> */}
-          <Grid item md={3} sm={12}>
-            <div className={styles.ctnGridRadius} onClick={resetStatePM}>
-              <Typography variant="body5" textAlign={'center'}>
-                {/* Add Payment Method */}
-                {paymentType?.payment_method === '0' ? 'Add payment method' : 'Change payment method'}
-              </Typography>
-            </div>
+            <Grid container spacing={2}>
+              <Grid item md={6} xs={12}>
+                <div className={styles.inputWrapper}>
+                  <InputLabel shrink>Password</InputLabel>
+                  <TextField
+                    value={'password'}
+                    placeholder="********"
+                    onChange={handleChange('passwordFirst')}
+                    error={errorMessage.passwordFirst}
+                    helperText={errorMessage.passwordFirst}
+                    size="small"
+                    fullWidth
+                    disabled
+                    type="password"
+                    // InputProps={{
+                    //   endAdornment: (
+                    //     <InputAdornment position="end">
+                    //       <IconButton onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                    //         {showPassword ? (
+                    //           <Iconify icon="eva:eye-fill" width={24} height={24} />
+                    //         ) : (
+                    //           <Iconify icon="eva:eye-off-fill" width={24} height={24} />
+                    //         )}
+                    //       </IconButton>
+                    //     </InputAdornment>
+                    //   ),
+                    // }}
+                  />
+                </div>
+              </Grid>
+              <Grid item md={6} xs={12}>
+                <div onClick={resetStateCP} className={styles.changePassword}>
+                  <Typography variant="body3" textAlign={'left'}>
+                    Change Password
+                  </Typography>
+                </div>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>
@@ -1519,6 +1534,7 @@ export default function SettingUser({ userData, params }) {
           {popupSaveChangePasword()}
           {popupDeletePM()}
           {popupEmailReset()}
+          {popupSuccessUpdate()}
         </div>
       </div>
     );
@@ -1538,6 +1554,7 @@ export default function SettingUser({ userData, params }) {
 
 export async function getServerSideProps(context) {
   try {
+    await getProfilUser(context);
     const userData = getUserData(context);
     const UA = context.req.headers['user-agent'];
     const isMobile = Boolean(UA.match(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i));
