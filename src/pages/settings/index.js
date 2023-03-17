@@ -153,7 +153,8 @@ function SettingUser({ userData, params, classes }) {
     console.log('CEK');
     const paymentType = await checkPaymentType();
     console.log(paymentType);
-    setPaymentType(paymentType);
+    const ty = Object.keys(paymentType).length === 0 ? '0' : null;
+    setPaymentType(ty ?? paymentType);
     if (paymentType?.payment_method === '1') {
       const paymentDetails = await getPaymentDetails();
       console.log(paymentDetails);
@@ -1447,6 +1448,12 @@ function SettingUser({ userData, params, classes }) {
             </Typography>
 
             {paymentType?.payment_method === '0' && (
+              <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
+                No payment method selected
+              </Typography>
+            )}
+
+            {paymentType === '0' && (
               <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
                 No payment method selected
               </Typography>
