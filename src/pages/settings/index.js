@@ -117,8 +117,8 @@ export default function SettingUser({ userData, params }) {
   const [errorMessage, setErrorMessage] = useState(defaultState);
   const [paymentType, setPaymentType] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
-  const [currentPassword, setCurrentPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState(false);
+  // const [currentPassword, setCurrentPassword] = useState(false);
+  // const [newPassword, setNewPassword] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState(false);
 
   useEffect(() => {
