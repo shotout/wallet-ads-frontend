@@ -644,7 +644,7 @@ export default function AddCampaign({ userData, content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
+        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name); 
         if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
