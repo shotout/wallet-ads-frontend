@@ -112,7 +112,7 @@ const SetupForm = (e) => {
             marginTop={e && e.addCard ? 2 : null}
           >
             <button className={`${styles.ctnBtn}`} disabled={isLoading}>
-              {isLoading ? 'Loading' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
+              {isLoading ? 'Loading' : e?.addCard == 'edit' ? 'Update' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
             </button>
           </Grid>
           {/* Show error message to your customers */}

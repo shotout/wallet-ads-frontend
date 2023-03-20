@@ -69,6 +69,8 @@ export default makeStyles((theme) => ({
   },
   forgotPassword: {
     cursor: 'pointer',
+    position: 'relative',
+    paddingBottom: 38,
   },
   tr: {
     position: 'relative',
@@ -90,7 +92,7 @@ export default makeStyles((theme) => ({
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
-    width: '100%',
+    width: '80vh',
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
   },
   header: {

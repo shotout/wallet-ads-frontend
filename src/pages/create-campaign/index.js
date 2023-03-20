@@ -2228,7 +2228,7 @@ export default function AddCampaign({ userData, content, params }) {
                       onChange={(event) => {
                         handleChangePicture(event, 'headlines', index, false, i);
                       }}
-                      placeholder="Add your ad name here"
+                      placeholder="Add your ad headline here"
                       type="text"
                     />
                     {renderErrorText(errorBox.errorAds && v.isErr)}

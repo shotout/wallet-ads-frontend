@@ -332,7 +332,7 @@ export default function SettingUser({ userData, params }) {
     setFPCondition(conditionFP);
   };
 
-  const resetStateAPM = async (e) => {
+  const resetStateAPM = async (e, condition) => {
     if (e == 'api') {
       try {
         setLoadingCC(true);
@@ -345,11 +345,11 @@ export default function SettingUser({ userData, params }) {
     }
     setTimeout(() => {
       setPMCondition(false);
-    }, 200);
+    }, 100);
     conditionAPM = !conditionAPM;
     setAPMCondition(conditionAPM);
 
-    if (e == true) setMsgAddPayment(true);
+    if (condition == 'edit') setMsgAddPayment(true);
     else setMsgAddPayment(false);
   };
 
@@ -466,8 +466,8 @@ export default function SettingUser({ userData, params }) {
             <Grid container justifyContent="center" alignItems="center">
               <img src={trashIcon} alt="Trash" />
             </Grid>
-            <Grid item width={300} md={6} xs={12}>
-              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
+            <Grid item md={12} xs={12}>
+              <Typography fontWeight="500" textAlign="center" marginTop={4}>
                 Are you sure want to delete this payment method?
               </Typography>
             </Grid>
@@ -673,7 +673,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+          style={{ '&::WebkitScrollbar': { display: 'none' }, height: '80vh' }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
@@ -701,19 +701,12 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
             </div>
-            <Grid item width={300} md={6} xs={12} lg={12}>
-              <Typography fontWeight="400" textAlign="center" width={'100%'} marginBottom={2}>
+            <Grid item md={12} xs={12} lg={12}>
+              <Typography fontWeight="400" textAlign="center" width={300} marginLeft={18} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
-            <TextField
-              value={values.forgotEmail}
-              onChange={handleChange('forgotEmail')}
-              error={errorMessage.forgotEmail}
-              helperText={errorMessage.forgotEmail}
-              size="small"
-              fullWidth
-            />
+            <TextField value={values.email} size="small" fullWidth disabled={true} />
             <DefaultButton
               eventName={'ResetPassword'}
               ctnBtnStyle={styles.btnSave}
@@ -781,7 +774,7 @@ export default function SettingUser({ userData, params }) {
             <Grid spacing={2}>
               <Grid item md={12} xs={12} lg={12}>
                 <Elements stripe={stripePromise} options={options}>
-                  <CheckoutForm />
+                  <CheckoutForm addCard={msgAddPayment == true ? 'edit' : false} />
                 </Elements>
               </Grid>
             </Grid>
@@ -1126,8 +1119,13 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
-                <Typography variant="body3" fontWeight="400" marginLeft={30} textAlign="right" width={'100%'}>
-                  Forgot password
+                <Typography
+                  variant="body3"
+                  fontWeight="400"
+                  width={'100%'}
+                  style={{ position: 'absolute', right: -460 }}
+                >
+                  Forgot password?
                 </Typography>
               </div>
             </Grid>
@@ -1402,6 +1400,7 @@ export default function SettingUser({ userData, params }) {
                 error={errorMessage.passwordFirst}
                 helperText={errorMessage.passwordFirst}
                 size="small"
+                disabled={true}
                 fullWidth
               />
             </div>
@@ -1422,7 +1421,7 @@ export default function SettingUser({ userData, params }) {
 
             {paymentType?.payment_method === '0' && (
               <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
-                No payment method selected
+                add a payment method
               </Typography>
             )}
 
@@ -1455,7 +1454,7 @@ export default function SettingUser({ userData, params }) {
                     </Typography>
                   </Grid>
                   <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                    <div onClick={() => resetStateAPM('api')} className={styles.ctnOption}>
+                    <div onClick={() => resetStateAPM('api', 'edit')} className={styles.ctnOption}>
                       <img src={editIcon} alt="edit" />
                     </div>
                     <div onClick={resetStateDPM} className={styles.ctnOption}>
