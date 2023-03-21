@@ -122,6 +122,7 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [resGenerate, setResGenerate] = useState(null);
   const [entitiesData, setEntitiesData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -307,6 +308,10 @@ export default function AddCampaign({ userData, content, params }) {
       }
     }
     if (params && params.redirect_status === 'succeeded') {
+      if (getUserD) {
+        let resGenerate = await formResGenerate(getUserD);
+        setResGenerate(resGenerate);
+      }
       localStorage.removeItem('dataAfterSave');
       sessionStorage.removeItem('dataAfterSave');
     }
@@ -505,8 +510,7 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       datas = formResp;
     }
-
-    console.log(datas);
+    if (formResp == null) datas = resGenerate;
 
     // let i = 0;
     // console.log(params.id);
@@ -740,6 +744,7 @@ export default function AddCampaign({ userData, content, params }) {
         dataAds: audienceForm,
         dataPic: pictureData,
         dataSample: sampleAds,
+        dataCampaignArr: campaignData,
       };
       setDataAfterSaveCookie(field2);
       setFormResp(formRes);
@@ -1162,6 +1167,130 @@ export default function AddCampaign({ userData, content, params }) {
     });
 
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
+  };
+
+  const formResGenerate = () => {
+    let getUserD = getDataAfterSave();
+    let formRes = new FormData();
+    formRes.append('campaign_name', getUserD.dataCampaign.campaign_name.toString());
+    formRes.append('campaign_start_date', moment(getUserD.dataCampaign.campaign_start_date).format('YYYY-MM-DD'));
+    formRes.append('campaign_end_date_type', getUserD.dataCampaign.campaign_end_date_type);
+    if (getUserD.dataCampaign.campaign_end_date_type === '3')
+      formRes.append(
+        'campaign_end_date_day',
+        getUserD.dataCampaign.campaign_end_date_type === '3' ? getUserD.dataCampaign.campaign_end_day : null
+      );
+    formRes.append('campaign_end_date', moment(getUserD.dataCampaign.campaign_end_date).format('YYYY-MM-DD'));
+
+    formRes.append('ads_page_name', getUserD.dataCampaign.ads_page_name);
+    formRes.append('ads_page_description', getUserD.dataCampaign.ads_page_description);
+    formRes.append('ads_page_website', getUserD.dataCampaign.ads_page_website);
+    formRes.append('ads_page_discord', getUserD.dataCampaign.ads_page_discord);
+    formRes.append('ads_page_medium', getUserD.dataCampaign.ads_page_medium);
+    formRes.append('ads_page_telegram', getUserD.dataCampaign.ads_page_telegram);
+    formRes.append('ads_page_token_name', getUserD.dataCampaign.ads_page_token_name);
+    formRes.append('ads_page_token_symbol', getUserD.dataCampaign.ads_page_token_symbol);
+    formRes.append(
+      'ads_page_logo',
+      getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null
+    );
+
+    getUserD.dataSample.forEach((sample, index) => {
+      if (sample.sampleAd) {
+        formRes.append(`wallet_address[${index}]`, sample.sampleAd);
+      }
+    });
+    getUserD.dataPic.forEach((ads, adsIndex) => {
+      if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
+      if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
+      if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+
+      if (ads.fe_id.length > 0) {
+        ads.fe_id.forEach((feId, feIndex) => {
+          formRes.append(
+            `campaign_ads[${adsIndex}][fe_id][${feIndex}]`,
+            audienceForm.findIndex((aud) => aud.audienceId === feId)
+          );
+        });
+      }
+
+      if (ads.fe_id.length > 0) {
+        ads.fe_id.forEach((feId, feIndex) => {
+          formRes.append(`campaign_ads[${adsIndex}][audience_id][${feIndex}]`, feId);
+        });
+      }
+
+      if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
+    });
+
+    if (getUserD.dataCampaignArr?.length > 0) {
+      getUserD.dataCampaignArr.forEach((campaign, indexCampaign) => {
+        if (campaign.fe_id || campaign.fe_id === 0)
+          formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
+        if (campaign) formRes.append(`campaign_audiences[${indexCampaign}][selected_fe_id]`, campaign.selected_fe_id);
+        if (campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id);
+        if (campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file);
+        if (campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price);
+        if (campaign.price_airdrop)
+          formRes.append(`campaign_audiences[${indexCampaign}][price_airdrop]`, campaign.price_airdrop);
+        if (campaign.total_user)
+          formRes.append(`campaign_audiences[${indexCampaign}][total_user]`, campaign.total_user);
+        if (campaign.detailed_targeting_year)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_year]`,
+            campaign.detailed_targeting_year
+          );
+        if (campaign.detailed_targeting_month)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_month]`,
+            campaign.detailed_targeting_month
+          );
+        if (campaign.detailed_targeting_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_day]`,
+            campaign.detailed_targeting_day
+          );
+        if (campaign.detailed_targeting_available_credit_wallet)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_available_credit_wallet]`,
+            campaign.detailed_targeting_available_credit_wallet
+          );
+        if (campaign.detailed_targeting_trading_volume)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_trading_volume]`,
+            campaign.detailed_targeting_trading_volume
+          );
+        if (campaign.detailed_targeting_airdrops)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_airdrops]`,
+            campaign.detailed_targeting_airdrops
+          );
+        if (campaign.detailed_targeting_amount_transaction)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction]`,
+            campaign.detailed_targeting_amount_transaction
+          );
+        if (campaign.detailed_targeting_amount_transaction_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction_day]`,
+            campaign.detailed_targeting_amount_transaction_day
+          );
+        if (campaign.detailed_targeting_nft_purchases)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_nft_purchases]`,
+            campaign.detailed_targeting_nft_purchases
+          );
+        if (campaign.detailed_targeting_cryptocurrency && campaign.detailed_targeting_cryptocurrency.length) {
+          campaign.detailed_targeting_cryptocurrency.forEach((currency, currencyIndex) => {
+            formRes.append(
+              `campaign_audiences[${indexCampaign}][detailed_targeting_cryptocurrency][${currencyIndex}]`,
+              currency
+            );
+          });
+        }
+      });
+    }
+    return formRes;
   };
 
   const deactivateErrorCampaign = (e) => {

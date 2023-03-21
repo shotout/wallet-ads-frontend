@@ -435,7 +435,7 @@ export default function SettingUser({ userData, params }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+          style={{ '&::WebkitScrollbar': { display: 'none' }, height: '80vh' }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
@@ -466,8 +466,8 @@ export default function SettingUser({ userData, params }) {
             <Grid container justifyContent="center" alignItems="center">
               <img src={trashIcon} alt="Trash" />
             </Grid>
-            <Grid item md={12} xs={12}>
-              <Typography fontWeight="500" textAlign="center" marginTop={4}>
+            <Grid item width={300} md={12} xs={12}>
+              <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
                 Are you sure want to delete this payment method?
               </Typography>
             </Grid>
@@ -701,12 +701,14 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
             </div>
-            <Grid item md={12} xs={12} lg={12}>
-              <Typography fontWeight="400" textAlign="center" width={300} marginLeft={18} marginBottom={2}>
+            <Grid item width={300} md={6} xs={12} lg={12}>
+              <Typography fontWeight="400" textAlign="center" width={'100%'} marginBottom={2}>
                 Enter your email address and you will receive an email with instructions on how to reset your password.
               </Typography>
             </Grid>
-            <TextField value={values.email} size="small" fullWidth disabled={true} />
+            <div className={styles.inputWrapper}>
+              <TextField value={values.email} size="small" fullWidth disabled={true} />
+            </div>
             <DefaultButton
               eventName={'ResetPassword'}
               ctnBtnStyle={styles.btnSave}
@@ -1119,12 +1121,7 @@ export default function SettingUser({ userData, params }) {
                 />
               </div>
               <div onClick={resetStateFP} className={styles.forgotPassword}>
-                <Typography
-                  variant="body3"
-                  fontWeight="400"
-                  width={'100%'}
-                  style={{ position: 'absolute', right: -460 }}
-                >
+                <Typography variant="body3" fontWeight="400" marginLeft={30} textAlign="right" width={'100%'}>
                   Forgot password?
                 </Typography>
               </div>
@@ -1394,7 +1391,7 @@ export default function SettingUser({ userData, params }) {
             <div className={styles.inputWrapper}>
               <InputLabel shrink>Password</InputLabel>
               <TextField
-                value={'********'}
+                value={'password'}
                 placeholder="********"
                 onChange={handleChange('passwordFirst')}
                 error={errorMessage.passwordFirst}
@@ -1402,6 +1399,7 @@ export default function SettingUser({ userData, params }) {
                 size="small"
                 disabled={true}
                 fullWidth
+                type="password"
               />
             </div>
           </Grid>

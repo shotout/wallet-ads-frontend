@@ -92,7 +92,7 @@ export default makeStyles((theme) => ({
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
-    width: '80vh',
+    width: '100%',
     boxShadow: '0px 10px 20px rgba(114, 125, 196, 0.5)',
   },
   header: {
