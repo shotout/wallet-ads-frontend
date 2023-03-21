@@ -135,6 +135,7 @@ export default function AddCampaign({ userData, content, params }) {
   const [activeErrorAlert, setActiveErrorAlert] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
+  const [logoCollection2, setLogoCollection2] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
 
@@ -273,7 +274,7 @@ export default function AddCampaign({ userData, content, params }) {
           ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
         });
         setLogoCollection({
-          preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
+          preview: getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null,
         });
 
         const checkUser = await getProfilUser();
@@ -309,7 +310,7 @@ export default function AddCampaign({ userData, content, params }) {
     }
     if (params && params.redirect_status === 'succeeded') {
       if (getUserD) {
-        let resGenerate = await formResGenerate(getUserD);
+        let resGenerate = await formResGenerate();
         setResGenerate(resGenerate);
       }
       localStorage.removeItem('dataAfterSave');
@@ -1190,10 +1191,7 @@ export default function AddCampaign({ userData, content, params }) {
     formRes.append('ads_page_telegram', getUserD.dataCampaign.ads_page_telegram);
     formRes.append('ads_page_token_name', getUserD.dataCampaign.ads_page_token_name);
     formRes.append('ads_page_token_symbol', getUserD.dataCampaign.ads_page_token_symbol);
-    formRes.append(
-      'ads_page_logo',
-      getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null
-    );
+    formRes.append('ads_page_logo', getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null);
 
     getUserD.dataSample.forEach((sample, index) => {
       if (sample.sampleAd) {

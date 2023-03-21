@@ -107,7 +107,7 @@ export default makeStyles((theme) => ({
     cursor: 'pointer',
   },
   ctnPopover: {
-    background: 'rgba(0,0,0,0.3)',
+    background: 'rgba(0,0,0,0.2)',
     '& > .MuiPaper-root': {
       maxWidth: 680,
       background: 'rgba(0,0,0,0.0)',
