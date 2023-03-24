@@ -44,6 +44,7 @@ const strObj = {
 };
 
 export default function AddPaymentMethod({
+  dataCheckUser,
   dataPaymentDetails,
   dataPaymentMethod,
   dataCost,
@@ -632,7 +633,7 @@ export default function AddPaymentMethod({
                   </Grid>
                   <Grid item sm={12} md={11.8} xs={12} marginLeft={1.8} marginRight={1.8}>
                     <Elements stripe={stripePromise} options={{ clientSecret: dataPayment }}>
-                      <CheckoutForm addCard={true} payStripe={directStripe} />
+                      <CheckoutForm addCard={true} payStripe={directStripe} checkUser={dataCheckUser} />
                     </Elements>
                   </Grid>
                 </Grid>

@@ -68,6 +68,7 @@ const SetupForm = (e) => {
         // redirect: 'if_required',
         confirmParams: {
           return_url: `${baseUrl}/create-campaign`,
+          // return_url: `${baseUrl}/create-campaign?status=fail&id=` + e.checkUser,
         },
       });
 
