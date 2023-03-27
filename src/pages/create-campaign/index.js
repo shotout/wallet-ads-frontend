@@ -1017,7 +1017,7 @@ export default function AddCampaign({ userData, content, params }) {
             const paymentDetails = await getPaymentDetails();
             if (checkUser?.data.payment.payment_method == 1) {
               setPaymentDetails(paymentDetails);
-              setCheckUser(checkUser.data.payment.id)
+              // setCheckUser(checkUser.data.payment.id)
             }
           } catch (err) {
             setPaymentDetails('paymentDetailsNull');
@@ -3117,7 +3117,7 @@ export default function AddCampaign({ userData, content, params }) {
           }}
         />
         <AddPaymentMethod
-          dataCheckUser={checkUser}
+          // dataCheckUser={checkUser}
           dataPaymentDetails={paymentDetails}
           dataPaymentMethod={paymentMethod}
           dataCost={getTotalBudget(audienceForm)}
