@@ -32,6 +32,22 @@ export default function AdsCard({ item, audienceData }) {
 
     return (
       <div className={styles.adtextContainer}>
+        <div className={styles.ctnLine}>
+          <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+            Ad headline 1
+          </Typography>
+          <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
+          </Typography>
+        </div>
+        <div className={styles.ctnLine2}>
+          <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+            Ad headline 2
+          </Typography>
+          <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
+          </Typography>
+        </div>
         {typeof contents === 'object' &&
           contents.map((v, i) => (
             <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
