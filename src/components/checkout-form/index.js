@@ -18,6 +18,7 @@ const SetupForm = (e) => {
   const router = useRouter();
 
   const handleSubmit = async (event) => {
+    const createCampaign = await e.createCampaign()
     if (router.route == '/settings') {
       setIsLoading(!isLoading);
       // We don't want to let default form submission happen here,
@@ -67,8 +68,8 @@ const SetupForm = (e) => {
         elements,
         // redirect: 'if_required',
         confirmParams: {
-          return_url: `${baseUrl}/create-campaign`,
-          // return_url: `${baseUrl}/create-campaign?status=fail&id=` + e.checkUser,
+          // return_url: `${baseUrl}/create-campaign`,
+          return_url: `${baseUrl}/create-campaign?status=fail&id=` + createCampaign.data.id,
         },
       });
 

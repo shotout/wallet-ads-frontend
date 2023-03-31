@@ -253,68 +253,81 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   useEffect(async () => {
-    var getUserD = getDataAfterSave();
-    if (getUserD) {
-      if (getUserD?.dataCampaign) {
-        setFormValues({
-          campaign_name: getUserD.dataCampaign.campaign_name,
-          campaign_start_date: getUserD.dataCampaign.campaign_start_date
-            ? new Date(getUserD.dataCampaign.campaign_start_date)
-            : new Date(getFutureDate(2)),
-          campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
-          campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
+    // var getUserD = getDataAfterSave();
+    // if (getUserD) {
+    //   if (getUserD?.dataCampaign) {
+    //     setFormValues({
+    //       campaign_name: getUserD.dataCampaign.campaign_name,
+    //       campaign_start_date: getUserD.dataCampaign.campaign_start_date
+    //         ? new Date(getUserD.dataCampaign.campaign_start_date)
+    //         : new Date(getFutureDate(2)),
+    //       campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
+    //       campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
 
-          ads_page_name: getUserD.dataCampaign.ads_page_name,
-          ads_page_description: getUserD.dataCampaign.ads_page_description,
-          ads_page_website: getUserD.dataCampaign.ads_page_website,
-          ads_page_discord: getUserD.dataCampaign.ads_page_discord,
-          ads_page_medium: getUserD.dataCampaign.ads_page_medium,
-          ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
-          ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
-          ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
-        });
-        setLogoCollection({
-          preview: getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null,
-        });
+    //       ads_page_name: getUserD.dataCampaign.ads_page_name,
+    //       ads_page_description: getUserD.dataCampaign.ads_page_description,
+    //       ads_page_website: getUserD.dataCampaign.ads_page_website,
+    //       ads_page_discord: getUserD.dataCampaign.ads_page_discord,
+    //       ads_page_medium: getUserD.dataCampaign.ads_page_medium,
+    //       ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
+    //       ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
+    //       ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
+    //     });
+    //     setLogoCollection({
+    //       preview: getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null,
+    //     });
 
-        const checkUser = await getProfilUser();
-        try {
-          const paymentDetails = await getPaymentDetails();
-          if (checkUser.data.payment.payment_method == 1) {
-            setPaymentDetails(paymentDetails);
-          }
-        } catch (err) {
-          setPaymentDetails('paymentDetailsNull');
-        }
-        setPaymentMethod(checkUser.data.payment.payment_method);
+    //     const checkUser = await getProfilUser();
+    //     try {
+    //       const paymentDetails = await getPaymentDetails();
+    //       if (checkUser.data.payment.payment_method == 1) {
+    //         setPaymentDetails(paymentDetails);
+    //       }
+    //     } catch (err) {
+    //       setPaymentDetails('paymentDetailsNull');
+    //     }
+    //     setPaymentMethod(checkUser.data.payment.payment_method);
 
-        setTimeout(() => {
-          setShowCreditCard(
-            {
-              ...showCreditCard,
-              isVisible: true,
-            },
-            1000
-          );
-        });
-      }
-      if (getUserD?.dataAds) {
-        setAudienceForm(getUserD.dataAds);
-      }
-      if (getUserD?.dataPic) {
-        setPicture(getUserD.dataPic);
-      }
-      if (getUserD?.dataSample) {
-        setSampleAds(getUserD.dataSample);
-      }
-    }
-    if (params && params.redirect_status === 'succeeded') {
-      if (getUserD) {
-        let resGenerate = await formResGenerate();
-        setResGenerate(resGenerate);
-      }
-      localStorage.removeItem('dataAfterSave');
-      sessionStorage.removeItem('dataAfterSave');
+    //     // setTimeout(() => {
+    //     //   setShowCreditCard(
+    //     //     {
+    //     //       ...showCreditCard,
+    //     //       isVisible: true,
+    //     //     },
+    //     //     1000
+    //     //   );
+    //     // });
+    //   }
+    //   if (getUserD?.dataAds) {
+    //     setAudienceForm(getUserD.dataAds);
+    //   }
+    //   if (getUserD?.dataPic) {
+    //     setPicture(getUserD.dataPic);
+    //   }
+    //   if (getUserD?.dataSample) {
+    //     setSampleAds(getUserD.dataSample);
+    //   }
+    // }
+    // if (params && params.redirect_status === 'succeeded') {
+    //   if (getUserD) {
+    //     let resGenerate = await formResGenerate();
+    //     setResGenerate(resGenerate);
+    //   }
+    //   localStorage.removeItem('dataAfterSave');
+    //   sessionStorage.removeItem('dataAfterSave');
+    // }
+    if (params && params.status === 'fail' && params && params.id && params && params.setup_intent) {
+      console.log('333')
+      const campaign = await createCampaignId();
+      // const session = await createSession({
+      //   promo: params,
+      //   campaign_id: campaign.data.id,
+      //   campaign_name: campaign.data.name,
+      //   total_budget: getTotalBudget(audienceForm) * 100,
+      // });
+      // trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
+      // setShowCreditCard({ ...showCreditCard });
+      // window.location.href = session?.url;
     }
     if (params && params.status === 'success') {
       GTMTracker({
@@ -504,6 +517,7 @@ export default function AddCampaign({ userData, content, params }) {
     let datas;
 
     if (content && params.status === 'fail') {
+      console.log('3.1', content, params)
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
 
@@ -511,7 +525,8 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       datas = formResp;
     }
-    if (formResp == null) datas = resGenerate;
+    console.log('2.2', datas)
+    // if (formResp == null) datas = resGenerate;
 
     // let i = 0;
     // console.log(params.id);
@@ -521,7 +536,7 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       res = await handleAddCampaign(datas);
     }
-
+    console.log('res', res)
     return res;
   };
 
@@ -541,8 +556,8 @@ export default function AddCampaign({ userData, content, params }) {
         });
 
         if (res) {
-          localStorage.removeItem('dataAfterSave');
-          sessionStorage.removeItem('dataAfterSave');
+          // localStorage.removeItem('dataAfterSave');
+          // sessionStorage.removeItem('dataAfterSave');
           // setModalSuccess('cryptocurrency');
           // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
           setTimeout(() => {
@@ -737,17 +752,17 @@ export default function AddCampaign({ userData, content, params }) {
           });
         }
       });
-      let field1 = [];
-      let field2 = [];
-      field1 = Object.fromEntries(formRes.entries());
-      field2 = {
-        dataCampaign: field1,
-        dataAds: audienceForm,
-        dataPic: pictureData,
-        dataSample: sampleAds,
-        dataCampaignArr: campaignData,
-      };
-      setDataAfterSaveCookie(field2);
+      // let field1 = [];
+      // let field2 = [];
+      // field1 = Object.fromEntries(formRes.entries());
+      // field2 = {
+      //   dataCampaign: field1,
+      //   dataAds: audienceForm,
+      //   dataPic: pictureData,
+      //   dataSample: sampleAds,
+      //   dataCampaignArr: campaignData,
+      // };
+      // setDataAfterSaveCookie(field2);
       setFormResp(formRes);
 
       setShowCreditCard({

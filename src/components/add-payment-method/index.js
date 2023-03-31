@@ -633,7 +633,7 @@ export default function AddPaymentMethod({
                   </Grid>
                   <Grid item sm={12} md={11.8} xs={12} marginLeft={1.8} marginRight={1.8}>
                     <Elements stripe={stripePromise} options={{ clientSecret: dataPayment }}>
-                      <CheckoutForm addCard={true} payStripe={directStripe} checkUser={dataCheckUser} />
+                      <CheckoutForm addCard={true} payStripe={directStripe} checkUser={dataCheckUser} createCampaign={createCampaignID} />
                     </Elements>
                   </Grid>
                 </Grid>
