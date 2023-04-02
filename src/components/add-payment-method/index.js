@@ -509,7 +509,7 @@ export default function AddPaymentMethod({
                           <Typography
                             marginLeft={3}
                             fontWeight="500"
-                            variant="body"
+                            variant="h6"
                             fontFamily={'Public Sans,sans-serif'}
                             color={'grey'}
                           >
