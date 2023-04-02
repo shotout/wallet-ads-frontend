@@ -494,7 +494,7 @@ export default function AddPaymentMethod({
                           />
                         </Grid>
                         <Grid item md={4} sm={12} display={'flex'} justifyContent={'flex-start'} alignItems={'center'}>
-                          <Typography fontWeight="900" variant="h6" marginTop={1} marginLeft={2}>
+                          <Typography fontWeight="900" variant="h7" marginTop={1} marginLeft={2}>
                             {strObj[dataPaymentDetails?.card_type]} <span>&bull;</span> {dataPaymentDetails?.card_last4}
                           </Typography>
                         </Grid>
@@ -509,7 +509,7 @@ export default function AddPaymentMethod({
                           <Typography
                             marginLeft={3}
                             fontWeight="500"
-                            variant="h6"
+                            variant="h7"
                             fontFamily={'Public Sans,sans-serif'}
                             color={'grey'}
                           >
