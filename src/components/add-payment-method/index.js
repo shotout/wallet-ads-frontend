@@ -507,7 +507,7 @@ export default function AddPaymentMethod({
                       <Grid container md={9} sm={12}>
                         <Grid item sm={10} md={10} xs={12} display={'flex'} marginLeft={8}>
                           <Typography
-                            marginLeft={4.5}
+                            marginLeft={3}
                             fontWeight="500"
                             variant="body"
                             fontFamily={'Public Sans,sans-serif'}
