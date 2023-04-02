@@ -1,5 +1,5 @@
 import { Grid, Popover, Typography, FormGroup, TextField, Box } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { handleSubmitPromo, payCyrptoCurrency, updatePaymentCC, savePaymentCC } from '../../utils/requests';
 import DefaultButton from '../default-button';
 import Iconify from '../Iconify';
@@ -11,6 +11,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkout-form';
 import { normalizeCurrency } from '../../helpers/currency';
+import { paramCase } from 'change-case';
 
 const stripePromise = loadStripe(process.env.STRIPE_KEY);
 const options = { clientSecret: 'pi_3MTp2YIIpTIg11XJ1OxafLsF_secret_i6tJ48R9jFANmkT3WagK3O42E' };
@@ -60,6 +61,7 @@ export default function AddPaymentMethod({
   totalBudget,
   isPaymentLoading,
   resetClientSecret,
+  params,
 }) {
   const styles = useStyles();
   const [condLay1, setCondLay1] = useState(true);
@@ -129,6 +131,7 @@ export default function AddPaymentMethod({
         setLoading(true);
         handleChooseCrypto();
       } else {
+        setLoading(true);
         directStripe(values.promoCode);
 
         const form = new FormData();
@@ -154,7 +157,7 @@ export default function AddPaymentMethod({
     form.append('payment_data', 2);
     form.append('_method', 'PATCH');
     await updatePaymentCC(form);
-    
+
     trackGoal({ id: 4, amount: totalBudget });
     if (typeof callbackSuccess === 'function') callbackSuccess('cryptocurrency');
     handleHoverClose();
@@ -455,6 +458,7 @@ export default function AddPaymentMethod({
                     <Grid item container spacing={4} sm={12} md={12} xs={12}>
                       <Grid item sm={6} md={6} xs={12}>
                         <DefaultButton
+                          id="paycc"
                           onClick={() => handlePaymentChoose('cc')}
                           ctnBtnStyle={styles.btnStyle}
                           label={'Pay With Credit Card'}
@@ -633,7 +637,12 @@ export default function AddPaymentMethod({
                   </Grid>
                   <Grid item sm={12} md={11.8} xs={12} marginLeft={1.8} marginRight={1.8}>
                     <Elements stripe={stripePromise} options={{ clientSecret: dataPayment }}>
-                      <CheckoutForm addCard={true} payStripe={directStripe} checkUser={dataCheckUser} createCampaign={createCampaignID} />
+                      <CheckoutForm
+                        addCard={true}
+                        payStripe={directStripe}
+                        checkUser={dataCheckUser}
+                        createCampaign={createCampaignID}
+                      />
                     </Elements>
                   </Grid>
                 </Grid>

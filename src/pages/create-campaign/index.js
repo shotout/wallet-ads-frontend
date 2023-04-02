@@ -115,14 +115,14 @@ export default function AddCampaign({ userData, content, params }) {
     {
       id: makeId(),
       adname: 'tes',
-      isErr: false
+      isErr: false,
     },
     {
       id: makeId(),
       adname: 'tes',
-      isErr: false
+      isErr: false,
     },
-  ]
+  ];
   const initHeadlines = [
     {
       id: makeId(),
@@ -264,87 +264,7 @@ export default function AddCampaign({ userData, content, params }) {
     return adsIdArr;
   }
 
-  useEffect(async () => {
-    // var getUserD = getDataAfterSave();
-    // if (getUserD) {
-    //   if (getUserD?.dataCampaign) {
-    //     setFormValues({
-    //       campaign_name: getUserD.dataCampaign.campaign_name,
-    //       campaign_start_date: getUserD.dataCampaign.campaign_start_date
-    //         ? new Date(getUserD.dataCampaign.campaign_start_date)
-    //         : new Date(getFutureDate(2)),
-    //       campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
-    //       campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
-
-    //       ads_page_name: getUserD.dataCampaign.ads_page_name,
-    //       ads_page_description: getUserD.dataCampaign.ads_page_description,
-    //       ads_page_website: getUserD.dataCampaign.ads_page_website,
-    //       ads_page_discord: getUserD.dataCampaign.ads_page_discord,
-    //       ads_page_medium: getUserD.dataCampaign.ads_page_medium,
-    //       ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
-    //       ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
-    //       ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
-    //     });
-    //     setLogoCollection({
-    //       preview: getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null,
-    //     });
-
-    //     const checkUser = await getProfilUser();
-    //     try {
-    //       const paymentDetails = await getPaymentDetails();
-    //       if (checkUser.data.payment.payment_method == 1) {
-    //         setPaymentDetails(paymentDetails);
-    //       }
-    //     } catch (err) {
-    //       setPaymentDetails('paymentDetailsNull');
-    //     }
-    //     setPaymentMethod(checkUser.data.payment.payment_method);
-
-    //     // setTimeout(() => {
-    //     //   setShowCreditCard(
-    //     //     {
-    //     //       ...showCreditCard,
-    //     //       isVisible: true,
-    //     //     },
-    //     //     1000
-    //     //   );
-    //     // });
-    //   }
-    //   if (getUserD?.dataAds) {
-    //     setAudienceForm(getUserD.dataAds);
-    //   }
-    //   if (getUserD?.dataPic) {
-    //     setPicture(getUserD.dataPic);
-    //   }
-    //   if (getUserD?.dataSample) {
-    //     setSampleAds(getUserD.dataSample);
-    //   }
-    // }
-    // if (params && params.redirect_status === 'succeeded') {
-    //   if (getUserD) {
-    //     let resGenerate = await formResGenerate();
-    //     setResGenerate(resGenerate);
-    //   }
-    //   localStorage.removeItem('dataAfterSave');
-    //   sessionStorage.removeItem('dataAfterSave');
-    // }
-    // if (params && params.status === 'fail' && params && params.id && params && params.setup_intent) {
-    //   console.log('444', content)
-    //   setTimeout(async() => {
-    //     await createCampaignId();
-    //     // localStorage.removeItem('dataAfterSave');
-    //     // sessionStorage.removeItem('dataAfterSave');
-    //   }, 3000);
-    //   // const session = await createSession({
-    //   //   promo: params,
-    //   //   campaign_id: campaign.data.id,
-    //   //   campaign_name: campaign.data.name,
-    //   //   total_budget: getTotalBudget(audienceForm) * 100,
-    //   // });
-    //   // trackGoal({ id: 3, amount: getTotalBudget(audienceForm) });
-    //   // setShowCreditCard({ ...showCreditCard });
-    //   // window.location.href = session?.url;
-    // }
+  useEffect(() => {
     if (params && params.status === 'success') {
       GTMTracker({
         event: 'campaign-creation-success',
@@ -353,8 +273,8 @@ export default function AddCampaign({ userData, content, params }) {
     }
     if (content && params.status === 'fail') {
       // cancelCreateCampaignId(content.id);
-      console.log('content', content)
-      window.scrollTo(0, document.body.scrollHeight);
+      // console.log('content', content);
+      // window.scrollTo(0, document.body.scrollHeight);
       let sample = JSON.parse(content.sample_address);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -430,7 +350,6 @@ export default function AddCampaign({ userData, content, params }) {
       });
 
       const sampleAds = JSON.parse(content.sample_address);
-      console.log('TYPE', sampleAds[0]);
 
       if (typeof sampleAds === 'object' && sampleAds[0] !== null) {
         setSampleAds([]); // reset ads to null
@@ -448,9 +367,18 @@ export default function AddCampaign({ userData, content, params }) {
       //     });
       //   });
       // }
-      // setTimeout(async() => {
-        await validateSubmit();
-      // }, 5000);
+      // setTimeout(async () => {
+      //   validateSubmit();
+      // }, 15000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (content && params.status === 'fail') {
+      setTimeout(() => {
+        document.getElementById('setupAirdrop').firstChild.click();
+        setTimeout(() => document.getElementById('paycc')?.firstChild.click(), 2000);
+      }, 10000);
     }
   }, []);
 
@@ -534,10 +462,15 @@ export default function AddCampaign({ userData, content, params }) {
     });
   };
 
+  const autoClick = () => {
+    validateSubmit();
+    trackGoal({ id: 5, amount: getTotalBudget(audienceForm) });
+  };
+
   const createCampaignId = async () => {
     let datas;
 
-    console.log('3.1', content, params)
+    console.log('3.1', content, params);
     if (content && params.status === 'fail') {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
@@ -546,7 +479,7 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       datas = formResp;
     }
-    console.log('2.2', datas, formValues)
+    console.log('2.2', datas, formValues);
     if (formResp == null) datas = resGenerate;
 
     // let i = 0;
@@ -557,7 +490,7 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       res = await handleAddCampaign(datas);
     }
-    console.log('res', res)
+    console.log('res', res);
     return res;
   };
 
@@ -685,7 +618,7 @@ export default function AddCampaign({ userData, content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name); 
+        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
         if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
@@ -839,7 +772,7 @@ export default function AddCampaign({ userData, content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name); 
+        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
         if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
@@ -944,9 +877,7 @@ export default function AddCampaign({ userData, content, params }) {
       //   ...showCreditCard,
       //   isVisible: true,
       // });
-      // setTimeout(async() => {
-      //   await directStripe();
-      // }, 3000);
+      console.log('FORMRES', formValues);
       setLoadingSubmit(false);
     } catch (err) {
       setLoadingSubmit(false);
@@ -1059,6 +990,7 @@ export default function AddCampaign({ userData, content, params }) {
 
   const validateSubmit = async () => {
     try {
+      console.log('VALIDATE SUMBMIT');
       let isBudgetValid = true;
       let isAdTextValid;
       const isAudienceValid = audienceForm.filter(
@@ -2411,6 +2343,7 @@ export default function AddCampaign({ userData, content, params }) {
             </Typography>
 
             <Grid container spacing={4} className={styles.gridAvailability}>
+              <div onClick={() => validateSubmit()}>TES</div>
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
                   <div
@@ -2669,7 +2602,7 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   function renderTopAdCreation(content, index) {
-    console.log('33', content)
+    console.log('33', content);
     return (
       <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
@@ -3533,6 +3466,7 @@ export default function AddCampaign({ userData, content, params }) {
     return (
       <div className={styles.setupAirdropWrapper}>
         <DefaultButton
+          id="setupAirdrop"
           isLoading={loadingSubmit}
           onClick={() => {
             validateSubmit();
@@ -3610,6 +3544,7 @@ export default function AddCampaign({ userData, content, params }) {
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
           resetClientSecret={() => resetClientSecret()}
+          params={params}
         />
         <LoadingPage show={showCreditCard.isPaymentLoading} />
       </div>
