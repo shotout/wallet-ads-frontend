@@ -470,7 +470,6 @@ export default function AddCampaign({ userData, content, params }) {
   const createCampaignId = async () => {
     let datas;
 
-    console.log('3.1', content, params);
     if (content && params.status === 'fail') {
       formValues.campaign_start_date = moment(formValues.campaign_start_date).format('YYYY-MM-DD');
       // formValues.campaign_start_date = new Date(formValues.campaign_start_date);
@@ -479,7 +478,6 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       datas = formResp;
     }
-    console.log('2.2', datas, formValues);
     if (formResp == null) datas = resGenerate;
 
     // let i = 0;
@@ -490,7 +488,6 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       res = await handleAddCampaign(datas);
     }
-    console.log('res', res);
     return res;
   };
 
@@ -2343,7 +2340,7 @@ export default function AddCampaign({ userData, content, params }) {
             </Typography>
 
             <Grid container spacing={4} className={styles.gridAvailability}>
-              <div onClick={() => validateSubmit()}>TES</div>
+              {/* <div onClick={() => validateSubmit()}>TES</div> */}
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
                   <div
@@ -2602,7 +2599,6 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   function renderTopAdCreation(content, index) {
-    console.log('33', content);
     return (
       <Grid container marginBottom={2} id={`ad-name-${content.adsId}`}>
         <Grid md={6} sm={6} xl={6} paddingRight={5}>
