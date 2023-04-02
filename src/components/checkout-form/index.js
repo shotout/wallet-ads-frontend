@@ -18,7 +18,6 @@ const SetupForm = (e) => {
   const router = useRouter();
 
   const handleSubmit = async (event) => {
-    const createCampaign = await e.createCampaign()
     if (router.route == '/settings') {
       setIsLoading(!isLoading);
       // We don't want to let default form submission happen here,
@@ -62,14 +61,16 @@ const SetupForm = (e) => {
         // Make sure to disable form submission until Stripe.js has loaded.
         return;
       }
+      let createCampaign = await e.createCampaign()
 
+      router.push(`${baseUrl}/create-campaign?`)
       const { error } = await stripe.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
         elements,
         // redirect: 'if_required',
         confirmParams: {
           // return_url: `${baseUrl}/create-campaign`,
-          return_url: `${baseUrl}/create-campaign?status=fail&id=` + createCampaign.data.id,
+          return_url: `${baseUrl}/create-campaign?status=fail&id=` + createCampaign?.data.id,
         },
       });
 
