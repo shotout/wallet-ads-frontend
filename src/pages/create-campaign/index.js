@@ -913,6 +913,33 @@ export default function AddCampaign({ userData, content, params }) {
     setPicture(newData);
   };
 
+  const addAdName = (index, string) => {
+    const body = {
+      id: makeId(),
+      adname: '',
+      isErr: false,
+    };
+
+    const newData = pictureData.map((v, i) => {
+      if (i === index) {
+        if (string == 'headlines') {
+          return {
+            ...v,
+            headlines: [...v.headlines, body],
+          };
+        } else {
+          return {
+            ...v,
+            description: [...v.description, body],
+          };
+        }
+      } else {
+        return v;
+      }
+    });
+    setPicture(newData);
+  };
+
   const removeAdText = (id, index, string) => {
     const filterDesc = pictureData[index].description.filter((desc) => desc.id !== id);
     const newData = pictureData.map((v, i) => {
@@ -2765,7 +2792,7 @@ export default function AddCampaign({ userData, content, params }) {
             )}
             <Grid md={6} sm={6} xl={6} style={content?.headlines?.length % 2 === 0 ? { paddingRight: 40 } : {}}>
               <div className={styles.adtextTitleContainerHeadlines}>{''}</div>
-              <div className={styles.addAdButton2} onClick={() => addAdText(index, 'headlines')}>
+              <div className={styles.addAdButton2} onClick={() => addAdName(index, 'headlines')}>
                 <img src={addAdIcon} />
                 <Typography fontSize={16} fontWeight={600} color={'#808080'}>
                   Add ad headlines
