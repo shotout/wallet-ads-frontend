@@ -150,6 +150,7 @@ export default function AddCampaign({ userData, content, params }) {
   const [logoCollection2, setLogoCollection2] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
+  const [bigLoading, setBigLoading] = useState(false);
 
   const [sampleAds, setSampleAds] = useState([
     {
@@ -272,6 +273,7 @@ export default function AddCampaign({ userData, content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      setBigLoading(true);
       // setShowCreditCard({ ...showCreditCard, isPaymentLoading: true });
       cancelCreateCampaignId(content.id);
       console.log('content', content);
@@ -294,7 +296,7 @@ export default function AddCampaign({ userData, content, params }) {
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         description: JSON.parse(item.description),
         name: JSON.parse(item?.name),
-        headlines: mockHeadLines,
+        headlines: JSON.parse(item?.name),
         preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         imageProps: item.image,
         adsId: makeId(),
@@ -520,6 +522,7 @@ export default function AddCampaign({ userData, content, params }) {
           setTimeout(() => {
             setShowCreditCard({ ...showCreditCard, isVisible: false });
             setModalSuccess('cryptocurrency');
+            setBigLoading(false);
           }, 4000);
         }
       } catch (err) {
@@ -3521,6 +3524,7 @@ export default function AddCampaign({ userData, content, params }) {
         />
         <AddPaymentMethod
           // dataCheckUser={checkUser}
+          bigLoading={bigLoading}
           dataPaymentDetails={paymentDetails}
           dataPaymentMethod={paymentMethod}
           dataCost={getTotalBudget(audienceForm)}
@@ -3545,7 +3549,7 @@ export default function AddCampaign({ userData, content, params }) {
           resetClientSecret={() => resetClientSecret()}
           params={params}
         />
-        {/* <LoadingPage show={showCreditCard.isPaymentLoading} /> */}
+        <LoadingPage show={bigLoading} />
       </div>
     </Page>
   );

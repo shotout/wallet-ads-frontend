@@ -62,6 +62,7 @@ export default function AddPaymentMethod({
   isPaymentLoading,
   resetClientSecret,
   params,
+  bigLoading,
 }) {
   const styles = useStyles();
   const [condLay1, setCondLay1] = useState(true);
@@ -126,7 +127,11 @@ export default function AddPaymentMethod({
 
   const handlePaymentChoose = async (type) => {
     setLoadingBtn(type);
-    setPaymentLoading(true);
+    if (params.status) {
+      console.log('no');
+    } else {
+      setPaymentLoading(true);
+    }
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
@@ -150,7 +155,11 @@ export default function AddPaymentMethod({
   };
 
   const handleChooseCrypto = async () => {
-    setPaymentLoading(true);
+    if (params.status) {
+      console.log('no');
+    } else {
+      setPaymentLoading(true);
+    }
     const campaign = await createCampaignID();
     // savePaymentCC('2')
     payCyrptoCurrency({
