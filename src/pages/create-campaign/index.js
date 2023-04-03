@@ -272,8 +272,8 @@ export default function AddCampaign({ userData, content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      // cancelCreateCampaignId(content.id);
-      // console.log('content', content);
+      cancelCreateCampaignId(content.id);
+      console.log('content', content);
       // window.scrollTo(0, document.body.scrollHeight);
       let sample = JSON.parse(content.sample_address);
       const adsPage = content.ads_page;
@@ -292,6 +292,7 @@ export default function AddCampaign({ userData, content, params }) {
         fe_id: getAdsId(item.id),
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         description: JSON.parse(item.description),
+        name: JSON.parse(item?.name),
         headlines: mockHeadLines,
         preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         imageProps: item.image,
@@ -498,7 +499,7 @@ export default function AddCampaign({ userData, content, params }) {
     if (checkUser.data.customer_id) {
       try {
         const res = await paymentChargeCard({
-          total_budget: getTotalBudget(audienceForm),
+          total_budget: getTotalBudget(audienceForm) * 100,
           campaign_name: campaign.data.name,
         });
         setShowCreditCard({
@@ -615,7 +616,7 @@ export default function AddCampaign({ userData, content, params }) {
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
-        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
+        if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, JSON.stringify(ads.headlines));
         if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
         if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
         // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);

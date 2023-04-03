@@ -429,10 +429,10 @@ export default function AddPaymentMethod({
                       {`$ ${normalizeCurrency(normalizeCurrency(dataCost))}.00`}
                     </Typography>
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12} marginTop={-2}>
+                  <Grid item sm={12} md={12} xs={12} marginTop={0.5}>
                     <div style={{ borderTop: '1px solid #C9D3D8' }} />
                   </Grid>
-                  <Grid item sm={12} md={12} xs={12} marginY={-2} marginBottom={0}>
+                  <Grid item sm={12} md={12} xs={12} marginY={-2} marginBottom={0} marginTop={0.5}>
                     <Typography variant="h7" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
                       Please Choose your preferred payment method for this campaign.
                     </Typography>
