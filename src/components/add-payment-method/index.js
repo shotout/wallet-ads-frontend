@@ -79,6 +79,8 @@ export default function AddPaymentMethod({
     campaignId: null,
   });
 
+  const [showPaymentLoading, setPaymentLoading] = useState(false);
+
   const resetState = () => {
     setValues({
       promoCode: '',
@@ -124,6 +126,7 @@ export default function AddPaymentMethod({
 
   const handlePaymentChoose = async (type) => {
     setLoadingBtn(type);
+    setPaymentLoading(true);
     if (errorMsg.errorValidation || errorMsg.promoCodeErr) {
       handleSubmit();
     } else {
@@ -131,7 +134,7 @@ export default function AddPaymentMethod({
         setLoading(true);
         handleChooseCrypto();
       } else {
-        setLoading(true);
+        // setLoading(true);
         directStripe(values.promoCode);
 
         const form = new FormData();
@@ -147,6 +150,7 @@ export default function AddPaymentMethod({
   };
 
   const handleChooseCrypto = async () => {
+    setPaymentLoading(true);
     const campaign = await createCampaignID();
     // savePaymentCC('2')
     payCyrptoCurrency({
@@ -685,7 +689,7 @@ export default function AddPaymentMethod({
             </div>
           )}
         </div>
-        <LoadingPage show={isPaymentLoading || loading} />
+        <LoadingPage show={showPaymentLoading} />
       </Box>
     </Popover>
   );

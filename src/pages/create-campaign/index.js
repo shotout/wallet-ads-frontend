@@ -272,6 +272,7 @@ export default function AddCampaign({ userData, content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
+      // setShowCreditCard({ ...showCreditCard, isPaymentLoading: true });
       cancelCreateCampaignId(content.id);
       console.log('content', content);
       // window.scrollTo(0, document.body.scrollHeight);
@@ -379,7 +380,7 @@ export default function AddCampaign({ userData, content, params }) {
       setTimeout(() => {
         document.getElementById('setupAirdrop').firstChild.click();
         setTimeout(() => document.getElementById('paycc')?.firstChild.click(), 2000);
-      }, 10000);
+      }, 500);
     }
   }, []);
 
@@ -3544,7 +3545,7 @@ export default function AddCampaign({ userData, content, params }) {
           resetClientSecret={() => resetClientSecret()}
           params={params}
         />
-        <LoadingPage show={showCreditCard.isPaymentLoading} />
+        {/* <LoadingPage show={showCreditCard.isPaymentLoading} /> */}
       </div>
     </Page>
   );
