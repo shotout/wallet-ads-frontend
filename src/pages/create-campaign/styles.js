@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: 'red',
     borderRadius: 8,
-    width: '97%',
+    width: '100%',
     padding: 4,
     marginBottom: 8,
   },
