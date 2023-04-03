@@ -223,7 +223,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
       >
         <Box sx={{ p: 1, maxWidth: 260 }} onMouseLeave={handleHoverClose}>
           {type === 'banner_image' && (
-            <div>
+            <>
               <div className={styles.adtextContainer}>
                 <Typography
                   className={styles.titleOnModal}
@@ -233,7 +233,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   fontWeight={800}
                   fontSize={14}
                 >
-                  {dataPopover?.title}
+                  {/* {dataPopover?.title} */}
                 </Typography>
               </div>
               <Divider />
@@ -241,15 +241,15 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div>
-                <div className={styles.ctnLine}>
+                {/* <div className={styles.ctnLine}>
                   <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
                     Ad headline 1
                   </Typography>
                   <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
                     Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
                   </Typography>
-                </div>
-                <div className={styles.ctnLine}>
+                </div> */}
+                {/* <div className={styles.ctnLine}>
                   <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
                     Ad headline 2
                   </Typography>
@@ -264,7 +264,28 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
                     Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
                   </Typography>
-                </div>
+                </div> */}
+                {typeof contents === 'object' &&
+                  contents.map((v, i) => {
+                    const title = JSON.parse(dataPopover?.title);
+                    return (
+                      <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+                        <Typography fontSize={16} fontWeight={600}>
+                          {title[i].adname}
+                        </Typography>
+                        <Typography
+                          fontWeight={400}
+                          fontSize={14}
+                          color={'#000000'}
+                          textAlign={'justify'}
+                          className={styles.txtDescription}
+                        >
+                          {v.adtext}
+                        </Typography>
+                        {contents.length > 1 && <Divider />}
+                      </div>
+                    );
+                  })}
                 <div>
                   <Typography variant="body2" color={'black'} textAlign={'center'} fontSize={12} marginTop={1}>
                     Click{' '}
@@ -281,48 +302,31 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   </Typography>
                 </div>
               </div>
-              <div className={styles.adtextContainer}>
-                {/* <Typography fontSize={16} fontWeight={600}>
+              {/* <div className={styles.adtextContainer}> */}
+              {/* <Typography fontSize={16} fontWeight={600}>
                         Ad text {i + 1}:
                       </Typography> */}
-                {/* <Typography
-                  fontWeight={400}
-                  fontSize={14}
-                  color={'#000000'}
-                  textAlign={'justify'}
-                  className={styles.txtDescription}
-                >
-                  {dataPopover?.desc}
-                </Typography> */}
+              {/* <Typography
+                fontWeight={400}
+                fontSize={14}
+                color={'#000000'}
+                textAlign={'justify'}
+                className={styles.txtDescription}
+              >
+                {dataPopover?.desc}
+              </Typography> */}
+              {/* DISINI */}
 
-                {/* {typeof contents === 'object' &&
-                  contents.map((v, i) => (
-                    <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                      {/* <Typography fontSize={16} fontWeight={600}>
-                        Ad text {i + 1}:
-                      </Typography> */}
-                {/* <Typography
-                        fontWeight={400}
-                        fontSize={14}
-                        color={'#000000'}
-                        textAlign={'justify'}
-                        className={styles.txtDescription}
-                      >
-                        {v.adtext}
-                      </Typography> */}
-                {/* {contents.length > 1 && <Divider />} */}
-                {/* </div> */}
-              </div>
-            </div>
-          )}
-          {type === 'logo_text_banner' && (
+              {/* </div> */}
+
+              {/* {type === 'logo_text_banner' && (
             <>
               <Typography variant="body1" color={'#fff'} textAlign={'center'}>
                 {typeof dataPopover === 'object' ? '' : dataPopover}
               </Typography>
             </>
-          )}
-          {type === 'audience' && (
+          )} */}
+              {/* {type === 'audience' && (
             <>
               <Typography variant="body1" color={'#fff'} textAlign={'center'}>
                 {!dataPopover && (
@@ -363,7 +367,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     </Typography>
                   </>
                 )}
-              </Typography>
+              </Typography> */}
             </>
           )}
         </Box>
@@ -911,73 +915,78 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     return (
       <div className={styles.ctnItem}>
         <Grid container paddingRight={2}>
-          {listAudience.content.map((item) => (
-            <Fragment key={item.id.toString()}>
-              <Grid item md={3} sm={12} display="flex" alignItems={'center'}>
-                <div
-                  className={styles.statusContainer}
-                  onMouseEnter={(event) => {
-                    handleHoverOpen(event, 'audience', item?.file);
-                  }}
-                  onMouseLeave={handleHoverClose}
-                >
-                  <Typography variant="body1" marginRight={1}>
-                    {shortString(item.name, 25)}
-                  </Typography>
-                  <img src={expandIcon} />
-                  {renderPopover('audience', '')}
-                </div>
-              </Grid>
-              <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
-                {renderPopover('banner_image', '', item.ads.campaign_id)}
-                <div
-                  style={{ cursor: 'pointer' }}
-                  className={styles.statusContainer}
-                  onClick={() => {
-                    setIsScrollToBottom(true);
-                    openCampaignModal(item.ads.campaign_id);
-                  }}
-                  onMouseEnter={(event) => {
-                    const data = {
-                      img: `${url + item?.ads?.image?.url}`,
-                      desc: item.ads?.description,
-                      title: item?.ads?.name,
-                    };
-                    handleHoverOpen(event, 'banner_image', data);
-                  }}
-                  // onMouseLeave={handleHoverClose}
-                >
-                  <div>
-                    <img src={`${url + item?.ads?.image?.url}`} loading="lazy" />
+          {listAudience.content.map((item) => {
+            // console.log(item?.ads?.name);
+            const title = JSON.parse(item?.ads?.name);
+            console.log(title);
+            return (
+              <Fragment key={item.id.toString()}>
+                <Grid item md={3} sm={12} display="flex" alignItems={'center'}>
+                  <div
+                    className={styles.statusContainer}
+                    onMouseEnter={(event) => {
+                      handleHoverOpen(event, 'audience', item?.file);
+                    }}
+                    onMouseLeave={handleHoverClose}
+                  >
+                    <Typography variant="body1" marginRight={1}>
+                      {shortString(item.name, 25)}
+                    </Typography>
+                    <img src={expandIcon} />
+                    {renderPopover('audience', '')}
                   </div>
-                  {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
-                  <Typography variant="body1" marginRight={1} style={{ whiteSpace: 'nowrap' }}>
-                    {shortString(item?.ads?.name, 25, '')}
+                </Grid>
+                <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
+                  {renderPopover('banner_image', '', item.ads.campaign_id)}
+                  <div
+                    style={{ cursor: 'pointer' }}
+                    className={styles.statusContainer}
+                    onClick={() => {
+                      setIsScrollToBottom(true);
+                      openCampaignModal(item.ads.campaign_id);
+                    }}
+                    onMouseEnter={(event) => {
+                      const data = {
+                        img: `${url + item?.ads?.image?.url}`,
+                        desc: item.ads?.description,
+                        title: item?.ads?.name,
+                      };
+                      handleHoverOpen(event, 'banner_image', data);
+                    }}
+                    // onMouseLeave={handleHoverClose}
+                  >
+                    <div>
+                      <img src={`${url + item?.ads?.image?.url}`} loading="lazy" />
+                    </div>
+                    {/* <img src={expandIconWhite} style={{ position: 'absolute', marginLeft: 25, marginBottom: 20 }} /> */}
+                    <Typography variant="body1" marginRight={1} style={{ whiteSpace: 'nowrap' }}>
+                      {shortString(title[0].adname, 25, '')}
+                    </Typography>
+                    <img src={expandIcon} />
+                  </div>
+                </Grid>
+                <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+                  <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
+                </Grid>
+                <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+                  <Typography textAlign={'center'} variant="body1">
+                    {normalizeCurrency(item?.count_impression) ?? '-'}
                   </Typography>
-                  <img src={expandIcon} />
-                </div>
-              </Grid>
-              <Grid item md={2} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
-                <Typography variant="body1">{normalizeCurrency(item?.count_airdrop) ?? '-'}</Typography>
-              </Grid>
-              <Grid item md={2.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
-                <Typography textAlign={'center'} variant="body1">
-                  {normalizeCurrency(item?.count_impression) ?? '-'}
-                </Typography>
-              </Grid>
-              {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                </Grid>
+                {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_view) ?? '-'}</Typography>
               </Grid> */}
-              {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
+                {/* <Grid item md={1.5} sm={12} display="flex" alignItems={'center'}>
                 <Typography variant="body1">{normalizeCurrency(item?.count_click) ?? '-'}</Typography>
               </Grid> */}
-              <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
-                <Typography textAlign={'center'} variant="body1">
-                  {normalizeCurrency(item?.count_mint) ?? '-'}
-                </Typography>
-              </Grid>
-            </Fragment>
-          ))}
+                <Grid item md={1.5} sm={12} display="flex" alignItems={'center'} justifyContent={'flex-end'}>
+                  <Typography textAlign={'center'} variant="body1">
+                    {normalizeCurrency(item?.count_mint) ?? '-'}
+                  </Typography>
+                </Grid>
+              </Fragment>
+            );
+          })}
         </Grid>
       </div>
     );
