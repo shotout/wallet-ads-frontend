@@ -52,6 +52,11 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
     borderBottom: '1px solid #BDBDBD',
   },
+  ctnLine: { 
+    paddingBottom: 6,
+    marginBottom: 6,
+    borderBottom: '1px solid #BDBDBD',
+  },
   ctnItem: {
     marginTop: 20,
     borderTop: '1px solid #BDBDBD',

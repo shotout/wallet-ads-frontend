@@ -69,6 +69,8 @@ export default makeStyles((theme) => ({
   },
   forgotPassword: {
     cursor: 'pointer',
+    position: 'relative',
+    paddingBottom: 38,
   },
   tr: {
     position: 'relative',

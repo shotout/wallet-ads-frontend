@@ -193,7 +193,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
     setHover(null);
   };
 
-  function renderPopover(type, content) {
+  function renderPopover(type, content, id) {
     let contents = null;
     if (type === 'banner_image') {
       try {
@@ -219,12 +219,9 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
         style={{ overflowY: 'auto' }}
         onClose={handleHoverClose}
         disableRestoreFocus
-        sx={{
-          pointerEvents: 'none',
-        }}
         className={type === 'banner_image' ? styles.ctnPopoverWhite : styles.ctnPopoverBlack}
       >
-        <Box sx={{ p: 1, maxWidth: 260 }}>
+        <Box sx={{ p: 1, maxWidth: 260 }} onMouseLeave={handleHoverClose}>
           {type === 'banner_image' && (
             <div>
               <div className={styles.adtextContainer}>
@@ -242,6 +239,47 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               <Divider />
               <div className={styles.imageProver}>
                 <img src={dataPopover?.img} style={{ width: 250 }} />
+              </div>
+              <div>
+                <div className={styles.ctnLine}>
+                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                    Ad headline 1
+                  </Typography>
+                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
+                  </Typography>
+                </div>
+                <div className={styles.ctnLine}>
+                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                    Ad headline 2
+                  </Typography>
+                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
+                  </Typography>
+                </div>
+                <div>
+                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                    Ad headline 3
+                  </Typography>
+                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
+                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
+                  </Typography>
+                </div>
+                <div>
+                  <Typography variant="body2" color={'black'} textAlign={'center'} fontSize={12} marginTop={1}>
+                    Click{' '}
+                    <span
+                      onClick={() => {
+                        setIsScrollToBottom(true);
+                        openCampaignModal(id);
+                      }}
+                      style={{ color: '#0097e6', textDecoration: 'underline', cursor: 'pointer' }}
+                    >
+                      here
+                    </span>{' '}
+                    to see <br /> all Ad Headlines for this Ad.
+                  </Typography>
+                </div>
               </div>
               <div className={styles.adtextContainer}>
                 {/* <Typography fontSize={16} fontWeight={600}>
@@ -891,7 +929,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 </div>
               </Grid>
               <Grid item md={3} sm={12} alignItems={'center'} justifyContent={'center'} paddingY={1}>
-                {renderPopover('banner_image', '')}
+                {renderPopover('banner_image', '', item.ads.campaign_id)}
                 <div
                   style={{ cursor: 'pointer' }}
                   className={styles.statusContainer}
@@ -907,7 +945,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     };
                     handleHoverOpen(event, 'banner_image', data);
                   }}
-                  onMouseLeave={handleHoverClose}
+                  // onMouseLeave={handleHoverClose}
                 >
                   <div>
                     <img src={`${url + item?.ads?.image?.url}`} loading="lazy" />

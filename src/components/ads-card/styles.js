@@ -1,6 +1,16 @@
 import { makeStyles } from '@mui/styles';
 
 export default makeStyles((theme) => ({
+  ctnLine: { 
+    paddingBottom: 6,
+    marginBottom: 6,
+    borderBottom: '1px solid #BDBDBD',
+  },
+  ctnLine2: { 
+    paddingBottom: 6,
+    marginBottom: 6,
+    borderBottom: '3px solid #2f3640',
+  },
   ctnAds: {
     position: 'relative',
   },
@@ -60,7 +70,7 @@ export default makeStyles((theme) => ({
   },
   ctnDivider: {
     height: 1,
-    backgroundColor: '#b2bec3',
+    backgroundColor: '#7589FA',
     marginBottom: 10,
   },
   audienceWrapper: {

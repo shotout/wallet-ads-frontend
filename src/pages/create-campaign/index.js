@@ -111,6 +111,18 @@ export default function AddCampaign({ userData, content, params }) {
       isErr: false,
     },
   ];
+  const mockHeadLines = [
+    {
+      id: makeId(),
+      adname: 'tes',
+      isErr: false,
+    },
+    {
+      id: makeId(),
+      adname: 'tes',
+      isErr: false,
+    },
+  ];
   const initHeadlines = [
     {
       id: makeId(),
@@ -122,6 +134,7 @@ export default function AddCampaign({ userData, content, params }) {
     { image: null, fe_id: [], name: '', description: initDecription, headlines: initHeadlines, adsId: makeId() },
   ];
   // const [errors, setErrors] = useState({});
+  const [resGenerate, setResGenerate] = useState(null);
   const [entitiesData, setEntitiesData] = useState(null);
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -134,6 +147,7 @@ export default function AddCampaign({ userData, content, params }) {
   const [activeErrorAlert, setActiveErrorAlert] = useState(null);
   const [bannerCollection, setBannerCollection] = useState(null);
   const [logoCollection, setLogoCollection] = useState(null);
+  const [logoCollection2, setLogoCollection2] = useState(null);
   const [pictureData, setPicture] = useState(initialPicture);
   const [expandAdvanced, setExpandAdvanced] = useState(false);
 
@@ -250,66 +264,7 @@ export default function AddCampaign({ userData, content, params }) {
     return adsIdArr;
   }
 
-  useEffect(async () => {
-    var getUserD = getDataAfterSave();
-    if (getUserD) {
-      if (getUserD?.dataCampaign) {
-        setFormValues({
-          campaign_name: getUserD.dataCampaign.campaign_name,
-          campaign_start_date: getUserD.dataCampaign.campaign_start_date
-            ? new Date(getUserD.dataCampaign.campaign_start_date)
-            : new Date(getFutureDate(2)),
-          campaign_end_date_type: getUserD.dataCampaign.campaign_end_date_type,
-          campaign_end_day: getUserD.dataCampaign.campaign_end_date_day,
-
-          ads_page_name: getUserD.dataCampaign.ads_page_name,
-          ads_page_description: getUserD.dataCampaign.ads_page_description,
-          ads_page_website: getUserD.dataCampaign.ads_page_website,
-          ads_page_discord: getUserD.dataCampaign.ads_page_discord,
-          ads_page_medium: getUserD.dataCampaign.ads_page_medium,
-          ads_page_telegram: getUserD.dataCampaign.ads_page_telegram,
-          ads_page_token_name: getUserD.dataCampaign.ads_page_token_name,
-          ads_page_token_symbol: getUserD.dataCampaign.ads_page_token_symbol,
-        });
-        setLogoCollection({
-          preview: getUserD.dataCampaign && getUserD.dataCampaign.preview ? `${BACKEND_URL}${getUserD.preview}` : null,
-        });
-
-        const checkUser = await getProfilUser();
-        try {
-          const paymentDetails = await getPaymentDetails();
-          if (checkUser.data.payment.payment_method == 1) {
-            setPaymentDetails(paymentDetails);
-          }
-        } catch (err) {
-          setPaymentDetails('paymentDetailsNull');
-        }
-        setPaymentMethod(checkUser.data.payment.payment_method);
-
-        setTimeout(() => {
-          setShowCreditCard(
-            {
-              ...showCreditCard,
-              isVisible: true,
-            },
-            1000
-          );
-        });
-      }
-      if (getUserD?.dataAds) {
-        setAudienceForm(getUserD.dataAds);
-      }
-      if (getUserD?.dataPic) {
-        setPicture(getUserD.dataPic);
-      }
-      if (getUserD?.dataSample) {
-        setSampleAds(getUserD.dataSample);
-      }
-    }
-    if (params && params.redirect_status === 'succeeded') {
-      localStorage.removeItem('dataAfterSave');
-      sessionStorage.removeItem('dataAfterSave');
-    }
+  useEffect(() => {
     if (params && params.status === 'success') {
       GTMTracker({
         event: 'campaign-creation-success',
@@ -317,8 +272,9 @@ export default function AddCampaign({ userData, content, params }) {
       setModalSuccess('credit-card');
     }
     if (content && params.status === 'fail') {
-      cancelCreateCampaignId(content.id);
-      window.scrollTo(0, document.body.scrollHeight);
+      // cancelCreateCampaignId(content.id);
+      // console.log('content', content);
+      // window.scrollTo(0, document.body.scrollHeight);
       let sample = JSON.parse(content.sample_address);
       const adsPage = content.ads_page;
       const adsLogo = adsPage.images.find((item) => item.type === 'ads_logo');
@@ -336,6 +292,7 @@ export default function AddCampaign({ userData, content, params }) {
         fe_id: getAdsId(item.id),
         image: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         description: JSON.parse(item.description),
+        headlines: mockHeadLines,
         preview: item.image.url ? `${BACKEND_URL}${item.image.url}` : null,
         imageProps: item.image,
         adsId: makeId(),
@@ -393,7 +350,6 @@ export default function AddCampaign({ userData, content, params }) {
       });
 
       const sampleAds = JSON.parse(content.sample_address);
-      console.log('TYPE', sampleAds[0]);
 
       if (typeof sampleAds === 'object' && sampleAds[0] !== null) {
         setSampleAds([]); // reset ads to null
@@ -411,6 +367,18 @@ export default function AddCampaign({ userData, content, params }) {
       //     });
       //   });
       // }
+      // setTimeout(async () => {
+      //   validateSubmit();
+      // }, 15000);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (content && params.status === 'fail') {
+      setTimeout(() => {
+        document.getElementById('setupAirdrop').firstChild.click();
+        setTimeout(() => document.getElementById('paycc')?.firstChild.click(), 2000);
+      }, 10000);
     }
   }, []);
 
@@ -494,6 +462,11 @@ export default function AddCampaign({ userData, content, params }) {
     });
   };
 
+  const autoClick = () => {
+    validateSubmit();
+    trackGoal({ id: 5, amount: getTotalBudget(audienceForm) });
+  };
+
   const createCampaignId = async () => {
     let datas;
 
@@ -505,8 +478,7 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       datas = formResp;
     }
-
-    console.log(datas);
+    if (formResp == null) datas = resGenerate;
 
     // let i = 0;
     // console.log(params.id);
@@ -516,7 +488,6 @@ export default function AddCampaign({ userData, content, params }) {
     } else {
       res = await handleAddCampaign(datas);
     }
-
     return res;
   };
 
@@ -536,8 +507,8 @@ export default function AddCampaign({ userData, content, params }) {
         });
 
         if (res) {
-          localStorage.removeItem('dataAfterSave');
-          sessionStorage.removeItem('dataAfterSave');
+          // localStorage.removeItem('dataAfterSave');
+          // sessionStorage.removeItem('dataAfterSave');
           // setModalSuccess('cryptocurrency');
           // setShowCreditCard({ ...showCreditCard, isPaymentLoading: false });
           setTimeout(() => {
@@ -740,6 +711,7 @@ export default function AddCampaign({ userData, content, params }) {
         dataAds: audienceForm,
         dataPic: pictureData,
         dataSample: sampleAds,
+        dataCampaignArr: campaignData,
       };
       setDataAfterSaveCookie(field2);
       setFormResp(formRes);
@@ -749,6 +721,160 @@ export default function AddCampaign({ userData, content, params }) {
         // campaignId: res.data.id,
         isVisible: true,
       });
+      setLoadingSubmit(false);
+    } catch (err) {
+      setLoadingSubmit(false);
+    }
+  };
+
+  const handleSubmit2 = async () => {
+    try {
+      let res = null;
+      setLoadingSubmit(true);
+      const campaignData = getAudienceArr();
+      const formRes = new FormData();
+      formRes.append('campaign_name', formValues.campaign_name.toString());
+      formRes.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'));
+      formRes.append('campaign_end_date_type', formValues.campaign_end_date_type);
+      if (formValues.campaign_end_date_type === '3')
+        formRes.append(
+          'campaign_end_date_day',
+          formValues.campaign_end_date_type === '3' ? formValues.campaign_end_day : null
+        );
+      formRes.append('campaign_end_date', moment(formValues.campaign_end_date).format('YYYY-MM-DD'));
+
+      formRes.append('ads_page_name', formValues.ads_page_name);
+      formRes.append('ads_page_description', formValues.ads_page_description);
+      formRes.append('ads_page_website', formValues.ads_page_website);
+      formRes.append('ads_page_discord', formValues.ads_page_discord);
+      formRes.append('ads_page_medium', formValues.ads_page_medium);
+      formRes.append('ads_page_telegram', formValues.ads_page_telegram);
+      formRes.append('ads_page_token_name', formValues.ads_page_token_name);
+      formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
+      formRes.append('ads_page_logo', logoCollection);
+      // formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
+      // isUpload.logo ? formRes.append('ads_page_logo', logoCollection) : null;
+      // formRes.append(
+      //   isUpload.banner ? 'ads_page_banner' : 'ads_page_banner_url',
+      //   isUpload.banner ? bannerCollection : bannerCollection?.preview
+      // );
+
+      sampleAds.forEach((sample, index) => {
+        if (sample.sampleAd) {
+          formRes.append(`wallet_address[${index}]`, sample.sampleAd);
+        }
+      });
+      console.log('TES');
+      console.log(pictureData);
+      pictureData.forEach((ads, adsIndex) => {
+        console.log(ads.headlines);
+        if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
+        // if (ads.name) formRes.append(`campaign_ads[${adsIndex}][name]`, ads.name);
+        if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
+        if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+        // if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, ads.description);
+
+        if (ads.fe_id.length > 0) {
+          ads.fe_id.forEach((feId, feIndex) => {
+            formRes.append(
+              `campaign_ads[${adsIndex}][fe_id][${feIndex}]`,
+              audienceForm.findIndex((aud) => aud.audienceId === feId)
+            );
+          });
+        }
+
+        if (ads.fe_id.length > 0) {
+          ads.fe_id.forEach((feId, feIndex) => {
+            formRes.append(`campaign_ads[${adsIndex}][audience_id][${feIndex}]`, feId);
+          });
+        }
+
+        if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
+      });
+
+      campaignData.forEach((campaign, indexCampaign) => {
+        if (campaign.fe_id || campaign.fe_id === 0)
+          formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
+        if (campaign) formRes.append(`campaign_audiences[${indexCampaign}][selected_fe_id]`, campaign.selected_fe_id);
+        if (campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id);
+        if (campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file);
+        if (campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price);
+        if (campaign.price_airdrop)
+          formRes.append(`campaign_audiences[${indexCampaign}][price_airdrop]`, campaign.price_airdrop);
+        if (campaign.total_user)
+          formRes.append(`campaign_audiences[${indexCampaign}][total_user]`, campaign.total_user);
+        if (campaign.detailed_targeting_year)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_year]`,
+            campaign.detailed_targeting_year
+          );
+        if (campaign.detailed_targeting_month)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_month]`,
+            campaign.detailed_targeting_month
+          );
+        if (campaign.detailed_targeting_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_day]`,
+            campaign.detailed_targeting_day
+          );
+        if (campaign.detailed_targeting_available_credit_wallet)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_available_credit_wallet]`,
+            campaign.detailed_targeting_available_credit_wallet
+          );
+        if (campaign.detailed_targeting_trading_volume)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_trading_volume]`,
+            campaign.detailed_targeting_trading_volume
+          );
+        if (campaign.detailed_targeting_airdrops)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_airdrops]`,
+            campaign.detailed_targeting_airdrops
+          );
+        if (campaign.detailed_targeting_amount_transaction)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction]`,
+            campaign.detailed_targeting_amount_transaction
+          );
+        if (campaign.detailed_targeting_amount_transaction_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction_day]`,
+            campaign.detailed_targeting_amount_transaction_day
+          );
+        if (campaign.detailed_targeting_nft_purchases)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_nft_purchases]`,
+            campaign.detailed_targeting_nft_purchases
+          );
+        if (campaign.detailed_targeting_cryptocurrency && campaign.detailed_targeting_cryptocurrency.length) {
+          campaign.detailed_targeting_cryptocurrency.forEach((currency, currencyIndex) => {
+            formRes.append(
+              `campaign_audiences[${indexCampaign}][detailed_targeting_cryptocurrency][${currencyIndex}]`,
+              currency
+            );
+          });
+        }
+      });
+      let field1 = [];
+      let field2 = [];
+      field1 = Object.fromEntries(formRes.entries());
+      field2 = {
+        dataCampaign: field1,
+        dataAds: audienceForm,
+        dataPic: pictureData,
+        dataSample: sampleAds,
+        dataCampaignArr: campaignData,
+      };
+      setDataAfterSaveCookie(field2);
+      setFormResp(formRes);
+
+      // setShowCreditCard({
+      //   ...showCreditCard,
+      //   isVisible: true,
+      // });
+      console.log('FORMRES', formValues);
       setLoadingSubmit(false);
     } catch (err) {
       setLoadingSubmit(false);
@@ -860,6 +986,285 @@ export default function AddCampaign({ userData, content, params }) {
   };
 
   const validateSubmit = async () => {
+    try {
+      console.log('VALIDATE SUMBMIT');
+      let isBudgetValid = true;
+      let isAdTextValid;
+      const isAudienceValid = audienceForm.filter(
+        (audience) => audience.selectedCategory !== null && audience.budgetAds !== ''
+      );
+      const isAudienceNull = audienceForm.filter(
+        (audience) => audience.selectedCategory === null && audience.budgetAds === ''
+      );
+      const isAudienceUnderMinimum = audienceForm.filter(
+        (audience) => audience.selectedCategory !== null && audience.budgetAds < 500
+      );
+
+      audienceForm.forEach((aud) => {
+        if (aud.selectedCategory !== null) {
+          if (!aud.budgetAds) {
+            setErrorBox({
+              ...errorBox,
+              errorAudience: true,
+            });
+            window.location.href = '#card-audience';
+            isBudgetValid = false;
+          }
+          setErrorBox({
+            ...errorBox,
+            errorAudience: false,
+          });
+        }
+      });
+      let isAdsValid = false;
+      let inputValid = true;
+      let selectedAdsAudience = [];
+
+      const errorObj = {
+        campaignName: formValues.campaign_name === '',
+        collectionPageName: formValues.ads_page_name === '',
+        collectionLogo: logoCollection ? false : true,
+        collectionBanner: bannerCollection ? false : true,
+        collectionDesc: formValues.ads_page_description === '',
+        availability: Number(formValues.campaign_end_day) > 90,
+        // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+        // collectionSocialMedia: formValues.ads_page_website === '' && formValues.ads_page_discord === '' && formValues.ads_page_telegram === '' && formValues.ads_page_medium === ''
+      };
+      const { campaignName, collectionBanner, collectionDesc, collectionLogo, collectionPageName, availability } =
+        errorObj;
+      const isCampaignNameValid = !formValues.campaign_name;
+      const isAvailabilityValid =
+        !formValues.campaign_end_date_type ||
+        (formValues.campaign_end_date_type === '3' && Number(formValues.campaign_end_day) > 90);
+
+      if (campaignName || collectionDesc || collectionLogo || collectionPageName || availability) {
+        setErrorInput(errorObj);
+        inputValid = false;
+      }
+      let isCollectionSection = false;
+      formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+      const arrValid = [];
+      const arrNotValid = [];
+      const errAudienceID = [];
+      pictureData.forEach((ads) => {
+        if (isAdsArrValid(ads)) {
+          ads.fe_id.forEach((feId) => {
+            selectedAdsAudience.push(feId);
+          });
+          arrValid.push(ads);
+        } else {
+          console.log(ads);
+          arrNotValid.push(ads.fe_id);
+          errAudienceID.push(ads.adsId);
+        }
+      });
+
+      isAdTextValid = validationAdsText();
+
+      var duplicateValue = false;
+      var set1 = [];
+      var set2 = [];
+      audienceForm.forEach((b) => {
+        selectedAdsAudience.forEach((a) => {
+          if (a == b.audienceId && b.optimized) {
+            if (!set1.includes(a)) set1.push(a);
+          }
+        });
+        if (b.optimized) {
+          set2.push(b.audienceId);
+        }
+      });
+      if (set1.length == set2.length) duplicateValue = true;
+      else duplicateValue = false;
+
+      isAdsValid = arrValid.length === pictureData.length && isAdTextValid.isAdTextValid === true;
+      const isAudienceFormAdsValid =
+        selectedAdsAudience.length === audienceForm.filter((item) => item.selectedCategory !== null).length
+          ? true
+          : false;
+      // const isAudienceFormAdsValidCP = audienceForm.filter((item) => item.selectedCategory !== null);
+
+      // Cek token symbol
+      let isAdvancedSettingValid = true;
+
+      if (!formValues.ads_page_token_name && !formValues.ads_page_token_symbol) {
+        isAdvancedSettingValid = true;
+        isCollectionSection =
+          formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+      } else if (formValues.ads_page_token_name || formValues.ads_page_token_symbol) {
+        if (!formValues.ads_page_token_name || !formValues.ads_page_token_symbol) {
+          isAdvancedSettingValid = false;
+          isCollectionSection = false;
+          // formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+        } else {
+          isAdvancedSettingValid = true;
+          isCollectionSection =
+            formValues.ads_page_name && formValues.ads_page_description && logoCollection && !bannerCollection;
+        }
+      }
+      // : false,
+      // errorAds: false,
+      // errorBoxCampaignName: false,
+      // errorBoxAvailability: false,
+      // errorCollection: false,
+      // errorAudienceNull: false,
+      // errorAdvanced: false,
+
+      var adsNull = isAudienceNull.length;
+      var picData = pictureData[0].fe_id.length;
+      var adsForm = audienceForm.length;
+      var pictureValid = pictureData.length == 1 ? adsNull + picData == adsForm : true;
+      var checkAds = true;
+
+      if (pictureData && pictureData.length > 1 && adsNull > picData) {
+        setCheckAudienceMulti(false);
+        checkAds = false;
+      }
+      // if (pictureData.length == 0)
+      if (
+        duplicateValue &&
+        pictureValid &&
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isBudgetValid &&
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0 &&
+        isAdvancedSettingValid
+      ) {
+        const checkUser = await getProfilUser();
+        if (checkUser?.data.payment.payment_method === '1') {
+          try {
+            const paymentDetails = await getPaymentDetails();
+            if (checkUser?.data.payment.payment_method == 1) {
+              setPaymentDetails(paymentDetails);
+              // setCheckUser(checkUser.data.payment.id)
+            }
+          } catch (err) {
+            setPaymentDetails('paymentDetailsNull');
+          }
+        } else {
+          resetClientSecret();
+        }
+
+        setPaymentMethod(checkUser.data.payment.payment_method);
+        return handleSubmit();
+      }
+      if (
+        duplicateValue &&
+        checkAds &&
+        checkAudienceMulti &&
+        pictureValid &&
+        isAudienceValid.length > 0 &&
+        isAdsValid &&
+        inputValid &&
+        isBudgetValid &&
+        !isAvailabilityValid &&
+        isAudienceUnderMinimum.length === 0 &&
+        isAdvancedSettingValid
+      ) {
+        if (showCreditCard.sessionId && showCreditCard.campaignId) {
+          setShowCreditCard({
+            ...showCreditCard,
+            isVisible: true,
+          });
+        } else {
+          handleSubmit();
+        }
+      } else {
+        setErrorBox({
+          errorAds: !isAdsValid || !isAudienceFormAdsValid || !isAdTextValid.isAdTextValid,
+          errorAudience: isAudienceValid.length === 0 || !isBudgetValid,
+          errorBoxCampaignName: isCampaignNameValid,
+          errorBoxAvailability: isAvailabilityValid,
+          errorCollection: !isCollectionSection,
+          errorAudienceNull: audienceForm.length === isAudienceNull.length,
+          errorAdvanced: !isAdvancedSettingValid,
+          errorFirstAds: true,
+        });
+
+        if (checkAds || !duplicateValue) {
+          // if (!duplicateValue == false && isAvailabilityValid) {
+          //   return (window.location.href = '#availability-section');
+          // }
+          setTimeout(() => {
+            var requiredCard = document.getElementById('requiredCard');
+            if ((requiredCard && requiredCard.innerHTML.length && requiredCard.innerHTML.length) > 0) {
+              return (window.location.href = '#card-audience');
+            }
+          }, 10);
+        }
+        if (isCampaignNameValid) {
+          window.location.href = '#campaign-name';
+        } else if (isAudienceValid.length === 0 || isAudienceUnderMinimum.length > 0) {
+          window.location.href = '#card-audience';
+        } else if (!isCollectionSection) {
+          // formValues.ads_page_name && formValues.ads_page_description && logoCollection && bannerCollection;
+          if (collectionPageName) {
+            window.location.href = '#collection-page-name';
+          } else if (collectionLogo) {
+            window.location.href = '#collection-ads-logo';
+          } else if (collectionDesc) {
+            window.location.href = '#collection-ads-description';
+          } else if (!isAdvancedSettingValid) {
+            setExpandAdvanced(true);
+            window.location.href = '#advanced-setting';
+          }
+        } else if (!isAdsValid) {
+          let errCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
+          let validCard = pictureData.findIndex((card) => card.adsId === errAudienceID[0]);
+          let addTextErr = pictureData.findIndex((card) => card.fe_id === isAdTextValid.arrFeID[0]);
+
+          if (errCard >= addTextErr) {
+            if (!pictureData[validCard].name || !pictureData[validCard].image) {
+              return (window.location.href = `#ad-name-${errAudienceID[0]}`);
+            } else {
+              window.location.href = `#checkbox-container-${errAudienceID[0]}`;
+            }
+          } else if (errCard === addTextErr) {
+            if (!pictureData[validCard].name || !pictureData[validCard].image) {
+              window.location.href = `#ad-name-${errAudienceID[0]}`;
+            } else {
+              window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+            }
+            // window.location.href = `#card-ads-${errAudienceID[0]}`;
+          } else {
+            if (errCard >= 0) {
+              if (isAudienceFormAdsValid === false) {
+                // window.location.href = `#card-ads-${errAudienceID[0]}`;
+                window.location.href = `#checkbox-container-${errAudienceID[0]}`;
+              } else {
+                window.location.href = `#checkbox-${errAudienceID[0]}`;
+              }
+            } else {
+              console.log(isAudienceFormAdsValid);
+              if (isAudienceFormAdsValid === false && duplicateValue === false) {
+                window.location.href = `#checkbox-${selectedAdsAudience[0] ?? audienceForm[0].audienceId}`;
+              } else {
+                pictureData[addTextErr].headlines.forEach((heads) => {
+                  let indexHeads = isAdTextValid.arrFeIdNotValid.findIndex((i) => i === heads.id);
+                  if (heads.isErr)
+                    return (window.location.href = `#ad-text-headlines-${isAdTextValid.arrFeIdNotValid[indexHeads]}`);
+                  window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+                });
+              }
+            }
+          }
+        } else if (!isAdTextValid.isAdTextValid) {
+          window.location.href = `#ad-text-area-${isAdTextValid.arrFeIdNotValid[0]}`;
+        } else if (!isAudienceFormAdsValid && !duplicateValue) {
+          window.location.href = `#card-ads-err-0`;
+        } else if (isAvailabilityValid) {
+          window.location.href = '#availability-section';
+        }
+      }
+      // validationAdsText();
+    } catch (err) {
+      console.log('err :', err);
+    }
+  };
+
+  const validateSubmit2 = async () => {
     try {
       let isBudgetValid = true;
       let isAdTextValid;
@@ -1011,6 +1416,7 @@ export default function AddCampaign({ userData, content, params }) {
             const paymentDetails = await getPaymentDetails();
             if (checkUser?.data.payment.payment_method == 1) {
               setPaymentDetails(paymentDetails);
+              // setCheckUser(checkUser.data.payment.id)
             }
           } catch (err) {
             setPaymentDetails('paymentDetailsNull');
@@ -1018,9 +1424,8 @@ export default function AddCampaign({ userData, content, params }) {
         } else {
           resetClientSecret();
         }
-
         setPaymentMethod(checkUser.data.payment.payment_method);
-        return handleSubmit();
+        return handleSubmit2();
       }
       if (
         duplicateValue &&
@@ -1041,7 +1446,7 @@ export default function AddCampaign({ userData, content, params }) {
             isVisible: true,
           });
         } else {
-          handleSubmit();
+          handleSubmit2();
         }
       } else {
         setErrorBox({
@@ -1163,6 +1568,127 @@ export default function AddCampaign({ userData, content, params }) {
     });
 
     return { isAdTextValid, arrFeIdNotValid, arrFeID };
+  };
+
+  const formResGenerate = () => {
+    let getUserD = getDataAfterSave();
+    let formRes = new FormData();
+    formRes.append('campaign_name', getUserD.dataCampaign.campaign_name.toString());
+    formRes.append('campaign_start_date', moment(getUserD.dataCampaign.campaign_start_date).format('YYYY-MM-DD'));
+    formRes.append('campaign_end_date_type', getUserD.dataCampaign.campaign_end_date_type);
+    if (getUserD.dataCampaign.campaign_end_date_type === '3')
+      formRes.append(
+        'campaign_end_date_day',
+        getUserD.dataCampaign.campaign_end_date_type === '3' ? getUserD.dataCampaign.campaign_end_day : null
+      );
+    formRes.append('campaign_end_date', moment(getUserD.dataCampaign.campaign_end_date).format('YYYY-MM-DD'));
+
+    formRes.append('ads_page_name', getUserD.dataCampaign.ads_page_name);
+    formRes.append('ads_page_description', getUserD.dataCampaign.ads_page_description);
+    formRes.append('ads_page_website', getUserD.dataCampaign.ads_page_website);
+    formRes.append('ads_page_discord', getUserD.dataCampaign.ads_page_discord);
+    formRes.append('ads_page_medium', getUserD.dataCampaign.ads_page_medium);
+    formRes.append('ads_page_telegram', getUserD.dataCampaign.ads_page_telegram);
+    formRes.append('ads_page_token_name', getUserD.dataCampaign.ads_page_token_name);
+    formRes.append('ads_page_token_symbol', getUserD.dataCampaign.ads_page_token_symbol);
+    formRes.append('ads_page_logo', getUserD.dataCampaign?.preview ? getUserD.dataCampaign.preview : null);
+
+    getUserD.dataSample.forEach((sample, index) => {
+      if (sample.sampleAd) {
+        formRes.append(`wallet_address[${index}]`, sample.sampleAd);
+      }
+    });
+    getUserD.dataPic.forEach((ads, adsIndex) => {
+      if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);
+      if (ads.headlines) formRes.append(`campaign_ads[${adsIndex}][headlines]`, JSON.stringify(ads.headlines));
+      if (ads.description) formRes.append(`campaign_ads[${adsIndex}][description]`, JSON.stringify(ads.description));
+
+      if (ads.fe_id.length > 0) {
+        ads.fe_id.forEach((feId, feIndex) => {
+          formRes.append(
+            `campaign_ads[${adsIndex}][fe_id][${feIndex}]`,
+            audienceForm.findIndex((aud) => aud.audienceId === feId)
+          );
+        });
+      }
+
+      if (ads.fe_id.length > 0) {
+        ads.fe_id.forEach((feId, feIndex) => {
+          formRes.append(`campaign_ads[${adsIndex}][audience_id][${feIndex}]`, feId);
+        });
+      }
+
+      if (ads.image) formRes.append(`campaign_ads[${adsIndex}][image]`, ads.image);
+    });
+
+    if (getUserD.dataCampaignArr?.length > 0) {
+      getUserD.dataCampaignArr.forEach((campaign, indexCampaign) => {
+        if (campaign.fe_id || campaign.fe_id === 0)
+          formRes.append(`campaign_audiences[${indexCampaign}][fe_id]`, campaign.fe_id);
+        if (campaign) formRes.append(`campaign_audiences[${indexCampaign}][selected_fe_id]`, campaign.selected_fe_id);
+        if (campaign.id) formRes.append(`campaign_audiences[${indexCampaign}][id]`, campaign.id);
+        if (campaign.file) formRes.append(`campaign_audiences[${indexCampaign}][file]`, campaign.file);
+        if (campaign.price) formRes.append(`campaign_audiences[${indexCampaign}][price]`, campaign.price);
+        if (campaign.price_airdrop)
+          formRes.append(`campaign_audiences[${indexCampaign}][price_airdrop]`, campaign.price_airdrop);
+        if (campaign.total_user)
+          formRes.append(`campaign_audiences[${indexCampaign}][total_user]`, campaign.total_user);
+        if (campaign.detailed_targeting_year)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_year]`,
+            campaign.detailed_targeting_year
+          );
+        if (campaign.detailed_targeting_month)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_month]`,
+            campaign.detailed_targeting_month
+          );
+        if (campaign.detailed_targeting_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_day]`,
+            campaign.detailed_targeting_day
+          );
+        if (campaign.detailed_targeting_available_credit_wallet)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_available_credit_wallet]`,
+            campaign.detailed_targeting_available_credit_wallet
+          );
+        if (campaign.detailed_targeting_trading_volume)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_trading_volume]`,
+            campaign.detailed_targeting_trading_volume
+          );
+        if (campaign.detailed_targeting_airdrops)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_airdrops]`,
+            campaign.detailed_targeting_airdrops
+          );
+        if (campaign.detailed_targeting_amount_transaction)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction]`,
+            campaign.detailed_targeting_amount_transaction
+          );
+        if (campaign.detailed_targeting_amount_transaction_day)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_amount_transaction_day]`,
+            campaign.detailed_targeting_amount_transaction_day
+          );
+        if (campaign.detailed_targeting_nft_purchases)
+          formRes.append(
+            `campaign_audiences[${indexCampaign}][detailed_targeting_nft_purchases]`,
+            campaign.detailed_targeting_nft_purchases
+          );
+        if (campaign.detailed_targeting_cryptocurrency && campaign.detailed_targeting_cryptocurrency.length) {
+          campaign.detailed_targeting_cryptocurrency.forEach((currency, currencyIndex) => {
+            formRes.append(
+              `campaign_audiences[${indexCampaign}][detailed_targeting_cryptocurrency][${currencyIndex}]`,
+              currency
+            );
+          });
+        }
+      });
+    }
+    return formRes;
   };
 
   const deactivateErrorCampaign = (e) => {
@@ -1815,6 +2341,7 @@ export default function AddCampaign({ userData, content, params }) {
             </Typography>
 
             <Grid container spacing={4} className={styles.gridAvailability}>
+              {/* <div onClick={() => validateSubmit()}>TES</div> */}
               {sampleAds.map((samleAd, index) => (
                 <Grid key={`sample-${index}`} item md={4} xl={4} xs={12}>
                   <div
@@ -2936,6 +3463,7 @@ export default function AddCampaign({ userData, content, params }) {
     return (
       <div className={styles.setupAirdropWrapper}>
         <DefaultButton
+          id="setupAirdrop"
           isLoading={loadingSubmit}
           onClick={() => {
             validateSubmit();
@@ -2990,6 +3518,7 @@ export default function AddCampaign({ userData, content, params }) {
           }}
         />
         <AddPaymentMethod
+          // dataCheckUser={checkUser}
           dataPaymentDetails={paymentDetails}
           dataPaymentMethod={paymentMethod}
           dataCost={getTotalBudget(audienceForm)}
@@ -3012,6 +3541,7 @@ export default function AddCampaign({ userData, content, params }) {
           handleHoverClose={resetSession}
           createCampaignID={createCampaignId}
           resetClientSecret={() => resetClientSecret()}
+          params={params}
         />
         <LoadingPage show={showCreditCard.isPaymentLoading} />
       </div>

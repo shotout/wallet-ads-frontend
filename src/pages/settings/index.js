@@ -274,6 +274,11 @@ function SettingUser({ userData, params, classes }) {
         data: res.data,
       });
       setLoading(false);
+      setSCCondition(true);
+      setTimeout(() => {
+        setSCCondition(false);
+      }, 2000);
+      setAPMCondition(false);
     } catch (err) {
       if (err.data) {
         if (err.data.errors) {
@@ -282,11 +287,6 @@ function SettingUser({ userData, params, classes }) {
       }
       setLoading(false);
     }
-    setSCCondition(true);
-    setTimeout(() => {
-      setSCCondition(false);
-    }, 2000);
-    setAPMCondition(false);
   };
 
   function resendEmail() {
@@ -335,7 +335,7 @@ function SettingUser({ userData, params, classes }) {
     setFPCondition(conditionFP);
   };
 
-  const resetStateAPM = async (e) => {
+  const resetStateAPM = async (e, condition) => {
     if (e == 'api') {
       try {
         setLoadingCC(true);
@@ -348,11 +348,11 @@ function SettingUser({ userData, params, classes }) {
     }
     setTimeout(() => {
       setPMCondition(false);
-    }, 200);
+    }, 100);
     conditionAPM = !conditionAPM;
     setAPMCondition(conditionAPM);
 
-    if (e == true) setMsgAddPayment(true);
+    if (condition == 'edit') setMsgAddPayment(true);
     else setMsgAddPayment(false);
   };
 
@@ -438,7 +438,7 @@ function SettingUser({ userData, params, classes }) {
           justifyContent={'center'}
           alignItems={'center'}
           overflow={'hidden'}
-          style={{ '&::WebkitScrollbar': { display: 'none' } }}
+          style={{ '&::WebkitScrollbar': { display: 'none' }, height: '80vh' }}
         >
           <div className={styles.ctnWrapperPopup} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
             <div className="content">
@@ -469,7 +469,7 @@ function SettingUser({ userData, params, classes }) {
             <Grid container justifyContent="center" alignItems="center">
               <img src={trashIcon} alt="Trash" />
             </Grid>
-            <Grid item width={300} md={6} xs={12}>
+            <Grid item width={300} md={12} xs={12}>
               <Typography fontWeight="500" textAlign="center" width={'100%'} marginTop={4}>
                 Are you sure want to delete this payment method?
               </Typography>
@@ -790,7 +790,7 @@ function SettingUser({ userData, params, classes }) {
             <Grid spacing={2}>
               <Grid item md={12} xs={12} lg={12}>
                 <Elements stripe={stripePromise} options={options}>
-                  <CheckoutForm />
+                  <CheckoutForm addCard={msgAddPayment == true ? 'edit' : false} />
                 </Elements>
               </Grid>
             </Grid>
@@ -1429,6 +1429,7 @@ function SettingUser({ userData, params, classes }) {
                 helperText={errorMessage.passwordFirst}
                 size="small"
                 type="password"
+                disabled={true}
                 fullWidth
               />
             </div>
@@ -1449,7 +1450,7 @@ function SettingUser({ userData, params, classes }) {
 
             {paymentType?.payment_method === '0' && (
               <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
-                No payment method selected
+                add a payment method
               </Typography>
             )}
 
@@ -1488,7 +1489,7 @@ function SettingUser({ userData, params, classes }) {
                     </Typography>
                   </Grid>
                   <Grid item md={2} sm={4} display={'flex'} flexDirection={'row'}>
-                    <div onClick={() => resetStateAPM('api')} className={styles.ctnOption}>
+                    <div onClick={() => resetStateAPM('api', 'edit')} className={styles.ctnOption}>
                       <img src={editIcon} alt="edit" />
                     </div>
                     <div onClick={resetStateDPM} className={styles.ctnOption}>

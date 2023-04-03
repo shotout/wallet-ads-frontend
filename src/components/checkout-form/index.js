@@ -61,13 +61,16 @@ const SetupForm = (e) => {
         // Make sure to disable form submission until Stripe.js has loaded.
         return;
       }
+      let createCampaign = await e.createCampaign()
 
+      router.push(`${baseUrl}/create-campaign?`)
       const { error } = await stripe.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
         elements,
         // redirect: 'if_required',
         confirmParams: {
-          return_url: `${baseUrl}/create-campaign`,
+          // return_url: `${baseUrl}/create-campaign`,
+          return_url: `${baseUrl}/create-campaign?status=fail&id=` + createCampaign?.data.id,
         },
       });
 
@@ -112,7 +115,7 @@ const SetupForm = (e) => {
             marginTop={e && e.addCard ? 2 : null}
           >
             <button className={`${styles.ctnBtn}`} disabled={isLoading}>
-              {isLoading ? 'Loading' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
+              {isLoading ? 'Loading' : e?.addCard == 'edit' ? 'Update' : e && e.addCard ? 'Save Card & Pay' : 'Save'}
             </button>
           </Grid>
           {/* Show error message to your customers */}
