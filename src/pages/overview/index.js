@@ -241,30 +241,6 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                 <img src={dataPopover?.img} style={{ width: 250 }} />
               </div>
               <div>
-                {/* <div className={styles.ctnLine}>
-                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                    Ad headline 1
-                  </Typography>
-                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
-                  </Typography>
-                </div> */}
-                {/* <div className={styles.ctnLine}>
-                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                    Ad headline 2
-                  </Typography>
-                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
-                  </Typography>
-                </div>
-                <div>
-                  <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                    Ad headline 3
-                  </Typography>
-                  <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
-                  </Typography>
-                </div> */}
                 {typeof contents === 'object' &&
                   contents.map((v, i) => {
                     const title = JSON.parse(dataPopover?.title);
@@ -302,10 +278,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                   </Typography>
                 </div>
               </div>
-              {/* <div className={styles.adtextContainer}> */}
-              {/* <Typography fontSize={16} fontWeight={600}>
-                        Ad text {i + 1}:
-                      </Typography> */}
+              {/* <div className={styles.adtextContainer}></div> */}
+
               {/* <Typography
                 fontWeight={400}
                 fontSize={14}
@@ -315,18 +289,17 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               >
                 {dataPopover?.desc}
               </Typography> */}
-              {/* DISINI */}
-
-              {/* </div> */}
 
               {/* {type === 'logo_text_banner' && (
             <>
               <Typography variant="body1" color={'#fff'} textAlign={'center'}>
                 {typeof dataPopover === 'object' ? '' : dataPopover}
               </Typography>
+            </> */}
             </>
-          )} */}
-              {/* {type === 'audience' && (
+          )}
+
+          {type === 'audience' && (
             <>
               <Typography variant="body1" color={'#fff'} textAlign={'center'}>
                 {!dataPopover && (
@@ -367,7 +340,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     </Typography>
                   </>
                 )}
-              </Typography> */}
+              </Typography>
             </>
           )}
         </Box>
