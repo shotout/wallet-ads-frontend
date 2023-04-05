@@ -33,22 +33,6 @@ export default function AdsCard({ item, audienceData }) {
 
     return (
       <div className={styles.adtextContainer}>
-        {/* <div className={styles.ctnLine}>
-          <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-            Ad headline 1
-          </Typography>
-          <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
-          </Typography>
-        </div> */}
-        {/* <div className={styles.ctnLine2}>
-          <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-            Ad headline 2
-          </Typography>
-          <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
-          </Typography>
-        </div> */}
         {typeof contents === 'object' &&
           contents.map((v, i) => {
             const headline = JSON.parse(item.name);
@@ -84,11 +68,7 @@ export default function AdsCard({ item, audienceData }) {
   function renderContent() {
     return (
       <div>
-        {/* <Typography fontSize={18} fontWeight={600}>
-          {item.name}
-        </Typography> */}
         {renderImage()}
-
         {renderAdText()}
         <div className={styles.ctnDivider}>{''}</div>
         <Typography fontSize={18} fontWeight={600} marginBottom={2}>
