@@ -11,6 +11,7 @@ export default function AdsCard({ item, audienceData }) {
 
   const audenceDatas = audienceData.filter((audience) => audience.ads_id === item.id);
   console.log(audenceDatas.name);
+  console.log('ITEM', item);
 
   function renderImage() {
     if (item && item.image) {
@@ -32,34 +33,37 @@ export default function AdsCard({ item, audienceData }) {
 
     return (
       <div className={styles.adtextContainer}>
-        <div className={styles.ctnLine}>
+        {/* <div className={styles.ctnLine}>
           <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
             Ad headline 1
           </Typography>
           <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
             Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
           </Typography>
-        </div>
-        <div className={styles.ctnLine2}>
+        </div> */}
+        {/* <div className={styles.ctnLine2}>
           <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
             Ad headline 2
           </Typography>
           <Typography variant="body2" color={'black'} textAlign={'left'} fontSize={14}>
             Lorem ipsum dolor sit amet, consectetuer adipiscing, sed diam
           </Typography>
-        </div>
+        </div> */}
         {typeof contents === 'object' &&
-          contents.map((v, i) => (
-            <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-              <Typography fontSize={16} fontWeight={600}>
-                Ad text {i + 1}:
-              </Typography>
-              <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
-                {v.adtext}
-              </Typography>
-              {contents.length > 1 && <Divider />}
-            </div>
-          ))}
+          contents.map((v, i) => {
+            const headline = JSON.parse(item.name);
+            return (
+              <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+                <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                  {headline[i].adname ?? ''}
+                </Typography>
+                <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+                  {v.adtext}
+                </Typography>
+                {contents.length > 1 && <Divider />}
+              </div>
+            );
+          })}
       </div>
     );
   }
@@ -80,9 +84,9 @@ export default function AdsCard({ item, audienceData }) {
   function renderContent() {
     return (
       <div>
-        <Typography fontSize={18} fontWeight={600}>
+        {/* <Typography fontSize={18} fontWeight={600}>
           {item.name}
-        </Typography>
+        </Typography> */}
         {renderImage()}
 
         {renderAdText()}
