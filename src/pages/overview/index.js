@@ -247,7 +247,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     return (
                       <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
                         <Typography fontSize={16} fontWeight={600}>
-                          {title[i].adname}
+                          {shortString(title[i].adname, 25, '')}
                         </Typography>
                         <Typography
                           fontWeight={400}
