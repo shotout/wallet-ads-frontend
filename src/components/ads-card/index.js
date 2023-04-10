@@ -39,12 +39,19 @@ export default function AdsCard({ item, audienceData }) {
             return (
               <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
                 <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                  {headline[i].adname ?? ''}
+                  {headline[i].adname ? `Ad Headline ${(i + 1).toString()} :` : ''}
                 </Typography>
                 <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
-                  {v.adtext}
+                  {headline[i].adname ?? ''}
                 </Typography>
-                {contents.length > 1 && <Divider />}
+                <hr style={{ border: '1px solid black', marginTop: 5, marginBottom: 5 }} />
+                <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                  {v.adtext ? `Add Text ${(i + 1).toString()}` : ''} :
+                </Typography>
+                <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+                  {v.adtext ?? ''}
+                </Typography>
+                {contents.length > 1 && <Divider style={{ marginTop: 5, marginBottom: 5 }} />}
               </div>
             );
           })}
