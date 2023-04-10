@@ -242,7 +242,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               </div>
               <div>
                 {typeof contents === 'object' &&
-                  contents.map((v, i) => {
+                  contents.slice(0, 3).map((v, i) => {
                     const title = JSON.parse(dataPopover?.title);
                     return (
                       <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
