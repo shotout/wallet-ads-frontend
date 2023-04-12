@@ -99,6 +99,12 @@ export default function AddPaymentMethod({
     handleHoverClose();
   };
 
+  const resetState2 = () => {
+    setCondLay2(true);
+    // onClose();
+    // handleHoverClose();
+  };
+
   const cancelPromo = () => {
     setIsPromoAvail(!isPromoAvail);
     setValues({
@@ -117,7 +123,7 @@ export default function AddPaymentMethod({
   const setConLay2Action = async (stype) => {
     setCondLay2(false);
     const form = new FormData();
-    form.append('payment_data', 1);
+    form.append('payment_data', 0);
     form.append('_method', 'PATCH');
     await updatePaymentCC(form);
     // if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
@@ -143,7 +149,7 @@ export default function AddPaymentMethod({
         directStripe(values.promoCode);
 
         const form = new FormData();
-        form.append('payment_data', 1);
+        form.append('payment_data', 0);
         if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
           await savePaymentCC(form);
         } else {
@@ -151,6 +157,17 @@ export default function AddPaymentMethod({
           await updatePaymentCC(form);
         }
       }
+    }
+  };
+
+  const updatePaymentToCC = async () => {
+    const form = new FormData();
+    form.append('payment_data', 1);
+    if (dataPaymentMethod != 1 || dataPaymentMethod != 2) {
+      await savePaymentCC(form);
+    } else {
+      form.append('_method', 'PATCH');
+      await updatePaymentCC(form);
     }
   };
 
@@ -236,25 +253,36 @@ export default function AddPaymentMethod({
 
   const resetClientSecretThis = async () => {
     await resetClientSecret();
+    const form = new FormData();
+    form.append('payment_data');
+    form.append('_method', 'PATCH');
+    await updatePaymentCC(form);
     setCondLay2(false);
   };
 
   const renderFormPromoCode = () => (
     <>
       <div className={styles.ctnGroup}>
-        <div style={{ marginTop: 50, width: '100%' }}>
-          <TextField
-            fullWidth
-            className={styles.ctnInput}
-            size="small"
-            placeholder="Enter promo code"
-            variant="outlined"
-            onChange={handleChange('promoCode')}
-            value={values.promoCode}
-            error={errorMsg.promoCodeErr}
-            helperText={errorMsg.promoCodeErr}
-          />
-        </div>
+        <TextField
+          // fullWidth
+          className={styles.ctnInput}
+          size="small"
+          placeholder="Enter promo code"
+          variant="outlined"
+          onChange={handleChange('promoCode')}
+          value={values.promoCode}
+          error={errorMsg.promoCodeErr}
+          helperText={errorMsg.promoCodeErr}
+          sx={{
+            input: {
+              color: 'red',
+              background: 'white',
+              borderTopLeftRadius: 10,
+              borderBottomLeftRadius: 10,
+            },
+          }}
+        />
+
         {/* <input className={styles.ctnInput} /> */}
         <DefaultButton
           isLoading={values.isLoading}
@@ -262,7 +290,7 @@ export default function AddPaymentMethod({
           onClick={handleSubmit}
           label={'Apply'}
         />
-        <Typography variant="body1" color="#000" textAlign={'center'} marginTop={6}>
+        <Typography variant="body1" color="#000" textAlign={'center'} style={{ marginTop: 6 }}>
           <span onClick={cancelPromo} className={styles.ctnCancel}>
             Cancel
           </span>
@@ -598,19 +626,27 @@ export default function AddPaymentMethod({
             <div className={styles.ctnWrapper} style={{ '&::WebkitScrollbar': { display: 'none' } }}>
               <div className="content">
                 <div className={styles.header}>
+                  <Iconify
+                    icon={'material-symbols:arrow-back-rounded'}
+                    onClick={resetState2}
+                    width={20}
+                    height={20}
+                    className={styles.ctnClose}
+                  />
+
                   <div style={{ width: '99%' }}>
                     <Typography
                       variant="h5"
                       sx={{ color: '#000' }}
-                      marginLeft={4}
+                      marginLeft={1}
                       fontWeight="800"
                       textAlign="center"
                       width={'100%'}
+                      marginTop={-1}
                     >
                       Confirm payment
                     </Typography>
                   </div>
-
                   <Iconify
                     icon={'ant-design:close-outlined'}
                     onClick={resetState}
@@ -662,6 +698,7 @@ export default function AddPaymentMethod({
                         payStripe={directStripe}
                         checkUser={dataCheckUser}
                         createCampaign={createCampaignID}
+                        updatePayment={() => updatePaymentToCC()}
                       />
                     </Elements>
                   </Grid>

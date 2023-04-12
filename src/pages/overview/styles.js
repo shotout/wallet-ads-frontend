@@ -52,7 +52,7 @@ export default makeStyles((theme) => ({
     marginBottom: 20,
     borderBottom: '1px solid #BDBDBD',
   },
-  ctnLine: { 
+  ctnLine: {
     paddingBottom: 6,
     marginBottom: 6,
     borderBottom: '1px solid #BDBDBD',
@@ -236,6 +236,6 @@ export default makeStyles((theme) => ({
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 3,
-    marginBottom: 5,
+    marginBottom: 10,
   },
 }));

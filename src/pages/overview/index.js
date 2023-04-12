@@ -26,7 +26,7 @@ import ChartBar from '../../components/chart-bar';
 import CampaignModal from './../../../src/components/campaign-modal';
 import AdsModal from './../../../src/components/ads-modal';
 import { routes } from '../../helpers/routes';
-import { shortString } from '../../helpers/shortString';
+import { shortString, shortString2 } from '../../helpers/shortString';
 import { useRouter } from 'next/router';
 import { normalizeCurrency } from '../../helpers/currency';
 import moment from 'moment';
@@ -246,8 +246,8 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                     const title = JSON.parse(dataPopover?.title);
                     return (
                       <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                        <Typography fontSize={16} fontWeight={600}>
-                          {shortString(title[i].adname, 25, '')}
+                        <Typography fontSize={14} fontWeight={800} variant={'h6'} marginBottom={1} inline>
+                          {shortString2(title[i].adname, 20, '')}
                         </Typography>
                         <Typography
                           fontWeight={400}
@@ -258,7 +258,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                         >
                           {v.adtext}
                         </Typography>
-                        {contents.length > 1 && <Divider />}
+                        {contents.length > 1 && <Divider style={{ marginTop: 10, border: '1px solid #BDBDBD' }} />}
                       </div>
                     );
                   })}

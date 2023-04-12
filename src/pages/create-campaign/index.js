@@ -3288,6 +3288,7 @@ export default function AddCampaign({ userData, content, params }) {
   }
 
   function renderCardAdCreation(content, index) {
+    console.log('CONTENT', pictureData);
     return (
       <div
         id={`card-ads-${content.adsId}`}
@@ -3298,7 +3299,10 @@ export default function AddCampaign({ userData, content, params }) {
         key={content.adsId}
       >
         {!isAdsArrValid2(content) && errorBox.errorFirstAds ? (
-          <div className={`${errorBox.errorFirstAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}>
+          <div
+            className={`${errorBox.errorFirstAds && !isAdsArrValid(content) ? styles.ctnAdsTitle : {}}`}
+            style={pictureData.length > 1 ? { width: '97%' } : { width: '100%' }}
+          >
             Please assign an at least 1 audience to this ad or delete this ad.
           </div>
         ) : null}

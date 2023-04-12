@@ -5,6 +5,7 @@ import useStyles from './styles';
 import SuccessAddCampaign from '../../components/success-add-campaign';
 import { routes } from '../../helpers/routes';
 import { useRouter } from 'next/router';
+import { updatePaymentCC } from '../../utils/requests';
 
 const SetupForm = (e) => {
   const styles = useStyles();
@@ -61,9 +62,13 @@ const SetupForm = (e) => {
         // Make sure to disable form submission until Stripe.js has loaded.
         return;
       }
-      let createCampaign = await e.createCampaign()
+      let createCampaign = await e.createCampaign();
+      const form = new FormData();
+      form.append('payment_data', 1);
+      form.append('_method', 'PATCH');
+      await updatePaymentCC(form);
 
-      router.push(`${baseUrl}/create-campaign?`)
+      router.push(`${baseUrl}/create-campaign?`);
       const { error } = await stripe.confirmSetup({
         //`Elements` instance that was used to create the Payment Element
         elements,

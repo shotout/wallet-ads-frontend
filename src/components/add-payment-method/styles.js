@@ -43,18 +43,19 @@ export default makeStyles((theme) => ({
   },
   ctnGroup: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     // height: 40,
-    paddingTop: -10,
+    // paddingTop: -10,
     width: '100%',
+
+    paddingTop: 20,
   },
   ctnInput: {
-    marginTop: 50,
     width: '100%',
     height: '100%',
     border: 0,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     '& fieldset': {
@@ -62,15 +63,17 @@ export default makeStyles((theme) => ({
       borderBottomRightRadius: 0,
       color: 'black',
     },
+    '& .MuiFilledInput-root': {
+      background: 'rgb(232, 241, 250)',
+    },
   },
   ctnApply: {
-    marginTop: 50,
     height: '100%',
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     width: '40%',
     border: 0,
-    padding: 10,
+    padding: 10.8,
   },
   btnStyle: {
     marginTop: 12,
@@ -114,6 +117,7 @@ export default makeStyles((theme) => ({
     cursor: 'pointer',
     fontSize: 18,
     marginLeft: 13,
+
     // fontWeight: 'bold',
     fontFamily: 'Public Sans, sans-serif',
   },
@@ -124,7 +128,7 @@ export default makeStyles((theme) => ({
     backgroundColor: '#1FCB96',
   },
   ctnErrTextWrapper: {
-    height: 25,
+    // height: 25,
   },
   ctnErrText: {
     fontWeight: 'bold',
