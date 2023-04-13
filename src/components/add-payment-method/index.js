@@ -254,7 +254,7 @@ export default function AddPaymentMethod({
   const resetClientSecretThis = async () => {
     await resetClientSecret();
     const form = new FormData();
-    form.append('payment_data');
+    form.append('payment_data', 0);
     form.append('_method', 'PATCH');
     await updatePaymentCC(form);
     setCondLay2(false);

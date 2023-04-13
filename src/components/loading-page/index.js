@@ -63,7 +63,7 @@ export default function Index(props) {
           variant={'body2'}
           fontSize={20}
           fontWeight={'bold'}
-          left={'44%'}
+          left={initLoad === 100 ? '41%' : '44%'}
           marginTop={15}
         >
           {initLoad} %
