@@ -33,28 +33,32 @@ export default function AdsCard({ item, audienceData }) {
 
     return (
       <div className={styles.adtextContainer}>
+        {JSON.parse(item.name).map((v, i) => (
+          // const headline = JSON.parse(item.name);
+          <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+            <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+              {`Ad Headline ${(i + 1).toString()}`}
+            </Typography>
+            <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+              {v.adname ?? ''}
+            </Typography>
+            {/* <hr style={{ border: '1px solid black', marginTop: 5, marginBottom: 5 }} /> */}
+            {JSON.parse(item.name).length !== i + 1 ? <Divider style={{ marginTop: 5, marginBottom: 5 }} /> : null}
+          </div>
+        ))}
+        <hr style={{ border: '1px solid black', marginTop: 15, marginBottom: 15 }} />
         {typeof contents === 'object' &&
-          contents.map((v, i) => {
-            const headline = JSON.parse(item.name);
-            return (
-              <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                  {headline[i].adname ? `Ad Headline ${(i + 1).toString()} :` : ''}
-                </Typography>
-                <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
-                  {headline[i].adname ?? ''}
-                </Typography>
-                <hr style={{ border: '1px solid black', marginTop: 5, marginBottom: 5 }} />
-                <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
-                  {v.adtext ? `Add Text ${(i + 1).toString()}` : ''} :
-                </Typography>
-                <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
-                  {v.adtext ?? ''}
-                </Typography>
-                {contents.length > 1 && <Divider style={{ marginTop: 5, marginBottom: 5 }} />}
-              </div>
-            );
-          })}
+          contents.map((v, i) => (
+            <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+              <Typography variant="body2" color={'black'} fontWeight={800} fontSize={16}>
+                {v.adtext ? `Add Text ${(i + 1).toString()}` : ''} :
+              </Typography>
+              <Typography fontWeight={400} fontSize={14} color={'#000000'} textAlign={'justify'}>
+                {v.adtext ?? ''}
+              </Typography>
+              {contents.length !== i + 1 && <Divider style={{ marginTop: 5, marginBottom: 5 }} />}
+            </div>
+          ))}
       </div>
     );
   }
