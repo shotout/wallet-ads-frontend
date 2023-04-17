@@ -291,16 +291,16 @@ export async function getServerSideProps(context) {
     }
 
     // if (userData) {
-    const res = await getInvoicesList(context);
+    // const res = await getInvoicesList(context);
     //   console.log(res);
     return {
       props: {
         userData,
-        content: res.data || [],
+        // content: res.data || [],
       },
     };
   } catch (error) {
-    //   console.log('Error', error);
+    console.log('Error', error);
     return {
       redirect: {
         permanent: false,
