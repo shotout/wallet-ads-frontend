@@ -10,8 +10,6 @@ export default function AdsCard({ item, audienceData }) {
   // const [description, setDescription] = React.useState(JSON.string())
 
   const audenceDatas = audienceData.filter((audience) => audience.ads_id === item.id);
-  console.log(audenceDatas.name);
-  console.log('ITEM', item);
 
   function renderImage() {
     if (item && item.image) {

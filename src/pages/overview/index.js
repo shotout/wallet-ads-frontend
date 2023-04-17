@@ -242,26 +242,45 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
               </div>
               <div>
                 {typeof contents === 'object' &&
-                  contents.slice(0, 3).map((v, i) => {
-                    const title = JSON.parse(dataPopover?.title);
-                    return (
-                      <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
-                        <Typography fontSize={14} fontWeight={800} variant={'h6'} marginBottom={1} inline>
-                          {shortString2(title[i].adname, 20, '')}
-                        </Typography>
-                        <Typography
-                          fontWeight={400}
-                          fontSize={14}
-                          color={'#000000'}
-                          textAlign={'justify'}
-                          className={styles.txtDescription}
-                        >
-                          {v.adtext}
-                        </Typography>
-                        {contents.length > 1 && <Divider style={{ marginTop: 10, border: '1px solid #BDBDBD' }} />}
-                      </div>
-                    );
-                  })}
+                  JSON.parse(dataPopover?.title)
+                    .slice(0, 3)
+                    .map((v, i) => {
+                      // const title = JSON.parse(dataPopover?.title);
+                      return (
+                        // <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+                        //   <Typography fontSize={14} fontWeight={800} variant={'h6'} marginBottom={1} inline>
+                        //     {shortString2(title[i].adname, 20, '')}
+                        //   </Typography>
+                        //   <Typography
+                        //     fontWeight={400}
+                        //     fontSize={14}
+                        //     color={'#000000'}
+                        //     textAlign={'justify'}
+                        //     className={styles.txtDescription}
+                        //   >
+                        //     {v.adtext}
+                        //   </Typography>
+                        //   {contents.length > 1 && <Divider style={{ marginTop: 10, border: '1px solid #BDBDBD' }} />}
+                        // </div>
+                        <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
+                          <Typography fontSize={13} fontWeight={800} variant={'h6'} inline>
+                            Add Headline {i + 1}
+                          </Typography>
+                          <Typography
+                            fontWeight={400}
+                            fontSize={14}
+                            color={'#000000'}
+                            textAlign={'justify'}
+                            className={styles.txtDescription}
+                          >
+                            {shortString2(v.adname, 80, '')}
+                          </Typography>
+                          {JSON.parse(dataPopover?.title).length > 1 && (
+                            <Divider style={{ marginTop: 10, border: '0.5% solid #BDBDBD' }} />
+                          )}
+                        </div>
+                      );
+                    })}
                 <div>
                   <Typography variant="body2" color={'black'} textAlign={'center'} fontSize={12} marginTop={1}>
                     Click{' '}
