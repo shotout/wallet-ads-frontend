@@ -264,7 +264,7 @@ export default function Overview({ content, listCampaign, paginations, ctx }) {
                         // </div>
                         <div key={`adtext-${i}`} style={{ marginBottom: 5 }}>
                           <Typography fontSize={13} fontWeight={800} variant={'h6'} inline>
-                            Add Headline {i + 1}
+                            Ad Headline {i + 1}
                           </Typography>
                           <Typography
                             fontWeight={400}

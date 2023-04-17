@@ -10,6 +10,8 @@ const websiteIcon = '/assets/svg/world.svg';
 export default function CollectionPreview({ label, bannerSource, logoSource, formValues }) {
   const styles = useStyles();
 
+  console.log(label, bannerSource, logoSource, formValues);
+
   function renderProfile() {
     if (logoSource) {
       return <img src={logoSource} alt="logo" className={styles.logoImage} loading="lazy" />;
@@ -21,7 +23,7 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
     return (
       <div className={styles.ctnBanner}>
         <div className={styles.bannerItem}>
-          {/* <img src={bannerSource} alt="banner-source" loading="lazy" /> */}
+          <img src={bannerSource} alt="banner-source" loading="lazy" />
         </div>
         {renderProfile()}
       </div>

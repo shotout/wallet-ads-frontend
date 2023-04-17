@@ -583,6 +583,7 @@ export default function AddCampaign({ userData, content, params }) {
       let res = null;
       setLoadingSubmit(true);
       const campaignData = getAudienceArr();
+      console.log('LOGO COLLECTION', logoCollection);
       const formRes = new FormData();
       formRes.append('campaign_name', formValues.campaign_name.toString());
       formRes.append('campaign_start_date', moment(formValues.campaign_start_date).format('YYYY-MM-DD'));
@@ -603,6 +604,7 @@ export default function AddCampaign({ userData, content, params }) {
       formRes.append('ads_page_token_name', formValues.ads_page_token_name);
       formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
       formRes.append('ads_page_logo', logoCollection);
+
       // formRes.append('ads_page_token_symbol', formValues.ads_page_token_symbol);
       // isUpload.logo ? formRes.append('ads_page_logo', logoCollection) : null;
       // formRes.append(
@@ -615,8 +617,7 @@ export default function AddCampaign({ userData, content, params }) {
           formRes.append(`wallet_address[${index}]`, sample.sampleAd);
         }
       });
-      console.log('TES');
-      console.log(pictureData);
+
       pictureData.forEach((ads, adsIndex) => {
         console.log(ads.headlines);
         if (ads.id) formRes.append(`campaign_ads[${adsIndex}][id]`, ads.id);

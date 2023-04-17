@@ -30,6 +30,8 @@ export default function CampaignModal({ isVisible, data, close, isScrollToBottom
     const adsLogo = adsPage?.images.find((item) => item.type === 'ads_logo');
     const adsBanner = adsPage?.images.find((item) => item.type === 'ads_banner');
 
+    console.log('AdsLogo', adsLogo);
+
     const newAudience = [];
     data?.audiences.map((item) => {
       const checkIfExist = newAudience.some((v) => v.selected_fe_id === item.selected_fe_id);
