@@ -22,9 +22,7 @@ export default function CollectionPreview({ label, bannerSource, logoSource, for
   function renderBanner() {
     return (
       <div className={styles.ctnBanner}>
-        <div className={styles.bannerItem}>
-          <img src={bannerSource} alt="banner-source" loading="lazy" />
-        </div>
+        <div className={styles.bannerItem}>{/* <img src={bannerSource} alt="banner-source" loading="lazy" /> */}</div>
         {renderProfile()}
       </div>
     );
