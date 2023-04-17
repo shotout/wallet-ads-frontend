@@ -99,8 +99,12 @@ export default function AddPaymentMethod({
     handleHoverClose();
   };
 
-  const resetState2 = () => {
+  const resetState2 = async () => {
     setCondLay2(true);
+    const form = new FormData();
+    form.append('payment_data', 0);
+    form.append('_method', 'PATCH');
+    await updatePaymentCC(form);
     // onClose();
     // handleHoverClose();
   };
