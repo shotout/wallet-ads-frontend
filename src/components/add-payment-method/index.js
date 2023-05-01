@@ -436,7 +436,7 @@ export default function AddPaymentMethod({
                     <Typography
                       variant="h5"
                       sx={{ color: '#000' }}
-                      marginLeft={4}
+                      // marginLeft={4}
                       fontWeight="800"
                       textAlign="center"
                       width={'100%'}
@@ -479,7 +479,7 @@ export default function AddPaymentMethod({
                   </Grid>
                   <Grid item sm={12} md={12} xs={12} marginY={-2} marginBottom={0} marginTop={0.5}>
                     <Typography variant="h7" sx={{ color: '#000' }} fontWeight="300" width={'100%'}>
-                      Please Choose your preferred payment method for this campaign.
+                      Please choose your preferred payment method for this campaign.
                     </Typography>
                   </Grid>
                   {dataPaymentMethod == 2 ? (
@@ -597,9 +597,8 @@ export default function AddPaymentMethod({
                 </Grid>
               </div>
               <div
-                className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
-                  values.isApplied && styles.ctnBackgroundSuccess
-                }`}
+                className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${values.isApplied && styles.ctnBackgroundSuccess
+                  }`}
               >
                 {!values.isApplied ? (
                   isPromoAvail ? (
@@ -709,9 +708,8 @@ export default function AddPaymentMethod({
                 </Grid>
               </div>
               <div
-                className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${
-                  values.isApplied && styles.ctnBackgroundSuccess
-                }`}
+                className={`${styles.ctnPromo} ${isPromoAvail && styles.ctnBackgroundBlue} ${values.isApplied && styles.ctnBackgroundSuccess
+                  }`}
               >
                 {!values.isApplied ? (
                   isPromoAvail ? (

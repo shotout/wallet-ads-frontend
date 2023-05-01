@@ -154,4 +154,8 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
     fontFamily: 'Public Sans, sans-serif',
   },
+  ctnOption: {
+    display: 'flex',
+    cursor: 'pointer',
+  },
 }));

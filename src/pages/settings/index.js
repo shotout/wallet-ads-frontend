@@ -1450,7 +1450,7 @@ function SettingUser({ userData, params, classes }) {
 
             {paymentType?.payment_method === '0' && (
               <Typography fontWeight="500" variant="body" fontFamily={'Public Sans,sans-serif'} color={'grey'}>
-                add a payment method
+                No payment method selected
               </Typography>
             )}
 
